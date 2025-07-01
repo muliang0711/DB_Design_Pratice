@@ -1,0 +1,52 @@
+1. Bus Company to Bus and Staff Relationship:
+BusCompany {1 → *} Bus
+BusCompany {1 → *} Staff
+
+2. Bus Maintenance to Bus and Staff Relationship:
+BusMaintenance {* → 1/0} Bus
+BusMaintenance {* → 1/0} Staff
+
+3. Staff to StaffRole and DriverAssignment Relationship:
+Staff {* → 1/0} StaffRole
+Staff {1/0 → *} DriverAssignment
+
+4. Bus to DriverAssignment:
+Bus {1/0 → *} DriverAssignment
+
+5. DriverAssignment to BusSchedule:
+DriverAssignment {* → 1} BusSchedule
+
+6. Ticket to BusSchedule:
+Ticket {1 → *} BusSchedule
+
+7. BusSchedule to TripStopLog and Route:
+BusSchedule {1 → *} TripStopLog
+BusSchedule {* → 1} Route
+
+8. BusPlaform to TripStopLog and RouteStation:
+BusPlaform {1 → *} TripStopLog
+BusPlaform {1 → *} RouteStation
+
+9. BusStation to BusPlaform:
+BusStation {1 → *} BusPlaform
+
+10. Route to RouteStation:
+Route {1 → *} RouteStation
+
+11. Shop to BusStation:
+Shop {* → 1/0} BusStation
+
+12. ShopPayment to Shop:
+ShopPayment {* → 1/0} Shop
+
+13. PointTransaction to Customer and Payment:
+PointTransaction {* → 1} Customer
+PointTransaction {1 → 1} Payment
+
+14. Payment to Customer, PointTransaction and Ticket:
+Payment {1 → 1} PointTransaction
+Payment {* → 1} Customer
+Payment {1 → *} Ticket
+
+15. Customer to Ticket:
+Customer {1 → *} Ticket
