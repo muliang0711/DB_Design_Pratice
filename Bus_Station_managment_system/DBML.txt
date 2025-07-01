@@ -144,7 +144,7 @@ Table BusSchedule {
 Table BusMaintenance {
   maintenanceID int [pk, increment, note: 'Unique maintenance record']
   busID int [not null, note: 'FK to Bus']
-  staffID int [note: 'FK to Staff who performed']
+  staffID int [not null, note: 'FK to Staff who performed']
   serviceType varchar(50) [note: "e.g. 'Engine Check', 'Tyre Replace', 'Wash'"]
   cost decimal(8,2)
   maintenanceDate datetime [not null]
