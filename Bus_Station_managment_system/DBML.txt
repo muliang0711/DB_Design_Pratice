@@ -37,7 +37,7 @@ Table TripStopLog {
 
 Table Staff {
   staffID int [pk, increment, note: 'Unique identifier for staff']
-  companyID int [note: 'FK to BusCompany, leave null for non-driver staff']
+  companyID int [note: 'Only for driver staff. FK to BusCompany. Leave null for non-driver staff']
   fullName varchar(100) [not null]
   ICPassportNo varchar(30) [unique, not null]
   phoneNumber varchar(20)
