@@ -4,9 +4,20 @@
 ## Tables
 > **Note**: This section provides explanation for tables whose purpose may not be immediately obvious. It does not intend to document the purpose of all tables.
 
-**BusSchedule**: A bus schedule with fixed arrival and departure times. These times may not reflect the actual time of arrival and departure.
+**`Route`**: Records bus routes: from where to where? *Does not record schedule* -- that's handled by `BusSchedule`. 
 
-**TripStopLog**: A log of when a bus departs from a designated route's origin and when it arrives at the designated destination. 
+**`BusSchedule`**: Records planned arrival and departure times for each route. (These times may not reflect the actual time of arrival and departure.) 
+
+**`RouteStation`**: Defines the order of platforms (that buses stop by) along a route.
+
+*Example:* for `routeID: R001`, the following records may exist:
+- `{ routeID: 'R001', stopOrder: 1, platformID: 'P103' }`
+- `{ routeID: 'R001', stopOrder: 2, platformID: 'P009' }`
+- `{ routeID: 'R001', stopOrder: 3, platformID: 'P126' }`
+
+which means that a bus travelling along route `R001` will stop by platforms `P103`, `P009`, `P126` in that order.
+
+**`TripStopLog`**: A log of when a bus departs from a designated route's origin and when it arrives at the designated destination. 
 
 ## Relationships
 1. Bus Company to Bus and Staff Relationship:
