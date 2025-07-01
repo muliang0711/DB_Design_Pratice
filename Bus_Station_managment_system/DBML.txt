@@ -47,7 +47,6 @@ Table Staff {
   status varchar(20) [note: "e.g. 'Active', 'On Leave', 'Terminated'"]
   roleID int [note: 'FK to StaffRole']
 
-  driver related (NULL ,if ,not ,driver)
   licenseNo varchar(50) [unique, note: 'Driving license number if driver']
   licenseType varchar(20) [note: "e.g. 'PSV', 'GDL'"]
   
@@ -75,7 +74,7 @@ Table BusCompany {
 
 Table Bus {
   busID int [pk, increment, note: 'Unique identifier for bus']
-  companyID int [note: 'FK to BusCompany']
+  companyID int [not null, note: 'FK to BusCompany']
   plateNo varchar(20) [unique, not null, note: 'Vehicle registration number']
   model varchar(50) [note: 'Bus model / type (e.g. Hino 40-Seater)']
   capacity int [note: 'Number of seats']
@@ -144,7 +143,7 @@ Table BusSchedule {
 Table BusMaintenance {
   maintenanceID int [pk, increment, note: 'Unique maintenance record']
   busID int [not null, note: 'FK to Bus']
-  staffID int [note: 'FK to Staff who performed']
+  staffID int [not null, note: 'FK to Staff who performed']
   serviceType varchar(50) [note: "e.g. 'Engine Check', 'Tyre Replace', 'Wash'"]
   cost decimal(8,2)
   maintenanceDate datetime [not null]
