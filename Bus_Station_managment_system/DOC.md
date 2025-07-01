@@ -1,7 +1,7 @@
-Assumptions:
+**Assumptions**
 1. Our bus station serves long-trip buses. This assumption is made because we interact with many different bus companies, which isn't how it typically works for area buses like RapidKL where all buses belong to one company.
 
-Relationships:
+**Relationships**
 1. Bus Company to Bus and Staff Relationship:
 BusCompany {1 → *} Bus
 BusCompany {1 → *} Staff
