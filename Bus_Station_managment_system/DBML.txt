@@ -47,7 +47,6 @@ Table Staff {
   status varchar(20) [note: "e.g. 'Active', 'On Leave', 'Terminated'"]
   roleID int [note: 'FK to StaffRole']
 
-  driver related (NULL ,if ,not ,driver)
   licenseNo varchar(50) [unique, note: 'Driving license number if driver']
   licenseType varchar(20) [note: "e.g. 'PSV', 'GDL'"]
   
