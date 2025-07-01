@@ -2,7 +2,7 @@
 1. Our bus station serves long-trip buses. This assumption is made because we interact with many different bus companies, which isn't how it typically works for area buses like RapidKL where all buses belong to one company.
 
 ## Tables
-> Note: This section provides explanation for tables whose purpose may not be immediately obvious. It does not intend to document the purpose of all tables.
+> **Note**: This section provides explanation for tables whose purpose may not be immediately obvious. It does not intend to document the purpose of all tables.
 
 **BusSchedule**: A bus schedule with fixed arrival and departure times. These times may not reflect the actual time of arrival and departure.
 
@@ -10,54 +10,54 @@
 
 ## Relationships
 1. Bus Company to Bus and Staff Relationship:
-BusCompany {1 → *} Bus
-BusCompany {1 → *} Staff
+BusCompany {1 → \*} Bus
+BusCompany {1 → \*} Staff
 
 2. Bus Maintenance to Bus and Staff Relationship:
-BusMaintenance {* → 1/0} Bus
-BusMaintenance {* → 1/0} Staff
+BusMaintenance {\* → 1/0} Bus
+BusMaintenance {\* → 1/0} Staff
 
 3. Staff to StaffRole and DriverAssignment Relationship:
-Staff {* → 1/0} StaffRole
-Staff {1/0 → *} DriverAssignment
+Staff {\* → 1/0} StaffRole
+Staff {1/0 → \*} DriverAssignment
 
 4. Bus to DriverAssignment:
-Bus {1/0 → *} DriverAssignment
+Bus {1/0 → \*} DriverAssignment
 
 5. DriverAssignment to BusSchedule:
-DriverAssignment {* → 1} BusSchedule
+DriverAssignment {\* → 1} BusSchedule
 
 6. Ticket to BusSchedule:
-Ticket {1 → *} BusSchedule
+Ticket {1 → \*} BusSchedule
 
 7. BusSchedule to TripStopLog and Route:
-BusSchedule {1 → *} TripStopLog
-BusSchedule {* → 1} Route
+BusSchedule {1 → \*} TripStopLog
+BusSchedule {\* → 1} Route
 
 8. BusPlaform to TripStopLog and RouteStation:
-BusPlaform {1 → *} TripStopLog
-BusPlaform {1 → *} RouteStation
+BusPlaform {1 → \*} TripStopLog
+BusPlaform {1 → \*} RouteStation
 
 9. BusStation to BusPlaform:
-BusStation {1 → *} BusPlaform
+BusStation {1 → \*} BusPlaform
 
 10. Route to RouteStation:
-Route {1 → *} RouteStation
+Route {1 → \*} RouteStation
 
 11. Shop to BusStation:
-Shop {* → 1/0} BusStation
+Shop {\* → 1/0} BusStation
 
 12. ShopPayment to Shop:
-ShopPayment {* → 1/0} Shop
+ShopPayment {\* → 1/0} Shop
 
 13. PointTransaction to Customer and Payment:
-PointTransaction {* → 1} Customer
+PointTransaction {\* → 1} Customer
 PointTransaction {1 → 1} Payment
 
 14. Payment to Customer, PointTransaction and Ticket:
 Payment {1 → 1} PointTransaction
-Payment {* → 1} Customer
-Payment {1 → *} Ticket
+Payment {\* → 1} Customer
+Payment {1 → \*} Ticket
 
 15. Customer to Ticket:
-Customer {1 → *} Ticket
+Customer {1 → \*} Ticket
