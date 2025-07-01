@@ -75,7 +75,7 @@ Table BusCompany {
 
 Table Bus {
   busID int [pk, increment, note: 'Unique identifier for bus']
-  companyID int [note: 'FK to BusCompany']
+  companyID int [not null, note: 'FK to BusCompany']
   plateNo varchar(20) [unique, not null, note: 'Vehicle registration number']
   model varchar(50) [note: 'Bus model / type (e.g. Hino 40-Seater)']
   capacity int [note: 'Number of seats']
