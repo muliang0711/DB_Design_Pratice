@@ -1,5 +1,11 @@
+## Some terminology before we begin
+The **System** refers to the Bus Station Management System, the main character of this repository.
+
+The **Bus Station** refers to the bus station company that the System is made for.
+
+
 ## Assumptions
-1. Our bus station serves long-trip buses. This assumption is made because we interact with many different bus companies, which isn't how it typically works for area buses like RapidKL where all buses belong to one company.
+1. The Bus Station serves long-trip buses. This assumption is made because it interacts with many different bus companies, which isn't how it typically works for area buses like RapidKL where all buses belong to one company.
 
 ## Tables
 
@@ -8,22 +14,31 @@
 Roles (e.g. "Cleaner", "Driver", etc.) and their descriptions.
 
 #### `BusCompany`
-Bus companies that have registered with us (the company) to use our platforms.
+Bus companies that have registered with the Bus Station to use our platforms.
 
 ### Customer management
 #### `Customer`
+People who buy tickets via the System, or who buy things at the shops managed by the Bus Station.
 
 ### Staff management
 #### `Staff`
+- People who work for the Bus Station, including shop counter staff, washroom cleaners, etc.
+- Drivers of buses that belong to [bus companies](#buscompany) that interact with the Bus Station.
+
+> **Note:** The attributes `companyID`, `licenseNo`, and `licenseType` are meant for drivers (defined in [`StaffRole`](#staffrole)), and therefore should be left `null` for non-driver staff. `companyID` indicates which [`BusCompany`](#buscompany) the driver belongs to.
 
 ### Location and route management
 #### `BusStation`
-#### `BusPlaform`
+All the bus stations that are managed using the System. A [`BusStation`](#busstation) contains multiple [`BusPlatform`s](#busplatform).
+
+#### `BusPlatform`
+A [`BusStation`](#busstation) has multiple platforms. Each platform serves a different type of buses (e.g. travel, business, etc.).
+
 #### `Route`
-Records bus routes: from where to where? *Does not record schedule* -- that's handled by [`BusSchedule`](#busschedule). 
+Records bus routes: from where to where? *Does not record "when" (i.e. schedule)* -- that is handled by [`BusSchedule`](#busschedule). 
 
 #### `RouteStation`
-Defines the order of [platforms](#busplaform) (that buses stop by) along a [route](#route).
+Defines the order of [`BusPlatform`s](#busplaform) (that buses stop by) along a [`Route`](#route).
 
 *Example:* for `routeID: 42`, the following records may exist:
 - `{ routeID: 42, stopOrder: 1, platformID: 'P103' }`
@@ -35,13 +50,18 @@ which means that a bus travelling along route `42` will stop by platforms `P103`
 
 ### Bus fleet management
 #### `Bus`
+Includes license plates of buses.
+
 #### `BusMaintenance`
+Records maintenance services provided by the Bus Station to buses (at a charge). Attributes include the type of maintenance service and charges incurred.
 
 ### Schedule and operations
 #### `BusSchedule`
 Records planned arrival and departure times for each [route](#route). (These times may not reflect the actual time of arrival and departure.) 
 
 #### `DriverAssignment`
+Records assignments of buses (and the driver) to [bus schedules](#busschedule). 
+
 #### `TripStopLog`
 A log of when a bus departs from a designated [route](#route)'s origin and arrives at the destination. (*Actual* arrival and departure time as opposed to the *planned* arrival and departure times recorded by [`BusSchedule`](#busschedule))
 
