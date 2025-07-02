@@ -1,226 +1,228 @@
 Table Customer {
-  customerID int [pk, increment, note: 'Primary Key, Auto Increment']
-  fullName varchar(100) [not null]
-  ICPassportNo varchar(30) [unique, not null, note: 'IC number / Passport']
-  gender char(1)
-  birthDate date
-  phoneNumber varchar(20)
-  email varchar(100)
-   pointBalance int [default: 0, note: 'Quick access to current points']
-  customerType int [note: 'FK to CustomerType']
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  customerID NUMBER(10) [pk, increment, note: 'Primary Key, Auto Increment']
+  fullName VARCHAR2(100) [not null]
+  ICPassportNo VARCHAR2(30) [unique, not null, note: 'IC number / Passport']
+  gender CHAR(1)
+  birthDate DATE
+  phoneNumber VARCHAR2(20)
+  email VARCHAR2(100)
+  pointBalance NUMBER(10) [default: 0, note: 'Quick access to current points']
+  customerType NUMBER(10) [note: 'FK to CustomerType']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
 Table Payment {
-  paymentID int [pk, increment, note: 'Unique ID for each payment transaction']
-  customerID int [note: 'FK to Customer']
-  paymentMethodID int [note: 'FK to PaymentMethod']
-  ticketID int [note: 'FK to Ticket or Order, can be NULL']
-  amount decimal(8,2) [note: 'Amount paid']
-  status varchar(20) [note: "e.g. 'Completed', 'Pending', 'Failed'"]
-  paymentTime datetime [note: 'When payment was made']
-  receiptNo varchar(50) [note: 'Reference from payment gateway']
-  remarks varchar(200) [note: 'Notes or error messages']
-  paymentMethod varchar(100)
-  pointApply number(5,2) 
-  type varchar(50) [note: "'bookingTicket', 'Ticket'"]
+  paymentID NUMBER(10) [pk, increment, note: 'Unique ID for each payment transaction']
+  customerID NUMBER(10) [note: 'FK to Customer']
+  paymentMethodID NUMBER(10) [note: 'FK to PaymentMethod']
+  ticketID NUMBER(10) [note: 'FK to Ticket or Order, can be NULL']
+  amount NUMBER(8,2) [note: 'Amount paid']
+  status VARCHAR2(20) [note: "e.g. 'Completed', 'Pending', 'Failed'"]
+  paymentTime TIMESTAMP [note: 'When payment was made']
+  receiptNo VARCHAR2(50) [note: 'Reference from payment gateway']
+  remarks VARCHAR2(200) [note: 'Notes or error messages']
+  paymentMethod VARCHAR2(100)
+  pointApply NUMBER(5,2)
+  type VARCHAR2(50) [note: "'bookingTicket', 'Ticket'"]
 }
+
 Table TripStopLog {
-  tripStopID int [pk, increment]
-  BusScheduleID int [not null, note: 'FK to BusSchedule']
-  platformID int [not null, note: 'FK to BusPlatform']
-  actualArrivalTime datetime
-  actualDepartureTime datetime
-  status varchar(20) [note: "e.g. 'Arrived', 'Skipped', 'Delayed'"]
+  tripStopID NUMBER(10) [pk, increment]
+  BusScheduleID NUMBER(10) [not null, note: 'FK to BusSchedule']
+  platformID NUMBER(10) [not null, note: 'FK to BusPlatform']
+  actualArrivalTime TIMESTAMP
+  actualDepartureTime TIMESTAMP
+  status VARCHAR2(20) [note: "e.g. 'Arrived', 'Skipped', 'Delayed'"]
 }
 
 Table Staff {
-  staffID int [pk, increment, note: 'Unique identifier for staff']
-  companyID int [note: 'Only for driver staff. FK to BusCompany. Leave null for non-driver staff']
-  fullName varchar(100) [not null]
-  ICPassportNo varchar(30) [unique, not null]
-  phoneNumber varchar(20)
-  email varchar(100)
-  hireDate date [note: 'Date of employment']
-  salary decimal(10,2)
-  status varchar(20) [note: "e.g. 'Active', 'On Leave', 'Terminated'"]
-  roleID int [note: 'FK to StaffRole']
-
-  licenseNo varchar(50) [unique, note: 'Driving license number if driver']
-  licenseType varchar(20) [note: "e.g. 'PSV', 'GDL'"]
-  
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  staffID NUMBER(10) [pk, increment, note: 'Unique identifier for staff']
+  companyID NUMBER(10) [note: 'Only for driver staff. FK to BusCompany. Leave null for non-driver staff']
+  fullName VARCHAR2(100) [not null]
+  ICPassportNo VARCHAR2(30) [unique, not null]
+  phoneNumber VARCHAR2(20)
+  email VARCHAR2(100)
+  hireDate DATE [note: 'Date of employment']
+  salary NUMBER(10,2)
+  status VARCHAR2(20) [note: "e.g. 'Active', 'On Leave', 'Terminated'"]
+  roleID NUMBER(10) [note: 'FK to StaffRole']
+  licenseNo VARCHAR2(50) [unique, note: 'Driving license number if driver']
+  licenseType VARCHAR2(20) [note: "e.g. 'PSV', 'GDL'"]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
-
 
 Table StaffRole {
-  roleID int [pk, increment, note: 'Unique role ID']
-  roleName varchar(50) [not null, note: "e.g. 'Counter Staff', 'Cleaner'"]
-  description varchar(200)
+  roleID NUMBER(10) [pk, increment, note: 'Unique role ID']
+  roleName VARCHAR2(50) [not null, note: "e.g. 'Counter Staff', 'Cleaner'"]
+  description VARCHAR2(200)
 }
+
 Table BusCompany {
-  companyID int [pk, increment, note: 'Unique company identifier']
-  companyName varchar(100) [not null, note: 'Name of the bus company']
-  registrationNo varchar(50) [unique, note: 'Company registration / license number']
-  phoneNumber varchar(20)
-  email varchar(100)
-  address varchar(200)
-  status varchar(20) [note: "e.g. 'Active', 'Suspended'"]
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  companyID NUMBER(10) [pk, increment, note: 'Unique company identifier']
+  companyName VARCHAR2(100) [not null, note: 'Name of the bus company']
+  registrationNo VARCHAR2(50) [unique, note: 'Company registration / license number']
+  phoneNumber VARCHAR2(20)
+  email VARCHAR2(100)
+  address VARCHAR2(200)
+  status VARCHAR2(20) [note: "e.g. 'Active', 'Suspended'"]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
 Table Bus {
-  busID int [pk, increment, note: 'Unique identifier for bus']
-  companyID int [not null, note: 'FK to BusCompany']
-  plateNo varchar(20) [unique, not null, note: 'Vehicle registration number']
-  model varchar(50) [note: 'Bus model / type (e.g. Hino 40-Seater)']
-  capacity int [note: 'Number of seats']
-  status varchar(20) [note: "e.g. 'Active', 'Maintenance', 'Retired'"]
-  year int [note: 'Year of manufacture / acquisition']
-  remarks varchar(200) [note: 'Notes like AC, TV etc.']
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  busID NUMBER(10) [pk, increment, note: 'Unique identifier for bus']
+  companyID NUMBER(10) [not null, note: 'FK to BusCompany']
+  plateNo VARCHAR2(20) [unique, not null, note: 'Vehicle registration number']
+  model VARCHAR2(50) [note: 'Bus model / type (e.g. Hino 40-Seater)']
+  capacity NUMBER(10) [note: 'Number of seats']
+  status VARCHAR2(20) [note: "e.g. 'Active', 'Maintenance', 'Retired'"]
+  year NUMBER(4) [note: 'Year of manufacture / acquisition']
+  remarks VARCHAR2(200) [note: 'Notes like AC, TV etc.']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
 Table Route {
-  routeID int [pk, increment, note: 'Unique ID for this route']
-  routeName varchar(50) [not null, note: 'Name or code like "U34", "KLCC - Bukit Bintang"']
-  startPoint varchar(100) [note: 'Starting terminal / station name']
-  endPoint varchar(100) [note: 'Ending terminal / station name']
-  distanceKM decimal(6,2) [note: 'Total distance in km']
-  estimatedDuration int [note: 'Typical trip duration in minutes']
-  status varchar(20) [note: "e.g. 'Active', 'Inactive' if closed"]
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  routeID NUMBER(10) [pk, increment, note: 'Unique ID for this route']
+  routeName VARCHAR2(50) [not null, note: 'Name or code like "U34", "KLCC - Bukit Bintang"']
+  startPoint VARCHAR2(100) [note: 'Starting terminal / station name']
+  endPoint VARCHAR2(100) [note: 'Ending terminal / station name']
+  distanceKM NUMBER(6,2) [note: 'Total distance in km']
+  estimatedDuration NUMBER(10) [note: 'Typical trip duration in minutes']
+  status VARCHAR2(20) [note: "e.g. 'Active', 'Inactive' if closed"]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
-
 
 Table BusPlaform {
-  plaformID int [pk, increment, note: 'Unique ID for station']
-  StationID int [not null , note: "FK_stationId"]
-  plaformName varchar(100) [not null, note: 'e.g. "KLCC", "Pasar Seni"']
-  location varchar(150) [note: 'GPS coordinates or address']
-  status varchar(20) [note: "e.g. 'Active', 'Closed'"]
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
+  plaformID NUMBER(10) [pk, increment, note: 'Unique ID for station']
+  StationID NUMBER(10) [not null , note: "FK_stationId"]
+  plaformName VARCHAR2(100) [not null, note: 'e.g. "KLCC", "Pasar Seni"']
+  location VARCHAR2(150) [note: 'GPS coordinates or address']
+  status VARCHAR2(20) [note: "e.g. 'Active', 'Closed'"]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
+
 Table DriverAssignment {
-  assignmentID int [pk, increment, note: 'Unique assignment record']
-  staffID int [not null, note: 'FK to Staff (driver)']
-  busID int [not null, note: 'FK to Bus']
-  BusScheduleID int [not null, note: 'FK to BusSchedule']
-  assignedFrom datetime
-  assignedTo datetime
-  status varchar(20)
-  remarks varchar(200)
+  assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
+  staffID NUMBER(10) [not null, note: 'FK to Staff (driver)']
+  busID NUMBER(10) [not null, note: 'FK to Bus']
+  BusScheduleID NUMBER(10) [not null, note: 'FK to BusSchedule']
+  assignedFrom TIMESTAMP
+  assignedTo TIMESTAMP
+  status VARCHAR2(20)
+  remarks VARCHAR2(200)
 
   Note: 'Assigns a staff (driver) and bus to run a scheduled trip'
 }
 
-
 Table RouteStation {
-  routeStationID int [pk, increment]
-  routeID int [not null, note: 'FK to Route']
-  plaformID int [not null, note: 'FK to BusStation']
-  stopOrder int [not null, note: 'Sequence number (1,2,3,...)']
-  estimatedArrivalOffset int [note: 'Minutes from route start']
+  routeStationID NUMBER(10) [pk, increment]
+  routeID NUMBER(10) [not null, note: 'FK to Route']
+  plaformID NUMBER(10) [not null, note: 'FK to BusStation']
+  stopOrder NUMBER(10) [not null, note: 'Sequence number (1,2,3,...)']
+  estimatedArrivalOffset NUMBER(10) [note: 'Minutes from route start']
 
   Note: 'Defines ordered stations along a route'
 }
+
 Table BusSchedule {
-  BusScheduleID int [pk, increment, note: 'Unique ID for each planned trip']
-  routeID int [not null, note: 'FK to Route']
-  plannedDepartureTime datetime [not null, note: 'When this trip starts']
-  plannedArrivalTime datetime [note: 'Estimated end time']
-  status varchar(20) [default: 'Planned', note: "e.g. 'Planned', 'Cancelled', 'Completed'"]
-  remarks varchar(200) [note: 'Any notes']
-  price number(6,2) [note : '666.66']
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  BusScheduleID NUMBER(10) [pk, increment, note: 'Unique ID for each planned trip']
+  routeID NUMBER(10) [not null, note: 'FK to Route']
+  plannedDepartureTime TIMESTAMP [not null, note: 'When this trip starts']
+  plannedArrivalTime TIMESTAMP [note: 'Estimated end time']
+  status VARCHAR2(20) [default: 'Planned', note: "e.g. 'Planned', 'Cancelled', 'Completed'"]
+  remarks VARCHAR2(200) [note: 'Any notes']
+  price NUMBER(6,2) [note: '666.66']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
+
 Table BusMaintenance {
-  maintenanceID int [pk, increment, note: 'Unique maintenance record']
-  busID int [not null, note: 'FK to Bus']
-  staffID int [not null, note: 'FK to Staff who performed']
-  serviceType varchar(50) [note: "e.g. 'Engine Check', 'Tyre Replace', 'Wash'"]
-  cost decimal(8,2)
-  maintenanceDate datetime [not null]
-  remarks varchar(200)
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
+  maintenanceID NUMBER(10) [pk, increment, note: 'Unique maintenance record']
+  busID NUMBER(10) [not null, note: 'FK to Bus']
+  staffID NUMBER(10) [not null, note: 'FK to Staff who performed']
+  serviceType VARCHAR2(50) [note: "e.g. 'Engine Check', 'Tyre Replace', 'Wash'"]
+  cost NUMBER(8,2)
+  maintenanceDate TIMESTAMP [not null]
+  remarks VARCHAR2(200)
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
+
 Table Ticket {
-  ticketID int [pk, increment, note: 'Unique ticket']
-  BusScheduleID int [not null, note: 'FK to BusSchedule']
-  customerID int [not null, note: 'FK to Customer']
-  seatNo varchar(10) [note: 'Seat identifier']
-  price decimal(8,2) [not null]
-  status varchar(20) [default: 'Booked', note: "e.g. 'Booked', 'Cancelled', 'Refunded'"]
-  bookedAt datetime [default: `CURRENT_TIMESTAMP`]
-  paymentID int [note: 'FK to Payment if paid']
-
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  ticketID NUMBER(10) [pk, increment, note: 'Unique ticket']
+  BusScheduleID NUMBER(10) [not null, note: 'FK to BusSchedule']
+  customerID NUMBER(10) [not null, note: 'FK to Customer']
+  seatNo VARCHAR2(10) [note: 'Seat identifier']
+  price NUMBER(8,2) [not null]
+  status VARCHAR2(20) [default: 'Booked', note: "e.g. 'Booked', 'Cancelled', 'Refunded'"]
+  bookedAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  paymentID NUMBER(10) [note: 'FK to Payment if paid']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
+
 Table Tenant {
-  tenantID int [pk, increment, note: 'Unique tenant ID']
-  tenantName varchar(100) [not null, note: 'Company or individual name']
-  contactPerson varchar(100)
-  phoneNumber varchar(20)
-  email varchar(100)
-  address varchar(200)
-  status varchar(20) [note: "e.g. 'Active', 'Terminated'"]
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  tenantID NUMBER(10) [pk, increment, note: 'Unique tenant ID']
+  tenantName VARCHAR2(100) [not null, note: 'Company or individual name']
+  contactPerson VARCHAR2(100)
+  phoneNumber VARCHAR2(20)
+  email VARCHAR2(100)
+  address VARCHAR2(200)
+  status VARCHAR2(20) [note: "e.g. 'Active', 'Terminated'"]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
-Table Shop {
-  shopID int [pk, increment, not null , note: 'Unique shop ID' ]
-  shopNo varchar(20) [not null, note: 'Shop lot number or identifier']
-  shopType varchar(20) [note: "'FoodCourt' or 'ShopLot'"]
-  size decimal(8,2) [note: 'Size in sq ft or sqm']
-  rentalFee decimal(10,2)
-  deposit decimal(10,2)
-  tenantID int [note: 'FK to Tenant']
-  contractStart date
-  contractEnd date
-  stationID int [note: 'FK to BusStation where shop is located']
-  status varchar(20) [note: "e.g. 'Occupied', 'Vacant'"]
 
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+Table Shop {
+  shopID NUMBER(10) [pk, increment, not null , note: 'Unique shop ID' ]
+  shopNo VARCHAR2(20) [not null, note: 'Shop lot number or identifier']
+  shopType VARCHAR2(20) [note: "'FoodCourt' or 'ShopLot'"]
+  size NUMBER(8,2) [note: 'Size in sq ft or sqm']
+  rentalFee NUMBER(10,2)
+  deposit NUMBER(10,2)
+  tenantID NUMBER(10) [note: 'FK to Tenant']
+  contractStart DATE
+  contractEnd DATE
+  stationID NUMBER(10) [note: 'FK to BusStation where shop is located']
+  status VARCHAR2(20) [note: "e.g. 'Occupied', 'Vacant'"]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
+
 Table BusStation {
-  stationID int [pk, increment ]
-  stationName varchar(100)
-  location varchar(150)
-  status varchar(20)
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
+  stationID NUMBER(10) [pk, increment]
+  stationName VARCHAR2(100)
+  location VARCHAR2(150)
+  status VARCHAR2(20)
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 
 Table ShopPayment {
-  shopPayID int [pk, increment, note: 'Unique payment record']
-  shopID int [not null, note: 'FK to Shop']
-  tenantID int [not null, note: 'FK to Tenant for quick ref']
-  payType varchar(20) [not null, note: "e.g. 'Rental', 'Deposit', 'Penalty'"]
-  amount decimal(10,2) [not null]
-  paymentDate datetime [not null]
-  paymentMethod varchar(30) [note: "e.g. 'Cash', 'Transfer', 'Cheque'"]
-  status varchar(20) [note: "e.g. 'Completed', 'Pending', 'Failed'"]
-  receiptNo varchar(50)
-  remarks varchar(200)
-
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
-  updatedAt datetime [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  shopPayID NUMBER(10) [pk, increment, note: 'Unique payment record']
+  shopID NUMBER(10) [not null, note: 'FK to Shop']
+  tenantID NUMBER(10) [not null, note: 'FK to Tenant for quick ref']
+  payType VARCHAR2(20) [not null, note: "e.g. 'Rental', 'Deposit', 'Penalty'"]
+  amount NUMBER(10,2) [not null]
+  paymentDate TIMESTAMP [not null]
+  paymentMethod VARCHAR2(30) [note: "e.g. 'Cash', 'Transfer', 'Cheque'"]
+  status VARCHAR2(20) [note: "e.g. 'Completed', 'Pending', 'Failed'"]
+  receiptNo VARCHAR2(50)
+  remarks VARCHAR2(200)
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
+
 Table PointTransaction {
-  pointTxnID int [pk, increment, note: 'Unique point transaction']
-  customerID int [not null, note: 'FK to Customer']
-  change int [note: '+10 for earn, -50 for redeem']
-  source varchar(50) [note: "e.g. 'Ticket Purchase', 'Birthday Promo'"]
-  paymentID int [note: 'FK to Payment if tied to purchase', null]
-  remarks varchar(200)
-  createdAt datetime [default: `CURRENT_TIMESTAMP`]
+  pointTxnID NUMBER(10) [pk, increment, note: 'Unique point transaction']
+  customerID NUMBER(10) [not null, note: 'FK to Customer']
+  change NUMBER(10) [note: '+10 for earn, -50 for redeem']
+  source VARCHAR2(50) [note: "e.g. 'Ticket Purchase', 'Birthday Promo'"]
+  paymentID NUMBER(10) [note: 'FK to Payment if tied to purchase', null]
+  remarks VARCHAR2(200)
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 Ref: PointTransaction.paymentID - Payment.paymentID
 Ref: PointTransaction.customerID > Customer.customerID
