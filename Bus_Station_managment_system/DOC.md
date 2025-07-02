@@ -89,15 +89,24 @@ A log of when a bus departs from a designated [route](#route)'s origin and arriv
 
 ### Payment system
 #### `Payment`
+Records customer payments, including method, amount, loyalty points used, and status for various transaction types (e.g., ticket, membership, refund).
+
 #### `PointTransaction`
+Tracks loyalty point activities for customers, such as earning, redemption, and refunds, often linked to payment records.
 
 ### Ticketing system
 #### `Ticket`
+Represents a bus booking by a customer for a specific bus schedule, with pricing, seat info, and support for cancellation (which may/may not include refund) and extension.
 
 ### Shop and Tenant Management
 #### `Tenant`
+Stores information about individuals or companies renting shop lots in bus stations, including contact and status details.
+
 #### `Shop`
+Defines a shop lot at a bus station, linking it to tenants, with details on rental fees, contract periods, and occupancy status.
+
 #### `ShopPayment`
+Captures rental-related payments from tenants for shops, including payment type (e.g., rental, deposit), method, and status.
 
 ## Relationships
 1. Bus Company to Bus and Staff Relationship:
