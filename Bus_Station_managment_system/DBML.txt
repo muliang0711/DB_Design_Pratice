@@ -1,57 +1,6 @@
-Table Customer {
-  customerID NUMBER(10) [pk, increment, note: 'Primary Key, Auto Increment']
-  fullName VARCHAR2(100) [not null]
-  ICPassportNo VARCHAR2(30) [unique, not null, note: 'IC number / Passport']
-  gender CHAR(1)
-  birthDate DATE
-  phoneNumber VARCHAR2(20)
-  email VARCHAR2(100)
-  pointBalance NUMBER(10) [default: 0, note: 'Quick access to current points']
-  customerType NUMBER(10) [note: 'FK to CustomerType']
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
-}
-
-Table Payment {
-  paymentID NUMBER(10) [pk, increment, note: 'Unique ID for each payment transaction']
-  customerID NUMBER(10) [note: 'FK to Customer']
-  paymentMethodID NUMBER(10) [note: 'FK to PaymentMethod']
-  ticketID NUMBER(10) [note: 'FK to Ticket or Order, can be NULL']
-  amount NUMBER(8,2) [note: 'Amount paid']
-  status VARCHAR2(20) [note: "e.g. 'Completed', 'Pending', 'Failed'"]
-  paymentTime TIMESTAMP [note: 'When payment was made']
-  receiptNo VARCHAR2(50) [note: 'Reference from payment gateway']
-  remarks VARCHAR2(200) [note: 'Notes or error messages']
-  paymentMethod VARCHAR2(100)
-  pointApply NUMBER(5,2)
-  type VARCHAR2(50) [note: "'bookingTicket', 'Ticket'"]
-}
-
-Table TripStopLog {
-  tripStopID NUMBER(10) [pk, increment]
-  BusScheduleID NUMBER(10) [not null, note: 'FK to BusSchedule']
-  platformID NUMBER(10) [not null, note: 'FK to BusPlatform']
-  actualArrivalTime TIMESTAMP
-  actualDepartureTime TIMESTAMP
-  status VARCHAR2(20) [note: "e.g. 'Arrived', 'Skipped', 'Delayed'"]
-}
-
-Table Staff {
-  staffID NUMBER(10) [pk, increment, note: 'Unique identifier for staff']
-  companyID NUMBER(10) [note: 'Only for driver staff. FK to BusCompany. Leave null for non-driver staff']
-  fullName VARCHAR2(100) [not null]
-  ICPassportNo VARCHAR2(30) [unique, not null]
-  phoneNumber VARCHAR2(20)
-  email VARCHAR2(100)
-  hireDate DATE [note: 'Date of employment']
-  salary NUMBER(10,2)
-  status VARCHAR2(20) [note: "e.g. 'Active', 'On Leave', 'Terminated'"]
-  roleID NUMBER(10) [note: 'FK to StaffRole']
-  licenseNo VARCHAR2(50) [unique, note: 'Driving license number if driver']
-  licenseType VARCHAR2(20) [note: "e.g. 'PSV', 'GDL'"]
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
-}
+// ============================================
+// REFERENCE DATA TABLES
+// ============================================
 
 Table StaffRole {
   roleID NUMBER(10) [pk, increment, note: 'Unique role ID']
@@ -71,17 +20,64 @@ Table BusCompany {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-Table Bus {
-  busID NUMBER(10) [pk, increment, note: 'Unique identifier for bus']
-  companyID NUMBER(10) [not null, note: 'FK to BusCompany']
-  plateNo VARCHAR2(20) [unique, not null, note: 'Vehicle registration number']
-  model VARCHAR2(50) [note: 'Bus model / type (e.g. Hino 40-Seater)']
-  capacity NUMBER(10) [note: 'Number of seats']
-  status VARCHAR2(20) [note: "e.g. 'Active', 'Maintenance', 'Retired'"]
-  year NUMBER(4) [note: 'Year of manufacture / acquisition']
-  remarks VARCHAR2(200) [note: 'Notes like AC, TV etc.']
+// ============================================
+// CUSTOMER MANAGEMENT
+// ============================================
+
+Table Customer {
+  customerID NUMBER(10) [pk, increment, note: 'Primary Key, Auto Increment']
+  fullName VARCHAR2(100) [not null]
+  ICPassportNo VARCHAR2(30) [unique, not null, note: 'IC number / Passport']
+  gender CHAR(1)
+  birthDate DATE
+  phoneNumber VARCHAR2(20)
+  email VARCHAR2(100)
+  pointBalance NUMBER(10) [default: 0, note: 'Quick access to current points']
+  customerType NUMBER(10) [note: 'FK to CustomerType']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+}
+
+// ============================================
+// STAFF MANAGEMENT
+// ============================================
+
+Table Staff {
+  staffID NUMBER(10) [pk, increment, note: 'Unique identifier for staff']
+  companyID NUMBER(10) [ref: > BusCompany.companyID, note: 'Only for driver staff. FK to BusCompany. Leave null for non-driver staff']
+  roleID NUMBER(10) [ref: > StaffRole.roleID, note: 'FK to StaffRole']
+  fullName VARCHAR2(100) [not null]
+  ICPassportNo VARCHAR2(30) [unique, not null]
+  phoneNumber VARCHAR2(20)
+  email VARCHAR2(100)
+  hireDate DATE [note: 'Date of employment']
+  salary NUMBER(10,2)
+  status VARCHAR2(20) [note: "e.g. 'Active', 'On Leave', 'Terminated'"]
+  licenseNo VARCHAR2(50) [unique, note: 'Driving license number if driver']
+  licenseType VARCHAR2(20) [note: "e.g. 'PSV', 'GDL'"]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+}
+
+// ============================================
+// LOCATION AND ROUTE MANAGEMENT
+// ============================================
+
+Table BusStation {
+  stationID NUMBER(10) [pk, increment]
+  stationName VARCHAR2(100)
+  location VARCHAR2(150)
+  status VARCHAR2(20)
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+Table BusPlaform {
+  plaformID NUMBER(10) [pk, increment, note: 'Unique ID for station']
+  StationID NUMBER(10) [ref: > BusStation.stationID, not null, note: "FK_stationId"]
+  plaformName VARCHAR2(100) [not null, note: 'e.g. "KLCC", "Pasar Seni"']
+  location VARCHAR2(150) [note: 'GPS coordinates or address']
+  status VARCHAR2(20) [note: "e.g. 'Active', 'Closed'"]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 
 Table Route {
@@ -96,41 +92,51 @@ Table Route {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-Table BusPlaform {
-  plaformID NUMBER(10) [pk, increment, note: 'Unique ID for station']
-  StationID NUMBER(10) [not null , note: "FK_stationId"]
-  plaformName VARCHAR2(100) [not null, note: 'e.g. "KLCC", "Pasar Seni"']
-  location VARCHAR2(150) [note: 'GPS coordinates or address']
-  status VARCHAR2(20) [note: "e.g. 'Active', 'Closed'"]
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-}
-
-Table DriverAssignment {
-  assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
-  staffID NUMBER(10) [not null, note: 'FK to Staff (driver)']
-  busID NUMBER(10) [not null, note: 'FK to Bus']
-  BusScheduleID NUMBER(10) [not null, note: 'FK to BusSchedule']
-  assignedFrom TIMESTAMP
-  assignedTo TIMESTAMP
-  status VARCHAR2(20)
-  remarks VARCHAR2(200)
-
-  Note: 'Assigns a staff (driver) and bus to run a scheduled trip'
-}
-
 Table RouteStation {
   routeStationID NUMBER(10) [pk, increment]
-  routeID NUMBER(10) [not null, note: 'FK to Route']
-  plaformID NUMBER(10) [not null, note: 'FK to BusStation']
+  routeID NUMBER(10) [ref: > Route.routeID, not null, note: 'FK to Route']
+  plaformID NUMBER(10) [ref: > BusPlaform.plaformID, not null, note: 'FK to BusStation']
   stopOrder NUMBER(10) [not null, note: 'Sequence number (1,2,3,...)']
   estimatedArrivalOffset NUMBER(10) [note: 'Minutes from route start']
 
   Note: 'Defines ordered stations along a route'
 }
 
+// ============================================
+// BUS FLEET MANAGEMENT
+// ============================================
+
+Table Bus {
+  busID NUMBER(10) [pk, increment, note: 'Unique identifier for bus']
+  companyID NUMBER(10) [ref: > BusCompany.companyID, not null, note: 'FK to BusCompany']
+  plateNo VARCHAR2(20) [unique, not null, note: 'Vehicle registration number']
+  model VARCHAR2(50) [note: 'Bus model / type (e.g. Hino 40-Seater)']
+  capacity NUMBER(10) [note: 'Number of seats']
+  status VARCHAR2(20) [note: "e.g. 'Active', 'Maintenance', 'Retired'"]
+  year NUMBER(4) [note: 'Year of manufacture / acquisition']
+  remarks VARCHAR2(200) [note: 'Notes like AC, TV etc.']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+}
+
+Table BusMaintenance {
+  maintenanceID NUMBER(10) [pk, increment, note: 'Unique maintenance record']
+  busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
+  staffID NUMBER(10) [ref: > Staff.staffID, not null, note: 'FK to Staff who performed']
+  serviceType VARCHAR2(50) [note: "e.g. 'Engine Check', 'Tyre Replace', 'Wash'"]
+  cost NUMBER(8,2)
+  maintenanceDate TIMESTAMP [not null]
+  remarks VARCHAR2(200)
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+// ============================================
+// SCHEDULE AND OPERATIONS
+// ============================================
+
 Table BusSchedule {
   BusScheduleID NUMBER(10) [pk, increment, note: 'Unique ID for each planned trip']
-  routeID NUMBER(10) [not null, note: 'FK to Route']
+  routeID NUMBER(10) [ref: > Route.routeID, not null, note: 'FK to Route']
   plannedDepartureTime TIMESTAMP [not null, note: 'When this trip starts']
   plannedArrivalTime TIMESTAMP [note: 'Estimated end time']
   status VARCHAR2(20) [default: 'Planned', note: "e.g. 'Planned', 'Cancelled', 'Completed'"]
@@ -140,29 +146,77 @@ Table BusSchedule {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-Table BusMaintenance {
-  maintenanceID NUMBER(10) [pk, increment, note: 'Unique maintenance record']
-  busID NUMBER(10) [not null, note: 'FK to Bus']
-  staffID NUMBER(10) [not null, note: 'FK to Staff who performed']
-  serviceType VARCHAR2(50) [note: "e.g. 'Engine Check', 'Tyre Replace', 'Wash'"]
-  cost NUMBER(8,2)
-  maintenanceDate TIMESTAMP [not null]
+Table DriverAssignment {
+  assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
+  staffID NUMBER(10) [ref: > Staff.staffID, not null, note: 'FK to Staff (driver)']
+  busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
+  BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, not null, note: 'FK to BusSchedule']
+  assignedFrom TIMESTAMP
+  assignedTo TIMESTAMP
+  status VARCHAR2(20)
+  remarks VARCHAR2(200)
+
+  Note: 'Assigns a staff (driver) and bus to run a scheduled trip'
+}
+
+Table TripStopLog {
+  tripStopID NUMBER(10) [pk, increment]
+  BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, not null, note: 'FK to BusSchedule']
+  platformID NUMBER(10) [ref: > BusPlaform.plaformID, not null, note: 'FK to BusPlatform']
+  actualArrivalTime TIMESTAMP
+  actualDepartureTime TIMESTAMP
+  status VARCHAR2(20) [note: "e.g. 'Arrived', 'Skipped', 'Delayed'"]
+}
+
+// ============================================
+// PAYMENT SYSTEM
+// ============================================
+
+Table Payment {
+  paymentID NUMBER(10) [pk, increment, note: 'Unique ID for each payment transaction']
+  customerID NUMBER(10) [ref: > Customer.customerID, note: 'FK to Customer']
+  paymentMethodID NUMBER(10) [note: 'FK to PaymentMethod']
+  ticketID NUMBER(10) [note: 'FK to Ticket or Order, can be NULL']
+  amount NUMBER(8,2) [note: 'Amount paid']
+  status VARCHAR2(20) [note: "e.g. 'Completed', 'Pending', 'Failed'"]
+  paymentTime TIMESTAMP [note: 'When payment was made']
+  receiptNo VARCHAR2(50) [note: 'Reference from payment gateway']
+  remarks VARCHAR2(200) [note: 'Notes or error messages']
+  paymentMethod VARCHAR2(100)
+  pointApply NUMBER(5,2)
+  type VARCHAR2(50) [note: "'bookingTicket', 'Ticket'"]
+}
+
+Table PointTransaction {
+  pointTxnID NUMBER(10) [pk, increment, note: 'Unique point transaction']
+  customerID NUMBER(10) [ref: > Customer.customerID, not null, note: 'FK to Customer']
+  paymentID NUMBER(10) [ref: > Payment.paymentID, note: 'FK to Payment if tied to purchase', null]
+  change NUMBER(10) [note: '+10 for earn, -50 for redeem']
+  source VARCHAR2(50) [note: "e.g. 'Ticket Purchase', 'Birthday Promo'"]
   remarks VARCHAR2(200)
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 
+// ============================================
+// TICKETING SYSTEM
+// ============================================
+
 Table Ticket {
   ticketID NUMBER(10) [pk, increment, note: 'Unique ticket']
-  BusScheduleID NUMBER(10) [not null, note: 'FK to BusSchedule']
-  customerID NUMBER(10) [not null, note: 'FK to Customer']
+  BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, not null, note: 'FK to BusSchedule']
+  customerID NUMBER(10) [ref: > Customer.customerID, not null, note: 'FK to Customer']
+  paymentID NUMBER(10) [ref: > Payment.paymentID, note: 'FK to Payment if paid']
   seatNo VARCHAR2(10) [note: 'Seat identifier']
   price NUMBER(8,2) [not null]
   status VARCHAR2(20) [default: 'Booked', note: "e.g. 'Booked', 'Cancelled', 'Refunded'"]
   bookedAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-  paymentID NUMBER(10) [note: 'FK to Payment if paid']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
+
+// ============================================
+// SHOP AND TENANT MANAGEMENT
+// ============================================
 
 Table Tenant {
   tenantID NUMBER(10) [pk, increment, note: 'Unique tenant ID']
@@ -177,33 +231,25 @@ Table Tenant {
 }
 
 Table Shop {
-  shopID NUMBER(10) [pk, increment, not null , note: 'Unique shop ID' ]
+  shopID NUMBER(10) [pk, increment, not null, note: 'Unique shop ID']
+  stationID NUMBER(10) [ref: > BusStation.stationID, note: 'FK to BusStation where shop is located']
+  tenantID NUMBER(10) [ref: > Tenant.tenantID, note: 'FK to Tenant']
   shopNo VARCHAR2(20) [not null, note: 'Shop lot number or identifier']
   shopType VARCHAR2(20) [note: "'FoodCourt' or 'ShopLot'"]
   size NUMBER(8,2) [note: 'Size in sq ft or sqm']
   rentalFee NUMBER(10,2)
   deposit NUMBER(10,2)
-  tenantID NUMBER(10) [note: 'FK to Tenant']
   contractStart DATE
   contractEnd DATE
-  stationID NUMBER(10) [note: 'FK to BusStation where shop is located']
   status VARCHAR2(20) [note: "e.g. 'Occupied', 'Vacant'"]
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-Table BusStation {
-  stationID NUMBER(10) [pk, increment]
-  stationName VARCHAR2(100)
-  location VARCHAR2(150)
-  status VARCHAR2(20)
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-}
-
 Table ShopPayment {
   shopPayID NUMBER(10) [pk, increment, note: 'Unique payment record']
-  shopID NUMBER(10) [not null, note: 'FK to Shop']
-  tenantID NUMBER(10) [not null, note: 'FK to Tenant for quick ref']
+  shopID NUMBER(10) [ref: > Shop.shopID, not null, note: 'FK to Shop']
+  tenantID NUMBER(10) [ref: > Tenant.tenantID, not null, note: 'FK to Tenant for quick ref']
   payType VARCHAR2(20) [not null, note: "e.g. 'Rental', 'Deposit', 'Penalty'"]
   amount NUMBER(10,2) [not null]
   paymentDate TIMESTAMP [not null]
@@ -214,38 +260,3 @@ Table ShopPayment {
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
-
-Table PointTransaction {
-  pointTxnID NUMBER(10) [pk, increment, note: 'Unique point transaction']
-  customerID NUMBER(10) [not null, note: 'FK to Customer']
-  change NUMBER(10) [note: '+10 for earn, -50 for redeem']
-  source VARCHAR2(50) [note: "e.g. 'Ticket Purchase', 'Birthday Promo'"]
-  paymentID NUMBER(10) [note: 'FK to Payment if tied to purchase', null]
-  remarks VARCHAR2(200)
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-}
-Ref: PointTransaction.paymentID - Payment.paymentID
-Ref: PointTransaction.customerID > Customer.customerID
-Ref: ShopPayment.shopID > Shop.shopID
-Ref: ShopPayment.tenantID > Tenant.tenantID
-Ref: Shop.stationID > BusStation.stationID
-Ref: BusPlaform.StationID > BusStation.stationID
-Ref: Staff.companyID > BusCompany.companyID
-Ref: Bus.companyID > BusCompany.companyID
-Ref: Shop.tenantID > Tenant.tenantID
-Ref: BusMaintenance.busID > Bus.busID
-Ref: BusMaintenance.staffID > Staff.staffID
-Ref: BusSchedule.routeID > Route.routeID
-Ref: BusSchedule.BusScheduleID < TripStopLog.BusScheduleID
-Ref: RouteStation.routeID > Route.routeID
-Ref: RouteStation.plaformID > BusPlaform.plaformID
-
-Ref: Staff.roleID > StaffRole.roleID
-Ref: DriverAssignment.staffID > Staff.staffID
-Ref: DriverAssignment.busID > Bus.busID
-Ref: DriverAssignment.BusScheduleID > BusSchedule.BusScheduleID
-Ref: Ticket.BusScheduleID > BusSchedule.BusScheduleID
-Ref: Ticket.customerID > Customer.customerID
-Ref: Ticket.paymentID > Payment.paymentID
-Ref: TripStopLog.platformID > BusPlaform.plaformID
-Ref: Payment.customerID > Customer.customerID
