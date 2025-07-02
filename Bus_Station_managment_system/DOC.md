@@ -6,6 +6,10 @@ The **Bus Station** refers to the bus station company that the System is made fo
 
 ## Assumptions
 1. The Bus Station serves long-trip buses. This assumption is made because it interacts with many different bus companies, which isn't how it typically works for area buses like RapidKL where all buses belong to one company.
+2. All `BusDriver`s must hold PSV license, as that's the mandatory license for bus drivers.
+
+## Business rules
+1. `BusDriver.salary` and `Staff.salary` must be at least `1500`. (Minimum wage in Malaysia)
 
 ## Tables
 
@@ -26,10 +30,11 @@ The `pointBalance` attribute is only meaningful for `member`s. For a `guest`, th
 
 ### Staff management
 #### `Staff`
-- People who work for the Bus Station, including shop counter staff, washroom cleaners, etc.
-- Drivers of buses that belong to [bus companies](#buscompany) that interact with the Bus Station.
+Records people who work for the Bus Station, including shop counter staff, washroom cleaners, etc.
 
-> **Note:** The attributes `companyID`, `licenseNo`, and `licenseType` are meant for drivers (defined in [`StaffRole`](#staffrole)), and therefore should be left `null` for non-driver staff. `companyID` indicates which [`BusCompany`](#buscompany) the driver belongs to.
+<!-- The attributes `companyID`, `licenseNo`, and `licenseType` are meant for drivers, and therefore should be left `null` for non-driver staff. `companyID` indicates which [`BusCompany`](#buscompany) the driver belongs to. -->
+
+`roleID` references the [`StaffRole`](#staffrole) table, which records descriptions of roles, such as cleaners, counter staff, etc.
 
 ### Location and route management
 #### `BusStation`

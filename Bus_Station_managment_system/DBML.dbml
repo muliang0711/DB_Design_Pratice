@@ -46,20 +46,19 @@ Table Customer {
 
 Table Staff {
   staffID NUMBER(10) [pk, increment, note: 'Unique identifier for staff']
-  companyID NUMBER(10) [ref: > BusCompany.companyID, note: 'Only for driver staff. FK to BusCompany. Leave null for non-driver staff']
   roleID NUMBER(10) [ref: > StaffRole.roleID, note: 'FK to StaffRole']
-  fullName VARCHAR2(100) [not null]
+  firstName VARCHAR2(50) [not null]
+  lastName VARCHAR2(50) [not null]
   ICPassportNo VARCHAR2(30) [unique, not null]
   phoneNumber VARCHAR2(20)
   email VARCHAR2(100)
   hireDate DATE [note: 'Date of employment']
   salary NUMBER(10,2)
   status VARCHAR2(20) [note: "e.g. 'Active', 'On Leave', 'Terminated'"]
-  licenseNo VARCHAR2(50) [unique, note: 'Driving license number if driver']
-  licenseType VARCHAR2(20) [note: "e.g. 'PSV', 'GDL'"]
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
+
 
 // ============================================
 // LOCATION AND ROUTE MANAGEMENT
@@ -148,9 +147,24 @@ Table BusSchedule {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
+// to move this Table block to the bus cluster
+// to move some columns of Staff to here
+Table BusDriver {
+  driverID NUMBER(10) [pk, increment]
+  companyID NUMBER(10) [ref: > BusCompany.companyID]
+  licenseNo VARCHAR2(50) [unique, note: 'Driving license number if driver']
+  licenseType VARCHAR2(20) [note: "e.g. 'PSV' (Public Service Vehicle), 'GDL' (Goods Driving Licence)"]
+  licenseExpiry DATE [not null]
+  firstName VARCHAR2(50) [not null]
+  lastName VARCHAR2(50) [not null]
+  phoneNumber VARCHAR2(20)
+  status ENUM('active', 'inactive', 'suspended') [default: 'active']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
 Table DriverAssignment {
   assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
-  staffID NUMBER(10) [ref: > Staff.staffID, not null, note: 'FK to Staff (driver)']
+  driverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
   busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
   BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, not null, note: 'FK to BusSchedule']
   assignedFrom TIMESTAMP
@@ -158,7 +172,7 @@ Table DriverAssignment {
   status VARCHAR2(20)
   remarks VARCHAR2(200)
 
-  Note: 'Assigns a staff (driver) and bus to run a scheduled trip'
+  Note: 'Assigns a driver and bus to run a scheduled trip'
 }
 
 Table TripStopLog {
