@@ -10,6 +10,19 @@ The **Bus Station** refers to the bus station company that the System is made fo
 
 ## Business rules
 1. `BusDriver.salary` and `Staff.salary` must be at least `1500`. (Minimum wage in Malaysia)
+4. `Payment.pointsApplied` cannot be more than the corresponding `Customer` record's `pointBalance`.
+5. 100 points = RM1. Points can only be used to purchase tickets or items from shops in the Bus Station.
+2. Puchase of a ticket can be cancelled **at least 2 days in advance** with 70% refund. Otherwise, no refund will be given.
+    - If loyalty points were used, 70% of the cash portion will be refunded in cash, and 70% of the loyalty points will be refunded as loyalty points.
+    - SQL logic flow:
+        - First, retrieve the original `Payment` record to get `cashAmount` (cash portion of the transaction) and `pointsApplied` (point value of the transaction). Calculate the cash refund as `0.7 * cashAmount` and the point refund as `0.7 * pointsApplied`. 
+        - Create a new `Payment` record with `type` = `'refund'` that shows the negative cash amount and points being returned. 
+        - Simultaneously, create a `PointTransaction` record that shows the points being added back to the customer's balance.
+        - Update the customer's `Customer` record so that its `pointBalance` shows the latest balance.
+        > **Note:** Changes to point balance are reflected by updating both `PointTransaction` and `Customer`. The two updates MUST always be done in *one atomic unit* **to ensure integrity**. Perhaps a function (or is it called procedure?) can be written to achieve this. 
+
+3. A ticket can only be extended (same route, later time/date) **at least 2 days in advance** at current ticket price with an additional charge of RM5. The same ticket may only be extended **once**.
+
 
 ## Tables
 

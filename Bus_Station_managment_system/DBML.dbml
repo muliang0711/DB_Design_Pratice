@@ -191,23 +191,29 @@ Table Payment {
   paymentID NUMBER(10) [pk, increment, note: 'Unique ID for each payment transaction']
   customerID NUMBER(10) [ref: > Customer.customerID, note: 'FK to Customer']
   paymentMethodID NUMBER(10) [note: 'FK to PaymentMethod']
-  ticketID NUMBER(10) [note: 'FK to Ticket or Order, can be NULL']
-  amount NUMBER(8,2) [note: 'Amount paid']
+  // I think we don't need this bcuz Ticket already has a FK 
+  // referencing Payment.paymentID. 
+  // ticketID NUMBER(10) [note: 'FK to Ticket or Order, can be NULL']
+  totalAmount NUMBER(8,2) [note: 'Full transaction value (cash + point value combined)']
+  cashAmount NUMBER(8,2) [note: 'Actual cash/card portion paid or refunded']
+  pointsApplied NUMBER(10) [note: 'Points used (positive) or refunded (negative for refunds)']
+  pointValue NUMBER(8,2) [note: 'RM value of points used, for easy calculation']
   status VARCHAR2(20) [note: "e.g. 'Completed', 'Pending', 'Failed'"]
   paymentTime TIMESTAMP [note: 'When payment was made']
   receiptNo VARCHAR2(50) [note: 'Reference from payment gateway']
   remarks VARCHAR2(200) [note: 'Notes or error messages']
   paymentMethod VARCHAR2(100)
-  pointApply NUMBER(5,2)
-  type VARCHAR2(50) [note: "'bookingTicket', 'Ticket'"]
+  type VARCHAR2(50) [note: "'ticket', 'membership_fee', 'refund'"]
+  originalPaymentID NUMBER(10) [ref: > Payment.paymentID, note: 'Links refunds back to original purchase']
 }
 
 Table PointTransaction {
   pointTxnID NUMBER(10) [pk, increment, note: 'Unique point transaction']
   customerID NUMBER(10) [ref: > Customer.customerID, not null, note: 'FK to Customer']
   paymentID NUMBER(10) [ref: > Payment.paymentID, note: 'FK to Payment if tied to purchase', null]
-  change NUMBER(10) [note: '+10 for earn, -50 for redeem']
-  source VARCHAR2(50) [note: "e.g. 'Ticket Purchase', 'Birthday Promo'"]
+  pointChange NUMBER(10) [note: '+10 for earn, -50 for redeem']
+
+  source VARCHAR2(50) [note: "e.g. 'Ticket Purchase', 'Birthday Promo', 'Ticket Cancellation"]
   remarks VARCHAR2(200)
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
@@ -223,7 +229,13 @@ Table Ticket {
   paymentID NUMBER(10) [ref: > Payment.paymentID, note: 'FK to Payment if paid']
   seatNo VARCHAR2(10) [note: 'Seat identifier']
   price NUMBER(8,2) [not null]
-  status VARCHAR2(20) [default: 'Booked', note: "e.g. 'Booked', 'Cancelled', 'Refunded'"]
+  status ENUM('booked_regular', 'cancelled', 'booked_extended') [default: 'booked_regular']
+  cancellationDate TIMESTAMP [note: 'Date of cancellation if valid']
+  refundAmount NUMBER(8, 2) [note: '`0.7 * (Payment.amount - Payment.pointApply / 100)` (70% of amount paid by customer, which is original price minus any loyalty points worth of money) if cancellation was made at least 2 days in advance; 0 refund otherwise']
+  extensionDate TIMESTAMP [note: 'When is the extension made']
+  extendedToID NUMBER(10) [ref: > BusSchedule.BusScheduleID, note: 'FK to BusSchedule. New schedule that the ticket is extended to']
+  extensionCharge NUMBER(8, 2) [note: 'If extension is made, original price + 5']
+
   bookedAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
