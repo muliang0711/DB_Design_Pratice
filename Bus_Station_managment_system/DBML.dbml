@@ -147,13 +147,12 @@ Table BusSchedule {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-// to move this Table block to the bus cluster
-// to move some columns of Staff to here
 Table BusDriver {
   driverID NUMBER(10) [pk, increment]
   companyID NUMBER(10) [ref: > BusCompany.companyID]
   licenseNo VARCHAR2(50) [unique, note: 'Driving license number if driver']
-  licenseType VARCHAR2(20) [note: "e.g. 'PSV' (Public Service Vehicle), 'GDL' (Goods Driving Licence)"]
+  // All bus drivers must have PSV license anyway, so no point recording licenseType
+  // licenseType VARCHAR2(20) [note: "e.g. 'PSV' (Public Service Vehicle), 'GDL' (Goods Driving Licence)"]
   licenseExpiry DATE [not null]
   firstName VARCHAR2(50) [not null]
   lastName VARCHAR2(50) [not null]
