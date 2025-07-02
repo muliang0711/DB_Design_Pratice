@@ -26,14 +26,15 @@ Table BusCompany {
 
 Table Customer {
   customerID NUMBER(10) [pk, increment, note: 'Primary Key, Auto Increment']
-  fullName VARCHAR2(100) [not null]
+  firstName VARCHAR2(50) [not null]
+  lastName VARCHAR2(50) [not null]
   ICPassportNo VARCHAR2(30) [unique, not null, note: 'IC number / Passport']
-  gender CHAR(1)
+  gender ENUM('Female', 'Male')
   birthDate DATE
   phoneNumber VARCHAR2(20)
   email VARCHAR2(100)
   pointBalance NUMBER(10) [default: 0, note: 'Quick access to current points']
-  customerType NUMBER(10) [note: 'FK to CustomerType']
+  // customerType NUMBER(10) [note: 'FK to CustomerType']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
