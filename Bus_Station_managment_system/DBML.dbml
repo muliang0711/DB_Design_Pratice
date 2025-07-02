@@ -159,6 +159,7 @@ Table BusDriver {
   phoneNumber VARCHAR2(20)
   status ENUM('active', 'inactive', 'suspended') [default: 'active']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
 Table DriverAssignment {
@@ -187,13 +188,19 @@ Table TripStopLog {
 // PAYMENT SYSTEM
 // ============================================
 
-Table Payment {
+Table PaymentRecord {
   paymentID NUMBER(10) [pk, increment, note: 'Unique ID for each payment transaction']
   customerID NUMBER(10) [ref: > Customer.customerID, note: 'FK to Customer']
-  paymentMethodID NUMBER(10) [note: 'FK to PaymentMethod']
-  // I think we don't need this bcuz Ticket already has a FK 
+  ticketID NUMBER(10) [ref: > Ticket.ticketID, note: 'FK to Ticket if applicable']
+
+  // ------
+  // paymentMethodID NUMBER(10) [note: 'FK to PaymentMethod']
+  // ------
+  // ticketID NUMBER(10) [ref: > Ticket.ticketID, note: 'FK to Ticket if applicable']
+  // I think we don't need this bcuz Ticket already has a FK . 
   // referencing Payment.paymentID. 
-  // ticketID NUMBER(10) [note: 'FK to Ticket or Order, can be NULL']
+  // ------
+
   totalAmount NUMBER(8,2) [note: 'Full transaction value (cash + point value combined)']
   cashAmount NUMBER(8,2) [note: 'Actual cash/card portion paid or refunded']
   pointsApplied NUMBER(10) [note: 'Points used (positive) or refunded (negative for refunds)']
@@ -203,9 +210,22 @@ Table Payment {
   receiptNo VARCHAR2(50) [note: 'Reference from payment gateway']
   remarks VARCHAR2(200) [note: 'Notes or error messages']
   paymentMethod VARCHAR2(100)
-  type VARCHAR2(50) [note: "'ticket', 'membership_fee', 'refund'"]
-  originalPaymentID NUMBER(10) [ref: > Payment.paymentID, note: 'Links refunds back to original purchase']
-}
+  type VARCHAR2(50) 
+  [note: "
+  'BookingTicket',
+  'membership_fee', 
+  'refund', 
+  'extension_charge', 
+  'point_transaction',
+  'FinishPaymentOfBookingTicket',
+  'RegularTicketPurchase',
+  "]
+
+  // ------
+  // originalPaymentID NUMBER(10) [ref: > Payment.paymentID, note: 'Links refunds back to original purchase']
+  // I think one paymentID is enough to track the payment ? 
+  // ------
+  }
 
 Table PointTransaction {
   pointTxnID NUMBER(10) [pk, increment, note: 'Unique point transaction']
@@ -226,17 +246,30 @@ Table Ticket {
   ticketID NUMBER(10) [pk, increment, note: 'Unique ticket']
   BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, not null, note: 'FK to BusSchedule']
   customerID NUMBER(10) [ref: > Customer.customerID, not null, note: 'FK to Customer']
-  paymentID NUMBER(10) [ref: > Payment.paymentID, note: 'FK to Payment if paid']
-  seatNo VARCHAR2(10) [note: 'Seat identifier']
+  // -----
+  // paymentID NUMBER(10) [ref: > Payment.paymentID, note: 'FK to Payment if paid']
+  // I think we can just use the Payment table to track the payment, no need to store it here.
+  // When ticket is booked, we can create a new Payment record with the type 'BookingTicket'
+  // -----
+  seatNo VARCHAR2(10) [note: "'Seat identifier' , e.g. BUS001-A1 [BUSNAME/ID-SeatNo]"]
   price NUMBER(8,2) [not null]
+  // ADD type ENUM('regular', 'booking') show what type of the ticket is 
   status ENUM('booked_regular', 'cancelled', 'booked_extended') [default: 'booked_regular']
   cancellationDate TIMESTAMP [note: 'Date of cancellation if valid']
-  refundAmount NUMBER(8, 2) [note: '`0.7 * (Payment.amount - Payment.pointApply / 100)` (70% of amount paid by customer, which is original price minus any loyalty points worth of money) if cancellation was made at least 2 days in advance; 0 refund otherwise']
+  // -----
+  // refundAmount NUMBER(8, 2) [note: '`0.7 * (Payment.amount - Payment.pointApply / 100)` (70% of amount paid by customer, which is original price minus any loyalty points worth of money) if cancellation was made at least 2 days in advance; 0 refund otherwise']
+  // I think we can just use the Payment table to track the refund amount, no need to store it here.
+  // When refund is made , we can create a new Payment record with negative amount or add new column to Payment table. call it refund , call be null if not refund and when normal purchase record is created.
+  // -----
   extensionDate TIMESTAMP [note: 'When is the extension made']
   extendedToID NUMBER(10) [ref: > BusSchedule.BusScheduleID, note: 'FK to BusSchedule. New schedule that the ticket is extended to']
-  extensionCharge NUMBER(8, 2) [note: 'If extension is made, original price + 5']
-
-  bookedAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  // -----
+  // extensionCharge NUMBER(8, 2) [note: 'If extension is made, original price + 5']
+  // I think we can just use the Payment table to track the extension charge, no need to store it here. By adding a new type in Payment table, we can track the extension charge as a separate payment record.
+  // When extension is made, we can create a new Payment record with the type 'extension_charge' 
+  // -----
+  bookedAt TIMESTAMP [default: `CURRENT_TIMESTAMP`] 
+  //Q_A : Do you mean we can book a ticket ma ?
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
