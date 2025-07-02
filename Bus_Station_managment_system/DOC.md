@@ -20,6 +20,10 @@ Bus companies that have registered with the Bus Station to use our platforms.
 #### `Customer`
 People who buy tickets via the System, or who buy things at the shops managed by the Bus Station.
 
+Customers can be non-members or members. A customer needs to pay a RM10 membership fee to become a member. The `membershipStatus` attribute indicates whether a customer is a `guest` (not a member) or a `member`.
+
+The `pointBalance` attribute is only meaningful for `member`s. For a `guest`, the value of `pointBalance` is always `0`.
+
 ### Staff management
 #### `Staff`
 - People who work for the Bus Station, including shop counter staff, washroom cleaners, etc.

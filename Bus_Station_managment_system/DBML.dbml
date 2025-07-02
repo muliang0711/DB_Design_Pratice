@@ -33,7 +33,8 @@ Table Customer {
   birthDate DATE
   phoneNumber VARCHAR2(20)
   email VARCHAR2(100)
-  pointBalance NUMBER(10) [default: 0, note: 'Quick access to current points']
+  membershipStatus ENUM('guest', 'member') [not null]
+  pointBalance NUMBER(10) [default: 0, note: 'Quick access to current points. Always 0 for guests (i.e. non-members).']
   // customerType NUMBER(10) [note: 'FK to CustomerType']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
