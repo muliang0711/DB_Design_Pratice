@@ -2,22 +2,60 @@
 1. Our bus station serves long-trip buses. This assumption is made because we interact with many different bus companies, which isn't how it typically works for area buses like RapidKL where all buses belong to one company.
 
 ## Tables
-> **Note**: This section provides explanation for tables whose purpose may not be immediately obvious. It does not intend to document the purpose of all tables.
 
-**`Route`**: Records bus routes: from where to where? *Does not record schedule* -- that's handled by `BusSchedule`. 
+### Reference data
+#### `StaffRole`
+Roles (e.g. "Cleaner", "Driver", etc.) and their descriptions.
 
-**`BusSchedule`**: Records planned arrival and departure times for each route. (These times may not reflect the actual time of arrival and departure.) 
+#### `BusCompany`
+Bus companies that have registered with us (the company) to use our platforms.
 
-**`RouteStation`**: Defines the order of platforms (that buses stop by) along a route.
+### Customer management
+#### `Customer`
 
-*Example:* for `routeID: R001`, the following records may exist:
-- `{ routeID: 'R001', stopOrder: 1, platformID: 'P103' }`
-- `{ routeID: 'R001', stopOrder: 2, platformID: 'P009' }`
-- `{ routeID: 'R001', stopOrder: 3, platformID: 'P126' }`
+### Staff management
+#### `Staff`
 
-which means that a bus travelling along route `R001` will stop by platforms `P103`, `P009`, `P126` in that order.
+### Location and route management
+#### `BusStation`
+#### `BusPlaform`
+#### `Route`
+Records bus routes: from where to where? *Does not record schedule* -- that's handled by [`BusSchedule`](#busschedule). 
 
-**`TripStopLog`**: A log of when a bus departs from a designated route's origin and when it arrives at the designated destination. 
+#### `RouteStation`
+Defines the order of [platforms](#busplaform) (that buses stop by) along a [route](#route).
+
+*Example:* for `routeID: 42`, the following records may exist:
+- `{ routeID: 42, stopOrder: 1, platformID: 'P103' }`
+- `{ routeID: 42, stopOrder: 2, platformID: 'P009' }`
+- `{ routeID: 42, stopOrder: 3, platformID: 'P126' }`
+
+which means that a bus travelling along route `42` will stop by platforms `P103`, `P009`, `P126` in that order.
+
+
+### Bus fleet management
+#### `Bus`
+#### `BusMaintenance`
+
+### Schedule and operations
+#### `BusSchedule`
+Records planned arrival and departure times for each [route](#route). (These times may not reflect the actual time of arrival and departure.) 
+
+#### `DriverAssignment`
+#### `TripStopLog`
+A log of when a bus departs from a designated [route](#route)'s origin and arrives at the destination. (*Actual* arrival and departure time as opposed to the *planned* arrival and departure times recorded by [`BusSchedule`](#busschedule))
+
+### Payment system
+#### `Payment`
+#### `PointTransaction`
+
+### Ticketing system
+#### `Ticket`
+
+### Shop and Tenant Management
+#### `Tenant`
+#### `Shop`
+#### `ShopPayment`
 
 ## Relationships
 1. Bus Company to Bus and Staff Relationship:
