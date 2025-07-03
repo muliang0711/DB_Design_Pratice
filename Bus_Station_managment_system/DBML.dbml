@@ -73,10 +73,9 @@ Table BusStation {
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 
-Table BusPlaform {
-  plaformID NUMBER(10) [pk, increment, note: 'Unique ID for station']
-  StationID NUMBER(10) [ref: > BusStation.stationID, not null, note: "FK_stationId"]
-  plaformName VARCHAR2(100) [not null, note: 'e.g. "KLCC", "Pasar Seni"']
+Table BusPlatform {
+  platformID NUMBER(10) [pk, increment, note: 'Unique ID for platform']
+  platformName VARCHAR2(100) [not null, note: 'e.g. "KLCC", "Pasar Seni"']
   location VARCHAR2(150) [note: 'GPS coordinates or address']
   status VARCHAR2(20) [note: "e.g. 'Active', 'Closed'"]
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
@@ -121,7 +120,7 @@ Table Bus {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-Table BusMaintenance {
+Table BusMaintenanceRecord {
   maintenanceID NUMBER(10) [pk, increment, note: 'Unique maintenance record']
   busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
   staffID NUMBER(10) [ref: > Staff.staffID, not null, note: 'FK to Staff who performed']
@@ -131,7 +130,6 @@ Table BusMaintenance {
   remarks VARCHAR2(200)
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
-
 // ============================================
 // SCHEDULE AND OPERATIONS
 // ============================================
