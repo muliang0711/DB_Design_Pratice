@@ -254,8 +254,8 @@ Table Ticket {
   // -----
   seatNo VARCHAR2(10) [note: "'Seat identifier' , e.g. BUS001-A1 [BUSNAME/ID-SeatNo]"]
   price NUMBER(8,2) [not null]
-  // ADD type ENUM('regular', 'booking') show what type of the ticket is 
-  status ENUM('booked_regular', 'cancelled', 'booked_extended') [default: 'booked_regular']
+  type ENUM('regular', 'booking') [note: "e.g. 'regular' for normal purchase, 'booking' for pre-booked tickets"]
+  status ENUM('Cancelled_By_Company','Cancelled_By_User','booked_extended') [default: 'null']
   cancellationDate TIMESTAMP [note: 'Date of cancellation if valid']
   // -----
   // refundAmount NUMBER(8, 2) [note: '`0.7 * (Payment.amount - Payment.pointApply / 100)` (70% of amount paid by customer, which is original price minus any loyalty points worth of money) if cancellation was made at least 2 days in advance; 0 refund otherwise']
