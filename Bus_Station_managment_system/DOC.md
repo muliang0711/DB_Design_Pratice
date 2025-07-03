@@ -288,13 +288,23 @@ DriverAssignments:
 **Triggers:**
 - `BEFORE INSERT`: 
   - Check that original `Ticket.createdAt` is less than 2 days from `BusSchedule.actualStartTime`.
+  - Check that the `RouteID` of the new `BusScheduleID` is the **same** as the original `Ticket`’s `BusSchedule.RouteID`.
   - Reject if outside window.
 - `AFTER INSERT`: 
   - Update `Ticket` with new `BusScheduleID` and mark as `booked_extended`.
 
 ---
 
-### 1️⃣1️⃣ Customer Cancels Ticket
+### 1️⃣1️⃣ Company Cancels Ticket
+
+**Procedure:**
+- When updating `Ticket` status to `cancelled_by_company`.
+
+**Triggers:**
+- `AFTER UPDATE`: 
+  - Create a `PaymentRecord` of type `refund` (100% of ticket price).
+
+### 1️⃣2️⃣ Customer Cancels Ticket
 
 **Procedure:**
 - When updating `Ticket` status to `cancelled_by_customer`.
@@ -307,10 +317,27 @@ DriverAssignments:
   - Create a `PaymentRecord` of type `refund` (70% of ticket price).
 
 ---
+### 1️⃣3️⃣ Auto Points After Payment
+
+**Procedure:**
+- After creating a `PaymentRecord`.
+
+**Triggers:**
+- Automatically create a corresponding `PointTransaction` record.
+
+**Logic:**
+- Determine the `PointTransaction.pointChange` based on `PaymentRecord.type`:
+  - If `type` is `refund`, `cancel_by_customer`, or `cancel_by_company`:
+    - Calculate as: `pointChange = - (PaymentRecord.amount * 100)`.
+  - Otherwise (for payments like `extension_charge`, `purchase_ticket`, etc.):
+    - Calculate as: `pointChange = + (PaymentRecord.amount * 100)`.
+- Insert the new `PointTransaction` with the calculated points and link it to the `Customer`.
+
+---
 
 ## ⚙️ Additional Triggers
 
-### 1️⃣2️⃣ Trigger on BusMaintenance
+### Trigger on BusMaintenance
 
 **When:**  
 - A `BusMaintenance` record is inserted.
@@ -324,7 +351,7 @@ DriverAssignments:
 
 ---
 
-### 1️⃣3️⃣ Trigger on Tenant
+###  Trigger on Tenant
 
 **When:**  
 - A `Tenant` record is set to `Terminated`.
@@ -334,7 +361,7 @@ DriverAssignments:
 
 ---
 
-### 1️⃣4️⃣ Trigger on Ticket (Prevent Overbooking)
+### Trigger on Ticket (Prevent Overbooking)
 
 **BEFORE INSERT:**  
 - Check if total number of existing `Ticket` records for this `BusSchedule` is **less than** the `Bus.capacity`.
@@ -344,7 +371,7 @@ DriverAssignments:
 
 ---
 
-### 1️⃣5️⃣ Trigger on TripStopLog
+### Trigger on TripStopLog
 
 **When:**  
 - All planned stops are logged for a `BusSchedule` (compare `TripStopLog` count with planned stops).
