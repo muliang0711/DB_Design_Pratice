@@ -136,6 +136,7 @@ Table BusMaintenanceRecord {
 
   remarks VARCHAR2(200)
 }
+
 Table MaintenanceService {
   serviceID NUMBER(10) [pk, increment, note: 'Unique service detail record']
   serviceItem VARCHAR2(100) [not null, note: "Specific service item done e.g. 'Oil Change', 'Brake Pad Replace'"]
@@ -239,6 +240,7 @@ Table PaymentRecord {
   // I think one paymentID is enough to track the payment ? 
   // ------
   }
+
 
 Table PointTransaction {
   pointTxnID NUMBER(10) [pk, increment, note: 'Unique point transaction']
