@@ -301,7 +301,7 @@ Table Shop {
   tenantID NUMBER(10) [ref: > Tenant.tenantID, note: 'FK to Tenant']
   shopNo VARCHAR2(20) [not null, note: 'Shop lot number or identifier']
   shopType VARCHAR2(20) [note: "'FoodCourt' or 'ShopLot'"]
-  size NUMBER(8,2) [note: 'Size in sq ft or sqm']
+  shopSize NUMBER(8,2) [note: 'Size in sq ft or sqm']
   rentalFee NUMBER(10,2)
   deposit NUMBER(10,2)
   contractStart DATE
