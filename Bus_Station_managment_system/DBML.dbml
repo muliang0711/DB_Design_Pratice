@@ -285,8 +285,9 @@ Table Ticket {
 Table Tenant {
   tenantID NUMBER(10) [pk, increment, note: 'Unique tenant ID']
   tenantName VARCHAR2(100) [not null, note: 'Company or individual name']
-  contactPerson VARCHAR2(100)
   phoneNumber VARCHAR2(20)
+  emergencyContactName VARCHAR2(100) [note: 'Name of emergency contact person']
+  emergencyContactNo VARCHAR2(20) [note: 'Contact number of emergency contact']
   email VARCHAR2(100)
   address VARCHAR2(200)
   status VARCHAR2(20) [note: "e.g. 'Active', 'Terminated'"]
