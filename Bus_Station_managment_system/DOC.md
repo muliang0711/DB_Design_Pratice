@@ -164,6 +164,7 @@ When a `BusMaintenanceRecord` record is created:
 - Then:
   - Set the related `Bus.status` to **'Maintenance'**
   - Set the related `BusDriver.status` to **'active' from 'InAssignment'**
+  - Set the related `Staff.status` to **'InMaintenance'**
 - Else:
   - set `Bus.status` to **'Inactive' or 'WaitForMaintenance'**
 2. When `BusMaintenanceRecord` status is set to completed:
