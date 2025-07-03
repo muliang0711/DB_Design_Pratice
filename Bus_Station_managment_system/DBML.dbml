@@ -129,7 +129,7 @@ Table BusMaintenanceRecord {
   actualCost NUMBER(8,2) [note: 'Total cost incurred for this maintenance']
   additionalCost NUMBER(8,2) [note: 'if any extra costs not covered by service']
   additionalRemarks VARCHAR2(200) [note: 'Any extra notes about this maintenance']
-  status VARCHAR2(20) [default: 'Completed', note: "e.g. 'Completed', 'Pending', 'Cancelled'"]
+  status VARCHAR2(20) [default: 'Completed', note: "e.g. 'Completed', 'PendingForSchedule', 'Cancelled','InProgress'"]
 
   serviceEndDate TIMESTAMP [not null, note: 'When maintenance was done']
   serviceStartDate TIMESTAMP [not null, note: 'When the record was created or scheduled for maintenance']
