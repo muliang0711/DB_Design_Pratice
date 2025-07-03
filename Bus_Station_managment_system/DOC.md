@@ -138,10 +138,6 @@ DriverAssignments:
 
    * `Ticket.createdAt < BusSchedule.plannedDepartureTime - 7 days`.
    * Ticket type is `bookAllow`.
-3. Booking requires two payments:
-
-   * `bookingfee_1` at booking.
-   * `bookingfee_2` must be paid **1 day before BusSchedule plannedDepartureTime**, else Ticket status updates (possibly to `cancelled_due_to_nonpayment`).
 
 ---
 
