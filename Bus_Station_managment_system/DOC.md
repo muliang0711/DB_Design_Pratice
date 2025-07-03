@@ -155,13 +155,21 @@ DriverAssignments:
 
 ## ⚙️ 11. Maintenance & Shop Termination Rules
 
-1. When `BusMaintenance` is created:
+When a `BusMaintenanceRecord` record is created:
 
-   * Sets `Bus.status` to `Maintenance`.
+- Only allow creation if:
+  - The associated `Staff.staffID` **starts with 'm'**
+  - AND `Staff.status` is **'Active'**
 
-2. When `BusMaintenance` completed:
+- Then:
+  - Set the related `Bus.status` to **'Maintenance'**
+
+- Else:
+  - set `Bus.status` to **'Inactive' or 'WaitForMaintenance'**
+2. When `BusMaintenanceRecord` status is set to completed:
 
    * Sets `Bus.status` back to `Active`.
+   * Sets related `Staff.status` back to active .
 
 3. When `Tenant` is terminated:
 
