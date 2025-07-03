@@ -131,9 +131,7 @@ Table BusMaintenanceRecord {
   additionalRemarks VARCHAR2(200) [note: 'Any extra notes about this maintenance']
   status VARCHAR2(20) [default: 'Completed', note: "e.g. 'Completed', 'PendingForSchedule', 'Cancelled','InProgress'"]
 
-  serviceEndDate TIMESTAMP [not null, note: 'When maintenance was done']
-  serviceStartDate TIMESTAMP [not null, note: 'When the record was created or scheduled for maintenance']
-  maintenanceDate TIMESTAMP [not null]
+  maintenanceDate TIMESTAMP [not null , note: 'The time of how long the bus is in maintenance']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 
   remarks VARCHAR2(200)
