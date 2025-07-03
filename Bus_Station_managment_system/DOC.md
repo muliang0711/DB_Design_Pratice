@@ -77,6 +77,7 @@ The **Bus Station** refers to the bus station company that the System is made fo
    * Any `RouteStation` referencing this `plaformID` must be deleted.
    * If the `BusPlaform` belongs to an `Inactive` `BusStation`, it also updates to `Inactive`.
 
+
 ---
 
 ## 🗺️ 6. Route & Route Station Rules
@@ -164,6 +165,195 @@ DriverAssignments:
 3. When `Tenant` is terminated:
 
    * All linked `Shop` statuses set to `Vacant`.
+
+## 🚌 Management Procedures & Triggers
+
+### 1️⃣ Platform Management
+
+**Procedure:**
+- Update a `BusPlatform` to `Inactive`.
+
+**Triggers:**
+- After platform is set to `Inactive`:
+  - Find all `RouteStation` entries using this platform and set their status to `Inactive`.
+  - If all platforms in a `Route` become `Inactive`, cascade to set the `Route` to `Inactive`.
+
+---
+
+### 2️⃣ Driver Management
+
+**Procedure:**
+- Update a `Driver` record to `Inactive`.
+
+**Triggers:**
+- Automatically set related:
+  - `DriverAssignment` to `Inactive`.
+  - `BusSchedule` entries using these assignments to `Inactive`.
+
+---
+
+### 3️⃣ Bus Management
+
+**Procedure:**
+- Update a `Bus` record to `Inactive`.
+
+**Triggers:**
+- Automatically update all related:
+  - `DriverAssignment` to `Inactive`.
+  - `BusSchedule` using this bus to `Inactive`.
+
+---
+
+### 4️⃣ Create New Bus Schedule
+
+**Procedure:**
+- Insert a new `BusSchedule`.
+
+**Triggers:**
+- `BEFORE INSERT`: 
+  - Ensure the selected `Route` is `Active`.
+  - Ensure the `DriverAssignment` is `Active`.
+- `AFTER INSERT`: 
+  - Automatically create `Ticket` records with quantity equal to the `Bus.capacity`.
+
+---
+
+### 5️⃣ Bus Station Management
+
+**Procedure:**
+- Update a `BusStation` to `Inactive`.
+
+**Triggers:**
+- Automatically update all related:
+  - `Shop` to `Inactive`.
+  - `BusPlatform` to `Inactive`.
+  - Indirectly update all `BusSchedule` linked via these platforms to `Inactive`.
+
+---
+
+### 6️⃣ Create New Route
+
+**Procedure:**
+- Insert a new `Route`.
+
+**Triggers:**
+- `BEFORE INSERT`: 
+  - Check that all associated `BusPlatforms` in `RouteStation` entries are `Active`.
+- Reject creation if any platform is `Inactive`.
+
+---
+
+### 7️⃣ Add New Route Station
+
+**Procedure:**
+- Insert a new `RouteStation`.
+
+**Triggers:**
+- `BEFORE INSERT`: 
+  - Ensure the `BusPlatform` being added is `Active`.
+- Reject insertion if the platform is `Inactive`.
+
+---
+
+### 8️⃣ Update Bus Schedule to Inactive
+
+**Procedure:**
+- Update `BusSchedule` status to `Inactive` (e.g. trip canceled by company).
+
+**Triggers:**
+- Automatically update:
+  - Related `Ticket` status to `cancelled_by_company`.
+  - Create a `PaymentRecord` of type `refund` for affected customers.
+  - Optionally create a `PointTransaction` to deduct loyalty points earned from this booking.
+
+---
+
+## 🧮 Customer & Ticket Operations
+
+### 9️⃣ Points Earning & Deduction
+
+**Procedure:**
+- Insert a new `PointTransaction`.
+
+**Triggers:**
+- Automatically update `Customer.pointBalance` by adding the `pointChange` from this record.
+
+---
+
+### 🔟 Ticket Extension
+
+**Procedure:**
+- When creating a `PaymentRecord` for `extension_charge` (e.g. RM5 for change of trip).
+
+**Triggers:**
+- `BEFORE INSERT`: 
+  - Check that original `Ticket.createdAt` is less than 2 days from `BusSchedule.actualStartTime`.
+  - Reject if outside window.
+- `AFTER INSERT`: 
+  - Update `Ticket` with new `BusScheduleID` and mark as `booked_extended`.
+
+---
+
+### 1️⃣1️⃣ Customer Cancels Ticket
+
+**Procedure:**
+- When updating `Ticket` status to `cancelled_by_customer`.
+
+**Triggers:**
+- `BEFORE UPDATE`: 
+  - Check that ticket was created at least 2 days before `BusSchedule.actualStartTime`.
+  - Reject if too close to departure.
+- `AFTER UPDATE`: 
+  - Create a `PaymentRecord` of type `refund` (70% of ticket price).
+
+---
+
+## ⚙️ Additional Triggers
+
+### 1️⃣2️⃣ Trigger on BusMaintenance
+
+**When:**  
+- A `BusMaintenance` record is inserted.
+
+**Then:**  
+- Update related `Bus.status` to `Maintenance`.
+
+**Also:**  
+- When maintenance is completed (by `remarks` containing `"completed"` or a dedicated `status` field),
+- Set `Bus.status` back to `Active`.
+
+---
+
+### 1️⃣3️⃣ Trigger on Tenant
+
+**When:**  
+- A `Tenant` record is set to `Terminated`.
+
+**Then:**  
+- Update all related `Shop` records linked to this `Tenant` to `Vacant`.
+
+---
+
+### 1️⃣4️⃣ Trigger on Ticket (Prevent Overbooking)
+
+**BEFORE INSERT:**  
+- Check if total number of existing `Ticket` records for this `BusSchedule` is **less than** the `Bus.capacity`.
+
+**If exceeded:**  
+- Reject insert to prevent overbooking.
+
+---
+
+### 1️⃣5️⃣ Trigger on TripStopLog
+
+**When:**  
+- All planned stops are logged for a `BusSchedule` (compare `TripStopLog` count with planned stops).
+
+**Then:**  
+- Optionally mark `BusSchedule` as `Completed` or trigger notifications / follow-up actions.
+
+---
+
 
 ## Tables
 
