@@ -20,7 +20,7 @@ The **Bus Station** refers to the bus station company that the System is made fo
         - Simultaneously, create a `PointTransaction` record that shows the points being added back to the customer's balance.
         - Update the customer's `Customer` record so that its `pointBalance` shows the latest balance.
         > **Note:** Changes to point balance are reflected by updating both `PointTransaction` and `Customer`. The two updates MUST always be done in *one atomic unit* **to ensure integrity**. Perhaps a function (or is it called procedure?) can be written to achieve this. 
-
+6. Full refund is given to passengers if a bus company cancels a schedule.
 3. A ticket can only be extended (same route, later time/date) **at least 2 days in advance** at current ticket price with an additional charge of RM5. The same ticket may only be extended **once**.
 
 
