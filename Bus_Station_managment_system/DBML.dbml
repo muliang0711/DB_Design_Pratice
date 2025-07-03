@@ -124,12 +124,28 @@ Table BusMaintenanceRecord {
   maintenanceID NUMBER(10) [pk, increment, note: 'Unique maintenance record']
   busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
   staffID NUMBER(10) [ref: > Staff.staffID, not null, note: 'FK to Staff who performed']
-  serviceType VARCHAR2(50) [note: "e.g. 'Engine Check', 'Tyre Replace', 'Wash'"]
-  cost NUMBER(8,2)
+  serviceID NUMBER(10) [ref: > MaintenanceService.serviceID, not null, note: 'FK to MaintenanceService']
+
+  actualCost NUMBER(8,2) [note: 'Total cost incurred for this maintenance']
+  additionalCost NUMBER(8,2) [note: 'if any extra costs not covered by service']
+  additionalRemarks VARCHAR2(200) [note: 'Any extra notes about this maintenance']
+  status VARCHAR2(20) [default: 'Completed', note: "e.g. 'Completed', 'Pending', 'Cancelled'"]
+
+  serviceEndDate TIMESTAMP [not null, note: 'When maintenance was done']
+  serviceStartDate TIMESTAMP [not null, note: 'When the record was created or scheduled for maintenance']
   maintenanceDate TIMESTAMP [not null]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+
   remarks VARCHAR2(200)
+}
+Table MaintenanceService {
+  serviceID NUMBER(10) [pk, increment, note: 'Unique service detail record']
+  serviceItem VARCHAR2(100) [not null, note: "Specific service item done e.g. 'Oil Change', 'Brake Pad Replace'"]
+  serviceCost NUMBER(8,2) [note: 'Cost for this specific service item']
+  serviceRemarks VARCHAR2(200) [note: 'Any special notes about this service item']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
+
 // ============================================
 // SCHEDULE AND OPERATIONS
 // ============================================
