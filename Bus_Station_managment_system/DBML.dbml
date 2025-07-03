@@ -47,6 +47,7 @@ Table Customer {
 Table Staff {
   staffID NUMBER(10) [pk, increment, note: 'Unique identifier for staff']
   roleID NUMBER(10) [ref: > StaffRole.roleID, note: 'FK to StaffRole']
+  stationID NUMBER(10) [ref: > BusStation.stationID, note: 'FK to BusStation']
   firstName VARCHAR2(50) [not null]
   lastName VARCHAR2(50) [not null]
   ICPassportNo VARCHAR2(30) [unique, not null]
