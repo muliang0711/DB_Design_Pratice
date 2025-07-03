@@ -147,6 +147,7 @@ DriverAssignments:
 2. Ticket extensions:
 
    * Check original ticket is `<=2 days` before `BusSchedule.actualStartTime`.
+    * Check that the `RouteID` of the new `BusScheduleID` is the **same** as the original `Ticket`’s `BusSchedule.RouteID`.
    * Pay `extension_charge`.
    * Updates Ticket to `booked_extended`.
 
