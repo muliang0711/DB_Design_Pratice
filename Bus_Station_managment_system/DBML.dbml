@@ -283,8 +283,9 @@ Table Ticket {
 Table Tenant {
   tenantID NUMBER(10) [pk, increment, note: 'Unique tenant ID']
   tenantName VARCHAR2(100) [not null, note: 'Company or individual name']
-  contactPerson VARCHAR2(100)
   phoneNumber VARCHAR2(20)
+  emergencyContactName VARCHAR2(100) [note: 'Name of emergency contact person']
+  emergencyContactNo VARCHAR2(20) [note: 'Contact number of emergency contact']
   email VARCHAR2(100)
   address VARCHAR2(200)
   status VARCHAR2(20) [note: "e.g. 'Active', 'Terminated'"]
@@ -298,7 +299,7 @@ Table Shop {
   tenantID NUMBER(10) [ref: > Tenant.tenantID, note: 'FK to Tenant']
   shopNo VARCHAR2(20) [not null, note: 'Shop lot number or identifier']
   shopType VARCHAR2(20) [note: "'FoodCourt' or 'ShopLot'"]
-  size NUMBER(8,2) [note: 'Size in sq ft or sqm']
+  shopSize NUMBER(8,2) [note: 'Size in sq ft or sqm']
   rentalFee NUMBER(10,2)
   deposit NUMBER(10,2)
   contractStart DATE
