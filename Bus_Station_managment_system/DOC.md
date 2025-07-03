@@ -144,12 +144,12 @@ DriverAssignments:
 ## 💰 9. Payment, Points & Membership Rules
 
 1. **Points** earned or deducted are tracked in `PointTransaction`.
-2. After each `PointTransaction`:
-
-   * `Customer.pointBalance` updates.
-   * If points > 5000, auto-upgrade to `member`.
-   * If points < threshold, downgrade to `guest`.
-
+2. Membership Upgrade:
+   * If a `Payment` with type `"member_register_fee"` is made,
+     then `Customer.type` will be set to `"member"` **permanently**.
+3. Membership Downgrade:
+   * No automatic downgrade based on point balance.  
+     Once upgraded via `"memberregisterfee"`, the customer remains a **member forever**.
 ---
 
 ## ✈️ 10. Refund, Extension & Cancellation Rules
