@@ -269,8 +269,11 @@ Table Ticket {
   // I think we can just use the Payment table to track the extension charge, no need to store it here. By adding a new type in Payment table, we can track the extension charge as a separate payment record.
   // When extension is made, we can create a new Payment record with the type 'extension_charge' 
   // -----
-  bookedAt TIMESTAMP [default: `CURRENT_TIMESTAMP`] 
-  //Q_A : Do you mean we can book a ticket ma ?
+  // bookedAt TIMESTAMP [default: `CURRENT_TIMESTAMP`] 
+  // Q [muliang]: Do you mean we can book a ticket ma ?
+  // A [cookie]: It was supposed to record when a ticket bought.
+  //             I just realized that `createdAt` does exactly that.
+  // -----
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
