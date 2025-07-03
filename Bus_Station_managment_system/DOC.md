@@ -20,9 +20,169 @@ The **Bus Station** refers to the bus station company that the System is made fo
         - Simultaneously, create a `PointTransaction` record that shows the points being added back to the customer's balance.
         - Update the customer's `Customer` record so that its `pointBalance` shows the latest balance.
         > **Note:** Changes to point balance are reflected by updating both `PointTransaction` and `Customer`. The two updates MUST always be done in *one atomic unit* **to ensure integrity**. Perhaps a function (or is it called procedure?) can be written to achieve this. 
+
 6. Full refund is given to passengers if a bus company cancels a schedule.
 3. A ticket can only be extended (same route, later time/date) **at least 2 days in advance** at current ticket price with an additional charge of RM5. The same ticket may only be extended **once**.
 
+# 🚏 Business Rule Document (Bus Management System)
+
+## 📌 General Conventions
+
+* All statuses are controlled by `ENUM` or `VARCHAR2` fields (like `Active`, `Inactive`, `Planned`, etc.).
+* Timestamps (`createdAt`, `updatedAt`) ensure audit trail.
+* Triggers and procedures ensure data consistency.
+
+---
+
+## 🏢 1. Staff & Station Management Rules
+
+1. **A Staff** can only serve **one Bus Station** (`stationID`) and have only **one Role** (`roleID`).
+2. Staff continue to be **active for cleaning duties** even if the `BusStation` they belong to becomes `Inactive`.
+
+---
+
+## 🚍 2. Bus Company & Fleet Rules
+
+1. A **BusCompany** must own at least:
+
+   * One **Bus** (`Bus.companyID`)
+   * One **BusDriver** (`BusDriver.companyID`)
+   * To be eligible to participate in any BusSchedule planning.
+2. A **Bus** can be assigned only if it is `Active`.
+3. A **BusMaintenance** can be performed by multiple Staff, and a Bus can have multiple Maintenance records at once.
+4. When a `Bus.status` is updated to `Maintenance` via `BusMaintenance`, it is **temporarily blocked from DriverAssignment**.
+
+---
+
+## 🚚 3. Driver & Assignment Rules
+
+1. A **BusDriver** must have a valid, non-expired `licenseExpiry` date.
+
+   * If expired, new license must be uploaded and expiry updated.
+2. Only `Active` BusDrivers can be assigned in `DriverAssignment`.
+3. A `DriverAssignment` can be set to `Active` only if:
+
+   * The linked `Bus` is `Active`.
+   * The linked `BusDriver` is `Active`.
+
+---
+
+## 🏬 4. Shop & Tenant Management Rules
+
+1. A **Shop** can only belong to **one Tenant**, but a **Tenant** can own multiple Shops.
+2. A **Tenant** can make multiple payments for a Shop (tracked in `ShopPayment`).
+
+---
+
+## 🚏 5. Bus Station & Platform Rules
+
+1. A **BusStation** can own:
+
+   * Many **Shops**.
+   * Many **Staff**.
+   * Many **BusPlaform**.
+
+2. When a `BusStation.status` becomes `Inactive`:
+
+   * All linked `BusPlaform` statuses must be updated to `Inactive`.
+   * `Staff` statuses remain unchanged.
+
+3. When a `BusPlaform` becomes `Inactive`:
+
+   * Any `RouteStation` referencing this `plaformID` must be deleted.
+   * If the `BusPlaform` belongs to an `Inactive` `BusStation`, it also updates to `Inactive`.
+
+---
+
+## 🗺️ 6. Route & Route Station Rules
+
+1. A **Route** defines start and end platforms.
+2. If either start or end platform becomes `Inactive`:
+
+   * The `Route.status` updates to `Inactive`.
+   * Or, it must reassign to another `Active` platform.
+3. A **RouteStation** lists the platforms (ordered stops) for a Route.
+4. If a `BusPlaform` inside a `RouteStation` becomes `Inactive`:
+
+   * The `RouteStation` record must be deleted.
+
+---
+
+## 🕑 7. BusSchedule & Trip Rules
+
+1. A `BusSchedule` can be set to `Active` only if:
+
+   * The linked `Route.status` is `Active`.
+   * All `DriverAssignment.status` linked to it is `Active`.
+
+2. **Long trips (>7 hours)** must have at least **2 DriverAssignments** on the same BusSchedule.
+
+```
+Example:
+BusSchedule: BS_001 (8 hours)
+DriverAssignments:
+  - AS_001 (D_001 on B_001)
+  - AS_002 (D_002 on B_001)
+```
+
+3. When a Bus departs a platform, real time is logged in `TripStopLog`.
+
+---
+
+## 🎟️ 8. Ticketing Rules
+
+1. Tickets can only be created if:
+
+   * The `BusSchedule` is `Active`.
+2. A Ticket can be booked if:
+
+   * `Ticket.createdAt < BusSchedule.plannedDepartureTime - 7 days`.
+   * Ticket type is `bookAllow`.
+3. Booking requires two payments:
+
+   * `bookingfee_1` at booking.
+   * `bookingfee_2` must be paid **1 day before BusSchedule plannedDepartureTime**, else Ticket status updates (possibly to `cancelled_due_to_nonpayment`).
+
+---
+
+## 💰 9. Payment, Points & Membership Rules
+
+1. **Points** earned or deducted are tracked in `PointTransaction`.
+2. After each `PointTransaction`:
+
+   * `Customer.pointBalance` updates.
+   * If points > 5000, auto-upgrade to `member`.
+   * If points < threshold, downgrade to `guest`.
+
+---
+
+## ✈️ 10. Refund, Extension & Cancellation Rules
+
+1. If customer cancels a Ticket:
+
+   * Must be done at least `2 days` before `BusSchedule.actualStartTime`.
+   * Refund is `70%` of paid price (tracked in `PaymentRecord` as `refund`).
+2. Ticket extensions:
+
+   * Check original ticket is `<=2 days` before `BusSchedule.actualStartTime`.
+   * Pay `extension_charge`.
+   * Updates Ticket to `booked_extended`.
+
+---
+
+## ⚙️ 11. Maintenance & Shop Termination Rules
+
+1. When `BusMaintenance` is created:
+
+   * Sets `Bus.status` to `Maintenance`.
+
+2. When `BusMaintenance` completed:
+
+   * Sets `Bus.status` back to `Active`.
+
+3. When `Tenant` is terminated:
+
+   * All linked `Shop` statuses set to `Vacant`.
 
 ## Tables
 
