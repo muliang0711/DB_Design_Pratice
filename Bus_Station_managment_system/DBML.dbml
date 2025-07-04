@@ -120,10 +120,21 @@ Table Bus {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-Table BusMaintenanceRecord {
+// A menu of maintenance services offered
+Table MaintenanceService {
+  serviceID NUMBER(10) [pk, increment, note: 'Unique service detail record']
+  serviceItem VARCHAR2(100) [not null, note: "Specific service item done e.g. 'Oil Change', 'Brake Pad Replace'"]
+  serviceCost NUMBER(8,2) [note: 'Cost for this specific service item']
+  serviceRemarks VARCHAR2(200) [note: 'Any special notes about this service item']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+
+  Note: 'A menu of maintenance services offered'
+}
+
+// Associative entity between `Bus` and `MaintenanceService`. Records instances of maintenance services requested by buses.
+Table BusMaintenance {
   maintenanceID NUMBER(10) [pk, increment, note: 'Unique maintenance record']
   busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
-  staffID NUMBER(10) [ref: > Staff.staffID, not null, note: 'FK to Staff who performed']
   serviceID NUMBER(10) [ref: > MaintenanceService.serviceID, not null, note: 'FK to MaintenanceService']
 
   actualCost NUMBER(8,2) [note: 'Total cost incurred for this maintenance']
@@ -135,14 +146,23 @@ Table BusMaintenanceRecord {
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 
   remarks VARCHAR2(200)
-}
 
-Table MaintenanceService {
-  serviceID NUMBER(10) [pk, increment, note: 'Unique service detail record']
-  serviceItem VARCHAR2(100) [not null, note: "Specific service item done e.g. 'Oil Change', 'Brake Pad Replace'"]
-  serviceCost NUMBER(8,2) [note: 'Cost for this specific service item']
-  serviceRemarks VARCHAR2(200) [note: 'Any special notes about this service item']
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  Note: 'Associative entity between `Bus` and `MaintenanceService`. Records instances of maintenance services requested by buses.'
+}
+ 
+// associative entity between `BusMaintenance` and `Staff`
+Table MaintenanceStaffAssignment {
+  // Composite PK is defined in `Indexes` block of this table
+  maintenanceID NUMBER(10) [ref: > BusMaintenance.maintenanceID]
+  staffID NUMBER(10) [ref: > Staff.staffID]
+  remarks [note: 'Optional remarks on a specific maintenance service worker during a specific service']
+
+  Indexes {
+    // Composite PK
+    (maintenanceID, staffID) [pk]
+  }
+
+  Note: 'Associative entity between `BusMaintenance` and `Staff`'
 }
 
 // ============================================
