@@ -37,7 +37,7 @@ CREATE TABLE BusCompany (
   phoneNumber VARCHAR2(20),
   email VARCHAR2(100),
   address VARCHAR2(200),
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('active', 'inactive')),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -49,11 +49,11 @@ CREATE TABLE Customer (
   firstName VARCHAR2(50) NOT NULL,
   lastName VARCHAR2(50) NOT NULL,
   ICPassportNo VARCHAR2(30) UNIQUE NOT NULL,
-  gender VARCHAR2(10),
+  gender VARCHAR2(10) CHECK (gender IN ('Male', 'Female')),
   birthDate DATE,
   phoneNumber VARCHAR2(20),
   email VARCHAR2(100),
-  membershipStatus VARCHAR2(10) NOT NULL,
+  membershipStatus VARCHAR2(10) CHECK (membershipStatus IN ('guest', 'member')) NOT NULL,
   pointBalance NUMBER(10) DEFAULT 0,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -65,7 +65,7 @@ CREATE TABLE BusStation (
   stationID NUMBER(10) PRIMARY KEY,
   stationName VARCHAR2(100),
   location VARCHAR2(150),
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('active', 'inactive')),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -73,7 +73,7 @@ CREATE TABLE BusPlatform (
   platformID NUMBER(10) PRIMARY KEY,
   platformName VARCHAR2(100) NOT NULL,
   location VARCHAR2(150),
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('active', 'inactive')),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -84,7 +84,7 @@ CREATE TABLE Route (
   endPoint VARCHAR2(100),
   distanceKM NUMBER(6,2),
   estimatedDuration NUMBER(10),
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('active', 'inactive')),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -127,7 +127,7 @@ CREATE TABLE Bus (
   plateNo VARCHAR2(20) UNIQUE NOT NULL,
   model VARCHAR2(50),
   capacity NUMBER(10),
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('Active', 'In_Maintenance', 'Retired', 'in_Active')),
   year NUMBER(4),
   remarks VARCHAR2(200),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -150,7 +150,7 @@ CREATE TABLE BusMaintenance (
   actualCost NUMBER(8,2),
   additionalCost NUMBER(8,2),
   additionalRemarks VARCHAR2(200),
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('Completed', 'InProgress')),
   maintenanceDate TIMESTAMP NOT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   remarks VARCHAR2(200),
@@ -174,7 +174,7 @@ CREATE TABLE BusSchedule (
   routeID NUMBER(10) NOT NULL,
   plannedDepartureTime TIMESTAMP NOT NULL,
   plannedArrivalTime TIMESTAMP,
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('Planned', 'Cancelled', 'Completed', 'Deplay')),
   remarks VARCHAR2(200),
   price NUMBER(6,2),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -190,7 +190,7 @@ CREATE TABLE BusDriver (
   firstName VARCHAR2(50) NOT NULL,
   lastName VARCHAR2(50) NOT NULL,
   phoneNumber VARCHAR2(20),
-  status VARCHAR2(20) DEFAULT 'active',
+  status VARCHAR2(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (companyID) REFERENCES BusCompany(companyID)
@@ -203,7 +203,7 @@ CREATE TABLE DriverAssignment (
   busScheduleID NUMBER(10) NOT NULL,
   assignedFrom TIMESTAMP,
   assignedTo TIMESTAMP,
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('in_Active', 'active')),
   remarks VARCHAR2(200),
   FOREIGN KEY (driverID) REFERENCES BusDriver(driverID),
   FOREIGN KEY (busID) REFERENCES Bus(busID),
@@ -230,8 +230,8 @@ CREATE TABLE Ticket (
   customerID NUMBER(10) NOT NULL,
   seatNo VARCHAR2(10),
   price NUMBER(8,2) NOT NULL,
-  type VARCHAR2(20),
-  status VARCHAR2(50),
+  type VARCHAR2(20) CHECK (type IN ('regular', 'booking')),
+  status VARCHAR2(50) CHECK (status IN ('Cancelled_By_Company', 'Cancelled_By_User', 'booked_extended')),
   cancellationDate TIMESTAMP,
   extensionDate TIMESTAMP,
   extendedToID NUMBER(10),
@@ -252,7 +252,7 @@ CREATE TABLE PaymentRecord (
   cashAmount NUMBER(8,2),
   pointsApplied NUMBER(10),
   pointValue NUMBER(8,2),
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('Completed', 'Pending', 'Failed')),
   paymentTime TIMESTAMP,
   receiptNo VARCHAR2(50),
   remarks VARCHAR2(200),
@@ -315,7 +315,7 @@ CREATE TABLE ShopPayment (
   amount NUMBER(10,2) NOT NULL,
   paymentDate TIMESTAMP NOT NULL,
   paymentMethod VARCHAR2(30),
-  status VARCHAR2(20),
+  status VARCHAR2(20) CHECK (status IN ('Completed', 'Pending', 'Failed')),
   receiptNo VARCHAR2(50),
   remarks VARCHAR2(200),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
