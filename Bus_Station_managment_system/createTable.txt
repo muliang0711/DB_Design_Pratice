@@ -25,13 +25,13 @@ DROP TABLE StaffRole;
 -- CREATE TABLES
 
 CREATE TABLE StaffRole (
-  roleID NUMBER(10) PRIMARY KEY,
+  roleID NUMBER(5) PRIMARY KEY,
   roleName VARCHAR2(50) NOT NULL,
   description VARCHAR2(200)
 );
 
 CREATE TABLE BusCompany (
-  companyID NUMBER(10) PRIMARY KEY,
+  companyID NUMBER(5) PRIMARY KEY,
   companyName VARCHAR2(100) NOT NULL,
   registrationNo VARCHAR2(50) UNIQUE,
   phoneNumber VARCHAR2(20),
@@ -45,7 +45,7 @@ CREATE TABLE BusCompany (
 -- CUSTOMER MANAGEMENT
 
 CREATE TABLE Customer (
-  customerID NUMBER(10) PRIMARY KEY,
+  customerID NUMBER(5) PRIMARY KEY,
   firstName VARCHAR2(50) NOT NULL,
   lastName VARCHAR2(50) NOT NULL,
   ICPassportNo VARCHAR2(30) UNIQUE NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE Customer (
   phoneNumber VARCHAR2(20),
   email VARCHAR2(100),
   membershipStatus VARCHAR2(10) CHECK (membershipStatus IN ('guest', 'member')) NOT NULL,
-  pointBalance NUMBER(10) DEFAULT 0,
+  pointBalance NUMBER(5) DEFAULT 0,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -62,7 +62,7 @@ CREATE TABLE Customer (
 -- LOCATION AND ROUTE MANAGEMENT
 
 CREATE TABLE BusStation (
-  stationID NUMBER(10) PRIMARY KEY,
+  stationID NUMBER(5) PRIMARY KEY,
   stationName VARCHAR2(100),
   location VARCHAR2(150),
   status VARCHAR2(20) CHECK (status IN ('active', 'inactive')),
@@ -70,7 +70,7 @@ CREATE TABLE BusStation (
 );
 
 CREATE TABLE BusPlatform (
-  platformID NUMBER(10) PRIMARY KEY,
+  platformID NUMBER(5) PRIMARY KEY,
   platformName VARCHAR2(100) NOT NULL,
   location VARCHAR2(150),
   status VARCHAR2(20) CHECK (status IN ('active', 'inactive')),
@@ -78,23 +78,23 @@ CREATE TABLE BusPlatform (
 );
 
 CREATE TABLE Route (
-  routeID NUMBER(10) PRIMARY KEY,
+  routeID NUMBER(5) PRIMARY KEY,
   routeName VARCHAR2(50) NOT NULL,
   startPoint VARCHAR2(100),
   endPoint VARCHAR2(100),
   distanceKM NUMBER(6,2),
-  estimatedDuration NUMBER(10),
+  estimatedDuration NUMBER(5),
   status VARCHAR2(20) CHECK (status IN ('active', 'inactive')),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE RouteStation (
-  routeStationID NUMBER(10) PRIMARY KEY,
-  routeID NUMBER(10) NOT NULL,
-  plaformID NUMBER(10) NOT NULL,
-  stopOrder NUMBER(10) NOT NULL,
-  estimatedArrivalOffset NUMBER(10),
+  routeStationID NUMBER(5) PRIMARY KEY,
+  routeID NUMBER(5) NOT NULL,
+  plaformID NUMBER(5) NOT NULL,
+  stopOrder NUMBER(5) NOT NULL,
+  estimatedArrivalOffset NUMBER(5),
   FOREIGN KEY (routeID) REFERENCES Route(routeID),
   FOREIGN KEY (plaformID) REFERENCES BusPlatform(platformID)
 );
@@ -102,9 +102,9 @@ CREATE TABLE RouteStation (
 -- STAFF MANAGEMENT
 
 CREATE TABLE Staff (
-  staffID NUMBER(10) PRIMARY KEY,
-  roleID NUMBER(10),
-  stationID NUMBER(10),
+  staffID NUMBER(5) PRIMARY KEY,
+  roleID NUMBER(5),
+  stationID NUMBER(5),
   firstName VARCHAR2(50) NOT NULL,
   lastName VARCHAR2(50) NOT NULL,
   ICPassportNo VARCHAR2(30) UNIQUE NOT NULL,
@@ -122,11 +122,11 @@ CREATE TABLE Staff (
 -- BUS FLEET MANAGEMENT
 
 CREATE TABLE Bus (
-  busID NUMBER(10) PRIMARY KEY,
-  companyID NUMBER(10) NOT NULL,
+  busID NUMBER(5) PRIMARY KEY,
+  companyID NUMBER(5) NOT NULL,
   plateNo VARCHAR2(20) UNIQUE NOT NULL,
   model VARCHAR2(50),
-  capacity NUMBER(10),
+  capacity NUMBER(5),
   status VARCHAR2(20) CHECK (status IN ('Active', 'In_Maintenance', 'Retired', 'in_Active')),
   year NUMBER(4),
   remarks VARCHAR2(200),
@@ -136,7 +136,7 @@ CREATE TABLE Bus (
 );
 
 CREATE TABLE MaintenanceService (
-  serviceID NUMBER(10) PRIMARY KEY,
+  serviceID NUMBER(5) PRIMARY KEY,
   serviceItem VARCHAR2(100) NOT NULL,
   serviceCost NUMBER(8,2),
   serviceRemarks VARCHAR2(200),
@@ -144,9 +144,9 @@ CREATE TABLE MaintenanceService (
 );
 
 CREATE TABLE BusMaintenance (
-  maintenanceID NUMBER(10) PRIMARY KEY,
-  busID NUMBER(10) NOT NULL,
-  serviceID NUMBER(10) NOT NULL,
+  maintenanceID NUMBER(5) PRIMARY KEY,
+  busID NUMBER(5) NOT NULL,
+  serviceID NUMBER(5) NOT NULL,
   actualCost NUMBER(8,2),
   additionalCost NUMBER(8,2),
   additionalRemarks VARCHAR2(200),
@@ -159,8 +159,8 @@ CREATE TABLE BusMaintenance (
 );
 
 CREATE TABLE MaintenanceStaffAssignment (
-  maintenanceID NUMBER(10),
-  staffID NUMBER(10),
+  maintenanceID NUMBER(5),
+  staffID NUMBER(5),
   remarks VARCHAR2(200),
   PRIMARY KEY (maintenanceID, staffID),
   FOREIGN KEY (maintenanceID) REFERENCES BusMaintenance(maintenanceID),
@@ -170,8 +170,8 @@ CREATE TABLE MaintenanceStaffAssignment (
 -- SCHEDULE AND OPERATIONS
 
 CREATE TABLE BusSchedule (
-  busScheduleID NUMBER(10) PRIMARY KEY,
-  routeID NUMBER(10) NOT NULL,
+  busScheduleID NUMBER(5) PRIMARY KEY,
+  routeID NUMBER(5) NOT NULL,
   plannedDepartureTime TIMESTAMP NOT NULL,
   plannedArrivalTime TIMESTAMP,
   status VARCHAR2(20) CHECK (status IN ('Planned', 'Cancelled', 'Completed', 'Deplay')),
@@ -183,8 +183,8 @@ CREATE TABLE BusSchedule (
 );
 
 CREATE TABLE BusDriver (
-  driverID NUMBER(10) PRIMARY KEY,
-  companyID NUMBER(10),
+  driverID NUMBER(5) PRIMARY KEY,
+  companyID NUMBER(5),
   licenseNo VARCHAR2(50) UNIQUE,
   licenseExpiry DATE NOT NULL,
   firstName VARCHAR2(50) NOT NULL,
@@ -197,10 +197,10 @@ CREATE TABLE BusDriver (
 );
 
 CREATE TABLE DriverAssignment (
-  assignmentID NUMBER(10) PRIMARY KEY,
-  driverID NUMBER(10) NOT NULL,
-  busID NUMBER(10) NOT NULL,
-  busScheduleID NUMBER(10) NOT NULL,
+  assignmentID NUMBER(5) PRIMARY KEY,
+  driverID NUMBER(5) NOT NULL,
+  busID NUMBER(5) NOT NULL,
+  busScheduleID NUMBER(5) NOT NULL,
   assignedFrom TIMESTAMP,
   assignedTo TIMESTAMP,
   status VARCHAR2(20) CHECK (status IN ('in_Active', 'active')),
@@ -211,9 +211,9 @@ CREATE TABLE DriverAssignment (
 );
 
 CREATE TABLE TripStopLog (
-  tripStopID NUMBER(10) PRIMARY KEY,
-  busScheduleID NUMBER(10) NOT NULL,
-  platformID NUMBER(10) NOT NULL,
+  tripStopID NUMBER(5) PRIMARY KEY,
+  busScheduleID NUMBER(5) NOT NULL,
+  platformID NUMBER(5) NOT NULL,
   actualArrivalTime TIMESTAMP,
   actualDepartureTime TIMESTAMP,
   status VARCHAR2(20),
@@ -225,16 +225,16 @@ CREATE TABLE TripStopLog (
 -- TICKETING SYSTEM
 
 CREATE TABLE Ticket (
-  ticketID NUMBER(10) PRIMARY KEY,
-  busScheduleID NUMBER(10) NOT NULL,
-  customerID NUMBER(10) NOT NULL,
+  ticketID NUMBER(5) PRIMARY KEY,
+  busScheduleID NUMBER(5) NOT NULL,
+  customerID NUMBER(5) NOT NULL,
   seatNo VARCHAR2(10),
   price NUMBER(8,2) NOT NULL,
   type VARCHAR2(20) CHECK (type IN ('regular', 'booking')),
   status VARCHAR2(50) CHECK (status IN ('Cancelled_By_Company', 'Cancelled_By_User', 'booked_extended')),
   cancellationDate TIMESTAMP,
   extensionDate TIMESTAMP,
-  extendedToID NUMBER(10),
+  extendedToID NUMBER(5),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (busScheduleID) REFERENCES BusSchedule(busScheduleID),
@@ -245,12 +245,12 @@ CREATE TABLE Ticket (
 -- PAYMENT SYSTEM
 
 CREATE TABLE PaymentRecord (
-  paymentID NUMBER(10) PRIMARY KEY,
-  customerID NUMBER(10),
-  ticketID NUMBER(10),
+  paymentID NUMBER(5) PRIMARY KEY,
+  customerID NUMBER(5),
+  ticketID NUMBER(5),
   totalAmount NUMBER(8,2),
   cashAmount NUMBER(8,2),
-  pointsApplied NUMBER(10),
+  pointsApplied NUMBER(5),
   pointValue NUMBER(8,2),
   status VARCHAR2(20) CHECK (status IN ('Completed', 'Pending', 'Failed')),
   paymentTime TIMESTAMP,
@@ -263,10 +263,10 @@ CREATE TABLE PaymentRecord (
 );
 
 CREATE TABLE PointTransaction (
-  pointTxnID NUMBER(10) PRIMARY KEY,
-  customerID NUMBER(10) NOT NULL,
-  paymentID NUMBER(10),
-  pointChange NUMBER(10),
+  pointTxnID NUMBER(5) PRIMARY KEY,
+  customerID NUMBER(5) NOT NULL,
+  paymentID NUMBER(5),
+  pointChange NUMBER(5),
   source VARCHAR2(50),
   remarks VARCHAR2(200),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -277,7 +277,7 @@ CREATE TABLE PointTransaction (
 -- SHOP AND TENANT MANAGEMENT
 
 CREATE TABLE Tenant (
-  tenantID NUMBER(10) PRIMARY KEY,
+  tenantID NUMBER(5) PRIMARY KEY,
   tenantName VARCHAR2(100) NOT NULL,
   phoneNumber VARCHAR2(20),
   emergencyContactName VARCHAR2(100),
@@ -290,9 +290,9 @@ CREATE TABLE Tenant (
 );
 
 CREATE TABLE Shop (
-  shopID NUMBER(10) PRIMARY KEY,
-  stationID NUMBER(10),
-  tenantID NUMBER(10),
+  shopID NUMBER(5) PRIMARY KEY,
+  stationID NUMBER(5),
+  tenantID NUMBER(5),
   shopNo VARCHAR2(20) NOT NULL,
   shopType VARCHAR2(20),
   shopSize NUMBER(8,2),
@@ -308,9 +308,9 @@ CREATE TABLE Shop (
 );
 
 CREATE TABLE ShopPayment (
-  shopPayID NUMBER(10) PRIMARY KEY,
-  shopID NUMBER(10) NOT NULL,
-  tenantID NUMBER(10) NOT NULL,
+  shopPayID NUMBER(5) PRIMARY KEY,
+  shopID NUMBER(5) NOT NULL,
+  tenantID NUMBER(5) NOT NULL,
   payType VARCHAR2(20) NOT NULL,
   amount NUMBER(10,2) NOT NULL,
   paymentDate TIMESTAMP NOT NULL,
