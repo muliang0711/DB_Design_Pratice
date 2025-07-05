@@ -109,7 +109,7 @@ The **Bus Station** refers to the bus station company that the System is made fo
    * Linked `Route` is `Active`.
 2. Long trips (`>7 hours`) require at least **2 DriverAssignments** on the same schedule.
 3. Actual stops are logged in `TripStopLog`.
-
+[IDEA : when we some reason the driver assignment is become inactive , we dont directly trigger those Trigger update ticket.status to cancalled and make refund instead we search are they have a driverAssigment is currently dont have a busSchedule yet than we put the almost become inactive busSchedule for it else the update the ticket become cancelled      ]
 ---
 
 ## 🎟️ 9. Ticketing Rules

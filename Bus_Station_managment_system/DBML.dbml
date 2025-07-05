@@ -358,4 +358,4 @@ Table ShopPayment {
   remarks VARCHAR2(200)
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
-}
+}   
