@@ -1,0 +1,325 @@
+-- DROP TABLES
+DROP TABLE MaintenanceStaffAssignment;
+DROP TABLE DriverAssignment;
+DROP TABLE TripStopLog;
+DROP TABLE PointTransaction;
+DROP TABLE ShopPayment;
+DROP TABLE BusMaintenance;
+DROP TABLE PaymentRecord;
+DROP TABLE Shop;
+DROP TABLE Ticket;
+DROP TABLE MaintenanceService;
+DROP TABLE Staff;
+DROP TABLE BusDriver;
+DROP TABLE BusSchedule;
+DROP TABLE Tenant;
+DROP TABLE Bus;
+DROP TABLE RouteStation;
+DROP TABLE Route;
+DROP TABLE BusPlatform;
+DROP TABLE BusStation;
+DROP TABLE Customer;
+DROP TABLE BusCompany;
+DROP TABLE StaffRole;
+
+-- CREATE TABLES
+
+CREATE TABLE StaffRole (
+  roleID NUMBER(10) PRIMARY KEY,
+  roleName VARCHAR2(50) NOT NULL,
+  description VARCHAR2(200)
+);
+
+CREATE TABLE BusCompany (
+  companyID NUMBER(10) PRIMARY KEY,
+  companyName VARCHAR2(100) NOT NULL,
+  registrationNo VARCHAR2(50) UNIQUE,
+  phoneNumber VARCHAR2(20),
+  email VARCHAR2(100),
+  address VARCHAR2(200),
+  status VARCHAR2(20),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CUSTOMER MANAGEMENT
+
+CREATE TABLE Customer (
+  customerID NUMBER(10) PRIMARY KEY,
+  firstName VARCHAR2(50) NOT NULL,
+  lastName VARCHAR2(50) NOT NULL,
+  ICPassportNo VARCHAR2(30) UNIQUE NOT NULL,
+  gender VARCHAR2(10),
+  birthDate DATE,
+  phoneNumber VARCHAR2(20),
+  email VARCHAR2(100),
+  membershipStatus VARCHAR2(10) NOT NULL,
+  pointBalance NUMBER(10) DEFAULT 0,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- LOCATION AND ROUTE MANAGEMENT
+
+CREATE TABLE BusStation (
+  stationID NUMBER(10) PRIMARY KEY,
+  stationName VARCHAR2(100),
+  location VARCHAR2(150),
+  status VARCHAR2(20),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE BusPlatform (
+  platformID NUMBER(10) PRIMARY KEY,
+  platformName VARCHAR2(100) NOT NULL,
+  location VARCHAR2(150),
+  status VARCHAR2(20),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Route (
+  routeID NUMBER(10) PRIMARY KEY,
+  routeName VARCHAR2(50) NOT NULL,
+  startPoint VARCHAR2(100),
+  endPoint VARCHAR2(100),
+  distanceKM NUMBER(6,2),
+  estimatedDuration NUMBER(10),
+  status VARCHAR2(20),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE RouteStation (
+  routeStationID NUMBER(10) PRIMARY KEY,
+  routeID NUMBER(10) NOT NULL,
+  plaformID NUMBER(10) NOT NULL,
+  stopOrder NUMBER(10) NOT NULL,
+  estimatedArrivalOffset NUMBER(10),
+  FOREIGN KEY (routeID) REFERENCES Route(routeID),
+  FOREIGN KEY (plaformID) REFERENCES BusPlatform(platformID)
+);
+
+-- STAFF MANAGEMENT
+
+CREATE TABLE Staff (
+  staffID NUMBER(10) PRIMARY KEY,
+  roleID NUMBER(10),
+  stationID NUMBER(10),
+  firstName VARCHAR2(50) NOT NULL,
+  lastName VARCHAR2(50) NOT NULL,
+  ICPassportNo VARCHAR2(30) UNIQUE NOT NULL,
+  phoneNumber VARCHAR2(20),
+  email VARCHAR2(100),
+  hireDate DATE,
+  salary NUMBER(10,2),
+  status VARCHAR2(20),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (roleID) REFERENCES StaffRole(roleID),
+  FOREIGN KEY (stationID) REFERENCES BusStation(stationID)
+);
+
+-- BUS FLEET MANAGEMENT
+
+CREATE TABLE Bus (
+  busID NUMBER(10) PRIMARY KEY,
+  companyID NUMBER(10) NOT NULL,
+  plateNo VARCHAR2(20) UNIQUE NOT NULL,
+  model VARCHAR2(50),
+  capacity NUMBER(10),
+  status VARCHAR2(20),
+  year NUMBER(4),
+  remarks VARCHAR2(200),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (companyID) REFERENCES BusCompany(companyID)
+);
+
+CREATE TABLE MaintenanceService (
+  serviceID NUMBER(10) PRIMARY KEY,
+  serviceItem VARCHAR2(100) NOT NULL,
+  serviceCost NUMBER(8,2),
+  serviceRemarks VARCHAR2(200),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE BusMaintenance (
+  maintenanceID NUMBER(10) PRIMARY KEY,
+  busID NUMBER(10) NOT NULL,
+  serviceID NUMBER(10) NOT NULL,
+  actualCost NUMBER(8,2),
+  additionalCost NUMBER(8,2),
+  additionalRemarks VARCHAR2(200),
+  status VARCHAR2(20),
+  maintenanceDate TIMESTAMP NOT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  remarks VARCHAR2(200),
+  FOREIGN KEY (busID) REFERENCES Bus(busID),
+  FOREIGN KEY (serviceID) REFERENCES MaintenanceService(serviceID)
+);
+
+CREATE TABLE MaintenanceStaffAssignment (
+  maintenanceID NUMBER(10),
+  staffID NUMBER(10),
+  remarks VARCHAR2(200),
+  PRIMARY KEY (maintenanceID, staffID),
+  FOREIGN KEY (maintenanceID) REFERENCES BusMaintenance(maintenanceID),
+  FOREIGN KEY (staffID) REFERENCES Staff(staffID)
+);
+
+-- SCHEDULE AND OPERATIONS
+
+CREATE TABLE BusSchedule (
+  busScheduleID NUMBER(10) PRIMARY KEY,
+  routeID NUMBER(10) NOT NULL,
+  plannedDepartureTime TIMESTAMP NOT NULL,
+  plannedArrivalTime TIMESTAMP,
+  status VARCHAR2(20),
+  remarks VARCHAR2(200),
+  price NUMBER(6,2),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (routeID) REFERENCES Route(routeID)
+);
+
+CREATE TABLE BusDriver (
+  driverID NUMBER(10) PRIMARY KEY,
+  companyID NUMBER(10),
+  licenseNo VARCHAR2(50) UNIQUE,
+  licenseExpiry DATE NOT NULL,
+  firstName VARCHAR2(50) NOT NULL,
+  lastName VARCHAR2(50) NOT NULL,
+  phoneNumber VARCHAR2(20),
+  status VARCHAR2(20) DEFAULT 'active',
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (companyID) REFERENCES BusCompany(companyID)
+);
+
+CREATE TABLE DriverAssignment (
+  assignmentID NUMBER(10) PRIMARY KEY,
+  driverID NUMBER(10) NOT NULL,
+  busID NUMBER(10) NOT NULL,
+  busScheduleID NUMBER(10) NOT NULL,
+  assignedFrom TIMESTAMP,
+  assignedTo TIMESTAMP,
+  status VARCHAR2(20),
+  remarks VARCHAR2(200),
+  FOREIGN KEY (driverID) REFERENCES BusDriver(driverID),
+  FOREIGN KEY (busID) REFERENCES Bus(busID),
+  FOREIGN KEY (busScheduleID) REFERENCES BusSchedule(busScheduleID)
+);
+
+CREATE TABLE TripStopLog (
+  tripStopID NUMBER(10) PRIMARY KEY,
+  busScheduleID NUMBER(10) NOT NULL,
+  platformID NUMBER(10) NOT NULL,
+  actualArrivalTime TIMESTAMP,
+  actualDepartureTime TIMESTAMP,
+  status VARCHAR2(20),
+  FOREIGN KEY (busScheduleID) REFERENCES BusSchedule(busScheduleID),
+  FOREIGN KEY (platformID) REFERENCES BusPlatform(platformID)
+);
+
+
+-- TICKETING SYSTEM
+
+CREATE TABLE Ticket (
+  ticketID NUMBER(10) PRIMARY KEY,
+  busScheduleID NUMBER(10) NOT NULL,
+  customerID NUMBER(10) NOT NULL,
+  seatNo VARCHAR2(10),
+  price NUMBER(8,2) NOT NULL,
+  type VARCHAR2(20),
+  status VARCHAR2(50),
+  cancellationDate TIMESTAMP,
+  extensionDate TIMESTAMP,
+  extendedToID NUMBER(10),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (busScheduleID) REFERENCES BusSchedule(busScheduleID),
+  FOREIGN KEY (customerID) REFERENCES Customer(customerID),
+  FOREIGN KEY (extendedToID) REFERENCES BusSchedule(busScheduleID)
+);
+
+-- PAYMENT SYSTEM
+
+CREATE TABLE PaymentRecord (
+  paymentID NUMBER(10) PRIMARY KEY,
+  customerID NUMBER(10),
+  ticketID NUMBER(10),
+  totalAmount NUMBER(8,2),
+  cashAmount NUMBER(8,2),
+  pointsApplied NUMBER(10),
+  pointValue NUMBER(8,2),
+  status VARCHAR2(20),
+  paymentTime TIMESTAMP,
+  receiptNo VARCHAR2(50),
+  remarks VARCHAR2(200),
+  paymentMethod VARCHAR2(100),
+  type VARCHAR2(50),
+  FOREIGN KEY (customerID) REFERENCES Customer(customerID),
+  FOREIGN KEY (ticketID) REFERENCES Ticket(ticketID)
+);
+
+CREATE TABLE PointTransaction (
+  pointTxnID NUMBER(10) PRIMARY KEY,
+  customerID NUMBER(10) NOT NULL,
+  paymentID NUMBER(10),
+  pointChange NUMBER(10),
+  source VARCHAR2(50),
+  remarks VARCHAR2(200),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (customerID) REFERENCES Customer(customerID),
+  FOREIGN KEY (paymentID) REFERENCES PaymentRecord(paymentID)
+);
+
+-- SHOP AND TENANT MANAGEMENT
+
+CREATE TABLE Tenant (
+  tenantID NUMBER(10) PRIMARY KEY,
+  tenantName VARCHAR2(100) NOT NULL,
+  phoneNumber VARCHAR2(20),
+  emergencyContactName VARCHAR2(100),
+  emergencyContactNo VARCHAR2(20),
+  email VARCHAR2(100),
+  address VARCHAR2(200),
+  status VARCHAR2(20),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Shop (
+  shopID NUMBER(10) PRIMARY KEY,
+  stationID NUMBER(10),
+  tenantID NUMBER(10),
+  shopNo VARCHAR2(20) NOT NULL,
+  shopType VARCHAR2(20),
+  shopSize NUMBER(8,2),
+  rentalFee NUMBER(10,2),
+  deposit NUMBER(10,2),
+  contractStart DATE,
+  contractEnd DATE,
+  status VARCHAR2(20),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (stationID) REFERENCES BusStation(stationID),
+  FOREIGN KEY (tenantID) REFERENCES Tenant(tenantID)
+);
+
+CREATE TABLE ShopPayment (
+  shopPayID NUMBER(10) PRIMARY KEY,
+  shopID NUMBER(10) NOT NULL,
+  tenantID NUMBER(10) NOT NULL,
+  payType VARCHAR2(20) NOT NULL,
+  amount NUMBER(10,2) NOT NULL,
+  paymentDate TIMESTAMP NOT NULL,
+  paymentMethod VARCHAR2(30),
+  status VARCHAR2(20),
+  receiptNo VARCHAR2(50),
+  remarks VARCHAR2(200),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (shopID) REFERENCES Shop(shopID),
+  FOREIGN KEY (tenantID) REFERENCES Tenant(tenantID)
+);
