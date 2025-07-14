@@ -332,17 +332,35 @@ Table Tenant {
 Table Shop {
   shopID NUMBER(10) [pk, increment, not null, note: 'Unique shop ID']
   stationID NUMBER(10) [ref: > BusStation.stationID, note: 'FK to BusStation where shop is located']
-  tenantID NUMBER(10) [ref: > Tenant.tenantID, note: 'FK to Tenant']
+  //tenantID NUMBER(10) [ref: > Tenant.tenantID, note: 'FK to Tenant']
   shopNo VARCHAR2(20) [not null, note: 'Shop lot number or identifier']
   shopType VARCHAR2(20) [note: "'FoodCourt' or 'ShopLot'"]
   shopSize NUMBER(8,2) [note: 'Size in sq ft or sqm']
-  rentalFee NUMBER(10,2)
-  deposit NUMBER(10,2)
-  contractStart DATE
-  contractEnd DATE
+  //rentalFee NUMBER(10,2)
+  //deposit NUMBER(10,2)
+  //contractStart DATE
+  //contractEnd DATE
   status VARCHAR2(20) [note: "e.g. 'Occupied', 'Vacant'"]
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+}
+
+Table TenancyAgreement {
+  agreementID NUMBER(10) [pk, increment]
+  tenantID NUMBER(10) [ref: > Tenant.tenantID, not null]
+  shopID NUMBER(10) [ref: > Shop.shopID, not null]
+  rentalFee NUMBER(10,2)
+  deposit NUMBER(10,2)
+  startDate DATE [not null]
+  endDate DATE [not null]
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+
+  Indexes {
+    // ensure unique combination of these three columns
+    // `unique_tenancyagreement` is the index name.
+    unique_tenancyagreement (tenantID, shopID, startDate) [unique]
+  }
 }
 
 Table ShopPayment {
