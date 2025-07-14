@@ -75,6 +75,7 @@ Table BusStation {
 
 Table BusPlatform {
   platformID NUMBER(10) [pk, increment, note: 'Unique ID for platform']
+  stationID NUMBER(10) [ref: > BusStation.stationID, not null, note: 'ID of the bus station where a platform is located']
   platformName VARCHAR2(100) [not null, note: 'e.g. "KLCC", "Pasar Seni"']
   location VARCHAR2(150) [note: 'GPS coordinates or address']
   status ENUM(active , inactive)
