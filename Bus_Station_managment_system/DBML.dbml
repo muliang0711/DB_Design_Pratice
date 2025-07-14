@@ -316,18 +316,18 @@ Table Ticket {
 // SHOP AND TENANT MANAGEMENT
 // ============================================
 
-Table Tenant {
-  tenantID NUMBER(10) [pk, increment, note: 'Unique tenant ID']
-  tenantName VARCHAR2(100) [not null, note: 'Company or individual name']
-  phoneNumber VARCHAR2(20)
-  emergencyContactName VARCHAR2(100) [note: 'Name of emergency contact person']
-  emergencyContactNo VARCHAR2(20) [note: 'Contact number of emergency contact']
-  email VARCHAR2(100)
-  address VARCHAR2(200)
-  status VARCHAR2(20) [note: "e.g. 'Active', 'Terminated'"]
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
-}
+// Table Tenant {
+//   tenantID NUMBER(10) [pk, increment, note: 'Unique tenant ID']
+//   tenantName VARCHAR2(100) [not null, note: 'Company or individual name']
+//   phoneNumber VARCHAR2(20)
+//   emergencyContactName VARCHAR2(100) [note: 'Name of emergency contact person']
+//   emergencyContactNo VARCHAR2(20) [note: 'Contact number of emergency contact']
+//   email VARCHAR2(100)
+//   address VARCHAR2(200)
+//   status VARCHAR2(20) [note: "e.g. 'Active', 'Terminated'"]
+//   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+//   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+// }
 
 Table Shop {
   shopID NUMBER(10) [pk, increment, not null, note: 'Unique shop ID']
@@ -345,23 +345,36 @@ Table Shop {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-Table TenancyAgreement {
-  agreementID NUMBER(10) [pk, increment]
-  tenantID NUMBER(10) [ref: > Tenant.tenantID, not null]
+Table RentalCollection {
   shopID NUMBER(10) [ref: > Shop.shopID, not null]
-  rentalFee NUMBER(10,2)
-  deposit NUMBER(10,2)
-  startDate DATE [not null]
-  endDate DATE [not null]
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  staffID NUMBER(10) [ref: > Staff.staffID, not null]
+  collectionDate DATE 
+  rentalAmount NUMBER(8,2)
 
   Indexes {
-    // ensure unique combination of these three columns
-    // `unique_tenancyagreement` is the index name.
-    unique_tenancyagreement (tenantID, shopID, startDate) [unique]
+    // Note: `cmp_pk` is short for 'compound primary key'
+    cmp_pk_rentalcollection (shopID, staffID, collectionDate) [pk]
   }
 }
+
+
+// Table TenancyAgreement {
+//   agreementID NUMBER(10) [pk, increment]
+//   tenantID NUMBER(10) [ref: > Tenant.tenantID, not null]
+//   shopID NUMBER(10) [ref: > Shop.shopID, not null]
+//   rentalFee NUMBER(10,2)
+//   deposit NUMBER(10,2)
+//   startDate DATE [not null]
+//   endDate DATE [not null]
+//   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+//   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+
+//   Indexes {
+//     // ensure unique combination of these three columns
+//     // `unique_tenancyagreement` is the index name.
+//     unique_tenancyagreement (tenantID, shopID, startDate) [unique]
+//   }
+// }
 
 Table ShopPayment {
   shopPayID NUMBER(10) [pk, increment, note: 'Unique payment record']
