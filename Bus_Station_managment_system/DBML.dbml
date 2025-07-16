@@ -380,7 +380,7 @@ Table RentalCollection {
 Table ShopPayment {
   shopPayID NUMBER(10) [pk, increment, note: 'Unique payment record']
   shopID NUMBER(10) [ref: > Shop.shopID, not null, note: 'FK to Shop']
-  tenantID NUMBER(10) [ref: > Tenant.tenantID, not null, note: 'FK to Tenant for quick ref']
+  //tenantID NUMBER(10) [ref: > Tenant.tenantID, not null, note: 'FK to Tenant for quick ref']
   payType VARCHAR2(20) [not null, note: "e.g. 'Rental', 'Deposit', 'Penalty'"]
   amount NUMBER(10,2) [not null]
   paymentDate TIMESTAMP [not null]
