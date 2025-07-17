@@ -179,7 +179,7 @@ Table BusSchedule {
   plannedArrivalTime TIMESTAMP [note: 'Estimated end time']
   status ENUM(Planned ,Cancelled ,Completed ,InProgress ,Pending) [default: 'Planned', note: 'Current status of this schedule']
   remarks VARCHAR2(200) [note: 'Any notes']
-  // price NUMBER(6,2) [note: '666.66']
+  expectedProfit NUMBER(8,2) [note: 'Expected profit from this trip']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
@@ -208,6 +208,7 @@ Table RouteDriverAssignmentList {
   effectiveFrom date [not null, note: 'Start date of this recurring assignment']
   effectiveTo date [note: 'End date (optional), NULL for indefinite']   
   status enum('active', 'inactive') [default: 'active', note: 'inactive when the referenced DriverListAssignment is not active'] // values: active, inactive
+  expectedProfit NUMBER(8,2) [note: 'Expected profit from this recurring assignment']
   remarks varchar(200) [note: 'Optional notes']
 }
 
@@ -231,6 +232,7 @@ Table TripStopLog {
   actualArrivalTime TIMESTAMP
   actualDepartureTime TIMESTAMP
   status VARCHAR2(20) [note: "e.g. 'Arrived', 'Skipped', 'Delayed'"]
+  remarks VARCHAR2(200) [note: 'reason for delay or skip']
 }
 
 // ============================================
