@@ -174,12 +174,12 @@ Table MaintenanceStaffAssignment {
 
 Table BusSchedule {
   BusScheduleID NUMBER(10) [pk, increment, note: 'Unique ID for each planned trip']
-  routeID NUMBER(10) [ref: > Route.routeID, not null, note: 'FK to Route']
+  routeDriverAssignmentID int [ref: > RouteDriverAssignmentList.routeDriverAssignmentID, not null, note: 'FK to RouteDriverAssignmentList']
   plannedDepartureTime TIMESTAMP [not null, note: 'When this trip starts']
   plannedArrivalTime TIMESTAMP [note: 'Estimated end time']
   status ENUM(Planned ,Cancelled ,Completed ,InProgress ,Pending) [default: 'Planned', note: 'Current status of this schedule']
   remarks VARCHAR2(200) [note: 'Any notes']
-  price NUMBER(6,2) [note: '666.66']
+  // price NUMBER(6,2) [note: '666.66']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
@@ -297,33 +297,16 @@ Table Ticket {
   ticketID NUMBER(10) [pk, increment, note: 'Unique ticket']
   BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, not null, note: 'FK to BusSchedule']
   customerID NUMBER(10) [ref: > Customer.customerID, not null, note: 'FK to Customer']
-  // -----
-  // paymentID NUMBER(10) [ref: > Payment.paymentID, note: 'FK to Payment if paid']
-  // I think we can just use the Payment table to track the payment, no need to store it here.
-  // When ticket is booked, we can create a new Payment record with the type 'BookingTicket'
-  // -----
+
   seatNo VARCHAR2(10) [note: "'Seat identifier' , e.g. BUS001-A1 [BUSNAME/ID-SeatNo]"]
   price NUMBER(8,2) [not null]
   type ENUM('regular', 'booking') [note: "e.g. 'regular' for normal purchase, 'booking' for pre-booked tickets"]
   status ENUM('Cancelled_By_Company','Cancelled_By_User','booked_extended') [default: 'null']
   cancellationDate TIMESTAMP [note: 'Date of cancellation if valid']
-  // -----
-  // refundAmount NUMBER(8, 2) [note: '`0.7 * (Payment.amount - Payment.pointApply / 100)` (70% of amount paid by customer, which is original price minus any loyalty points worth of money) if cancellation was made at least 2 days in advance; 0 refund otherwise']
-  // I think we can just use the Payment table to track the refund amount, no need to store it here.
-  // When refund is made , we can create a new Payment record with negative amount or add new column to Payment table. call it refund , call be null if not refund and when normal purchase record is created.
-  // -----
+
   extensionDate TIMESTAMP [note: 'When is the extension made']
   extendedToID NUMBER(10) [ref: > BusSchedule.BusScheduleID, note: 'FK to BusSchedule. New schedule that the ticket is extended to']
-  // -----
-  // extensionCharge NUMBER(8, 2) [note: 'If extension is made, original price + 5']
-  // I think we can just use the Payment table to track the extension charge, no need to store it here. By adding a new type in Payment table, we can track the extension charge as a separate payment record.
-  // When extension is made, we can create a new Payment record with the type 'extension_charge' 
-  // -----
-  // bookedAt TIMESTAMP [default: `CURRENT_TIMESTAMP`] 
-  // Q [muliang]: Do you mean we can book a ticket ma ?
-  // A [cookie]: It was supposed to record when a ticket bought.
-  //             I just realized that `createdAt` does exactly that.
-  // -----
+
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
