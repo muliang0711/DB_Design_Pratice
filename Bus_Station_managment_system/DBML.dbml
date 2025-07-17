@@ -89,6 +89,8 @@ Table Route {
   endPoint VARCHAR2(100) [note: 'Ending terminal / station name']
   distanceKM NUMBER(6,2) [note: 'Total distance in km']
   estimatedDuration NUMBER(10) [note: 'Typical trip duration in minutes']
+  plannedDepartureTime TIME [note: 'Typical departure time from start point']
+  plannedArrivalTime TIME [note: 'Typical arrival time at end point' ,'only have time not date']
   status ENUM(active , inactive)
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
@@ -197,11 +199,23 @@ Table BusDriver {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
+Table RouteDriverAssignmentList {
+  routeDriverAssignmentID int [pk, increment, note: 'Unique recurring assignment record']
+  routeID int [ref: > Route.routeID, not null, note: 'FK to Route']
+  assignmentID int [ref: > DriverListAssignment.assignmentID, not null, note: 'FK to DriverListAssignment']
+  frequency enum('daily', 'weekly', 'monthly') [not null, note: 'Frequency of recurrence, e.g., daily, weekly, monthly'] // values: daily, weekly, monthly
+  weekdays varchar(20) [not null, note: 'Comma-separated weekdays: 1=Mon, 7=Sun' , note: 'e.g. "1,2,3"']
+  effectiveFrom date [not null, note: 'Start date of this recurring assignment']
+  effectiveTo date [note: 'End date (optional), NULL for indefinite']   
+  status enum('active', 'inactive') [default: 'active', note: 'inactive when the referenced DriverListAssignment is not active'] // values: active, inactive
+  remarks varchar(200) [note: 'Optional notes']
+}
+
+
 Table DriverListAssignment {
   assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
   driverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
   busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
-  BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, null, note: 'FK to BusSchedule']
   assignedFrom TIMESTAMP
   assignedTo TIMESTAMP
   status ENUM(in_Active , active , not_assigned) [default: 'not_assigned', note: 'not_assigned means not assigned to any schedule yet , active means currently assigned to a schedule , in_Active means one of the bus or driver is not active but it might still have OR  not have bus schedule assigned']
