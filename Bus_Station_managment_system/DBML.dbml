@@ -175,7 +175,7 @@ Table BusSchedule {
   routeID NUMBER(10) [ref: > Route.routeID, not null, note: 'FK to Route']
   plannedDepartureTime TIMESTAMP [not null, note: 'When this trip starts']
   plannedArrivalTime TIMESTAMP [note: 'Estimated end time']
-  status ENUM(Planned ,Cancelled ,Completed , Deplay)
+  status ENUM(Planned ,Cancelled ,Completed ,InProgress ,Pending) [default: 'Planned', note: 'Current status of this schedule']
   remarks VARCHAR2(200) [note: 'Any notes']
   price NUMBER(6,2) [note: '666.66']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
@@ -197,14 +197,14 @@ Table BusDriver {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
-Table DriverAssignment {
+Table DriverListAssignment {
   assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
   driverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
   busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
-  BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, not null, note: 'FK to BusSchedule']
+  BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, null, note: 'FK to BusSchedule']
   assignedFrom TIMESTAMP
   assignedTo TIMESTAMP
-  status ENUM(in_Active , active )
+  status ENUM(in_Active , active , not_assigned) [default: 'not_assigned', note: 'not_assigned means not assigned to any schedule yet , active means currently assigned to a schedule , in_Active means one of the bus or driver is not active but it might still have OR  not have bus schedule assigned']
   remarks VARCHAR2(200)
 
   Note: 'Assigns a driver and bus to run a scheduled trip'
@@ -261,6 +261,7 @@ Table PaymentRecord {
   // I think one paymentID is enough to track the payment ? 
   // ------
   }
+
 
 
 Table PointTransaction {
