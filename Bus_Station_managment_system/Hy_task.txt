@@ -225,3 +225,15 @@ FROM ScheduleProfit
 ORDER BY routeID, scheduleID;
 
 2. Delayed Trip Root Cause Analysis Report -- find out which trip have most delays and analyze the reasons for those delays to improve scheduling.
+
+
+need a time script when the current time compare to ticket created time < 7 days (optional), then update the ticket status update to regular from booking.
+add : trigger to execute this procedural every day at midnight.
+
+CREATE OR REPLACE PROCEDURE UpdateBookingTickets IS
+BEGIN
+  UPDATE BusScheduleTicket
+  SET status = 'regular'
+  WHERE status = 'booking'
+    AND createdAt < SYSDATE - 7;
+END;
