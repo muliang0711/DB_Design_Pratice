@@ -5,17 +5,18 @@
 3. 根據 Bus ID 查出巴士的容量（即座位數）。
 4. 根據容量，用一個迴圈從 1 到 capacity 產生對應數量的車票：
    - 每張票對應一個 seatNumber。
-   - 如果班次的建立時間在最近 7 天內，票的狀態為 `booking`，否則為 `regular`。
+   - 如果班次的建立時間在最近 7 天外，票的狀態為 `booking`，否則為 `regular`。
 
 CREATE OR REPLACE PROCEDURE GenerateTicketsForBusSchedule(p_scheduleID IN NUMBER) IS
   v_assignmentID NUMBER;
   v_busID NUMBER;
   v_capacity NUMBER;
-  v_createdAt TIMESTAMP;
+  v_createdAt TIMESTAMP;、
+  v_departureTime TIMESTAMP;
 BEGIN
   -- Step 1: Get assignment ID and created date
-  SELECT rdal.assignmentID, bs.createdAt
-  INTO v_assignmentID, v_createdAt
+  SELECT rdal.assignmentID, bs.createdAt, bs.plannedDepartureTime
+  INTO v_assignmentID, v_createdAt, v_departureTime
   FROM BusSchedule bs
   JOIN RouteDriverAssignmentList rdal
     ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
@@ -33,14 +34,14 @@ BEGIN
 
   -- Step 4: Insert tickets based on capacity
   FOR i IN 1..v_capacity LOOP
-    INSERT INTO BusScheduleTicket (
-      ticketID, BusScheduleID, seatNumber, status, createdAt
+    INSERT INTO Ticket (
+      ticketID, BusScheduleID, seatNo, type, createdAt
     ) VALUES (
-      BusScheduleTicket_seq.NEXTVAL,
+      Ticket_seq.NEXTVAL,
       p_scheduleID,
-      i,
+      'BUS' || v_busID || '-' || 'A' || TO_CHAR(i),
       CASE
-        WHEN v_createdAt >= SYSDATE - 7 THEN 'booking'
+        WHEN v_departureTime > SYSDATE + 7 THEN 'booking'
         ELSE 'regular'
       END,
       SYSDATE
@@ -235,5 +236,5 @@ BEGIN
   UPDATE BusScheduleTicket
   SET status = 'regular'
   WHERE status = 'booking'
-    AND createdAt < SYSDATE - 7;
+    AND createdAt < SYSDATE - 7; 
 END;
