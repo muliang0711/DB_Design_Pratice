@@ -152,3 +152,76 @@ BEGIN
   DBMS_SCHEDULER.enable('JOB_GENERATE_BUSES');
 END;
 /
+
+we need a script to auto-update all the BusSchedule status to planned from pending when it being auto-generated.
+
+CREATE OR REPLACE PROCEDURE UpdatePendingSchedulesToPlanned IS
+  CURSOR pending_cursor IS
+    SELECT BusScheduleID
+    FROM BusSchedule
+    WHERE status = 'Pending';
+  v_scheduleID NUMBER;
+BEGIN
+  FOR rec IN pending_cursor LOOP
+    v_scheduleID := rec.BusScheduleID;
+
+    -- Update status to Planned
+    UPDATE BusSchedule
+    SET status = 'Planned',
+        updatedAt = SYSDATE
+    WHERE BusScheduleID = v_scheduleID;
+
+    DBMS_OUTPUT.PUT_LINE('Updated BusScheduleID ' || v_scheduleID || ' to Planned.');
+  END LOOP;
+END;
+
+two report : 
+1. Route Profitability and Efficiency Report -- to decide drop or keep which route
+SET PAGESIZE 1000
+SET LINESIZE 200
+COLUMN routeID FORMAT A10
+COLUMN routeName FORMAT A20
+COLUMN routeExpectedProfit FORMAT 999999.99
+COLUMN scheduleID FORMAT A12
+COLUMN scheduleExpectedProfit FORMAT 999999.99
+COLUMN cost FORMAT 9999
+COLUMN actualRevenue FORMAT 999999.99
+COLUMN actualProfit FORMAT 999999.99
+COLUMN scheduleResult FORMAT A20
+
+WITH ScheduleProfit AS (
+  SELECT
+    r.routeID,
+    r.routeName,
+    rdal.expectedProfit AS routeExpectedProfit,
+    bs.BusScheduleID AS scheduleID,
+    bs.expectedProfit AS scheduleExpectedProfit,
+    150 AS cost,
+    COALESCE(SUM(t.price), 0) AS actualRevenue,
+    (COALESCE(SUM(t.price), 0) - 150) AS actualProfit,
+    CASE 
+      WHEN (COALESCE(SUM(t.price), 0) - 150) >= bs.expectedProfit THEN '✅ Profitable'
+      ELSE ' Underperformed'
+    END AS scheduleResult,
+    ROW_NUMBER() OVER (PARTITION BY r.routeID ORDER BY bs.BusScheduleID) AS rowNum
+  FROM Route r
+  JOIN RouteDriverAssignmentList rdal ON r.routeID = rdal.routeID
+  JOIN BusSchedule bs ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+  LEFT JOIN Ticket t ON t.BusScheduleID = bs.BusScheduleID AND t.status IS NULL
+  GROUP BY r.routeID, r.routeName, rdal.expectedProfit, bs.BusScheduleID, bs.expectedProfit
+)
+
+SELECT
+  CASE WHEN rowNum = 1 THEN routeID ELSE NULL END AS routeID,
+  CASE WHEN rowNum = 1 THEN routeName ELSE NULL END AS routeName,
+  CASE WHEN rowNum = 1 THEN routeExpectedProfit ELSE NULL END AS routeExpectedProfit,
+  scheduleID,
+  scheduleExpectedProfit,
+  cost,
+  actualRevenue,
+  actualProfit,
+  scheduleResult
+FROM ScheduleProfit
+ORDER BY routeID, scheduleID;
+
+2. Delayed Trip Root Cause Analysis Report -- find out which trip have most delays and analyze the reasons for those delays to improve scheduling.
