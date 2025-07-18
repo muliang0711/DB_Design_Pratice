@@ -303,7 +303,7 @@ Table Ticket {
   seatNo VARCHAR2(10) [note: "'Seat identifier' , e.g. BUS001-A1 [BUSNAME/ID-SeatNo]"]
   price NUMBER(8,2) [not null]
   type ENUM('regular', 'booking') [note: "e.g. 'regular' for normal purchase, 'booking' for pre-booked tickets"]
-  status ENUM('Cancelled_By_Company','Cancelled_By_User','booked_extended') [default: 'null']
+  status ENUM('Cancelled_By_Company','Cancelled_By_User','booked_extended','been_bought') [default: 'null']
   cancellationDate TIMESTAMP [note: 'Date of cancellation if valid']
 
   extensionDate TIMESTAMP [note: 'When is the extension made']
