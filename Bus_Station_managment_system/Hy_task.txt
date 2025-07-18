@@ -1,53 +1,114 @@
 輸入：p_scheduleID（你要產生票的 BusScheduleID）
 
-1. 查出該 BusSchedule 對應的 Driver Assignment ID（司機任務）和建立時間。
-2. 根據 Assignment ID 查出所使用的 Bus（巴士）ID。
-3. 根據 Bus ID 查出巴士的容量（即座位數）。
-4. 根據容量，用一個迴圈從 1 到 capacity 產生對應數量的車票：
-   - 每張票對應一個 seatNumber。
-   - 如果班次的建立時間在最近 7 天外，票的狀態為 `booking`，否則為 `regular`。
+1. 查出該 BusSchedule 對應的 RouteDriverAssignmentList.assignmentID（司機任務）、
+   班次建立時間（createdAt）與預定出發時間（plannedDepartureTime）。
+
+2. 根據 assignmentID 查出對應的 DriverListAssignment → 取得 busID（該班次所使用的巴士 ID）。
+
+3. 根據 busID 查出 Bus 資料 → 取得巴士的容量（即座位數）。
+
+4. 開啟一個 nested cursor（內層游標），從 1 到 capacity，對每個座位進行以下操作：
+   - 產生座位編號（seatNo）：格式為 `BUS<busID>-A<座位號>`，例如 `BUS12-A1`
+   - 判斷出發時間（plannedDepartureTime）是否在 7 天後：
+     - 如果在 7 天後，則票的狀態為 `'booking'`
+     - 否則為 `'regular'`
+   - 將以上資訊插入 Ticket 表中（customerID 為 NULL，代表尚未購票）
+
+5. 每一張票的產生都包在 `EXCEPTION` 區塊中，以防止某些座位插入失敗導致整體程序終止。
 
 CREATE OR REPLACE PROCEDURE GenerateTicketsForBusSchedule(p_scheduleID IN NUMBER) IS
-  v_assignmentID NUMBER;
-  v_busID NUMBER;
-  v_capacity NUMBER;
-  v_createdAt TIMESTAMP;、
-  v_departureTime TIMESTAMP;
+  -- Variables
+  v_assignmentID   DriverListAssignment.assignmentID%TYPE;
+  v_busID          Bus.busID%TYPE;
+  v_capacity       Bus.capacity%TYPE;
+  v_createdAt      BusSchedule.createdAt%TYPE;
+  v_departureTime  BusSchedule.plannedDepartureTime%TYPE;
+
+  -- Cursor to simulate step-by-step extraction
+  CURSOR c_schedule IS
+    SELECT rdal.assignmentID, bs.createdAt, bs.plannedDepartureTime
+    FROM BusSchedule bs
+    JOIN RouteDriverAssignmentList rdal
+      ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+    WHERE bs.BusScheduleID = p_scheduleID;
+
+  -- Cursor to simulate ticket generation for each seat
+  CURSOR c_seatCapacity(p_capacity NUMBER) IS
+    SELECT LEVEL AS seat_no FROM dual CONNECT BY LEVEL <= p_capacity;
+
 BEGIN
-  -- Step 1: Get assignment ID and created date
-  SELECT rdal.assignmentID, bs.createdAt, bs.plannedDepartureTime
-  INTO v_assignmentID, v_createdAt, v_departureTime
-  FROM BusSchedule bs
-  JOIN RouteDriverAssignmentList rdal
-    ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
-  WHERE bs.BusScheduleID = p_scheduleID;
+  -- Outer cursor (simulate scan)
+  FOR sched IN c_schedule LOOP
+    BEGIN
+      -- Step 1: Save values
+      v_assignmentID := sched.assignmentID;
+      v_createdAt := sched.createdAt;
+      v_departureTime := sched.plannedDepartureTime;
 
-  -- Step 2: Get bus ID
-  SELECT busID INTO v_busID
-  FROM DriverListAssignment
-  WHERE assignmentID = v_assignmentID;
+      -- Step 2: Lookup busID from DriverListAssignment
+      BEGIN
+        SELECT busID INTO v_busID
+        FROM DriverListAssignment
+        WHERE assignmentID = v_assignmentID;
+      EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+          DBMS_OUTPUT.PUT_LINE('No assignment found for assignmentID: ' || v_assignmentID);
+          RETURN;
+        WHEN OTHERS THEN
+          DBMS_OUTPUT.PUT_LINE('Error getting busID: ' || SQLERRM);
+          RETURN;
+      END;
 
-  -- Step 3: Get bus capacity
-  SELECT capacity INTO v_capacity
-  FROM Bus
-  WHERE busID = v_busID;
+      -- Step 3: Get bus capacity
+      BEGIN
+        SELECT capacity INTO v_capacity
+        FROM Bus
+        WHERE busID = v_busID;
+      EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+          DBMS_OUTPUT.PUT_LINE('No bus found for busID: ' || v_busID);
+          RETURN;
+        WHEN OTHERS THEN
+          DBMS_OUTPUT.PUT_LINE('Error getting bus capacity: ' || SQLERRM);
+          RETURN;
+      END;
 
-  -- Step 4: Insert tickets based on capacity
-  FOR i IN 1..v_capacity LOOP
-    INSERT INTO Ticket (
-      ticketID, BusScheduleID, seatNo, type, createdAt
-    ) VALUES (
-      Ticket_seq.NEXTVAL,
-      p_scheduleID,
-      'BUS' || v_busID || '-' || 'A' || TO_CHAR(i),
-      CASE
-        WHEN v_departureTime > SYSDATE + 7 THEN 'booking'
-        ELSE 'regular'
-      END,
-      SYSDATE
-    );
+      -- Step 4: Loop through each seat using nested cursor
+      FOR seat IN c_seatCapacity(v_capacity) LOOP
+        BEGIN
+          INSERT INTO Ticket (
+            ticketID, BusScheduleID, customerID, seatNo, type, createdAt
+          ) VALUES (
+            Ticket_seq.NEXTVAL,
+            p_scheduleID,
+            NULL, -- No customer assigned yet
+            'BUS' || v_busID || '-A' || TO_CHAR(seat.seat_no),
+            CASE
+              WHEN v_departureTime > SYSDATE + 7 THEN 'booking'
+              ELSE 'regular'
+            END,
+            SYSDATE
+          );
+        EXCEPTION
+          WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Failed to insert ticket for seat ' || seat.seat_no || ': ' || SQLERRM);
+        END;
+      END LOOP;
+
+      DBMS_OUTPUT.PUT_LINE('Tickets generated for BusScheduleID: ' || p_scheduleID);
+    EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('General error during schedule processing: ' || SQLERRM);
+    END;
   END LOOP;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in outer block: ' || SQLERRM);
 END;
+/
+
+
 /
 CREATE OR REPLACE TRIGGER trg_create_tickets_on_planned
 AFTER UPDATE OF status ON BusSchedule
@@ -73,66 +134,136 @@ END;
 
 輸入：daysAhead（往後幾天，自動產生的班次數）
 
-1. 開一個游標讀取所有啟用狀態（status = active）的 RouteDriverAssignmentList。
+1. 開一個游標讀取所有啟用狀態（status = 'active'）的 RouteDriverAssignmentList，
+   並且 JOIN Route 以取得原始的出發與抵達時間，
+   JOIN DriverListAssignment 以取得對應的 driverID 和其 assign 時間範圍（assignedFrom / assignedTo）。
+
 2. 對於今天起接下來的每一天（0 到 daysAhead）：
-   - 檢查當天的星期幾是否包含在該重複排班的 weekdays 中。
-   - 檢查當天是否在 effectiveFrom ~ effectiveTo 的有效期內。
-   - 如果符合條件：
-     - 根據該天的日期 + 原設定的出發與抵達時間，建立完整的時間戳。
-     - 檢查是否已有重複的 BusSchedule（用 routeDriverAssignmentID + plannedDepartureTime 當唯一鍵），避免重複插入。
-     - 若沒有，插入一筆新的 BusSchedule，狀態設為 `Pending`，說明為 `Auto-generated`。
+   - 取出今天的星期幾（1=星期日，依據 NLS_TERRITORY 而定）
+   - 檢查當天的星期幾是否包含在該排班的 weekdays 設定中。
+   - 檢查當天是否在該 RouteDriverAssignment 的有效期間（effectiveFrom ~ effectiveTo）內。
+   - 檢查當天是否在該 driver 的指派期間（assignedFrom ~ assignedTo）內。
+     → 若不在指派期間，跳過該筆資料（該天未被指派）。
+
+3. 如果以上條件都符合：
+   - 根據該天的日期 + 原始設定的出發與抵達時間，組成完整的 timestamp。
+     例如：2025-07-20 + 08:00 → 2025-07-20 08:00:00
+   - 檢查是否已有重複的 BusSchedule（以 routeDriverAssignmentID + plannedDepartureTime 為唯一鍵）。
+     → 若已存在，跳過不處理。
+   - 若沒有重複：
+     - 插入一筆新的 BusSchedule。
+     - 設定狀態為 `Pending`。
+     - 說明（remarks）填入 `Auto-generated by recurring assignment`。
 
 CREATE OR REPLACE PROCEDURE GenerateBusSchedulesFromRecurring(daysAhead IN NUMBER) IS
-  CURSOR recurring_cursor IS
-    SELECT rdal.*, r.plannedDepartureTime, r.plannedArrivalTime
+  -- Outer cursor: active recurring assignments + route time + driver ID
+  CURSOR c_recurring IS
+    SELECT 
+      rdal.*, 
+      r.plannedDepartureTime, 
+      r.plannedArrivalTime, 
+      dla.driverID
     FROM RouteDriverAssignmentList rdal
     JOIN Route r ON r.routeID = rdal.routeID
+    JOIN DriverListAssignment dla ON rdal.assignmentID = dla.assignmentID
     WHERE rdal.status = 'active';
 
-  v_date DATE;
-  v_weekday VARCHAR2(1);
-  v_dep TIMESTAMP;
-  v_arr TIMESTAMP;
+  -- Nested cursor: check if driver is assigned to bus on that date
+  CURSOR c_driverCheck(p_driverID NUMBER, p_date DATE) IS
+    SELECT assignmentID
+    FROM DriverListAssignment
+    WHERE driverID = p_driverID
+      AND TRUNC(p_date) BETWEEN TRUNC(assignedFrom) AND TRUNC(NVL(assignedTo, p_date));
+
+  -- Variables
+  v_date       DATE;
+  v_weekday    VARCHAR2(1);
+  v_dep        TIMESTAMP;
+  v_arr        TIMESTAMP;
+  rec          c_recurring%ROWTYPE;
+  v_exists     NUMBER;
+  v_dummy      DriverListAssignment.assignmentID%TYPE;
+
 BEGIN
   FOR i IN 0 .. daysAhead LOOP
-    v_date := TRUNC(SYSDATE) + i; -- today + i
-    v_weekday := TO_CHAR(v_date, 'D'); -- weekday as string (1-7, depends on NLS)
+    BEGIN
+      v_date := TRUNC(SYSDATE) + i;
+      v_weekday := TO_CHAR(v_date, 'D'); -- 1 = Sunday (depends on NLS_TERRITORY)
 
-    FOR rec IN recurring_cursor LOOP
-      -- Check if this date is in assignment range and weekday matches
-      IF v_date BETWEEN rec.effectiveFrom AND NVL(rec.effectiveTo, v_date)
-         AND INSTR(',' || rec.weekdays || ',', ',' || v_weekday || ',') > 0 THEN
+      OPEN c_recurring;
+      LOOP
+        FETCH c_recurring INTO rec;
+        EXIT WHEN c_recurring%NOTFOUND;
 
-        -- Construct full timestamp for departure and arrival
-        v_dep := TO_TIMESTAMP(TO_CHAR(v_date, 'YYYY-MM-DD') || ' ' || TO_CHAR(rec.plannedDepartureTime, 'HH24:MI'), 'YYYY-MM-DD HH24:MI');
-        v_arr := TO_TIMESTAMP(TO_CHAR(v_date, 'YYYY-MM-DD') || ' ' || TO_CHAR(rec.plannedArrivalTime, 'HH24:MI'), 'YYYY-MM-DD HH24:MI');
+        BEGIN
+          -- Check weekday match and effective date range
+          IF v_date BETWEEN rec.effectiveFrom AND NVL(rec.effectiveTo, v_date)
+             AND INSTR(',' || rec.weekdays || ',', ',' || v_weekday || ',') > 0 THEN
 
-        -- Avoid duplicate entries by routeDriverAssignmentID + plannedDepartureTime
-        IF NOT EXISTS (
-          SELECT 1 FROM BusSchedule
-          WHERE routeDriverAssignmentID = rec.routeDriverAssignmentID
-            AND plannedDepartureTime = v_dep
-        ) THEN
-          INSERT INTO BusSchedule (
-            BusScheduleID, routeDriverAssignmentID, plannedDepartureTime, plannedArrivalTime,
-            status, remarks, createdAt, updatedAt
-          ) VALUES (
-            BusSchedule_seq.NEXTVAL,
-            rec.routeDriverAssignmentID,
-            v_dep,
-            v_arr,
-            'Pending', -- Initial status
-            'Auto-generated by recurring assignment',
-            SYSDATE,
-            SYSDATE
-          );
-        END IF;
+            -- Construct full timestamps for departure and arrival
+            v_dep := TO_TIMESTAMP(TO_CHAR(v_date, 'YYYY-MM-DD') || ' ' || TO_CHAR(rec.plannedDepartureTime, 'HH24:MI'), 'YYYY-MM-DD HH24:MI');
+            v_arr := TO_TIMESTAMP(TO_CHAR(v_date, 'YYYY-MM-DD') || ' ' || TO_CHAR(rec.plannedArrivalTime, 'HH24:MI'), 'YYYY-MM-DD HH24:MI');
 
-      END IF;
-    END LOOP;
+            -- ✅ Check if the driver IS assigned to the bus on this day
+            OPEN c_driverCheck(rec.driverID, v_date);
+            FETCH c_driverCheck INTO v_dummy;
+            IF NOT c_driverCheck%FOUND THEN
+              DBMS_OUTPUT.PUT_LINE('Driver ' || rec.driverID || ' is not assigned to any bus on ' || TO_CHAR(v_date));
+              CLOSE c_driverCheck;
+              CONTINUE; -- Skip this assignment
+            END IF;
+            CLOSE c_driverCheck;
+
+            -- Check for existing schedule (avoid duplicates)
+            SELECT COUNT(*) INTO v_exists
+            FROM BusSchedule
+            WHERE routeDriverAssignmentID = rec.routeDriverAssignmentID
+              AND plannedDepartureTime = v_dep;
+
+            -- Insert new schedule if not exists
+            IF v_exists = 0 THEN
+              INSERT INTO BusSchedule (
+                BusScheduleID, routeDriverAssignmentID, plannedDepartureTime, plannedArrivalTime,
+                status, remarks, createdAt, updatedAt
+              ) VALUES (
+                BusSchedule_seq.NEXTVAL,
+                rec.routeDriverAssignmentID,
+                v_dep,
+                v_arr,
+                'Pending',
+                'Auto-generated by recurring assignment',
+                SYSDATE,
+                SYSDATE
+              );
+              DBMS_OUTPUT.PUT_LINE('✅ Inserted BusSchedule on ' || TO_CHAR(v_dep, 'YYYY-MM-DD HH24:MI'));
+            ELSE
+              DBMS_OUTPUT.PUT_LINE('⚠️ Duplicate found for ' || TO_CHAR(v_dep, 'YYYY-MM-DD HH24:MI'));
+            END IF;
+
+          END IF;
+
+        EXCEPTION
+          WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('❌ Error in assignment ID ' || rec.routeDriverAssignmentID || ': ' || SQLERRM);
+        END;
+
+      END LOOP;
+      CLOSE c_recurring;
+
+    EXCEPTION
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('❌ Error processing day ' || TO_CHAR(v_date, 'YYYY-MM-DD') || ': ' || SQLERRM);
+    END;
   END LOOP;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('🚨 Unexpected error in procedure: ' || SQLERRM);
 END;
 /
+
+
+
 
 Trigger : auto generate BusSchedules from recurring assignments
 
