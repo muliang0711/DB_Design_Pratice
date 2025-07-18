@@ -110,15 +110,6 @@ END;
 
 
 /
-CREATE OR REPLACE TRIGGER trg_create_tickets_on_planned
-AFTER UPDATE OF status ON BusSchedule
-FOR EACH ROW
-WHEN (OLD.status = 'Pending' AND NEW.status = 'Planned')
-BEGIN
-  GenerateTicketsForBusSchedule(:NEW.BusScheduleID);
-END;
-/
-
 Trigger : detect when a BusSchedule is set to Planned and auto-generate tickets.
 
 CREATE OR REPLACE TRIGGER trg_create_tickets_on_planned
@@ -126,7 +117,6 @@ AFTER UPDATE OF status ON BusSchedule
 FOR EACH ROW
 WHEN (OLD.status = 'Pending' AND NEW.status = 'Planned')
 BEGIN
-  -- Call the stored procedure to generate tickets
   GenerateTicketsForBusSchedule(:NEW.BusScheduleID);
 END;
 /
@@ -204,7 +194,7 @@ BEGIN
             v_dep := TO_TIMESTAMP(TO_CHAR(v_date, 'YYYY-MM-DD') || ' ' || TO_CHAR(rec.plannedDepartureTime, 'HH24:MI'), 'YYYY-MM-DD HH24:MI');
             v_arr := TO_TIMESTAMP(TO_CHAR(v_date, 'YYYY-MM-DD') || ' ' || TO_CHAR(rec.plannedArrivalTime, 'HH24:MI'), 'YYYY-MM-DD HH24:MI');
 
-            -- ✅ Check if the driver IS assigned to the bus on this day
+            -- Check if the driver IS assigned to the bus on this day
             OPEN c_driverCheck(rec.driverID, v_date);
             FETCH c_driverCheck INTO v_dummy;
             IF NOT c_driverCheck%FOUND THEN
@@ -235,16 +225,16 @@ BEGIN
                 SYSDATE,
                 SYSDATE
               );
-              DBMS_OUTPUT.PUT_LINE('✅ Inserted BusSchedule on ' || TO_CHAR(v_dep, 'YYYY-MM-DD HH24:MI'));
+              DBMS_OUTPUT.PUT_LINE('Inserted BusSchedule on ' || TO_CHAR(v_dep, 'YYYY-MM-DD HH24:MI'));
             ELSE
-              DBMS_OUTPUT.PUT_LINE('⚠️ Duplicate found for ' || TO_CHAR(v_dep, 'YYYY-MM-DD HH24:MI'));
+              DBMS_OUTPUT.PUT_LINE('Duplicate found for ' || TO_CHAR(v_dep, 'YYYY-MM-DD HH24:MI'));
             END IF;
 
           END IF;
 
         EXCEPTION
           WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('❌ Error in assignment ID ' || rec.routeDriverAssignmentID || ': ' || SQLERRM);
+            DBMS_OUTPUT.PUT_LINE('Error in assignment ID ' || rec.routeDriverAssignmentID || ': ' || SQLERRM);
         END;
 
       END LOOP;
@@ -252,13 +242,13 @@ BEGIN
 
     EXCEPTION
       WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('❌ Error processing day ' || TO_CHAR(v_date, 'YYYY-MM-DD') || ': ' || SQLERRM);
+        DBMS_OUTPUT.PUT_LINE('Error processing day ' || TO_CHAR(v_date, 'YYYY-MM-DD') || ': ' || SQLERRM);
     END;
   END LOOP;
 
 EXCEPTION
   WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE('🚨 Unexpected error in procedure: ' || SQLERRM);
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in procedure: ' || SQLERRM);
 END;
 /
 
@@ -309,54 +299,343 @@ END;
 
 two report : 
 1. Route Profitability and Efficiency Report -- to decide drop or keep which route
-SET PAGESIZE 1000
-SET LINESIZE 200
-COLUMN routeID FORMAT A10
-COLUMN routeName FORMAT A20
-COLUMN routeExpectedProfit FORMAT 999999.99
-COLUMN scheduleID FORMAT A12
-COLUMN scheduleExpectedProfit FORMAT 999999.99
-COLUMN cost FORMAT 9999
-COLUMN actualRevenue FORMAT 999999.99
-COLUMN actualProfit FORMAT 999999.99
-COLUMN scheduleResult FORMAT A20
 
-WITH ScheduleProfit AS (
-  SELECT
-    r.routeID,
-    r.routeName,
-    rdal.expectedProfit AS routeExpectedProfit,
-    bs.BusScheduleID AS scheduleID,
-    bs.expectedProfit AS scheduleExpectedProfit,
-    150 AS cost,
-    COALESCE(SUM(t.price), 0) AS actualRevenue,
-    (COALESCE(SUM(t.price), 0) - 150) AS actualProfit,
-    CASE 
-      WHEN (COALESCE(SUM(t.price), 0) - 150) >= bs.expectedProfit THEN '✅ Profitable'
-      ELSE ' Underperformed'
-    END AS scheduleResult,
-    ROW_NUMBER() OVER (PARTITION BY r.routeID ORDER BY bs.BusScheduleID) AS rowNum
-  FROM Route r
-  JOIN RouteDriverAssignmentList rdal ON r.routeID = rdal.routeID
-  JOIN BusSchedule bs ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
-  LEFT JOIN Ticket t ON t.BusScheduleID = bs.BusScheduleID AND t.status IS NULL
-  GROUP BY r.routeID, r.routeName, rdal.expectedProfit, bs.BusScheduleID, bs.expectedProfit
-)
+輸入：無
+輸出：列印每條 Route 下的 BusSchedule 與利潤表現報告
 
-SELECT
-  CASE WHEN rowNum = 1 THEN routeID ELSE NULL END AS routeID,
-  CASE WHEN rowNum = 1 THEN routeName ELSE NULL END AS routeName,
-  CASE WHEN rowNum = 1 THEN routeExpectedProfit ELSE NULL END AS routeExpectedProfit,
-  scheduleID,
-  scheduleExpectedProfit,
-  cost,
-  actualRevenue,
-  actualProfit,
-  scheduleResult
-FROM ScheduleProfit
-ORDER BY routeID, scheduleID;
+1. 開啟外層游標：取得所有 Route 資料
+   - routeID, routeName
 
-2. Delayed Trip Root Cause Analysis Report -- find out which trip have most delays and analyze the reasons for those delays to improve scheduling.
+2. 對於每個 routeID 開啟內層游標：抓取該路線下的 BusSchedules
+   - 利用 RouteDriverAssignmentList 找出 routeDriverAssignmentID
+   - 找到 BusSchedule 並 JOIN Ticket 計算實際營收與利潤 When 
+   - Ticket.status = 'been_bought'
+   - Ticket.customerID IS NOT NULL
+
+3. 對於每筆 BusSchedule：
+   - 計算 SUM(price)、profit = revenue - 150
+   - 與 expectedProfit 比較 → 決定結果（Profitable / Underperformed）
+
+4. 模擬分組顯示：若為新的 route 才印出 route 資訊
+
+5. 資料格式化輸出（使用 RPAD 與 TO_CHAR 對齊欄位）：
+   欄位包含：
+   - routeID
+   - routeName
+   - routeExpectedProfit
+   - scheduleID
+   - scheduleExpectedProfit
+   - cost（固定 150）
+   - actualRevenue（總票價）
+   - actualProfit（實際利潤）
+   - scheduleResult（Profitable 或 Underperformed）
+
+
+CREATE OR REPLACE PROCEDURE ReportRouteScheduleProfit_Nested IS
+  -- Variable to track previous routeID
+  v_lastRouteID Route.routeID%TYPE := NULL;
+
+  -- Outer cursor: All routes
+  CURSOR c_routes IS
+    SELECT routeID, routeName FROM Route ORDER BY routeID;
+
+  -- Inner cursor: BusSchedules under a specific route (only count sold tickets)
+  CURSOR c_schedules(p_routeID Route.routeID%TYPE) IS
+    SELECT 
+      bs.BusScheduleID,
+      rdal.expectedProfit AS routeExpectedProfit,
+      bs.expectedProfit AS scheduleExpectedProfit,
+      COALESCE(SUM(t.price), 0) AS actualRevenue
+    FROM RouteDriverAssignmentList rdal
+    JOIN BusSchedule bs ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+    LEFT JOIN Ticket t 
+      ON t.BusScheduleID = bs.BusScheduleID 
+     AND t.status = 'been_bought'
+     AND t.customerID IS NOT NULL  --  Only include sold tickets
+    WHERE rdal.routeID = p_routeID
+    GROUP BY bs.BusScheduleID, rdal.expectedProfit, bs.expectedProfit
+    ORDER BY bs.BusScheduleID;
+
+  -- Constants
+  v_cost CONSTANT NUMBER := 150;
+
+BEGIN
+  DBMS_OUTPUT.PUT_LINE(
+    RPAD('RouteID', 10) || RPAD('RouteName', 20) || RPAD('RouteProfit', 14) ||
+    RPAD('ScheduleID', 12) || RPAD('ScheduleProfit', 16) || RPAD('Cost', 6) ||
+    RPAD('Revenue', 10) || RPAD('Profit', 10) || RPAD('Result', 15)
+  );
+
+  FOR route_rec IN c_routes LOOP
+    FOR sched_rec IN c_schedules(route_rec.routeID) LOOP
+      -- Calculate profit and result
+      DECLARE
+        v_profit NUMBER;
+        v_result VARCHAR2(20);
+      BEGIN
+        v_profit := sched_rec.actualRevenue - v_cost;
+        IF v_profit >= sched_rec.scheduleExpectedProfit THEN
+          v_result := 'Profitable';
+        ELSE
+          v_result := 'Underperformed';
+        END IF;
+
+        -- Print route info only once
+        IF v_lastRouteID IS NULL OR v_lastRouteID != route_rec.routeID THEN
+          DBMS_OUTPUT.PUT_LINE(
+            RPAD(route_rec.routeID, 10) ||
+            RPAD(route_rec.routeName, 20) ||
+            RPAD(TO_CHAR(sched_rec.routeExpectedProfit, '999999.99'), 14)
+          );
+          v_lastRouteID := route_rec.routeID;
+        ELSE
+          DBMS_OUTPUT.PUT_LINE(RPAD(' ', 44)); -- skip repeating route info
+        END IF;
+
+        -- Print schedule info
+        DBMS_OUTPUT.PUT_LINE(
+          RPAD(sched_rec.BusScheduleID, 12) ||
+          RPAD(TO_CHAR(sched_rec.scheduleExpectedProfit, '999999.99'), 16) ||
+          RPAD(TO_CHAR(v_cost), 6) ||
+          RPAD(TO_CHAR(sched_rec.actualRevenue, '999999.99'), 10) ||
+          RPAD(TO_CHAR(v_profit, '999999.99'), 10) ||
+          RPAD(v_result, 15)
+        );
+      END;
+    END LOOP;
+  END LOOP;
+END;
+/
+
+
+
+2. Delayed Trip Root Cause Analysis Report -- accept a router id as input and check the related bus schedules delay count to find out on which day(bus schedule) the delay happened most frequently. range in month ;
+
+📄 報告名稱：路線班次延遲與跳站分析報告（智慧型彙總版本）
+
+輸入參數：
+- routeID（欲分析的單一路線 ID）
+
+輸出內容（分為兩個區塊）：
+────────────────────────────────────────────
+【Report A】路線延遲與跳站摘要
+
+統計指標：
+- 路線名稱（routeName）：由 Route 表查得
+- 總班次數（totalSchedules）
+- 有延遲紀錄的班次數（delayedSchedules）
+- 跳站總次數（總共多少筆 Skipped 記錄）
+- 最常見的延遲原因（Top Delay Reason）
+- 最常見的跳站原因（Top Skip Reason）
+
+資料來源：
+- BusSchedule（根據 routeID 查所有班次）
+- TripStopLog（透過 BusScheduleID 取得每筆班次的行車紀錄）
+  - status = 'Delayed' 表示該站點延遲
+  - status = 'Skipped' 表示該站點跳站
+────────────────────────────────────────────
+【Report B】延遲 / 跳站最嚴重的 Top 5 班次明細
+
+排序條件：
+- 根據 (delayCount + skipCount) 加總由高到低排序
+
+每筆班次需列出：
+- BusScheduleID
+- 延遲次數（delayCount）
+- 跳站次數（skipCount）
+- 延遲總時長（delayTotalMinutes）
+- 延遲與跳站原因摘要（remarks）：由 TripStopLog.remark 串接整理
+
+最多顯示 5 筆記錄
+
+────────────────────────────────────────────
+🧭 資料流程邏輯說明：
+
+Step 1：查詢輸入 routeID 對應的 routeName
+- 由 Route 表取得 routeName
+
+Step 2：彙總此路線下所有 BusSchedule 資料
+- 計算：
+  - totalSchedules（班次總數）
+  - delayedSchedules（至少有一筆 TripStopLog status = 'Delayed' 的班次數）
+  - 總跳站次數（TripStopLog status = 'Skipped' 的總筆數）
+  - 出現頻率最高的 delay reason 與 skip reason（GROUP BY remark）
+
+Step 3：逐筆處理所有 BusSchedule 班次
+- 查詢 TripStopLog，條件為：TripStopLog.BusScheduleID = 當前班次 ID
+- 統計：
+  - 延遲次數 delayCount（status = 'Delayed'）
+  - 跳站次數 skipCount（status = 'Skipped'）
+  - 延遲總時長 delayTotalMinutes（actualDepartureTime - actualArrivalTime 累加）
+  - 備註 remark 字串合併（收集所有與延遲 / 跳站有關的文字說明）
+
+Step 4：排序找出前五名嚴重班次
+- 根據 (delayCount + skipCount) 降序排序
+- 最多取出前 5 筆，作為 Report B 輸出
+
+Step 5：資料格式整理與輸出
+- 結果可依照 BusScheduleID 排序
+- 字段使用 TO_CHAR、RPAD 等對齊格式處理
+
+CREATE OR REPLACE PROCEDURE GenerateSmartDelayReport_CursorStyle(
+  p_routeID IN NUMBER
+) IS
+  -- Route Info
+  CURSOR c_route IS
+    SELECT routeID, routeName FROM Route WHERE routeID = p_routeID;
+
+  -- Schedule Info
+  CURSOR c_schedule(p_routeID NUMBER) IS
+    SELECT bs.BusScheduleID, TRUNC(bs.plannedDepartureTime) AS schedDate
+    FROM BusSchedule bs
+    JOIN RouteDriverAssignmentList rdal
+      ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+    WHERE rdal.routeID = p_routeID;
+
+  -- Delay/Skip Log
+  CURSOR c_tripLog(p_scheduleID NUMBER) IS
+    SELECT status, remarks,
+           ROUND((actualDepartureTime - actualArrivalTime) * 24 * 60) AS duration
+    FROM TripStopLog
+    WHERE BusScheduleID = p_scheduleID;
+
+  -- Variables
+  v_routeID Route.routeID%TYPE;
+  v_routeName Route.routeName%TYPE;
+  v_schedID BusSchedule.BusScheduleID%TYPE;
+  v_schedDate DATE;
+  v_delayCount NUMBER;
+  v_skipCount NUMBER;
+  v_delayMins NUMBER;
+  v_delayReasons CLOB;
+  v_skipReasons CLOB;
+  v_index NUMBER := 0;
+
+  -- Summary
+  v_totalSchedules NUMBER := 0;
+  v_totalDelayedSchedules NUMBER := 0;
+  v_totalSkippedStops NUMBER := 0;
+  v_topDelayReason VARCHAR2(200);
+  v_topSkipReason VARCHAR2(200);
+
+BEGIN
+  -- ===== ROUTE VALIDATION =====
+  OPEN c_route;
+  FETCH c_route INTO v_routeID, v_routeName;
+  IF c_route%NOTFOUND THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Invalid route ID: ' || p_routeID);
+    RETURN;
+  END IF;
+  CLOSE c_route;
+
+  -- ===== Summary Counts =====
+  SELECT COUNT(*) INTO v_totalSchedules
+  FROM BusSchedule bs
+  JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+  WHERE rdal.routeID = p_routeID;
+
+  SELECT COUNT(DISTINCT tsl.BusScheduleID)
+  INTO v_totalDelayedSchedules
+  FROM TripStopLog tsl
+  JOIN BusSchedule bs ON tsl.BusScheduleID = bs.BusScheduleID
+  JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+  WHERE rdal.routeID = p_routeID AND tsl.status = 'Delayed';
+
+  SELECT COUNT(*)
+  INTO v_totalSkippedStops
+  FROM TripStopLog tsl
+  JOIN BusSchedule bs ON tsl.BusScheduleID = bs.BusScheduleID
+  JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+  WHERE rdal.routeID = p_routeID AND tsl.status = 'Skipped';
+
+  BEGIN
+    SELECT remarks INTO v_topDelayReason
+    FROM (
+      SELECT remarks FROM TripStopLog tsl
+      JOIN BusSchedule bs ON tsl.BusScheduleID = bs.BusScheduleID
+      JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+      WHERE rdal.routeID = p_routeID AND tsl.status = 'Delayed' AND remarks IS NOT NULL
+      GROUP BY remarks ORDER BY COUNT(*) DESC
+    ) WHERE ROWNUM = 1;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      v_topDelayReason := 'N/A';
+  END;
+
+  BEGIN
+    SELECT remarks INTO v_topSkipReason
+    FROM (
+      SELECT remarks FROM TripStopLog tsl
+      JOIN BusSchedule bs ON tsl.BusScheduleID = bs.BusScheduleID
+      JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+      WHERE rdal.routeID = p_routeID AND tsl.status = 'Skipped' AND remarks IS NOT NULL
+      GROUP BY remarks ORDER BY COUNT(*) DESC
+    ) WHERE ROWNUM = 1;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      v_topSkipReason := 'N/A';
+  END;
+
+  -- ===== OUTPUT HEADER =====
+  DBMS_OUTPUT.PUT_LINE('Route Summary');
+  DBMS_OUTPUT.PUT_LINE('-------------');
+  DBMS_OUTPUT.PUT_LINE('Route ID           : ' || v_routeID);
+  DBMS_OUTPUT.PUT_LINE('Route Name         : ' || v_routeName);
+  DBMS_OUTPUT.PUT_LINE('Total Schedules    : ' || v_totalSchedules);
+  DBMS_OUTPUT.PUT_LINE('Delayed Schedules  : ' || v_totalDelayedSchedules);
+  DBMS_OUTPUT.PUT_LINE('Skipped Stops      : ' || v_totalSkippedStops);
+  DBMS_OUTPUT.PUT_LINE('Top Delay Reason   : ' || v_topDelayReason);
+  DBMS_OUTPUT.PUT_LINE('Top Skip Reason    : ' || v_topSkipReason);
+  DBMS_OUTPUT.PUT_LINE('');
+
+  -- ===== TOP 5 DETAILED =====
+  DBMS_OUTPUT.PUT_LINE('Top 5 Problematic BusSchedules');
+  DBMS_OUTPUT.PUT_LINE('-------------------------------');
+
+  OPEN c_schedule(p_routeID);
+  LOOP
+    FETCH c_schedule INTO v_schedID, v_schedDate;
+    EXIT WHEN c_schedule%NOTFOUND;
+
+    -- reset counters
+    v_delayCount := 0;
+    v_skipCount := 0;
+    v_delayMins := 0;
+    v_delayReasons := '';
+    v_skipReasons := '';
+
+    FOR logRec IN c_tripLog(v_schedID) LOOP
+      IF logRec.status = 'Delayed' THEN
+        v_delayCount := v_delayCount + 1;
+        v_delayMins := v_delayMins + NVL(logRec.duration, 0);
+        v_delayReasons := v_delayReasons || NVL(logRec.remarks, '') || '; ';
+      ELSIF logRec.status = 'Skipped' THEN
+        v_skipCount := v_skipCount + 1;
+        v_skipReasons := v_skipReasons || NVL(logRec.remarks, '') || '; ';
+      END IF;
+    END LOOP;
+
+    -- Only show if there's a problem
+    IF v_delayCount + v_skipCount > 0 AND v_index < 5 THEN
+      v_index := v_index + 1;
+      DBMS_OUTPUT.PUT_LINE('Schedule ID     : ' || v_schedID);
+      DBMS_OUTPUT.PUT_LINE('Departure Date  : ' || TO_CHAR(v_schedDate, 'YYYY-MM-DD'));
+      DBMS_OUTPUT.PUT_LINE('Delay Count     : ' || v_delayCount);
+      DBMS_OUTPUT.PUT_LINE('Skip Count      : ' || v_skipCount);
+      DBMS_OUTPUT.PUT_LINE('Delay Minutes   : ' || v_delayMins);
+      DBMS_OUTPUT.PUT_LINE('Delay Reasons   : ' || v_delayReasons);
+      DBMS_OUTPUT.PUT_LINE('Skip Reasons    : ' || v_skipReasons);
+      DBMS_OUTPUT.PUT_LINE('---------------------------------------------');
+    END IF;
+  END LOOP;
+  CLOSE c_schedule;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+END;
+/
+
 
 
 need a time script when the current time compare to ticket created time < 7 days (optional), then update the ticket status update to regular from booking.
