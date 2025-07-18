@@ -298,7 +298,7 @@ Table PointTransaction {
 Table Ticket {
   ticketID NUMBER(10) [pk, increment, note: 'Unique ticket']
   BusScheduleID NUMBER(10) [ref: > BusSchedule.BusScheduleID, not null, note: 'FK to BusSchedule']
-  customerID NUMBER(10) [ref: > Customer.customerID, not null, note: 'FK to Customer']
+  customerID NUMBER(10) [ref: > Customer.customerID, null, note: 'FK to Customer']
 
   seatNo VARCHAR2(10) [note: "'Seat identifier' , e.g. BUS001-A1 [BUSNAME/ID-SeatNo]"]
   price NUMBER(8,2) [not null]
