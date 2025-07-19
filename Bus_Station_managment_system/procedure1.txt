@@ -1,0 +1,78 @@
+CREATE OR REPLACE PROCEDURE prc_show_rentals IS
+  -- Declare outer variables
+  v_shopID  Shop.shopID%TYPE;
+  v_staffID RentalCollection.staffID%TYPE;
+  v_date    RentalCollection.collectionDate%TYPE;
+  v_amount  RentalCollection.rentalAmount%TYPE;
+  v_total   NUMBER;
+  v_count   NUMBER;
+
+  -- Cursor to list all shops
+  CURSOR shopCursor IS
+    SELECT shopID
+    FROM Shop
+    WHERE status = 'Occupied'
+    ORDER BY shopID;
+
+  -- Declare and open nested cursor for this shop
+  CURSOR rentCursor IS
+     SELECT staffID, collectionDate, rentalAmount
+     FROM RentalCollection
+     WHERE shopID = v_shopID
+     ORDER BY collectionDate;
+
+BEGIN
+  OPEN shopCursor;
+
+  LOOP
+    FETCH shopCursor INTO v_shopID;
+    EXIT WHEN shopCursor%NOTFOUND;
+
+    -- Reset totals per shop
+    v_total := 0;
+    v_count := 0;
+
+    -- Print shop header
+    DBMS_OUTPUT.PUT_LINE(CHR(10));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE('Shop Rental Record for Shop ID: ' || v_shopID);
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE(RPAD('Shop ID', 10) || RPAD('Staff ID', 10) || RPAD('Date', 15) || RPAD('Amount', 12));
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 57, '-'));
+
+    BEGIN
+      OPEN rentCursor;
+      LOOP
+        FETCH rentCursor INTO v_staffID, v_date, v_amount;
+        EXIT WHEN rentCursor%NOTFOUND;
+
+        v_total := v_total + v_amount;
+        v_count := v_count + 1;
+
+        DBMS_OUTPUT.PUT_LINE(
+          RPAD(v_shopID, 10) ||
+          RPAD(v_staffID, 10) ||
+          RPAD(TO_CHAR(v_date, 'YYYY-MM-DD'), 15) ||
+          LPAD(TO_CHAR(v_amount, '$999,990.00'), 12)
+        );
+      END LOOP;
+      CLOSE rentCursor;
+    END;
+
+    -- Shop summary
+    IF v_count = 0 THEN
+      DBMS_OUTPUT.PUT_LINE('No rental records found for Shop ID: ' || v_shopID);
+    ELSE
+      DBMS_OUTPUT.PUT_LINE(RPAD('-', 57, '-'));
+      DBMS_OUTPUT.PUT_LINE('Total Records: ' || v_count);
+      DBMS_OUTPUT.PUT_LINE('Total Collected: ' || TO_CHAR(v_total, '$999,999.00'));
+    END IF;
+  END LOOP;
+
+  CLOSE shopCursor;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/

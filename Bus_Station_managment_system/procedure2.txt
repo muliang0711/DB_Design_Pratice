@@ -1,0 +1,37 @@
+CREATE OR REPLACE PROCEDURE prc_add_rental_collection( v_shopID IN RentalCollection.shopID%TYPE, 
+						       v_staffID IN RentalCollection.staffID%TYPE,
+  						       v_collectionDt IN DATE DEFAULT SYSDATE,
+ 						       v_amount IN RentalCollection.rentalAmount%TYPE) IS
+  v_status       Shop.status%TYPE;
+  v_exists       NUMBER;
+
+BEGIN
+  -- Check for duplicate rental record
+  SELECT COUNT(*) INTO v_exists
+  FROM RentalCollection
+  WHERE shopID = v_shopID
+    AND staffID = v_staffID
+    AND collectionDate = v_collectionDt;
+
+  IF v_exists > 0 THEN
+    DBMS_OUTPUT.PUT_LINE('Duplicate rental entry detected for the same shop, staff, and date.');
+    RETURN;
+  END IF;
+
+  -- 5. Insert rental record
+  INSERT INTO RentalCollection(shopID, staffID, collectionDate, rentalAmount)
+  VALUES (v_shopID, v_staffID, v_collectionDt, v_amount);
+
+  COMMIT;
+
+  DBMS_OUTPUT.PUT_LINE('Rental payment of ' || TO_CHAR(v_amount, '$999,999.00') ||
+                       ' recorded for Shop ID ' || v_shopID || ' on ' || TO_CHAR(v_collectionDt, 'YYYY-MM-DD') ||
+                       ' by Staff ' || v_staffID || '.');
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE('Shop ID ' || v_shopID || ' not found.');
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+END;
+/
