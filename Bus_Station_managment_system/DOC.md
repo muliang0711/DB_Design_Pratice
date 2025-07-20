@@ -452,8 +452,14 @@ Records maintenance services provided by the Bus Station to buses (at a charge).
 #### `BusSchedule`
 Records planned arrival and departure times for each [route](#route). (These times may not reflect the actual time of arrival and departure.) 
 
-#### `DriverAssignment`
-Records assignments of buses (and the driver) to [bus schedules](#busschedule). 
+#### `BusDriver`
+A bus driver. Works for a certain [bus company](#buscompany).
+
+#### `DriverListAssignment`
+Each record is a combination of a [bus](#bus) and one/two [driver](#busdriver)s. [RouteDriverAssignmentList](#routedriverassignmentlist) references this table. 
+
+#### `RouteDriverAssignmentList`
+Each record is a combination of a [route](#route) and a [bus](#bus)-[driver(s)](#busdriver) assignment (see [`DriverListAssignment`](#driverlistassignment)). Assigns a bus and one/two drivers to a route.
 
 #### `TripStopLog`
 A log of when a bus departs from a designated [route](#route)'s origin and arrives at the destination. (*Actual* arrival and departure time as opposed to the *planned* arrival and departure times recorded by [`BusSchedule`](#busschedule))
