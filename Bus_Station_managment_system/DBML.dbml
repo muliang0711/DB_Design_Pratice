@@ -85,8 +85,8 @@ Table BusPlatform {
 Table Route {
   routeID NUMBER(10) [pk, increment, note: 'Unique ID for this route']
   routeName VARCHAR2(50) [not null, note: 'Name or code like "U34", "KLCC - Bukit Bintang"']
-  startPoint VARCHAR2(100) [note: 'Starting terminal / station name']
-  endPoint VARCHAR2(100) [note: 'Ending terminal / station name']
+  startPoint VARCHAR2(100) [ref: > BusStation.stationID, not null, note: 'Starting terminal / station name']
+  endPoint VARCHAR2(100) [ref: > BusStation.stationID, not null, note: 'Ending terminal / station name']
   distanceKM NUMBER(6,2) [note: 'Total distance in km']
   estimatedDuration NUMBER(10) [note: 'Typical trip duration in minutes']
   plannedDepartureTime TIME [note: 'Typical departure time from start point']
