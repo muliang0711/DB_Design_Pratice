@@ -473,12 +473,12 @@ Records planned arrival and departure times for each [route](#route). (These tim
 A bus driver. Works for a certain [bus company](#buscompany).
 
 #### `DriverListAssignment`
-Each record is a combination of a [bus](#bus) and one/two [driver](#busdriver)s. [RouteDriverAssignmentList](#routedriverassignmentlist) references this table. 
+Each record is a combination of a [bus](#bus) and one/two [driver](#busdriver)s. Assigns one/two drivers to a bus for a specific duration of time (recorded by the attributes `assignedFrom` and `assignedTo`). [RouteDriverAssignmentList](#routedriverassignmentlist) references this table. 
 
 **Ensure unique combination of**: `mainDriverID`, `supportDriverID`, `busID`, `assignedFrom`
 
 #### `RouteDriverAssignmentList`
-Each record is a combination of a [route](#route) and a [bus](#bus)-[driver(s)](#busdriver) assignment (see [`DriverListAssignment`](#driverlistassignment)). Assigns a bus and one/two drivers to a route.
+Each record is a combination of a [route](#route) and a [bus](#bus)-[driver(s)](#busdriver) assignment (see [`DriverListAssignment`](#driverlistassignment)). Assigns a bus and one/two drivers to a route, for a specific duration of time (recorded by the attributes `effectiveFrom` and `effectiveTo`).
 
 Since there can be one or two drivers, `mainDriverID` is non-nullable i.e. mandatory, while `supportDriverID` is nullable i.e. optional.
 
