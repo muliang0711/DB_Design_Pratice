@@ -219,7 +219,7 @@ Table DriverListAssignment {
   busID NUMBER(10) [ref: > Bus.busID, not null, not null, note: 'FK to Bus']
   assignedFrom TIMESTAMP 
   assignedTo TIMESTAMP
-  status ENUM(in_Active , active , not_assigned) [default: 'not_assigned', note: 'not_assigned means not assigned to any schedule yet , active means currently assigned to a schedule , in_Active means one of the bus or driver is not active but it might still have OR  not have bus schedule assigned']
+  status ENUM('inactive', 'active', 'not_assigned') [default: 'not_assigned', note: 'not_assigned means not assigned to any schedule yet , active means currently assigned to a schedule , inactive means one of the bus or driver is not active but it might still have OR  not have bus schedule assigned']
   remarks VARCHAR2(200)
 
   Indexes {
