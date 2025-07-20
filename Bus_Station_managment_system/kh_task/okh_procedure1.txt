@@ -1,0 +1,136 @@
+/ prc_show_rentals 程序說明
+
+-- question for you : this procedural is for do something or make report , 
+-- if make report then i suggest you can add more details 
+-- if do something then i dont think you need to format the output that much (is fine actually) , but since the trigger call to run it , then maybe you can accept a params  
+-- a little bit 意义不明 for do something , but from report angel is good just need to add more details
+
+用途：
+列出所有已出租的店鋪（Shop.status = 'Occupied'）的租金收款紀錄，
+並對每間店的收款總額與紀錄數量進行統計與輸出。
+
+輸入：無參數（列出全部已出租店鋪的收款記錄）
+
+邏輯流程：
+
+1. 查出所有狀態為 'Occupied' 的店鋪 ID：
+   - 使用外層游標 shopCursor，依照 shopID 升冪排序。
+
+2. 對每一間店鋪執行以下操作：
+   - 初始化計數器 v_total（總金額）與 v_count（筆數）為 0。
+   - 使用內層游標 rentCursor 查出該店鋪在 RentalCollection 中的所有租金收款紀錄，依 collectionDate 排序。
+   - 對於每一筆租金紀錄，執行：
+     - 累加租金金額至 v_total
+     - 紀錄數量加一
+     - 使用 DBMS_OUTPUT.PUT_LINE 輸出店鋪編號、員工編號、收款日期與金額格式化資訊
+
+3. 若該店鋪無任何紀錄：
+   - 輸出提示訊息：No rental records found for Shop ID: ...
+
+4. 若該店鋪有紀錄：
+   - 輸出總筆數（Total Records）與收款總額（Total Collected）
+
+5. 錯誤處理：
+   - 使用 EXCEPTION 區塊攔截所有異常，
+     並以 DBMS_OUTPUT.PUT_LINE 顯示錯誤訊息：Error occurred: ...
+
+資料來源表：
+
+- Shop：判斷哪些店鋪為 "Occupied"
+- RentalCollection：儲存租金收款紀錄，包含欄位：
+  - staffID：負責收款的員工
+  - collectionDate：收款日期
+  - rentalAmount：收款金額
+
+範例輸出格式（每間店鋪）：
+
+========================================================
+Shop Rental Record for Shop ID: 3
+========================================================
+Shop ID  Staff ID  Date           Amount      
+---------------------------------------------------------
+3        101        2025-07-01     $1,200.00
+3        102        2025-07-10     $1,200.00
+---------------------------------------------------------
+Total Records: 2
+Total Collected: $2,400.00
+
+
+CREATE OR REPLACE PROCEDURE prc_show_rentals IS
+  -- Declare outer variables
+  v_shopID  Shop.shopID%TYPE;
+  v_staffID RentalCollection.staffID%TYPE;
+  v_date    RentalCollection.collectionDate%TYPE;
+  v_amount  RentalCollection.rentalAmount%TYPE;
+  v_total   NUMBER;
+  v_count   NUMBER;
+
+  -- Cursor to list all shops
+  CURSOR shopCursor IS
+    SELECT shopID
+    FROM Shop
+    WHERE status = 'Occupied'
+    ORDER BY shopID;
+
+  -- Declare and open nested cursor for this shop
+  CURSOR rentCursor IS
+     SELECT staffID, collectionDate, rentalAmount
+     FROM RentalCollection
+     WHERE shopID = v_shopID
+     ORDER BY collectionDate;  
+
+BEGIN
+  OPEN shopCursor;
+
+  LOOP
+    FETCH shopCursor INTO v_shopID;
+    EXIT WHEN shopCursor%NOTFOUND;
+
+    -- Reset totals per shop
+    v_total := 0;
+    v_count := 0;
+
+    -- Print shop header
+    DBMS_OUTPUT.PUT_LINE(CHR(10));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE('Shop Rental Record for Shop ID: ' || v_shopID);
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE(RPAD('Shop ID', 10) || RPAD('Staff ID', 10) || RPAD('Date', 15) || RPAD('Amount', 12));
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 57, '-'));
+
+    BEGIN
+      OPEN rentCursor;
+      LOOP
+        FETCH rentCursor INTO v_staffID, v_date, v_amount;
+        EXIT WHEN rentCursor%NOTFOUND;
+
+        v_total := v_total + v_amount;
+        v_count := v_count + 1;
+
+        DBMS_OUTPUT.PUT_LINE(
+          RPAD(v_shopID, 10) ||
+          RPAD(v_staffID, 10) ||
+          RPAD(TO_CHAR(v_date, 'YYYY-MM-DD'), 15) ||
+          LPAD(TO_CHAR(v_amount, '$999,990.00'), 12)
+        );
+      END LOOP;
+      CLOSE rentCursor;
+    END;
+
+    -- Shop summary
+    IF v_count = 0 THEN
+      DBMS_OUTPUT.PUT_LINE('No rental records found for Shop ID: ' || v_shopID);
+    ELSE
+      DBMS_OUTPUT.PUT_LINE(RPAD('-', 57, '-'));
+      DBMS_OUTPUT.PUT_LINE('Total Records: ' || v_count);
+      DBMS_OUTPUT.PUT_LINE('Total Collected: ' || TO_CHAR(v_total, '$999,999.00'));
+    END IF;
+  END LOOP;
+
+  CLOSE shopCursor;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/

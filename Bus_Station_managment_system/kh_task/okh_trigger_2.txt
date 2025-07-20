@@ -1,0 +1,12 @@
+//  i assume this trigger should be related to procedural 2 but it seem like no at all ...
+
+CREATE OR REPLACE TRIGGER trg_delete_rentals_on_vacant
+AFTER UPDATE ON Shop
+FOR EACH ROW
+BEGIN
+  IF :NEW.status = 'Vacant' AND :OLD.status != 'Vacant' THEN
+    DELETE FROM RentalCollection
+    WHERE shopID = :NEW.shopID;
+  END IF;
+END;
+/

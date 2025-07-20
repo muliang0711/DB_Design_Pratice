@@ -118,6 +118,11 @@ FOR EACH ROW
 WHEN (OLD.status = 'Pending' AND NEW.status = 'Planned')
 BEGIN
   GenerateTicketsForBusSchedule(:NEW.BusScheduleID);
+  -- if 
+  -- commit 
+  -- else 
+  -- rollback 
+  -- show error message
 END;
 /
 
@@ -270,7 +275,11 @@ BEGIN
 
   -- Set daysAhead = 7
   DBMS_SCHEDULER.set_job_argument_value('JOB_GENERATE_BUSES', 1, 7);
-
+  -- if 
+  -- commit
+  -- else
+  -- rollback
+  -- enable the job
   DBMS_SCHEDULER.enable('JOB_GENERATE_BUSES');
 END;
 /

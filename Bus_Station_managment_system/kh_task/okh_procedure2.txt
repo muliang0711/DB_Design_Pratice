@@ -1,0 +1,87 @@
+/ prc_add_rental_collection 程序說明
+
+用途：
+新增一筆租金收款紀錄至 RentalCollection 表，若當日該店鋪與員工的紀錄已存在則避免重複插入。
+
+輸入：
+- v_shopID（店鋪 ID）
+- v_staffID（處理收款的員工 ID）
+- v_collectionDt（收款日期，預設為 SYSDATE）
+- v_amount（收款金額）
+
+// idea to change :
+1. maybe you can edit your trigger like before insert into RentalCollection , run this procedural
+2. the next thing is i noticed you have a commit inside the procedure , which is not a good practice, you should remove it and let the trigger handle the commit // on line 75
+1. 驗證重複資料：
+   - 查詢 RentalCollection 是否已存在同一間店鋪、同一員工、同一天的收款紀錄。
+   - 若重複筆數 > 0：
+     - 使用 DBMS_OUTPUT 顯示提示訊息：
+       『Duplicate rental entry detected for the same shop, staff, and date.』
+     - 中止程序 RETURN，不執行插入。
+
+2. 插入租金資料：
+   - 若無重複紀錄，將輸入參數插入 RentalCollection 表中：
+     - 欄位包括：shopID、staffID、collectionDate、rentalAmount
+   - 使用 COMMIT 確認交易提交。
+
+3. 成功提示輸出：
+   - 使用 DBMS_OUTPUT 顯示訊息：
+     『Rental payment of $X recorded for Shop ID Y on Z by Staff W.』
+
+4. 例外處理（Exception Handling）：
+   - NO_DATA_FOUND：若找不到店鋪 ID（實務上這段查詢其實沒有寫，不會發生，可做為預留處理）
+     - 顯示訊息：Shop ID <ID> not found.
+   - OTHERS：捕捉所有其他例外
+     - 顯示訊息：Unexpected error: <錯誤訊息>
+
+資料來源表：
+- RentalCollection：
+  - shopID：店鋪編號
+  - staffID：員工編號
+  - collectionDate：收款日期
+  - rentalAmount：金額
+
+- Shop：
+  - status：判斷店鋪狀態用（此變數目前未使用，可作為未來擴充之用）
+
+注意事項：
+- 該程序確保同一店鋪員工於同一日期僅有一筆租金紀錄，防止重複插入。
+- 若需允許每日多筆紀錄，應移除重複檢查邏輯。
+
+CREATE OR REPLACE PROCEDURE prc_add_rental_collection( v_shopID IN RentalCollection.shopID%TYPE, 
+						       v_staffID IN RentalCollection.staffID%TYPE,
+  						       v_collectionDt IN DATE DEFAULT SYSDATE,
+ 						       v_amount IN RentalCollection.rentalAmount%TYPE) IS
+  v_status       Shop.status%TYPE;
+  v_exists       NUMBER;
+
+BEGIN
+  -- Check for duplicate rental record
+  SELECT COUNT(*) INTO v_exists
+  FROM RentalCollection
+  WHERE shopID = v_shopID
+    AND staffID = v_staffID
+    AND collectionDate = v_collectionDt;
+
+  IF v_exists > 0 THEN
+    DBMS_OUTPUT.PUT_LINE('Duplicate rental entry detected for the same shop, staff, and date.');
+    RETURN;
+  END IF;
+
+  -- 5. Insert rental record
+  INSERT INTO RentalCollection(shopID, staffID, collectionDate, rentalAmount)
+  VALUES (v_shopID, v_staffID, v_collectionDt, v_amount);
+
+  -- COMMIT; // already help you remove this line
+
+  DBMS_OUTPUT.PUT_LINE('Rental payment of ' || TO_CHAR(v_amount, '$999,999.00') ||
+                       ' recorded for Shop ID ' || v_shopID || ' on ' || TO_CHAR(v_collectionDt, 'YYYY-MM-DD') ||
+                       ' by Staff ' || v_staffID || '.');
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE('Shop ID ' || v_shopID || ' not found.');
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+END;
+/
