@@ -430,6 +430,8 @@ A [`BusStation`](#busstation) has multiple platforms. Each platform serves a dif
 #### `Route`
 Records bus routes: from where to where? *Does not record "when" (i.e. schedule)* -- that is handled by [`BusSchedule`](#busschedule). 
 
+**Ensure unique combination of**: `startPoint`, `endPoint`
+
 #### `RouteStation`
 Defines the order of [`BusPlatform`s](#busplaform) (that buses stop by) along a [`Route`](#route).
 
@@ -440,13 +442,28 @@ Defines the order of [`BusPlatform`s](#busplaform) (that buses stop by) along a 
 
 which means that a bus travelling along route `42` will stop by platforms `P103`, `P009`, `P126` in that order.
 
+**Ensure unique combination of**: 
+- `routeID`, `stopOrder`
+- `routeID`, `platformID`
+
+*Note: Make sure there are two separate uniqueness checks, instead of
+one uniqueness check for (`routeID`, `stopOrder`, `platformID`).*
 
 ### Bus fleet management
 #### `Bus`
 Includes license plates of buses.
 
+#### `MaintenanceService`
+Records types of maintenance services provided by the Bus Station, and their cost.
+
 #### `BusMaintenance`
-Records maintenance services provided by the Bus Station to buses (at a charge). Attributes include the type of maintenance service and charges incurred.
+A log of what types of [maintenance services](#maintenanceservice) have been provided to which [buses](#bus). Attributes also include additional charges (if any) on top of the base cost specified in the [`MaintenanceService`](#maintenanceservice) table. 
+
+**Ensure unique combination of:** `busID`, `serviceID`, `maintenanceDate`
+
+#### `MaintenanceStaffAssignment`
+Associative entity between [`BusMaintenance`](#busmaintenance) and [`Staff`](#staff). 
+Records which staff (can be multiple) worked on a maintenance service.
 
 ### Schedule and operations
 #### `BusSchedule`
@@ -458,14 +475,20 @@ A bus driver. Works for a certain [bus company](#buscompany).
 #### `DriverListAssignment`
 Each record is a combination of a [bus](#bus) and one/two [driver](#busdriver)s. [RouteDriverAssignmentList](#routedriverassignmentlist) references this table. 
 
+**Ensure unique combination of**: `mainDriverID`, `supportDriverID`, `busID`, `assignedFrom`
+
 #### `RouteDriverAssignmentList`
 Each record is a combination of a [route](#route) and a [bus](#bus)-[driver(s)](#busdriver) assignment (see [`DriverListAssignment`](#driverlistassignment)). Assigns a bus and one/two drivers to a route.
 
+Since there can be one or two drivers, `mainDriverID` is non-nullable i.e. mandatory, while `supportDriverID` is nullable i.e. optional.
+
+**Ensure unique combination of**: `routeID`, `assignmentID`, `effectiveFrom`
+
 #### `TripStopLog`
-A log of when a bus departs from a designated [route](#route)'s origin and arrives at the destination. (*Actual* arrival and departure time as opposed to the *planned* arrival and departure times recorded by [`BusSchedule`](#busschedule))
+A log of when a bus departs from a designated [route](#route)'s origin and arrives at the destination. Each record references a certain [bus schedule](#busschedule). Records *actual* arrival and departure time as opposed to the *planned* arrival and departure times recorded by [`BusSchedule`](#busschedule))
 
 ### Payment system
-#### `Payment`
+#### `PaymentRecord`
 Records customer payments, including method, amount, loyalty points used, and status for various transaction types (e.g., ticket, membership, refund).
 
 #### `PointTransaction`
@@ -475,15 +498,18 @@ Tracks loyalty point activities for customers, such as earning, redemption, and 
 #### `Ticket`
 Represents a bus booking by a customer for a specific bus schedule, with pricing, seat info, and support for cancellation (which may/may not include refund) and extension.
 
-### Shop and Tenant Management
-#### `Tenant`
-Stores information about individuals or companies renting shop lots in bus stations, including contact and status details.
+### Shop and Rental Management
+<!-- #### `Tenant`
+Stores information about individuals or companies renting shop lots in bus stations, including contact and status details. -->
 
 #### `Shop`
 Defines a shop lot at a bus station, linking it to tenants, with details on rental fees, contract periods, and occupancy status.
 
-#### `ShopPayment`
-Captures rental-related payments from tenants for shops, including payment type (e.g., rental, deposit), method, and status.
+#### `RentalCollection`
+A log of which [staff](#staff) collected the rent for which [shop](#shop).
+
+<!-- #### `ShopPayment`
+Captures rental-related payments from tenants for shops, including payment type (e.g., rental, deposit), method, and status. -->
 
 ## Relationships
 1. Bus Company to Bus and Staff Relationship:

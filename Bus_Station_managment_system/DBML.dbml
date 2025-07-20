@@ -94,6 +94,10 @@ Table Route {
   status ENUM(active , inactive)
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+
+  Indexes {
+    unique_route (startPoint, endPoint) [unique]
+  }
 }
 
 Table RouteStation {
@@ -102,6 +106,11 @@ Table RouteStation {
   plaformID NUMBER(10) [ref: > BusPlaform.plaformID, not null, note: 'FK to BusStation']
   stopOrder NUMBER(10) [not null, note: 'Sequence number (1,2,3,...)']
   estimatedArrivalOffset NUMBER(10) [note: 'Minutes from route start']
+
+  Indexes {
+    unique_route_stoporder (routeID, stopOrder) [unique]
+    unique_route_platform (routeID, platformID) [unique]
+  }
 
   Note: 'Defines ordered stations along a route'
 }
@@ -149,6 +158,10 @@ Table BusMaintenance {
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 
   remarks VARCHAR2(200)
+
+  Indexes {
+    unique_busmaintenance (busID, serviceID, maintenanceDate) [unique]
+  }
 
   Note: 'Associative entity between `Bus` and `MaintenanceService`. Records instances of maintenance services requested by buses.'
 }
@@ -199,6 +212,23 @@ Table BusDriver {
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
 
+Table DriverListAssignment {
+  assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
+  mainDriverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
+  supportDriverID NUMBER(10) [ref: > BusDriver.driverID, note: 'FK to BusDriver']
+  busID NUMBER(10) [ref: > Bus.busID, not null, not null, note: 'FK to Bus']
+  assignedFrom TIMESTAMP 
+  assignedTo TIMESTAMP
+  status ENUM(in_Active , active , not_assigned) [default: 'not_assigned', note: 'not_assigned means not assigned to any schedule yet , active means currently assigned to a schedule , in_Active means one of the bus or driver is not active but it might still have OR  not have bus schedule assigned']
+  remarks VARCHAR2(200)
+
+  Indexes {
+    unique_driverlist (mainDriverID, supportDriverID, busID, assignedFrom) [unique]
+  }
+
+  Note: 'Assigns one or two drivers and a bus to run a scheduled trip'
+}
+
 Table RouteDriverAssignmentList {
   routeDriverAssignmentID int [pk, increment, note: 'Unique recurring assignment record']
   routeID int [ref: > Route.routeID, not null, note: 'FK to Route']
@@ -214,24 +244,6 @@ Table RouteDriverAssignmentList {
   Indexes {
     unique_routedriverassignmentlist (routeID, assignmentID, effectiveFrom) [unique]
   }
-}
-
-
-Table DriverListAssignment {
-  assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
-  mainDriverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
-  supportDriverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
-  busID NUMBER(10) [ref: > Bus.busID, not null, not null, note: 'FK to Bus']
-  assignedFrom TIMESTAMP 
-  assignedTo TIMESTAMP
-  status ENUM(in_Active , active , not_assigned) [default: 'not_assigned', note: 'not_assigned means not assigned to any schedule yet , active means currently assigned to a schedule , in_Active means one of the bus or driver is not active but it might still have OR  not have bus schedule assigned']
-  remarks VARCHAR2(200)
-
-  Indexes {
-    unique_driverlist (driver1ID, driver2ID, busID, assignedFrom) [unique]
-  }
-
-  Note: 'Assigns one or two drivers and a bus to run a scheduled trip'
 }
 
 Table TripStopLog {
@@ -386,17 +398,17 @@ Table RentalCollection {
 //   }
 // }
 
-Table ShopPayment {
-  shopPayID NUMBER(10) [pk, increment, note: 'Unique payment record']
-  shopID NUMBER(10) [ref: > Shop.shopID, not null, note: 'FK to Shop']
-  //tenantID NUMBER(10) [ref: > Tenant.tenantID, not null, note: 'FK to Tenant for quick ref']
-  payType VARCHAR2(20) [not null, note: "e.g. 'Rental', 'Deposit', 'Penalty'"]
-  amount NUMBER(10,2) [not null]
-  paymentDate TIMESTAMP [not null]
-  paymentMethod VARCHAR2(30) [note: "e.g. 'Cash', 'Transfer', 'Cheque'"]
-  status ENUM(Completed, Pending, Failed)
-  receiptNo VARCHAR2(50)
-  remarks VARCHAR2(200)
-  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
-}   
+// Table ShopPayment {
+//   shopPayID NUMBER(10) [pk, increment, note: 'Unique payment record']
+//   shopID NUMBER(10) [ref: > Shop.shopID, not null, note: 'FK to Shop']
+//   //tenantID NUMBER(10) [ref: > Tenant.tenantID, not null, note: 'FK to Tenant for quick ref']
+//   payType VARCHAR2(20) [not null, note: "e.g. 'Rental', 'Deposit', 'Penalty'"]
+//   amount NUMBER(10,2) [not null]
+//   paymentDate TIMESTAMP [not null]
+//   paymentMethod VARCHAR2(30) [note: "e.g. 'Cash', 'Transfer', 'Cheque'"]
+//   status ENUM(Completed, Pending, Failed)
+//   receiptNo VARCHAR2(50)
+//   remarks VARCHAR2(200)
+//   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+//   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+// }   
