@@ -1,0 +1,236 @@
+--Procedure 1: Deactivate an Entire Station
+CREATE OR REPLACE PROCEDURE sp_deactivate_station (
+    p_station_id   IN BusStation.stationID%TYPE,
+    p_reason       IN VARCHAR2
+) AS
+    v_station_status      BusStation.status%TYPE;
+    v_cancelled_schedules NUMBER := 0;
+    v_deactivated_platforms NUMBER := 0;
+BEGIN
+    -- Step 1: Validate the station
+    BEGIN
+        SELECT status INTO v_station_status
+        FROM BusStation
+        WHERE stationID = p_station_id;
+
+        IF v_station_status = 'inactive' THEN
+            DBMS_OUTPUT.PUT_LINE('INFO: Station ' || p_station_id || ' is already inactive.');
+            RETURN;
+        END IF;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Error: Station with ID ' || p_station_id || ' does not exist.');
+    END;
+
+    DBMS_OUTPUT.PUT_LINE('Starting deactivation process for Station ID: ' || p_station_id || '...');
+
+    -- Step 2: Cancel all future, planned schedules that pass through this station
+    -- This is a complex but necessary join to find affected schedules.
+    UPDATE BusSchedule
+    SET status = 'Cancelled',
+        remarks = 'Cancelled due to station closure: ' || p_reason
+    WHERE status = 'Planned'
+      AND plannedDepartureTime > SYSTIMESTAMP
+      AND routeDriverAssignmentID IN (
+          SELECT rda.routeDriverAssignmentID
+          FROM RouteDriverAssignmentList rda
+          JOIN Route r ON rda.routeID = r.routeID
+          JOIN RouteStation rs ON r.routeID = rs.routeID
+          JOIN BusPlatform bp ON rs.platformID = bp.platformID
+          WHERE bp.stationID = p_station_id
+      );
+
+    v_cancelled_schedules := SQL%ROWCOUNT;
+    DBMS_OUTPUT.PUT_LINE('> Cancelled ' || v_cancelled_schedules || ' future schedule(s).');
+
+    -- Step 3: Deactivate all platforms belonging to this station
+    UPDATE BusPlatform
+    SET status = 'inactive'
+    WHERE stationID = p_station_id
+      AND status = 'active';
+
+    v_deactivated_platforms := SQL%ROWCOUNT;
+    DBMS_OUTPUT.PUT_LINE('> Deactivated ' || v_deactivated_platforms || ' platform(s).');
+
+    -- Step 4: Deactivate the station itself
+    UPDATE BusStation
+    SET status = 'inactive'
+    WHERE stationID = p_station_id;
+
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('SUCCESS: Station ' || p_station_id || ' and all related entities have been deactivated.');
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred. Deactivation process has been rolled back.');
+        -- This will re-raise the original error for debugging
+        RAISE;
+END sp_deactivate_station;
+/
+
+
+
+
+
+
+--Procedure 2: Deactivate a Single Platform
+
+CREATE OR REPLACE PROCEDURE sp_deactivate_platform (
+    p_platform_id  IN BusPlatform.platformID%TYPE,
+    p_reason       IN VARCHAR2
+) AS
+    v_platform_status     BusPlatform.status%TYPE;
+    v_cancelled_schedules NUMBER := 0;
+BEGIN
+    -- Step 1: Validate the platform
+    BEGIN
+        SELECT status INTO v_platform_status
+        FROM BusPlatform
+        WHERE platformID = p_platform_id;
+
+        IF v_platform_status = 'inactive' THEN
+            DBMS_OUTPUT.PUT_LINE('INFO: Platform ' || p_platform_id || ' is already inactive.');
+            RETURN;
+        END IF;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Error: Platform with ID ' || p_platform_id || ' does not exist.');
+    END;
+
+    DBMS_OUTPUT.PUT_LINE('Starting deactivation process for Platform ID: ' || p_platform_id || '...');
+
+    -- Step 2: Cancel all future, planned schedules that use this specific platform
+    UPDATE BusSchedule
+    SET status = 'Cancelled',
+        remarks = 'Cancelled due to platform closure: ' || p_reason
+    WHERE status = 'Planned'
+      AND plannedDepartureTime > SYSTIMESTAMP
+      AND routeDriverAssignmentID IN (
+          SELECT rda.routeDriverAssignmentID
+          FROM RouteDriverAssignmentList rda
+          JOIN Route r ON rda.routeID = r.routeID
+          JOIN RouteStation rs ON r.routeID = rs.routeID
+          WHERE rs.platformID = p_platform_id
+      );
+      
+    v_cancelled_schedules := SQL%ROWCOUNT;
+    DBMS_OUTPUT.PUT_LINE('> Cancelled ' || v_cancelled_schedules || ' future schedule(s).');
+
+    -- Step 3: Deactivate the platform
+    UPDATE BusPlatform
+    SET status = 'inactive'
+    WHERE platformID = p_platform_id;
+
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('SUCCESS: Platform ' || p_platform_id || ' has been deactivated.');
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred. Deactivation process has been rolled back.');
+        RAISE;
+END sp_deactivate_platform;
+/
+
+
+
+
+
+
+
+
+--Trigger 1: Prevent Scheduling on Inactive Routes
+--This trigger acts as a safety net to stop anyone from creating a new BusSchedule for a Route that has been
+--marked as inactive.
+CREATE OR REPLACE TRIGGER trg_prevent_schedule_on_inactive_route
+BEFORE INSERT ON BusSchedule
+FOR EACH ROW
+DECLARE
+    v_route_status Route.status%TYPE;
+    v_route_id     Route.routeID%TYPE;
+BEGIN
+    -- Find the routeID associated with the new schedule
+    SELECT rda.routeID INTO v_route_id
+    FROM RouteDriverAssignmentList rda
+    WHERE rda.routeDriverAssignmentID = :new.routeDriverAssignmentID;
+
+    -- Check the status of that route
+    SELECT r.status INTO v_route_status
+    FROM Route r
+    WHERE r.routeID = v_route_id;
+
+    -- If the route is inactive, block the insertion
+    IF v_route_status = 'inactive' THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Operation failed: Cannot create a schedule for an inactive route (Route ID: ' || v_route_id || ').');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- This handles cases where the routeDriverAssignmentID is invalid
+        RAISE_APPLICATION_ERROR(-20004, 'Invalid reference: The route assignment ID ' || :new.routeDriverAssignmentID || ' does not exist.');
+END;
+/CREATE OR REPLACE TRIGGER trg_prevent_schedule_on_inactive_route
+BEFORE INSERT ON BusSchedule
+FOR EACH ROW
+DECLARE
+    v_route_status Route.status%TYPE;
+    v_route_id     Route.routeID%TYPE;
+BEGIN
+    -- Find the routeID associated with the new schedule
+    SELECT rda.routeID INTO v_route_id
+    FROM RouteDriverAssignmentList rda
+    WHERE rda.routeDriverAssignmentID = :new.routeDriverAssignmentID;
+
+    -- Check the status of that route
+    SELECT r.status INTO v_route_status
+    FROM Route r
+    WHERE r.routeID = v_route_id;
+
+    -- If the route is inactive, block the insertion
+    IF v_route_status = 'inactive' THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Operation failed: Cannot create a schedule for an inactive route (Route ID: ' || v_route_id || ').');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- This handles cases where the routeDriverAssignmentID is invalid
+        RAISE_APPLICATION_ERROR(-20004, 'Invalid reference: The route assignment ID ' || :new.routeDriverAssignmentID || ' does not exist.');
+END;
+/
+
+
+
+
+
+
+--Trigger 2: Protect Platform from Unsafe Manual Updates
+--This trigger prevents a user from directly running UPDATE BusPlatform SET status = 'inactive' ... if that
+--platform still has active, future schedules. It forces them to use the sp_deactivate_platform procedure.
+CREATE OR REPLACE TRIGGER trg_protect_platform_from_unsafe_update
+BEFORE UPDATE OF status ON BusPlatform
+FOR EACH ROW
+DECLARE
+    v_future_schedules_count NUMBER;
+BEGIN
+    -- This trigger only runs if an admin tries to change a platform from 'active' to 'inactive'
+    IF :old.status = 'active' AND :new.status = 'inactive' THEN
+
+        -- Check if there are any planned, future schedules that use this platform
+        SELECT COUNT(*)
+        INTO v_future_schedules_count
+        FROM BusSchedule bs
+        JOIN RouteDriverAssignmentList rda ON bs.routeDriverAssignmentID = rda.routeDriverAssignmentID
+        JOIN RouteStation rs ON rda.routeID = rs.routeID
+        WHERE rs.platformID = :new.platformID
+          AND bs.status = 'Planned'
+          AND bs.plannedDepartureTime > SYSTIMESTAMP;
+
+        -- If there are future schedules, block the update
+        IF v_future_schedules_count > 0 THEN
+            RAISE_APPLICATION_ERROR(-20003, 'Update blocked: Cannot deactivate platform ' || :new.platformID ||
+                                            ' because it has ' || v_future_schedules_count || ' planned future schedule(s). ' ||
+                                            'Please use the sp_deactivate_platform procedure to handle this safely.');
+        END IF;
+
+    END IF;
+END;
+/
