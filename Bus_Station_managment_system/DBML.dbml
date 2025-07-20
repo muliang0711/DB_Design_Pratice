@@ -210,19 +210,28 @@ Table RouteDriverAssignmentList {
   status enum('active', 'inactive') [default: 'active', note: 'inactive when the referenced DriverListAssignment is not active'] // values: active, inactive
   expectedProfit NUMBER(8,2) [note: 'Expected profit from this recurring assignment']
   remarks varchar(200) [note: 'Optional notes']
+
+  Indexes {
+    unique_routedriverassignmentlist (routeID, assignmentID, effectiveFrom) [unique]
+  }
 }
 
 
 Table DriverListAssignment {
   assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
-  driverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
-  busID NUMBER(10) [ref: > Bus.busID, not null, note: 'FK to Bus']
-  assignedFrom TIMESTAMP
+  driver1ID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
+  driver2ID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
+  busID NUMBER(10) [ref: > Bus.busID, not null, not null, note: 'FK to Bus']
+  assignedFrom TIMESTAMP 
   assignedTo TIMESTAMP
   status ENUM(in_Active , active , not_assigned) [default: 'not_assigned', note: 'not_assigned means not assigned to any schedule yet , active means currently assigned to a schedule , in_Active means one of the bus or driver is not active but it might still have OR  not have bus schedule assigned']
   remarks VARCHAR2(200)
 
-  Note: 'Assigns a driver and bus to run a scheduled trip'
+  Indexes {
+    unique_driverlist (driver1ID, driver2ID, busID, assignedFrom) [unique]
+  }
+
+  Note: 'Assigns one or two drivers and a bus to run a scheduled trip'
 }
 
 Table TripStopLog {
