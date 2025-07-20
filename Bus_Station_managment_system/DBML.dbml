@@ -219,8 +219,8 @@ Table RouteDriverAssignmentList {
 
 Table DriverListAssignment {
   assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
-  driver1ID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
-  driver2ID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
+  mainDriverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
+  supportDriverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
   busID NUMBER(10) [ref: > Bus.busID, not null, not null, note: 'FK to Bus']
   assignedFrom TIMESTAMP 
   assignedTo TIMESTAMP
