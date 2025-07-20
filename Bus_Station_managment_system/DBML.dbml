@@ -70,6 +70,7 @@ Table BusStation {
   stationName VARCHAR2(100)
   location VARCHAR2(150)
   status ENUM(active , inactive)
+  inactive_from DATE [note: 'Optional. Date from which this station becomes inactive. Any INSERT/UPDATEs on Route, etc. that directly/indirectly reference this station should be validated against this date.']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 
