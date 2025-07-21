@@ -152,7 +152,7 @@ Table BusMaintenance {
   actualCost NUMBER(8,2) [note: 'Total cost incurred for this maintenance']
   additionalCost NUMBER(8,2) [note: 'if any extra costs not covered by service']
   additionalRemarks VARCHAR2(200) [note: 'Any extra notes about this maintenance']
-  status ENUM(Completed , InProgress)
+  status ENUM('completed' , 'in_progress')
 
   maintenanceDate TIMESTAMP [not null , note: 'The time of how long the bus is in maintenance']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
