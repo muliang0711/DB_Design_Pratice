@@ -4,7 +4,7 @@
 
 Table StaffRole {
   roleID NUMBER(10) [pk, increment, note: 'Unique role ID']
-  roleName VARCHAR2(50) [not null, note: "e.g. 'Counter Staff', 'Cleaner'"]
+  roleName VARCHAR2(50) [not null, note: "e.g. 'Counter staff', 'Cleaner', 'Maintenance worker"]
   description VARCHAR2(200)
 }
 
@@ -154,7 +154,7 @@ Table BusMaintenance {
   additionalRemarks VARCHAR2(200) [note: 'Any extra notes about this maintenance']
   status ENUM('completed' , 'in_progress') [default: 'in_progress']
 
-  maintenanceDate TIMESTAMP [not null , note: 'The time of how long the bus is in maintenance']
+  maintenanceDoneDate TIMESTAMP [not null , note: 'Date when maintenance is complete.']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 
   remarks VARCHAR2(200)
