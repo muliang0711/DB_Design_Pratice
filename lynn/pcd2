@@ -1,7 +1,7 @@
 CREATE OR REPLACE PROCEDURE ProcessTicketRefund(
     p_ticketID IN Ticket.ticketID%TYPE,
-    p_refundType IN VARCHAR2, -- 'full' or 'partial'
-    p_adminID IN NUMBER, -- Changed from Admin.adminID%TYPE since table might not exist
+    p_refundType IN VARCHAR2, 
+    p_adminID IN NUMBER, -
     p_result OUT VARCHAR2
 )
 AS
