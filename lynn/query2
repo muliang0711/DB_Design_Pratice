@@ -1,0 +1,22 @@
+
+CREATE OR REPLACE VIEW CancellationAnalysis AS
+SELECT
+    r.routeID,
+    r.routeName || ' (' || r.startPoint || ' to ' || r.endPoint || ')' AS route,
+    t.status AS cancellationType,
+    COUNT(*) AS cancellationCount,
+    AVG(MONTHS_BETWEEN(bs.plannedDepartureTime, t.cancellationDate)) AS avgDaysBeforeDeparture,
+    SUM(pr.totalAmount) AS totalRefundAmount,
+    bc.companyName AS busCompany
+FROM
+    Ticket t
+JOIN BusSchedule bs ON t.busScheduleID = bs.busScheduleID
+JOIN Route r ON bs.routeID = r.routeID
+JOIN Bus b ON (SELECT busID FROM DriverAssignment WHERE busScheduleID = bs.busScheduleID AND ROWNUM = 1) = b.busID
+JOIN BusCompany bc ON b.companyID = bc.companyID
+LEFT JOIN PaymentRecord pr ON t.ticketID = pr.ticketID
+WHERE
+    t.status IN ('Cancelled_By_User', 'Cancelled_By_Company')
+    AND t.cancellationDate IS NOT NULL
+GROUP BY
+    r.routeID, r.routeName, r.startPoint, r.endPoint, t.status, bc.companyName;

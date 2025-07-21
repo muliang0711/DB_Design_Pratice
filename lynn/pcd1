@@ -1,0 +1,62 @@
+CREATE OR REPLACE PROCEDURE ExtendTicket(
+    p_ticketID IN Ticket.ticketID%TYPE,
+    p_newScheduleID IN BusSchedule.busScheduleID%TYPE,
+    p_result OUT VARCHAR2
+)
+AS
+    v_originalScheduleID Ticket.busScheduleID%TYPE;
+    v_originalRouteID BusSchedule.routeID%TYPE;
+    v_newRouteID BusSchedule.routeID%TYPE;
+    v_departureTime BusSchedule.plannedDepartureTime%TYPE;
+    v_currentStatus Ticket.status%TYPE;
+    v_extensionAllowed BOOLEAN := FALSE;
+    v_daysBeforeDeparture NUMBER;
+BEGIN
+    -- 获取原始票务信息
+    SELECT busScheduleID, status INTO v_originalScheduleID, v_currentStatus
+    FROM Ticket WHERE ticketID = p_ticketID;
+    
+    -- 检查票务状态
+    IF v_currentStatus != 'booked' THEN
+        p_result := 'Error: Only booked tickets can be extended';
+        RETURN;
+    END IF;
+    
+    -- 获取原始路线
+    SELECT routeID INTO v_originalRouteID 
+    FROM BusSchedule WHERE busScheduleID = v_originalScheduleID;
+    
+    -- 获取新班次信息
+    SELECT routeID, plannedDepartureTime INTO v_newRouteID, v_departureTime
+    FROM BusSchedule WHERE busScheduleID = p_newScheduleID;
+    
+    -- 计算出发前天数
+    SELECT EXTRACT(DAY FROM (plannedDepartureTime - SYSDATE)) INTO v_daysBeforeDeparture
+    FROM BusSchedule WHERE busScheduleID = v_originalScheduleID;
+    
+    -- 检查路线匹配和扩展窗口
+    IF v_originalRouteID = v_newRouteID THEN
+        IF v_daysBeforeDeparture BETWEEN 0 AND 2 THEN
+            -- 更新票务状态
+            UPDATE Ticket
+            SET status = 'booked_extended',
+                extendedToID = p_newScheduleID,
+                extensionDate = SYSDATE,
+                updatedAt = SYSDATE
+            WHERE ticketID = p_ticketID;
+            
+            p_result := 'Success: Ticket extended to new schedule';
+        ELSE
+            p_result := 'Error: Extension only allowed within 2 days before departure';
+        END IF;
+    ELSE
+        p_result := 'Error: New schedule must be on the same route';
+    END IF;
+    
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        p_result := 'Error: ' || SQLERRM;
+END ExtendTicket;
+/

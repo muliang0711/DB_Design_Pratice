@@ -1,0 +1,44 @@
+CREATE OR REPLACE TRIGGER ManagePointsAndPayment
+BEFORE INSERT OR UPDATE ON PointTransaction
+FOR EACH ROW
+DECLARE
+    v_currentBalance NUMBER(5);
+    v_paymentStatus VARCHAR2(20);
+    v_paymentAmount NUMBER(8,2);
+    v_pointsUsed NUMBER(5);
+BEGIN
+    -- For point redemption (negative pointChange)
+    IF :NEW.pointChange < 0 THEN
+        -- Get current balance
+        SELECT pointBalance INTO v_currentBalance
+        FROM Customer
+        WHERE customerID = :NEW.customerID;
+        
+        -- Check if enough points
+        IF (v_currentBalance + :NEW.pointChange) < 0 THEN
+            RAISE_APPLICATION_ERROR(-20003, 'Insufficient points for this transaction');
+        END IF;
+        
+        -- If related to payment, validate payment status
+        IF :NEW.paymentID IS NOT NULL THEN
+            SELECT status, pointsApplied, totalAmount INTO v_paymentStatus, v_pointsUsed, v_paymentAmount
+            FROM PaymentRecord
+            WHERE paymentID = :NEW.paymentID;
+            
+            IF v_paymentStatus != 'Completed' THEN
+                RAISE_APPLICATION_ERROR(-20004, 'Points can only be applied to completed payments');
+            END IF;
+            
+            -- Verify points used match payment record
+            IF :NEW.pointChange != -v_pointsUsed THEN
+                RAISE_APPLICATION_ERROR(-20005, 'Point transaction does not match payment record');
+            END IF;
+        END IF;
+    END IF;
+    
+    -- Update customer point balance
+    UPDATE Customer
+    SET pointBalance = pointBalance + :NEW.pointChange,
+        updatedAt = SYSDATE
+    WHERE customerID = :NEW.customerID;
+END;

@@ -1,0 +1,65 @@
+CREATE OR REPLACE TRIGGER EnforceTicketCreationRules
+BEFORE INSERT OR UPDATE ON Ticket
+FOR EACH ROW
+DECLARE
+    v_scheduleStatus VARCHAR2(20);
+    v_routeID NUMBER;
+    v_extendedRouteID NUMBER;
+    v_busStatus VARCHAR2(20);
+    v_driverStatus VARCHAR2(20);
+BEGIN
+    -- Check if bus schedule is active
+    SELECT status INTO v_scheduleStatus
+    FROM BusSchedule
+    WHERE busScheduleID = :NEW.busScheduleID;
+    
+    IF v_scheduleStatus != 'Active' THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Cannot create ticket for inactive bus schedule');
+    END IF;
+    
+    -- Check if assigned bus is active
+    SELECT b.status INTO v_busStatus
+    FROM Bus b
+    JOIN DriverAssignment da ON b.busID = da.busID
+    WHERE da.busScheduleID = :NEW.busScheduleID
+    AND ROWNUM = 1;
+    
+    IF v_busStatus != 'Active' THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Cannot create ticket for schedule with inactive bus');
+    END IF;
+    
+    -- Check if assigned driver is active
+    SELECT d.status INTO v_driverStatus
+    FROM BusDriver d
+    JOIN DriverAssignment da ON d.driverID = da.driverID
+    WHERE da.busScheduleID = :NEW.busScheduleID
+    AND ROWNUM = 1;
+    
+    IF v_driverStatus != 'active' THEN
+        RAISE_APPLICATION_ERROR(-20003, 'Cannot create ticket for schedule with inactive driver');
+    END IF;
+    
+    -- For extended tickets, check route consistency
+    IF :NEW.extendedToID IS NOT NULL THEN
+        -- Get original route
+        SELECT routeID INTO v_routeID
+        FROM BusSchedule
+        WHERE busScheduleID = :NEW.busScheduleID;
+        
+        -- Get extended route
+        SELECT routeID INTO v_extendedRouteID
+        FROM BusSchedule
+        WHERE busScheduleID = :NEW.extendedToID;
+        
+        IF v_routeID != v_extendedRouteID THEN
+            RAISE_APPLICATION_ERROR(-20004, 'Extended ticket must be on the same route');
+        END IF;
+    END IF;
+    
+    -- Set timestamps
+    IF INSERTING THEN
+        :NEW.createdAt := SYSDATE;
+    END IF;
+    :NEW.updatedAt := SYSDATE;
+END;
+/

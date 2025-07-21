@@ -1,0 +1,26 @@
+-- 
+CREATE OR REPLACE VIEW RevenueAnalysis AS
+SELECT 
+    r.routeID,
+    r.routeName,
+    r.startPoint AS departureCity,
+    r.endPoint AS arrivalCity,
+    c.membershipStatus,
+    TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM') AS month,
+    SUM(pr.totalAmount) AS totalRevenue,
+    COUNT(DISTINCT t.ticketID) AS ticketsSold,
+    AVG(pr.totalAmount) AS averageTicketPrice,
+    SUM(pr.pointsApplied * pr.pointValue) AS pointsRedeemedValue
+FROM 
+    PaymentRecord pr
+JOIN Ticket t ON pr.ticketID = t.ticketID
+JOIN BusSchedule bs ON t.busScheduleID = bs.busScheduleID
+JOIN Route r ON bs.routeID = r.routeID
+JOIN Customer c ON pr.customerID = c.customerID
+WHERE 
+    pr.status = 'Completed'
+GROUP BY 
+    r.routeID, r.routeName, r.startPoint, r.endPoint, c.membershipStatus, 
+    TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM')
+ORDER BY 
+    month, totalRevenue DESC;
