@@ -2,7 +2,7 @@
 --
 -- Updates the `status` of any `DriverListAssignment` records
 -- that reference the bus in question to 'inactive'.
-CREATE OR REPLACE TRIGGER trg_on_bus_startmaintenance
+CREATE OR REPLACE TRIGGER trg_on_bus_start_maintenance
 AFTER INSERT ON BusMaintenance
 FOR EACH ROW    
 BEGIN
