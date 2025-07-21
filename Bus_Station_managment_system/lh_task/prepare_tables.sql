@@ -7,7 +7,8 @@ CREATE TABLE Bus (
 DROP TABLE BusMaintenance;
 CREATE TABLE BusMaintenance (
     maintenanceID NUMBER(10),
-    busID NUMBER(10)
+    busID NUMBER(10),
+    status VARCHAR2(20)
 );
 
 DROP TABLE DriverListAssignment;
