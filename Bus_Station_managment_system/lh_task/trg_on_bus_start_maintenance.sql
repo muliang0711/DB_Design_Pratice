@@ -8,7 +8,8 @@ FOR EACH ROW
 BEGIN
 -- Update bus's status to under_maintenance
     UPDATE Bus
-    SET status = 'under_maintenance'
+    SET status = 'under_maintenance',
+        updatedAt = CURRENT_TIMESTAMP
     WHERE busID = :NEW.busID;
 
 -- Update affected driver list assignments' status to inactive
@@ -30,7 +31,8 @@ BEGIN
 -- Update affected bus schedule
 -- status = 'cancelled'
     UPDATE BusSchedule bs
-    SET bs.status = 'cancelled'
+    SET bs.status = 'cancelled',
+        bs.updatedAt = CURRENT_TIMESTAMP
     WHERE EXISTS (
         SELECT 1
         FROM RouteDriverAssignmentList rdal

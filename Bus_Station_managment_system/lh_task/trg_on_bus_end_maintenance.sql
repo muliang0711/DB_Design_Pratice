@@ -7,7 +7,8 @@ BEGIN
     IF :OLD.status = 'in_progress' AND :NEW.status = 'completed' THEN
     -- Update bus's status to active
         UPDATE Bus
-        SET status = 'active'
+        SET status = 'active',
+            updatedAt = CURRENT_TIMESTAMP
         WHERE busID = :NEW.busID;
 
     -- Update affected driver list assignments' status to active
