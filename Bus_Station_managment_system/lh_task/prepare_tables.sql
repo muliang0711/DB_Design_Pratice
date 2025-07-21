@@ -4,11 +4,35 @@ CREATE TABLE Bus (
     status VARCHAR2(20)
 );
 
+DROP TABLE StaffRole;
+CREATE TABLE StaffRole (
+    roleID NUMBER(10),
+    roleName VARCHAR(50)
+);
+
+DROP TABLE Staff;
+CREATE TABLE Staff (
+    staffID NUMBER(10),
+    roleID NUMBER(10)
+);
+
+DROP TABLE MaintenanceService;
+CREATE TABLE MaintenanceService (
+    serviceID NUMBER(10)
+);
+
 DROP TABLE BusMaintenance;
 CREATE TABLE BusMaintenance (
     maintenanceID NUMBER(10),
     busID NUMBER(10),
+    serviceID NUMBER(10),
     status VARCHAR2(20)
+);
+
+DROP TABLE MaintenanceStaffAssignment;
+CREATE TABLE MaintenanceStaffAssignment (
+    maintenanceID NUMBER(10),
+    staffID NUMBER(10)
 );
 
 DROP TABLE DriverListAssignment;
@@ -46,6 +70,17 @@ CREATE TABLE RouteDriverAssignmentList (
 
 INSERT INTO Bus (busID) VALUES(1);
 INSERT INTO Bus (busID) VALUES(2);
+
+INSERT INTO StaffRole (roleID, roleName) VALUES(1, 'Maintenance worker');
+INSERT INTO StaffRole (roleID, roleName) VALUES(2, 'Counter staff');
+INSERT INTO StaffRole (roleID, roleName) VALUES(3, 'Cleaner');
+
+INSERT INTO Staff (staffID, roleID) VALUES(1, 1);
+INSERT INTO Staff (staffID, roleID) VALUES(2, 2);
+
+INSERT INTO MaintenanceService (serviceID) VALUES(1);
+INSERT INTO MaintenanceService (serviceID) VALUES(2);
+INSERT INTO MaintenanceService (serviceID) VALUES(3);
 
 INSERT INTO DriverListAssignment (assignmentID, busID, assignedTo) VALUES(1, 1, SYSDATE-1);
 INSERT INTO DriverListAssignment (assignmentID, busID, assignedTo) VALUES(2, 1, SYSDATE);
