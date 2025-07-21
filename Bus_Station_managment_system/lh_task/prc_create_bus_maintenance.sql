@@ -1,61 +1,66 @@
 CREATE OR REPLACE TYPE t_staffList AS TABLE OF NUMBER;
 /
 
-CREATE OR REPLACE PROCEDURE prc_bus_start_maintenance(
+CREATE OR REPLACE PROCEDURE prc_create_bus_maintenance(
     in_busID IN Bus.busID%TYPE,
     in_serviceID IN MaintenanceService.serviceID%TYPE,
     in_staffIDList IN t_staffList
 ) IS
-    v_inactive_from DATE;
 
-    v_staffIsValid NUMBER;
-    v_serviceExists NUMBER;
-    v_busExists NUMBER;
+    CURSOR c_staff_is_valid(p_staffID Staff.staffID%TYPE) IS
+        SELECT 1
+        FROM Staff s
+        JOIN StaffRole r USING(roleID)
+        WHERE s.staffID = p_staffID
+        AND r.roleName = 'Maintenance worker';
+
+    CURSOR c_service_exists IS
+        SELECT 1 FROM MaintenanceService WHERE serviceID = in_serviceID;
+
+    CURSOR c_bus_exists IS
+        SELECT 1 FROM Bus WHERE busID = in_busID;
+
+    v_dummy NUMBER;
     err_invalid_staff EXCEPTION;
     err_invalid_service EXCEPTION;
     err_invalid_bus EXCEPTION;
 
     v_currStaffID Staff.staffID%TYPE;
     v_maintenanceID BusMaintenance.maintenanceID%TYPE;
+
 BEGIN
-    -- Validate each staff ID
+    -- Validate each staff ID using cursor
     FOR i IN 1 .. in_staffIDList.COUNT LOOP
         v_currStaffID := in_staffIDList(i);
 
-        SELECT COUNT(*)
-        INTO v_staffIsValid
-        FROM Staff s
-        JOIN StaffRole r USING(roleID)
-        WHERE s.staffID = v_currStaffID
-        AND r.roleName = 'Maintenance worker';
-
-        IF v_staffIsValid = 0 THEN
+        OPEN c_staff_is_valid(v_currStaffID);
+        FETCH c_staff_is_valid INTO v_dummy;
+        IF c_staff_is_valid%NOTFOUND THEN
+            CLOSE c_staff_is_valid;
             RAISE err_invalid_staff;
         END IF;
+        CLOSE c_staff_is_valid;
     END LOOP;
 
-    -- Validate service exists
-    SELECT COUNT(*)
-    INTO v_serviceExists
-    FROM MaintenanceService ms
-    WHERE ms.serviceID = in_serviceID; 
-
-    IF v_serviceExists = 0 THEN
+    -- Validate service exists using cursor
+    OPEN c_service_exists;
+    FETCH c_service_exists INTO v_dummy;
+    IF c_service_exists%NOTFOUND THEN
+        CLOSE c_service_exists;
         RAISE err_invalid_service;
     END IF;
+    CLOSE c_service_exists;
 
-    -- Validate bus exists
-    SELECT COUNT(*)
-    INTO v_busExists
-    FROM Bus b
-    WHERE b.busID = in_busID;
-
-    IF v_busExists = 0 THEN
+    -- Validate bus exists using cursor
+    OPEN c_bus_exists;
+    FETCH c_bus_exists INTO v_dummy;
+    IF c_bus_exists%NOTFOUND THEN
+        CLOSE c_bus_exists;
         RAISE err_invalid_bus;
-    END IF;   
+    END IF;
+    CLOSE c_bus_exists;
 
-
-    -- Generate a new maintenanceID (naive version)
+    -- Generate new maintenanceID (same as before)
     SELECT NVL(MAX(maintenanceID), 0) + 1
     INTO v_maintenanceID
     FROM BusMaintenance;
@@ -66,7 +71,7 @@ BEGIN
 
     DBMS_OUTPUT.PUT_LINE('Inserted BusMaintenance record with ID ' || v_maintenanceID);
 
-    -- Insert MaintenanceStaffAssignment rows
+    -- Insert MaintenanceStaffAssignment rows (same logic)
     FOR i IN 1 .. in_staffIDList.COUNT LOOP
         v_currStaffID := in_staffIDList(i);
 
