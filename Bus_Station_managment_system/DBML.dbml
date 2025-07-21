@@ -15,7 +15,7 @@ Table BusCompany {
   phoneNumber VARCHAR2(20)
   email VARCHAR2(100)
   address VARCHAR2(200)
-  status ENUM(active , inactive)
+  status ENUM('active' , 'inactive')
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
@@ -55,7 +55,7 @@ Table Staff {
   email VARCHAR2(100)
   hireDate DATE [note: 'Date of employment']
   salary NUMBER(10,2)
-  status VARCHAR2(20) [note: "e.g. 'Active', 'On Leave', 'Terminated'"]
+  status VARCHAR2(20) [note: "e.g. 'active', 'on_leave', 'terminated'"]
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
@@ -69,7 +69,7 @@ Table BusStation {
   stationID NUMBER(10) [pk, increment]
   stationName VARCHAR2(100)
   location VARCHAR2(150)
-  status ENUM(active , inactive)
+  status ENUM('active' , 'inactive')
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 
@@ -78,7 +78,7 @@ Table BusPlatform {
   stationID NUMBER(10) [ref: > BusStation.stationID, not null, note: 'ID of the bus station where a platform is located']
   platformName VARCHAR2(100) [not null, note: 'e.g. "KLCC", "Pasar Seni"']
   location VARCHAR2(150) [note: 'GPS coordinates or address']
-  status ENUM(active , inactive)
+  status ENUM('active' , 'inactive')
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 
@@ -91,7 +91,7 @@ Table Route {
   estimatedDuration NUMBER(10) [note: 'Typical trip duration in minutes']
   plannedDepartureTime TIME [note: 'Typical departure time from start point']
   plannedArrivalTime TIME [note: 'Typical arrival time at end point' ,'only have time not date']
-  status ENUM(active , inactive)
+  status ENUM('active' , 'inactive')
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 
@@ -125,7 +125,7 @@ Table Bus {
   plateNo VARCHAR2(20) [unique, not null, note: 'Vehicle registration number']
   model VARCHAR2(50) [note: 'Bus model / type (e.g. Hino 40-Seater)']
   capacity NUMBER(10) [note: 'Number of seats']
-  status ENUM(Active, In_Maintenance, Retired , in_Active)
+  status ENUM('active', 'inactive', 'under_maintenance', 'retired')
   year NUMBER(4) [note: 'Year of manufacture / acquisition']
   remarks VARCHAR2(200) [note: 'Notes like AC, TV etc.']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
@@ -190,7 +190,7 @@ Table BusSchedule {
   routeDriverAssignmentID int [ref: > RouteDriverAssignmentList.routeDriverAssignmentID, not null, note: 'FK to RouteDriverAssignmentList']
   plannedDepartureTime TIMESTAMP [not null, note: 'When this trip starts']
   plannedArrivalTime TIMESTAMP [note: 'Estimated end time']
-  status ENUM(Planned ,Cancelled ,Completed ,InProgress ,Pending) [default: 'Planned', note: 'Current status of this schedule']
+  status ENUM('planned' ,'cancelled' ,'completed' ,'in_progress' ,'pending') [default: 'Planned', note: 'Current status of this schedule']
   remarks VARCHAR2(200) [note: 'Any notes']
   expectedProfit NUMBER(8,2) [note: 'Expected profit from this trip']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
@@ -252,7 +252,7 @@ Table TripStopLog {
   platformID NUMBER(10) [ref: > BusPlaform.plaformID, not null, note: 'FK to BusPlatform']
   actualArrivalTime TIMESTAMP
   actualDepartureTime TIMESTAMP
-  status VARCHAR2(20) [note: "e.g. 'Arrived', 'Skipped', 'Delayed'"]
+  status VARCHAR2(20) [note: "e.g. 'arrived', 'skipped', 'delayed'"]
   remarks VARCHAR2(200) [note: 'reason for delay or skip']
 }
 
@@ -277,7 +277,7 @@ Table PaymentRecord {
   cashAmount NUMBER(8,2) [note: 'Actual cash/card portion paid or refunded']
   pointsApplied NUMBER(10) [note: 'Points used (positive) or refunded (negative for refunds)']
   pointValue NUMBER(8,2) [note: 'RM value of points used, for easy calculation']
-  status ENUM(Completed,Pending,Failed)
+  status ENUM('completed','pending','failed')
   paymentTime TIMESTAMP [note: 'When payment was made']
   receiptNo VARCHAR2(50) [note: 'Reference from payment gateway']
   remarks VARCHAR2(200) [note: 'Notes or error messages']
@@ -324,7 +324,7 @@ Table Ticket {
   seatNo VARCHAR2(10) [note: "'Seat identifier' , e.g. BUS001-A1 [BUSNAME/ID-SeatNo]"]
   price NUMBER(8,2) [not null]
   type ENUM('regular', 'booking') [note: "e.g. 'regular' for normal purchase, 'booking' for pre-booked tickets"]
-  status ENUM('Cancelled_By_Company','Cancelled_By_User','booked_extended','been_bought') [default: 'null']
+  status ENUM('cancelled_by_company','cancelled_by_user','booked_extended','been_bought') [default: 'null']
   cancellationDate TIMESTAMP [note: 'Date of cancellation if valid']
 
   extensionDate TIMESTAMP [note: 'When is the extension made']
@@ -346,7 +346,7 @@ Table Ticket {
 //   emergencyContactNo VARCHAR2(20) [note: 'Contact number of emergency contact']
 //   email VARCHAR2(100)
 //   address VARCHAR2(200)
-//   status VARCHAR2(20) [note: "e.g. 'Active', 'Terminated'"]
+//   status VARCHAR2(20) [note: "e.g. 'active', 'terminated'"]
 //   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 //   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 // }
@@ -362,7 +362,7 @@ Table Shop {
   //deposit NUMBER(10,2)
   //contractStart DATE
   //contractEnd DATE
-  status VARCHAR2(20) [note: "e.g. 'Occupied', 'Vacant'"]
+  status VARCHAR2(20) [note: "e.g. 'occupied', 'vacant'"]
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 }
@@ -406,7 +406,7 @@ Table RentalCollection {
 //   amount NUMBER(10,2) [not null]
 //   paymentDate TIMESTAMP [not null]
 //   paymentMethod VARCHAR2(30) [note: "e.g. 'Cash', 'Transfer', 'Cheque'"]
-//   status ENUM(Completed, Pending, Failed)
+//   status ENUM('completed', 'pending', 'failed')
 //   receiptNo VARCHAR2(50)
 //   remarks VARCHAR2(200)
 //   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
