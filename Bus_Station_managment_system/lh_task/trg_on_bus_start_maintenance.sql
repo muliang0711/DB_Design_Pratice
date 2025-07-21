@@ -17,13 +17,25 @@ BEGIN
     WHERE dla.busID = :NEW.busID
     AND dla.assignedTo >= SYSDATE;
 
--- Updated affected route-driver assignments' status to inactive
+-- Update affected route-driver assignments' status to inactive
     UPDATE RouteDriverAssignmentList rdal
-    SET status = 'inactive'
+    SET rdal.status = 'inactive'
     WHERE EXISTS (
         SELECT 1 
         FROM DriverListAssignment dla
         WHERE dla.assignmentID = rdal.assignmentID
+        AND dla.busID = :NEW.busID
+    );
+
+-- Update affected bus schedule
+-- status = 'cancelled'
+    UPDATE BusSchedule bs
+    SET bs.status = 'cancelled'
+    WHERE EXISTS (
+        SELECT 1
+        FROM RouteDriverAssignmentList rdal
+        JOIN DriverListAssignment dla USING(assignmentID)
+        WHERE bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
         AND dla.busID = :NEW.busID
     );
 

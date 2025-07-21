@@ -67,6 +67,13 @@ CREATE TABLE RouteDriverAssignmentList (
     CONSTRAINT uq_routedriverassignmentlist UNIQUE (routeID, assignmentID, effectiveFrom)
 );
 
+DROP TABLE BusSchedule;
+CREATE TABLE BusSchedule (
+    BusScheduleID NUMBER(10),
+    routeDriverAssignmentID NUMBER(10),
+    status VARCHAR(20)
+);
+
 
 INSERT INTO Bus (busID) VALUES(1);
 INSERT INTO Bus (busID) VALUES(2);

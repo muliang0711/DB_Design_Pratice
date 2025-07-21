@@ -10,7 +10,7 @@ START prc_bus_start_maintenance;
 
 -- test prc_bus_start_maintenance
 BEGIN
-    prc_bus_start_maintenance(1, 4, t_staffList(1, 2));
+    prc_create_bus_maintenance(1, 4, t_staffList(1, 2));
 END;
 /
 
