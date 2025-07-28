@@ -1,0 +1,84 @@
+CREATE OR REPLACE PROCEDURE prc_show_rentals IS
+  -- Declare outer variables
+  v_shopID  Shop.shopID%TYPE;
+  v_staffID RentalCollection.staffID%TYPE;
+  v_amount  RentalCollection.rentalAmount%TYPE;
+  v_status  RentalCollection.status%TYPE;
+  v_createdTime RentalCollection.createdAt%TYPE;
+  v_collectionDate RentalCollection.collectionDate%TYPE;
+  v_total   NUMBER;
+  v_count   NUMBER;
+
+  -- Cursor to list all shops
+  CURSOR shopCursor IS
+    SELECT shopID
+    FROM Shop
+    WHERE status = 'Occupied'
+    ORDER BY shopID;
+
+  -- Declare and open nested cursor for this shop
+  CURSOR rentCursor IS
+     SELECT staffID, rentalAmount, status, createdAt, collectionDate
+     FROM RentalCollection
+     WHERE shopID = v_shopID
+     ORDER BY collectionDate;
+
+BEGIN
+  OPEN shopCursor;
+
+  LOOP
+    FETCH shopCursor INTO v_shopID;
+    EXIT WHEN shopCursor%NOTFOUND;
+
+    -- Reset totals per shop
+    v_total := 0;
+    v_count := 0;
+
+    -- Print shop header
+    DBMS_OUTPUT.PUT_LINE(CHR(10));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE('Shop Rental Record for Shop ID: ' || v_shopID);
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE(RPAD('Staff ID', 10) || RPAD('Amount', 12) || RPAD('Created At', 22) || RPAD('Status', 12) || RPAD('Paid At', 15));
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 57, '-'));
+
+    BEGIN
+      OPEN rentCursor;
+      LOOP
+        FETCH rentCursor INTO v_staffID, v_amount, v_status, v_createdTime, v_collectionDate
+        EXIT WHEN rentCursor%NOTFOUND;
+	
+	IF (v_status = 'paid') THEN
+        v_total := v_total + v_amount;
+        END IF;
+
+	v_count := v_count + 1;
+
+         DBMS_OUTPUT.PUT_LINE(
+          RPAD(v_staffID, 10) ||
+          LPAD(TO_CHAR(v_amount, '$999,990.00'), 12) ||
+          RPAD(TO_CHAR(v_createdTime, 'YYYY-MM-DD HH24:MI:SS'), 22) ||
+          RPAD(v_status, 12) ||
+          RPAD(TO_CHAR(v_collectionDate, 'YYYY-MM-DD'), 15)
+        );
+      END LOOP;
+      CLOSE rentCursor;
+    END;
+
+    -- Shop summary
+    IF v_count = 0 THEN
+      DBMS_OUTPUT.PUT_LINE('No rental records found for Shop ID: ' || v_shopID);
+    ELSE
+      DBMS_OUTPUT.PUT_LINE(RPAD('-', 57, '-'));
+      DBMS_OUTPUT.PUT_LINE('Total Records: ' || v_count);
+      DBMS_OUTPUT.PUT_LINE('Total Collected: ' || TO_CHAR(v_total, '$999,999.00'));
+    END IF;
+  END LOOP;
+
+  CLOSE shopCursor;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/
