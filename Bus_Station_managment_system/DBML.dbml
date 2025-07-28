@@ -372,6 +372,7 @@ Table RentalCollection {
   staffID NUMBER(10) [ref: > Staff.staffID, not null]
   collectionDate DATE 
   rentalAmount NUMBER(8,2)
+  status VARCHAR2(20) [note: "e.g. 'paid', 'unpaid']
 
   Indexes {
     // Note: `cmp_pk` is short for 'compound primary key'
