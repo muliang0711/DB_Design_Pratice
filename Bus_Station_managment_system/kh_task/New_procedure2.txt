@@ -1,0 +1,40 @@
+-- This procedure is used to add the new Rental Record for every shops
+
+-- Procedure to add a new rental collection record for a shop
+CREATE OR REPLACE PROCEDURE prc_add_rental_collection(
+  v_amount       IN RentalCollection.rentalAmount%TYPE
+  v_month   	 IN DATE DEFAULT TRUNC(SYSDATE, 'YYYY-MM')
+) IS
+
+ CURSOR shop_cursor IS
+    SELECT shopID
+    FROM Shop
+    WHERE LOWER(status) = 'occupied';
+
+v_shopID   Shop.shopID%TYPE;
+  v_exists   NUMBER;
+BEGIN
+  FOR shop_rec IN shop_cursor LOOP
+    v_shopID := shop_rec.shopID;
+
+ SELECT COUNT(*) INTO v_exists
+    FROM RentalCollection
+    WHERE shopID = v_shopID
+    AND TRUNC(rentalMonth, 'MM') = TRUNC(v_month, 'MM');
+
+   IF v_exists = 0 THEN
+      INSERT INTO RentalCollection (
+        shopID, staffID, rentalAmount, status, createdAt, collectionDate, rentalMonth
+      ) VALUES (
+        v_shopID, null, v_amount, 'unpaid', null, null, v_month
+      );
+  END IF;
+END LOOP
+
+COMMIT;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+END;
+/
