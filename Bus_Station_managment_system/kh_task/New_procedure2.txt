@@ -2,7 +2,7 @@
 
 -- Procedure to add a new rental collection record for a shop
 CREATE OR REPLACE PROCEDURE prc_add_rental_collection(
-  v_amount       IN RentalCollection.rentalAmount%TYPE
+  v_amount       IN RentalCollection.rentalAmount%TYPE,
   v_month   	 IN DATE DEFAULT TRUNC(SYSDATE, 'YYYY-MM')
 ) IS
 
