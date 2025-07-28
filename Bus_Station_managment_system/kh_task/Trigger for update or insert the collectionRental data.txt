@@ -1,0 +1,18 @@
+-- Trigger for create and update the row of the rentalCollection table
+
+-- Tracking actions of rentalCollection
+CREATE OR REPLACE TRIGGER trg_set_timeStamp
+AFTER INSERT OR UPDATE ON RentalCollection
+FOR EACH ROW
+
+BEGIN      	
+ CASE
+  WHEN INSERTING THEN
+    :NEW.createdAt := SYSTIMESTAMP;
+  WHEN UPDATING THEN
+    IF LOWER(:NEW.status) = paid  AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
+    :NEW.createdAt := :OLD.createdAt;
+    :NEW.collectionDate := SYSTIMESTAMP;
+ END CASE;
+END;
+/
