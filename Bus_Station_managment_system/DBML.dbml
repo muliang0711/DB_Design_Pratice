@@ -373,6 +373,8 @@ Table RentalCollection {
   collectionDate DATE 
   rentalAmount NUMBER(8,2)
   status VARCHAR2(20) [note: "e.g. 'paid', 'unpaid']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 
   Indexes {
     // Note: `cmp_pk` is short for 'compound primary key'
