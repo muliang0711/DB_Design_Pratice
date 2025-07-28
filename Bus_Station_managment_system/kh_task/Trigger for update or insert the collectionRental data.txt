@@ -2,17 +2,20 @@
 
 -- Tracking actions of rentalCollection
 CREATE OR REPLACE TRIGGER trg_set_timeStamp
-AFTER INSERT OR UPDATE ON RentalCollection
+BEFORE INSERT OR UPDATE ON RentalCollection
 FOR EACH ROW
-
 BEGIN      	
- CASE
-  WHEN INSERTING THEN
-    :NEW.createdAt := SYSTIMESTAMP;
-  WHEN UPDATING THEN
-    IF LOWER(:NEW.status) = paid  AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
-    :NEW.createdAt := :OLD.createdAt;
-    :NEW.collectionDate := SYSTIMESTAMP;
- END CASE;
+  CASE
+    WHEN INSERTING THEN
+      :NEW.createdAt := SYSTIMESTAMP;
+    WHEN UPDATING THEN
+      IF LOWER(:NEW.status) = 'paid'  
+         AND LOWER(NVL(:OLD.status, '')) != 'paid' 
+         AND :OLD.staffID IS NULL THEN
+        :NEW.createdAt := :OLD.createdAt;
+        :NEW.collectionDate := SYSTIMESTAMP;
+        :NEW.staffID := :OLD.staffID;
+      END IF;
+  END CASE;
 END;
 /
