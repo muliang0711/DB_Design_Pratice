@@ -370,11 +370,10 @@ Table Shop {
 Table RentalCollection {
   shopID NUMBER(10) [ref: > Shop.shopID, not null]
   staffID NUMBER(10) [ref: > Staff.staffID, not null]
-  collectionDate DATE 
   rentalAmount NUMBER(8,2)
   status VARCHAR2(20) [note: "e.g. 'paid', 'unpaid']
   createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
-  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+  collectionDate TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
 
   Indexes {
     // Note: `cmp_pk` is short for 'compound primary key'
