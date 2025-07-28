@@ -48,7 +48,7 @@ BEGIN
         FETCH rentCursor INTO v_staffID, v_amount, v_status, v_createdTime, v_collectionDate
         EXIT WHEN rentCursor%NOTFOUND;
 	
-	IF (v_status = 'paid') THEN
+	IF LOWER(v_status) = 'paid' THEN
         v_total := v_total + v_amount;
         END IF;
 
