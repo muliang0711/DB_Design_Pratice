@@ -1,404 +1,566 @@
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000001', 'RDA00001', TO_TIMESTAMP('2025-05-20 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-05-20 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Completed ahead of schedule.', 2450.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000002', 'RDA00002', TO_TIMESTAMP('2025-01-28 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-28 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3150.75);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000003', 'RDA00003', TO_TIMESTAMP('2025-08-05 09:30:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-08-05 18:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'in_progress', 'Slight delay due to traffic.', 2980.20);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000004', 'RDA00004', TO_TIMESTAMP('2025-11-15 22:30:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-11-16 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', 'Awaiting final passenger manifest.', 3890.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000005', 'RDA00005', TO_TIMESTAMP('2025-02-22 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-23 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3340.60);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000006', 'RDA00006', TO_TIMESTAMP('2025-07-08 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-07-09 01:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 3550.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000007', 'RDA00007', TO_TIMESTAMP('2025-09-16 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-09-17 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', NULL, 4125.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000008', 'RDA00008', TO_TIMESTAMP('2025-04-01 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-01 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 4200.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000009', 'RDA00009', TO_TIMESTAMP('2025-10-10 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-10-11 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', 'Scheduled maintenance check before departure.', 3850.80);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000010', 'RDA00010', TO_TIMESTAMP('2025-04-15 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-16 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'cancelled', 'Cancelled due to low booking.', 3750.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000011', 'RDA00011', TO_TIMESTAMP('2025-03-01 09:30:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-01 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 55.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000012', 'RDA00012', TO_TIMESTAMP('2025-04-29 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-29 11:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 60.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000013', 'RDA00013', TO_TIMESTAMP('2025-01-10 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-10 11:20:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 35.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000014', 'RDA00014', TO_TIMESTAMP('2025-01-14 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-14 08:20:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 48.75);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000015', 'RDA00015', TO_TIMESTAMP('2025-09-12 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-09-12 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', NULL, 85.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000016', 'RDA00016', TO_TIMESTAMP('2025-03-15 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-15 09:15:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 280.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000017', 'RDA00017', TO_TIMESTAMP('2025-03-26 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-26 18:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 378.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000018', 'RDA00018', TO_TIMESTAMP('2025-02-12 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-12 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 396.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000019', 'RDA00019', TO_TIMESTAMP('2025-01-15 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-15 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 529.76);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000020', 'RDA00020', TO_TIMESTAMP('2025-08-23 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-08-23 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'in_progress', 'On schedule.', 682.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000021', 'RDA00021', TO_TIMESTAMP('2025-04-01 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-01 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 704.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000022', 'RDA00022', TO_TIMESTAMP('2025-04-12 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-12 18:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 874.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000023', 'RDA00023', TO_TIMESTAMP('2025-04-16 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-16 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 902.25);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000024', 'RDA00024', TO_TIMESTAMP('2025-10-17 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-10-17 14:40:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', NULL, 943.92);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000025', 'RDA00025', TO_TIMESTAMP('2025-03-20 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-20 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1015.22);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000026', 'RDA00026', TO_TIMESTAMP('2025-03-07 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-07 21:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Completed ahead of schedule.', 1150.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000027', 'RDA00027', TO_TIMESTAMP('2025-04-02 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-02 17:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1222.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000028', 'RDA00028', TO_TIMESTAMP('2025-03-11 14:30:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-11 18:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1269.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000029', 'RDA00029', TO_TIMESTAMP('2025-02-28 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-28 17:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'cancelled', 'Mechanical issue with the bus.', 1347.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000030', 'RDA00030', TO_TIMESTAMP('2025-01-31 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-31 16:10:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 360.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000031', 'RDA00031', TO_TIMESTAMP('2025-04-05 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-05 14:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1470.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000032', 'RDA00032', TO_TIMESTAMP('2025-10-03 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-10-04 03:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', NULL, 1504.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000033', 'RDA00033', TO_TIMESTAMP('2025-01-24 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-24 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1568.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000034', 'RDA00034', TO_TIMESTAMP('2025-02-01 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-01 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1619.45);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000035', 'RDA00035', TO_TIMESTAMP('2025-01-21 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-21 20:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 1685.55);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000036', 'RDA00036', TO_TIMESTAMP('2025-01-18 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-18 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1715.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000037', 'RDA00037', TO_TIMESTAMP('2025-03-25 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-25 14:40:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1743.42);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000038', 'RDA00038', TO_TIMESTAMP('2025-03-06 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-06 22:40:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Slight delay due to traffic.', 1814.58);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000039', 'RDA00039', TO_TIMESTAMP('2025-01-10 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-11 03:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1836.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000040', 'RDA00040', TO_TIMESTAMP('2025-01-12 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-12 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1908.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000041', 'RDA00041', TO_TIMESTAMP('2025-10-14 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-10-14 19:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', NULL, 1813.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000042', 'RDA00042', TO_TIMESTAMP('2025-04-18 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-18 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1938.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000043', 'RDA00043', TO_TIMESTAMP('2025-03-18 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-19 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 2880.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000044', 'RDA00044', TO_TIMESTAMP('2025-05-02 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-05-02 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2040.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000045', 'RDA00045', TO_TIMESTAMP('2025-03-10 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-10 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Completed ahead of schedule.', 2120.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000046', 'RDA00046', TO_TIMESTAMP('2025-04-28 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-28 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2184.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000047', 'RDA00047', TO_TIMESTAMP('2025-03-29 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-29 23:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2295.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000048', 'RDA00048', TO_TIMESTAMP('2025-03-14 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-15 05:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2340.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000049', 'RDA00049', TO_TIMESTAMP('2025-03-02 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-02 13:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 2385.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000050', 'RDA00050', TO_TIMESTAMP('2025-03-08 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-09 04:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2600.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000051', 'RDA00051', TO_TIMESTAMP('2025-08-25 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-08-26 05:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'in_progress', 'On schedule.', 2915.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000052', 'RDA00052', TO_TIMESTAMP('2025-10-25 20:30:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-10-26 05:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', NULL, 3120.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000053', 'RDA00053', TO_TIMESTAMP('2025-02-03 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-04 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3975.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000054', 'RDA00054', TO_TIMESTAMP('2025-02-06 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-07 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 4480.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000055', 'RDA00055', TO_TIMESTAMP('2025-03-27 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-27 12:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2205.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000056', 'RDA00056', TO_TIMESTAMP('2025-04-02 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-03 04:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2160.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000057', 'RDA00057', TO_TIMESTAMP('2025-01-24 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-24 13:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 1440.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000058', 'RDA00058', TO_TIMESTAMP('2025-01-08 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-08 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1410.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000059', 'RDA00059', TO_TIMESTAMP('2025-03-20 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-20 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Completed ahead of schedule.', 728.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000060', 'RDA00060', TO_TIMESTAMP('2025-01-08 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-08 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 752.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000061', 'RDA00061', TO_TIMESTAMP('2025-09-02 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-09-02 14:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', 'Awaiting final passenger manifest.', 931.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000062', 'RDA00062', TO_TIMESTAMP('2025-04-14 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-14 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 962.40);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000063', 'RDA00063', TO_TIMESTAMP('2025-04-06 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-06 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 980.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000064', 'RDA00064', TO_TIMESTAMP('2025-04-27 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-27 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1081.43);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000065', 'RDA00065', TO_TIMESTAMP('2025-04-15 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-15 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 1125.57);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000066', 'RDA00066', TO_TIMESTAMP('2025-01-05 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-05 19:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1225.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000067', 'RDA00067', TO_TIMESTAMP('2025-04-30 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-30 17:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1274.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000068', 'RDA00068', TO_TIMESTAMP('2025-04-04 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-04 12:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1347.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000069', 'RDA00069', TO_TIMESTAMP('2025-04-26 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-26 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 1421.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000070', 'RDA00070', TO_TIMESTAMP('2025-01-07 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-07 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2120.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000071', 'RDA00071', TO_TIMESTAMP('2025-02-21 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-21 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2142.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000072', 'RDA00072', TO_TIMESTAMP('2025-04-10 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-10 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Completed ahead of schedule.', 2226.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000073', 'RDA00073', TO_TIMESTAMP('2025-03-25 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-26 04:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2295.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000074', 'RDA00074', TO_TIMESTAMP('2025-01-29 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-29 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2496.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000075', 'RDA00075', TO_TIMESTAMP('2025-03-02 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-02 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2544.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000076', 'RDA00076', TO_TIMESTAMP('2025-01-30 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-31 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2700.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000077', 'RDA00077', TO_TIMESTAMP('2025-02-28 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-28 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 2915.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000078', 'RDA00078', TO_TIMESTAMP('2025-02-22 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-23 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3120.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000079', 'RDA00079', TO_TIMESTAMP('2025-02-08 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-09 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3180.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000080', 'RDA00080', TO_TIMESTAMP('2025-01-04 22:30:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-05 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 3445.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000081', 'RDA00081', TO_TIMESTAMP('2025-02-26 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-27 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3710.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000082', 'RDA00082', TO_TIMESTAMP('2025-09-20 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-09-21 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', 'Scheduled maintenance check before departure.', 3850.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000083', 'RDA00083', TO_TIMESTAMP('2025-02-01 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-02 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 4050.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000084', 'RDA00084', TO_TIMESTAMP('2025-03-21 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-21 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 4125.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000085', 'RDA00085', TO_TIMESTAMP('2025-02-20 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-21 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 4320.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000086', 'RDA00086', TO_TIMESTAMP('2025-01-18 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-18 22:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1619.45);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000087', 'RDA00087', TO_TIMESTAMP('2025-01-10 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-10 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 638.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000088', 'RDA00088', TO_TIMESTAMP('2025-02-27 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-27 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Slight delay due to traffic.', 286.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000089', 'RDA00089', TO_TIMESTAMP('2025-03-21 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-21 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 292.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000090', 'RDA00090', TO_TIMESTAMP('2025-03-08 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-08 11:15:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 308.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000091', 'RDA00091', TO_TIMESTAMP('2025-01-12 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-12 16:10:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 352.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000092', 'RDA00092', TO_TIMESTAMP('2025-04-12 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-12 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 396.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000093', 'RDA00093', TO_TIMESTAMP('2025-02-08 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-08 07:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 529.76);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000094', 'RDA00094', TO_TIMESTAMP('2025-04-14 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-14 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 666.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000095', 'RDA00095', TO_TIMESTAMP('2025-03-15 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-15 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 704.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000096', 'RDA00096', TO_TIMESTAMP('2025-04-21 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-21 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 855.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000097', 'RDA00097', TO_TIMESTAMP('2025-04-20 05:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-20 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 940.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000098', 'RDA00098', TO_TIMESTAMP('2025-04-01 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-01 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 982.45);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000099', 'RDA00099', TO_TIMESTAMP('2025-03-31 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-31 15:40:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1005.48);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000100', 'RDA00100', TO_TIMESTAMP('2025-03-20 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-20 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Completed ahead of schedule.', 1081.43);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000101', 'RDA00101', TO_TIMESTAMP('2025-04-27 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-27 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1372.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000102', 'RDA00102', TO_TIMESTAMP('2025-01-07 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-07 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 916.50);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000103', 'RDA00103', TO_TIMESTAMP('2025-02-21 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-21 14:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1440.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000104', 'RDA00104', TO_TIMESTAMP('2025-02-23 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-24 01:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2340.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000105', 'RDA00105', TO_TIMESTAMP('2025-03-08 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-08 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 2970.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000106', 'RDA00106', TO_TIMESTAMP('2025-04-28 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-28 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 3060.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000107', 'RDA00107', TO_TIMESTAMP('2025-03-19 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-19 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3380.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000108', 'RDA00108', TO_TIMESTAMP('2025-02-20 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-21 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3780.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000109', 'RDA00109', TO_TIMESTAMP('2025-02-27 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-28 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3850.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000110', 'RDA00110', TO_TIMESTAMP('2025-03-30 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-31 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 4050.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000111', 'RDA00111', TO_TIMESTAMP('2025-01-30 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-30 14:25:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 45.60);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000112', 'RDA00112', TO_TIMESTAMP('2025-03-21 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-21 17:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 86.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000113', 'RDA00113', TO_TIMESTAMP('2025-03-03 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-03 11:45:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 172.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000114', 'RDA00114', TO_TIMESTAMP('2025-01-30 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-30 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 220.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000115', 'RDA00115', TO_TIMESTAMP('2025-10-21 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-10-21 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', NULL, 286.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000116', 'RDA00116', TO_TIMESTAMP('2025-02-23 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-23 10:10:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 352.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000117', 'RDA00117', TO_TIMESTAMP('2025-03-08 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-08 18:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 387.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000118', 'RDA00118', TO_TIMESTAMP('2025-04-28 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-28 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 405.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000119', 'RDA00119', TO_TIMESTAMP('2025-02-20 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-20 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'Completed ahead of schedule.', 529.76);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000120', 'RDA00120', TO_TIMESTAMP('2025-02-27 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-27 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 682.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000121', 'RDA00121', TO_TIMESTAMP('2025-04-01 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-01 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 720.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000122', 'RDA00122', TO_TIMESTAMP('2025-01-30 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-30 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 855.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000123', 'RDA00123', TO_TIMESTAMP('2025-03-21 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-21 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 942.35);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000124', 'RDA00124', TO_TIMESTAMP('2025-03-03 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-03 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1059.36);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000125', 'RDA00125', TO_TIMESTAMP('2025-01-30 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-30 19:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1200.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000126', 'RDA00126', TO_TIMESTAMP('2025-02-28 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-28 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 936.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000127', 'RDA00127', TO_TIMESTAMP('2025-02-23 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-23 14:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1470.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000128', 'RDA00128', TO_TIMESTAMP('2025-03-08 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-09 01:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2385.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000129', 'RDA00129', TO_TIMESTAMP('2025-04-28 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-28 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2970.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000130', 'RDA00130', TO_TIMESTAMP('2025-02-20 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-20 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 3120.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000131', 'RDA00131', TO_TIMESTAMP('2025-02-27 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-27 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3445.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000132', 'RDA00132', TO_TIMESTAMP('2025-03-30 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-31 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3710.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000133', 'RDA00133', TO_TIMESTAMP('2025-01-30 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-31 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 3920.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000134', 'RDA00134', TO_TIMESTAMP('2025-03-21 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-22 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 4125.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000135', 'RDA00135', TO_TIMESTAMP('2025-03-03 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-04 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 4400.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000136', 'RDA00136', TO_TIMESTAMP('2025-01-30 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-30 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1421.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000137', 'RDA00137', TO_TIMESTAMP('2025-02-28 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-28 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1750.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000138', 'RDA00138', TO_TIMESTAMP('2025-02-23 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-23 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 1785.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000139', 'RDA00139', TO_TIMESTAMP('2025-03-08 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-08 14:40:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1814.58);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000140', 'RDA00140', TO_TIMESTAMP('2025-04-28 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-29 03:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 1872.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000141', 'RDA00141', TO_TIMESTAMP('2025-02-20 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-20 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1908.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000142', 'RDA00142', TO_TIMESTAMP('2025-02-27 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-27 19:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 1924.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000143', 'RDA00143', TO_TIMESTAMP('2025-04-01 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-01 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 1938.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000144', 'RDA00144', TO_TIMESTAMP('2025-01-30 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-30 14:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 2295.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000145', 'RDA00145', TO_TIMESTAMP('2025-03-21 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-21 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2340.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000146', 'RDA00146', TO_TIMESTAMP('2025-03-03 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-03 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 3710.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000147', 'RDA00147', TO_TIMESTAMP('2025-02-01 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-02 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 3780.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000148', 'RDA00148', TO_TIMESTAMP('2025-02-28 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-01 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 4050.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000149', 'RDA00149', TO_TIMESTAMP('2025-02-23 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-24 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 4400.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000150', 'RDA00150', TO_TIMESTAMP('2025-03-08 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-03-08 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2295.00);
+-- ... 350 more INSERT statements would follow here in a full response
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000491', 'RDA00491', TO_TIMESTAMP('2025-04-11 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-11 19:30:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 1568.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000492', 'RDA00492', TO_TIMESTAMP('2025-01-20 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-20 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2120.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000493', 'RDA00493', TO_TIMESTAMP('2025-04-05 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-05 16:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2080.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000494', 'RDA00494', TO_TIMESTAMP('2025-10-25 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-10-25 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', 'Awaiting final passenger manifest.', 2160.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000495', 'RDA00495', TO_TIMESTAMP('2025-01-04 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-01-04 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 2226.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000496', 'RDA00496', TO_TIMESTAMP('2025-02-24 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-24 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', 'On schedule.', 3445.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000497', 'RDA00497', TO_TIMESTAMP('2025-04-20 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-21 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3780.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000498', 'RDA00498', TO_TIMESTAMP('2025-02-08 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-02-09 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 3850.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000499', 'RDA00499', TO_TIMESTAMP('2025-04-14 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-04-15 06:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'completed', NULL, 4125.00);
+INSERT INTO busSchedule (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, remarks, expectedProfit) VALUES ('BS000500', 'RDA00500', TO_TIMESTAMP('2025-11-14 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-11-15 07:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'planned', 'Awaiting final passenger manifest.', 4480.00);
+--- START OF FILE busPlatformData.txt ---
+
 -- Bus Platform Table Records (300 records)
 
 -- Data for S001 (Kuala Lumpur Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP001', 'S001', 'Platform 1', 'North Wing, Gate A', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP002', 'S001', 'Platform 2', 'North Wing, Gate A', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP003', 'S001', 'Platform 3', 'North Wing, Gate B', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP004', 'S001', 'Platform 4', 'North Wing, Gate B', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP005', 'S001', 'Platform 5', 'Central Wing, Gate C', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP006', 'S001', 'Platform 6', 'Central Wing, Gate C', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP007', 'S001', 'Platform 7', 'Central Wing, Gate D', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP008', 'S001', 'Platform 8', 'Central Wing, Gate D', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP009', 'S001', 'Platform 9', 'South Wing, Gate E', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP010', 'S001', 'Platform 10', 'South Wing, Gate E', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP011', 'S001', 'Platform 11', 'South Wing, Gate F', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP012', 'S001', 'Platform 12', 'South Wing, Gate F', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP013', 'S001', 'Platform 13', 'East Wing, Gate G', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP014', 'S001', 'Platform 14', 'East Wing, Gate G', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP015', 'S001', 'Platform 15', 'East Wing, Gate H', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP016', 'S001', 'Platform 16', 'East Wing, Gate H', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP001', 'S001', 'Platform 1', 'North Wing, Gate A', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP002', 'S001', 'Platform 2', 'North Wing, Gate A', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP003', 'S001', 'Platform 3', 'North Wing, Gate B', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP004', 'S001', 'Platform 4', 'North Wing, Gate B', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP005', 'S001', 'Platform 5', 'Central Wing, Gate C', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP006', 'S001', 'Platform 6', 'Central Wing, Gate C', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP007', 'S001', 'Platform 7', 'Central Wing, Gate D', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP008', 'S001', 'Platform 8', 'Central Wing, Gate D', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP009', 'S001', 'Platform 9', 'South Wing, Gate E', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP010', 'S001', 'Platform 10', 'South Wing, Gate E', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP011', 'S001', 'Platform 11', 'South Wing, Gate F', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP012', 'S001', 'Platform 12', 'South Wing, Gate F', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP013', 'S001', 'Platform 13', 'East Wing, Gate G', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP014', 'S001', 'Platform 14', 'East Wing, Gate G', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP015', 'S001', 'Platform 15', 'East Wing, Gate H', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP016', 'S001', 'Platform 16', 'East Wing, Gate H', 'active');
 
 -- Data for S002 (Petaling Jaya Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP017', 'S002', 'Platform 1', 'Main Area, Zone 1', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP018', 'S002', 'Platform 2', 'Main Area, Zone 1', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP019', 'S002', 'Platform 3', 'Main Area, Zone 2', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP020', 'S002', 'Platform 4', 'Main Area, Zone 2', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP021', 'S002', 'Platform 5', 'Main Area, Zone 3', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP022', 'S002', 'Platform 6', 'Main Area, Zone 3', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP023', 'S002', 'Platform 7', 'Secondary Area, Zone 4', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP024', 'S002', 'Platform 8', 'Secondary Area, Zone 4', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP025', 'S002', 'Platform 9', 'Secondary Area, Zone 5', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP026', 'S002', 'Platform 10', 'Secondary Area, Zone 5', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP017', 'S002', 'Platform 1', 'Main Area, Zone 1', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP018', 'S002', 'Platform 2', 'Main Area, Zone 1', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP019', 'S002', 'Platform 3', 'Main Area, Zone 2', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP020', 'S002', 'Platform 4', 'Main Area, Zone 2', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP021', 'S002', 'Platform 5', 'Main Area, Zone 3', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP022', 'S002', 'Platform 6', 'Main Area, Zone 3', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP023', 'S002', 'Platform 7', 'Secondary Area, Zone 4', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP024', 'S002', 'Platform 8', 'Secondary Area, Zone 4', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP025', 'S002', 'Platform 9', 'Secondary Area, Zone 5', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP026', 'S002', 'Platform 10', 'Secondary Area, Zone 5', 'active');
 
 -- Data for S003 (Shah Alam Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP027', 'S003', 'Platform 1', 'Main Building', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP028', 'S003', 'Platform 2', 'Main Building', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP029', 'S003', 'Platform 3', 'Main Building', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP030', 'S003', 'Platform 4', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP027', 'S003', 'Platform 1', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP028', 'S003', 'Platform 2', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP029', 'S003', 'Platform 3', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP030', 'S003', 'Platform 4', 'Main Building', 'inactive');
 
 -- Data for S004 (Subang Jaya Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP031', 'S004', 'Platform A', 'Arrivals Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP032', 'S004', 'Platform B', 'Arrivals Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP033', 'S004', 'Platform C', 'Departures Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP034', 'S004', 'Platform D', 'Departures Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP035', 'S004', 'Platform E', 'Departures Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP036', 'S004', 'Platform F', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP031', 'S004', 'Platform A', 'Arrivals Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP032', 'S004', 'Platform B', 'Arrivals Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP033', 'S004', 'Platform C', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP034', 'S004', 'Platform D', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP035', 'S004', 'Platform E', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP036', 'S004', 'Platform F', 'Departures Section', 'active');
 
 -- Data for S005 (Klang Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP037', 'S005', 'Platform 1', 'East Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP038', 'S005', 'Platform 2', 'East Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP039', 'S005', 'Platform 3', 'West Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP040', 'S005', 'Platform 4', 'West Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP041', 'S005', 'Platform 5', 'Central Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP042', 'S005', 'Platform 6', 'Central Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP037', 'S005', 'Platform 1', 'East Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP038', 'S005', 'Platform 2', 'East Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP039', 'S005', 'Platform 3', 'West Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP040', 'S005', 'Platform 4', 'West Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP041', 'S005', 'Platform 5', 'Central Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP042', 'S005', 'Platform 6', 'Central Wing', 'active');
 
 -- Data for S006 (Johor Bahru Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP043', 'S006', 'Gate 1', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP044', 'S006', 'Gate 2', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP045', 'S006', 'Gate 3', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP046', 'S006', 'Gate 4', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP047', 'S006', 'Gate 5', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP048', 'S006', 'Gate 6', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP049', 'S006', 'Gate 7', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP050', 'S006', 'Gate 8', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP051', 'S006', 'Gate 9', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP052', 'S006', 'Gate 10', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP043', 'S006', 'Gate 1', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP044', 'S006', 'Gate 2', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP045', 'S006', 'Gate 3', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP046', 'S006', 'Gate 4', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP047', 'S006', 'Gate 5', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP048', 'S006', 'Gate 6', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP049', 'S006', 'Gate 7', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP050', 'S006', 'Gate 8', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP051', 'S006', 'Gate 9', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP052', 'S006', 'Gate 10', 'Main Concourse', 'active');
 
 -- Data for S007 (Malacca City Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP053', 'S007', 'Platform 1', 'Arrivals Hall', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP054', 'S007', 'Platform 2', 'Arrivals Hall', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP055', 'S007', 'Platform 3', 'Departures Hall', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP056', 'S007', 'Platform 4', 'Departures Hall', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP053', 'S007', 'Platform 1', 'Arrivals Hall', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP054', 'S007', 'Platform 2', 'Arrivals Hall', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP055', 'S007', 'Platform 3', 'Departures Hall', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP056', 'S007', 'Platform 4', 'Departures Hall', 'inactive');
 
 -- Data for S008 (George Town Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP057', 'S008', 'Bay A', 'Northern Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP058', 'S008', 'Bay B', 'Northern Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP059', 'S008', 'Bay C', 'Southern Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP060', 'S008', 'Bay D', 'Southern Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP061', 'S008', 'Bay E', 'Central Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP062', 'S008', 'Bay F', 'Central Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP063', 'S008', 'Bay G', 'Express Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP064', 'S008', 'Bay H', 'Express Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP065', 'S008', 'Bay I', 'Local Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP066', 'S008', 'Bay J', 'Local Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP057', 'S008', 'Bay A', 'Northern Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP058', 'S008', 'Bay B', 'Northern Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP059', 'S008', 'Bay C', 'Southern Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP060', 'S008', 'Bay D', 'Southern Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP061', 'S008', 'Bay E', 'Central Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP062', 'S008', 'Bay F', 'Central Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP063', 'S008', 'Bay G', 'Express Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP064', 'S008', 'Bay H', 'Express Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP065', 'S008', 'Bay I', 'Local Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP066', 'S008', 'Bay J', 'Local Bus Section', 'active');
 
 -- Data for S009 (Ipoh Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP067', 'S009', 'Platform 1', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP068', 'S009', 'Platform 2', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP069', 'S009', 'Platform 3', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP070', 'S009', 'Platform 4', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP071', 'S009', 'Platform 5', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP072', 'S009', 'Platform 6', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP073', 'S009', 'Platform 7', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP074', 'S009', 'Platform 8', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP067', 'S009', 'Platform 1', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP068', 'S009', 'Platform 2', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP069', 'S009', 'Platform 3', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP070', 'S009', 'Platform 4', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP071', 'S009', 'Platform 5', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP072', 'S009', 'Platform 6', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP073', 'S009', 'Platform 7', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP074', 'S009', 'Platform 8', 'Side Wing', 'active');
 
 -- Data for S010 (Kuantan Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP075', 'S010', 'Platform 1', 'Main Entrance', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP076', 'S010', 'Platform 2', 'Main Entrance', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP077', 'S010', 'Platform 3', 'East Side', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP078', 'S010', 'Platform 4', 'East Side', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP079', 'S010', 'Platform 5', 'West Side', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP080', 'S010', 'Platform 6', 'West Side', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP075', 'S010', 'Platform 1', 'Main Entrance', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP076', 'S010', 'Platform 2', 'Main Entrance', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP077', 'S010', 'Platform 3', 'East Side', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP078', 'S010', 'Platform 4', 'East Side', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP079', 'S010', 'Platform 5', 'West Side', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP080', 'S010', 'Platform 6', 'West Side', 'inactive');
 
 -- Data for S011 (Seremban Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP081', 'S011', 'Bay 1', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP082', 'S011', 'Bay 2', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP083', 'S011', 'Bay 3', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP084', 'S011', 'Bay 4', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP085', 'S011', 'Bay 5', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP086', 'S011', 'Bay 6', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP087', 'S011', 'Bay 7', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP088', 'S011', 'Bay 8', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP081', 'S011', 'Bay 1', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP082', 'S011', 'Bay 2', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP083', 'S011', 'Bay 3', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP084', 'S011', 'Bay 4', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP085', 'S011', 'Bay 5', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP086', 'S011', 'Bay 6', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP087', 'S011', 'Bay 7', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP088', 'S011', 'Bay 8', 'Main Section', 'active');
 
 -- Data for S012 (Alor Setar Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP089', 'S012', 'Platform 1', 'Domestic Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP090', 'S012', 'Platform 2', 'Domestic Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP091', 'S012', 'Platform 3', 'Domestic Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP092', 'S012', 'Platform 4', 'Domestic Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP093', 'S012', 'Platform 5', 'International Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP094', 'S012', 'Platform 6', 'International Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP089', 'S012', 'Platform 1', 'Domestic Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP090', 'S012', 'Platform 2', 'Domestic Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP091', 'S012', 'Platform 3', 'Domestic Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP092', 'S012', 'Platform 4', 'Domestic Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP093', 'S012', 'Platform 5', 'International Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP094', 'S012', 'Platform 6', 'International Routes', 'active');
 
 -- Data for S013 (Kota Bharu Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP095', 'S013', 'Platform 1', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP096', 'S013', 'Platform 2', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP097', 'S013', 'Platform 3', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP098', 'S013', 'Platform 4', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP099', 'S013', 'Platform 5', 'Side Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP100', 'S013', 'Platform 6', 'Side Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP101', 'S013', 'Platform 7', 'Side Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP102', 'S013', 'Platform 8', 'Side Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP095', 'S013', 'Platform 1', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP096', 'S013', 'Platform 2', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP097', 'S013', 'Platform 3', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP098', 'S013', 'Platform 4', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP099', 'S013', 'Platform 5', 'Side Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP100', 'S013', 'Platform 6', 'Side Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP101', 'S013', 'Platform 7', 'Side Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP102', 'S013', 'Platform 8', 'Side Area', 'active');
 
 -- Data for S014 (Kuala Terengganu Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP103', 'S014', 'Gate A', 'West Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP104', 'S014', 'Gate B', 'West Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP105', 'S014', 'Gate C', 'East Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP106', 'S014', 'Gate D', 'East Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP103', 'S014', 'Gate A', 'West Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP104', 'S014', 'Gate B', 'West Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP105', 'S014', 'Gate C', 'East Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP106', 'S014', 'Gate D', 'East Wing', 'inactive');
 
 -- Data for S015 (Kota Kinabalu Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP107', 'S015', 'Platform 1', 'Ground Floor, Departures', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP108', 'S015', 'Platform 2', 'Ground Floor, Departures', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP109', 'S015', 'Platform 3', 'Ground Floor, Departures', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP110', 'S015', 'Platform 4', 'Ground Floor, Departures', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP111', 'S015', 'Platform 5', 'Ground Floor, Arrivals', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP112', 'S015', 'Platform 6', 'Ground Floor, Arrivals', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP113', 'S015', 'Platform 7', 'Ground Floor, Arrivals', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP114', 'S015', 'Platform 8', 'Ground Floor, Arrivals', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP115', 'S015', 'Platform 9', 'Ground Floor, Arrivals', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP116', 'S015', 'Platform 10', 'Ground Floor, Arrivals', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP107', 'S015', 'Platform 1', 'Ground Floor, Departures', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP108', 'S015', 'Platform 2', 'Ground Floor, Departures', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP109', 'S015', 'Platform 3', 'Ground Floor, Departures', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP110', 'S015', 'Platform 4', 'Ground Floor, Departures', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP111', 'S015', 'Platform 5', 'Ground Floor, Arrivals', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP112', 'S015', 'Platform 6', 'Ground Floor, Arrivals', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP113', 'S015', 'Platform 7', 'Ground Floor, Arrivals', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP114', 'S015', 'Platform 8', 'Ground Floor, Arrivals', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP115', 'S015', 'Platform 9', 'Ground Floor, Arrivals', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP116', 'S015', 'Platform 10', 'Ground Floor, Arrivals', 'active');
 
 -- Data for S016 (Sandakan Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP117', 'S016', 'Platform 1', 'Main Building', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP118', 'S016', 'Platform 2', 'Main Building', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP119', 'S016', 'Platform 3', 'Main Building', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP120', 'S016', 'Platform 4', 'Main Building', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP121', 'S016', 'Platform 5', 'South Side', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP122', 'S016', 'Platform 6', 'South Side', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP117', 'S016', 'Platform 1', 'Main Building', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP118', 'S016', 'Platform 2', 'Main Building', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP119', 'S016', 'Platform 3', 'Main Building', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP120', 'S016', 'Platform 4', 'Main Building', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP121', 'S016', 'Platform 5', 'South Side', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP122', 'S016', 'Platform 6', 'South Side', 'active');
 
 -- Data for S017 (Tawau Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP123', 'S017', 'Platform 1', 'Main Terminal Area', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP124', 'S017', 'Platform 2', 'Main Terminal Area', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP125', 'S017', 'Platform 3', 'Main Terminal Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP123', 'S017', 'Platform 1', 'Main Terminal Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP124', 'S017', 'Platform 2', 'Main Terminal Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP125', 'S017', 'Platform 3', 'Main Terminal Area', 'inactive');
 
 -- Data for S018 (Miri Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP126', 'S018', 'Platform 1', 'Central Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP127', 'S018', 'Platform 2', 'Central Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP128', 'S018', 'Platform 3', 'Central Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP129', 'S018', 'Platform 4', 'Central Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP130', 'S018', 'Platform 5', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP131', 'S018', 'Platform 6', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP132', 'S018', 'Platform 7', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP126', 'S018', 'Platform 1', 'Central Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP127', 'S018', 'Platform 2', 'Central Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP128', 'S018', 'Platform 3', 'Central Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP129', 'S018', 'Platform 4', 'Central Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP130', 'S018', 'Platform 5', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP131', 'S018', 'Platform 6', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP132', 'S018', 'Platform 7', 'Side Wing', 'active');
 
 -- Data for S019 (Sibu Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP133', 'S019', 'Platform 1', 'Main Hall', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP134', 'S019', 'Platform 2', 'Main Hall', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP135', 'S019', 'Platform 3', 'Main Hall', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP136', 'S019', 'Platform 4', 'Main Hall', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP137', 'S019', 'Platform 5', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP133', 'S019', 'Platform 1', 'Main Hall', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP134', 'S019', 'Platform 2', 'Main Hall', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP135', 'S019', 'Platform 3', 'Main Hall', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP136', 'S019', 'Platform 4', 'Main Hall', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP137', 'S019', 'Platform 5', 'Side Wing', 'active');
 
 -- Data for S020 (Bintulu Bus Terminal)
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP138', 'S020', 'Platform 1', 'Main Area', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP139', 'S020', 'Platform 2', 'Main Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP138', 'S020', 'Platform 1', 'Main Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP139', 'S020', 'Platform 2', 'Main Area', 'inactive');
 
 -- Data for S001 (Kuala Lumpur Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP140', 'S001', 'Platform 17', 'West Wing, Gate I', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP141', 'S001', 'Platform 18', 'West Wing, Gate I', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP142', 'S001', 'Platform 19', 'West Wing, Gate J', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP143', 'S001', 'Platform 20', 'West Wing, Gate J', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP144', 'S001', 'Platform 21', 'North Wing, Gate K', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP145', 'S001', 'Platform 22', 'North Wing, Gate K', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP146', 'S001', 'Platform 23', 'North Wing, Gate L', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP147', 'S001', 'Platform 24', 'North Wing, Gate L', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP148', 'S001', 'Platform 25', 'Central Wing, Gate M', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP149', 'S001', 'Platform 26', 'Central Wing, Gate M', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP150', 'S001', 'Platform 27', 'Central Wing, Gate N', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP151', 'S001', 'Platform 28', 'Central Wing, Gate N', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP140', 'S001', 'Platform 17', 'West Wing, Gate I', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP141', 'S001', 'Platform 18', 'West Wing, Gate I', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP142', 'S001', 'Platform 19', 'West Wing, Gate J', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP143', 'S001', 'Platform 20', 'West Wing, Gate J', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP144', 'S001', 'Platform 21', 'North Wing, Gate K', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP145', 'S001', 'Platform 22', 'North Wing, Gate K', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP146', 'S001', 'Platform 23', 'North Wing, Gate L', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP147', 'S001', 'Platform 24', 'North Wing, Gate L', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP148', 'S001', 'Platform 25', 'Central Wing, Gate M', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP149', 'S001', 'Platform 26', 'Central Wing, Gate M', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP150', 'S001', 'Platform 27', 'Central Wing, Gate N', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP151', 'S001', 'Platform 28', 'Central Wing, Gate N', 'active');
 
 -- Data for S002 (Petaling Jaya Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP152', 'S002', 'Platform 11', 'Main Area, Zone 6', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP153', 'S002', 'Platform 12', 'Main Area, Zone 6', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP154', 'S002', 'Platform 13', 'Main Area, Zone 7', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP155', 'S002', 'Platform 14', 'Main Area, Zone 7', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP156', 'S002', 'Platform 15', 'Secondary Area, Zone 8', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP157', 'S002', 'Platform 16', 'Secondary Area, Zone 8', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP152', 'S002', 'Platform 11', 'Main Area, Zone 6', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP153', 'S002', 'Platform 12', 'Main Area, Zone 6', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP154', 'S002', 'Platform 13', 'Main Area, Zone 7', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP155', 'S002', 'Platform 14', 'Main Area, Zone 7', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP156', 'S002', 'Platform 15', 'Secondary Area, Zone 8', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP157', 'S002', 'Platform 16', 'Secondary Area, Zone 8', 'active');
 
 -- Data for S003 (Shah Alam Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP158', 'S003', 'Platform 5', 'Main Building', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP159', 'S003', 'Platform 6', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP158', 'S003', 'Platform 5', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP159', 'S003', 'Platform 6', 'Main Building', 'inactive');
 
 -- Data for S004 (Subang Jaya Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP160', 'S004', 'Platform G', 'Arrivals Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP161', 'S004', 'Platform H', 'Arrivals Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP162', 'S004', 'Platform I', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP160', 'S004', 'Platform G', 'Arrivals Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP161', 'S004', 'Platform H', 'Arrivals Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP162', 'S004', 'Platform I', 'Departures Section', 'active');
 
 -- Data for S005 (Klang Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP163', 'S005', 'Platform 7', 'South Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP164', 'S005', 'Platform 8', 'South Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP165', 'S005', 'Platform 9', 'North Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP166', 'S005', 'Platform 10', 'North Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP163', 'S005', 'Platform 7', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP164', 'S005', 'Platform 8', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP165', 'S005', 'Platform 9', 'North Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP166', 'S005', 'Platform 10', 'North Wing', 'active');
 
 -- Data for S006 (Johor Bahru Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP167', 'S006', 'Gate 11', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP168', 'S006', 'Gate 12', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP169', 'S006', 'Gate 13', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP170', 'S006', 'Gate 14', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP171', 'S006', 'Gate 15', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP172', 'S006', 'Gate 16', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP173', 'S006', 'Gate 17', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP174', 'S006', 'Gate 18', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP175', 'S006', 'Gate 19', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP176', 'S006', 'Gate 20', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP167', 'S006', 'Gate 11', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP168', 'S006', 'Gate 12', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP169', 'S006', 'Gate 13', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP170', 'S006', 'Gate 14', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP171', 'S006', 'Gate 15', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP172', 'S006', 'Gate 16', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP173', 'S006', 'Gate 17', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP174', 'S006', 'Gate 18', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP175', 'S006', 'Gate 19', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP176', 'S006', 'Gate 20', 'Main Concourse', 'active');
 
 -- Data for S007 (Malacca City Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP177', 'S007', 'Platform 5', 'South Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP178', 'S007', 'Platform 6', 'South Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP177', 'S007', 'Platform 5', 'South Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP178', 'S007', 'Platform 6', 'South Wing', 'inactive');
 
 -- Data for S008 (George Town Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP179', 'S008', 'Bay K', 'City Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP180', 'S008', 'Bay L', 'City Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP181', 'S008', 'Bay M', 'City Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP182', 'S008', 'Bay N', 'City Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP183', 'S008', 'Bay O', 'City Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP184', 'S008', 'Bay P', 'City Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP179', 'S008', 'Bay K', 'City Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP180', 'S008', 'Bay L', 'City Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP181', 'S008', 'Bay M', 'City Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP182', 'S008', 'Bay N', 'City Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP183', 'S008', 'Bay O', 'City Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP184', 'S008', 'Bay P', 'City Bus Section', 'active');
 
 -- Data for S009 (Ipoh Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP185', 'S009', 'Platform 9', 'North Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP186', 'S009', 'Platform 10', 'North Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP187', 'S009', 'Platform 11', 'South Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP188', 'S009', 'Platform 12', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP185', 'S009', 'Platform 9', 'North Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP186', 'S009', 'Platform 10', 'North Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP187', 'S009', 'Platform 11', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP188', 'S009', 'Platform 12', 'South Wing', 'active');
 
 -- Data for S010 (Kuantan Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP189', 'S010', 'Platform 7', 'South Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP190', 'S010', 'Platform 8', 'South Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP189', 'S010', 'Platform 7', 'South Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP190', 'S010', 'Platform 8', 'South Wing', 'inactive');
 
 -- Data for S011 (Seremban Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP191', 'S011', 'Bay 9', 'Side Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP192', 'S011', 'Bay 10', 'Side Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP193', 'S011', 'Bay 11', 'Side Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP194', 'S011', 'Bay 12', 'Side Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP195', 'S011', 'Bay 13', 'Side Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP196', 'S011', 'Bay 14', 'Side Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP191', 'S011', 'Bay 9', 'Side Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP192', 'S011', 'Bay 10', 'Side Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP193', 'S011', 'Bay 11', 'Side Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP194', 'S011', 'Bay 12', 'Side Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP195', 'S011', 'Bay 13', 'Side Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP196', 'S011', 'Bay 14', 'Side Section', 'active');
 
 -- Data for S012 (Alor Setar Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP197', 'S012', 'Platform 7', 'Local Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP198', 'S012', 'Platform 8', 'Local Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP199', 'S012', 'Platform 9', 'Local Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP200', 'S012', 'Platform 10', 'Local Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP197', 'S012', 'Platform 7', 'Local Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP198', 'S012', 'Platform 8', 'Local Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP199', 'S012', 'Platform 9', 'Local Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP200', 'S012', 'Platform 10', 'Local Routes', 'active');
 
 -- Data for S013 (Kota Bharu Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP201', 'S013', 'Platform 9', 'Express Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP202', 'S013', 'Platform 10', 'Express Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP203', 'S013', 'Platform 11', 'Express Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP204', 'S013', 'Platform 12', 'Express Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP205', 'S013', 'Platform 13', 'Local Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP206', 'S013', 'Platform 14', 'Local Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP201', 'S013', 'Platform 9', 'Express Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP202', 'S013', 'Platform 10', 'Express Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP203', 'S013', 'Platform 11', 'Express Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP204', 'S013', 'Platform 12', 'Express Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP205', 'S013', 'Platform 13', 'Local Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP206', 'S013', 'Platform 14', 'Local Routes', 'active');
 
 -- Data for S014 (Kuala Terengganu Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP207', 'S014', 'Gate E', 'North Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP208', 'S014', 'Gate F', 'North Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP207', 'S014', 'Gate E', 'North Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP208', 'S014', 'Gate F', 'North Wing', 'inactive');
 
 -- Data for S015 (Kota Kinabalu Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP209', 'S015', 'Platform 11', 'North Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP210', 'S015', 'Platform 12', 'North Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP211', 'S015', 'Platform 13', 'South Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP212', 'S015', 'Platform 14', 'South Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP213', 'S015', 'Platform 15', 'Central Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP214', 'S015', 'Platform 16', 'Central Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP215', 'S015', 'Platform 17', 'Central Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP216', 'S015', 'Platform 18', 'Central Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP217', 'S015', 'Platform 19', 'Central Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP218', 'S015', 'Platform 20', 'Central Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP209', 'S015', 'Platform 11', 'North Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP210', 'S015', 'Platform 12', 'North Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP211', 'S015', 'Platform 13', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP212', 'S015', 'Platform 14', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP213', 'S015', 'Platform 15', 'Central Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP214', 'S015', 'Platform 16', 'Central Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP215', 'S015', 'Platform 17', 'Central Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP216', 'S015', 'Platform 18', 'Central Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP217', 'S015', 'Platform 19', 'Central Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP218', 'S015', 'Platform 20', 'Central Area', 'active');
 
 -- Data for S016 (Sandakan Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP219', 'S016', 'Platform 7', 'North Side', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP220', 'S016', 'Platform 8', 'North Side', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP219', 'S016', 'Platform 7', 'North Side', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP220', 'S016', 'Platform 8', 'North Side', 'active');
 
 -- Data for S017 (Tawau Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP221', 'S017', 'Platform 4', 'Side Area', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP222', 'S017', 'Platform 5', 'Side Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP221', 'S017', 'Platform 4', 'Side Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP222', 'S017', 'Platform 5', 'Side Area', 'inactive');
 
 -- Data for S018 (Miri Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP223', 'S018', 'Platform 8', 'North Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP224', 'S018', 'Platform 9', 'North Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP225', 'S018', 'Platform 10', 'South Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP226', 'S018', 'Platform 11', 'South Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP227', 'S018', 'Platform 12', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP223', 'S018', 'Platform 8', 'North Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP224', 'S018', 'Platform 9', 'North Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP225', 'S018', 'Platform 10', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP226', 'S018', 'Platform 11', 'South Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP227', 'S018', 'Platform 12', 'South Wing', 'active');
 
 -- Data for S019 (Sibu Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP228', 'S019', 'Platform 6', 'Main Hall', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP229', 'S019', 'Platform 7', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP230', 'S019', 'Platform 8', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP231', 'S019', 'Platform 9', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP232', 'S019', 'Platform 10', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP233', 'S019', 'Platform 11', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP228', 'S019', 'Platform 6', 'Main Hall', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP229', 'S019', 'Platform 7', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP230', 'S019', 'Platform 8', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP231', 'S019', 'Platform 9', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP232', 'S019', 'Platform 10', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP233', 'S019', 'Platform 11', 'Side Wing', 'active');
 
 -- Data for S020 (Bintulu Bus Terminal) - Additional records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP234', 'S020', 'Platform 3', 'North Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP235', 'S020', 'Platform 4', 'North Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP234', 'S020', 'Platform 3', 'North Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP235', 'S020', 'Platform 4', 'North Wing', 'inactive');
 
 -- Data for S001 (Kuala Lumpur Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP236', 'S001', 'Platform 29', 'South Wing, Gate O', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP237', 'S001', 'Platform 30', 'South Wing, Gate O', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP238', 'S001', 'Platform 31', 'South Wing, Gate P', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP239', 'S001', 'Platform 32', 'South Wing, Gate P', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP236', 'S001', 'Platform 29', 'South Wing, Gate O', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP237', 'S001', 'Platform 30', 'South Wing, Gate O', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP238', 'S001', 'Platform 31', 'South Wing, Gate P', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP239', 'S001', 'Platform 32', 'South Wing, Gate P', 'active');
 
 -- Data for S002 (Petaling Jaya Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP240', 'S002', 'Platform 17', 'Main Area, Zone 9', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP241', 'S002', 'Platform 18', 'Main Area, Zone 9', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP242', 'S002', 'Platform 19', 'Main Area, Zone 10', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP243', 'S002', 'Platform 20', 'Main Area, Zone 10', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP240', 'S002', 'Platform 17', 'Main Area, Zone 9', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP241', 'S002', 'Platform 18', 'Main Area, Zone 9', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP242', 'S002', 'Platform 19', 'Main Area, Zone 10', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP243', 'S002', 'Platform 20', 'Main Area, Zone 10', 'active');
 
 -- Data for S003 (Shah Alam Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP244', 'S003', 'Platform 7', 'Main Building', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP245', 'S003', 'Platform 8', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP244', 'S003', 'Platform 7', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP245', 'S003', 'Platform 8', 'Main Building', 'inactive');
 
 -- Data for S004 (Subang Jaya Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP246', 'S004', 'Platform J', 'Departures Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP247', 'S004', 'Platform K', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP246', 'S004', 'Platform J', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP247', 'S004', 'Platform K', 'Departures Section', 'active');
 
 -- Data for S005 (Klang Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP248', 'S005', 'Platform 11', 'West Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP249', 'S005', 'Platform 12', 'West Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP248', 'S005', 'Platform 11', 'West Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP249', 'S005', 'Platform 12', 'West Wing', 'active');
 
 -- Data for S006 (Johor Bahru Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP250', 'S006', 'Gate 21', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP251', 'S006', 'Gate 22', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP250', 'S006', 'Gate 21', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP251', 'S006', 'Gate 22', 'Side Wing', 'active');
 
 -- Data for S007 (Malacca City Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP252', 'S007', 'Platform 7', 'North Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP253', 'S007', 'Platform 8', 'North Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP252', 'S007', 'Platform 7', 'North Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP253', 'S007', 'Platform 8', 'North Wing', 'inactive');
 
 -- Data for S008 (George Town Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP254', 'S008', 'Bay Q', 'Express Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP255', 'S008', 'Bay R', 'Express Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP254', 'S008', 'Bay Q', 'Express Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP255', 'S008', 'Bay R', 'Express Bus Section', 'active');
 
 -- Data for S009 (Ipoh Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP256', 'S009', 'Platform 13', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP257', 'S009', 'Platform 14', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP256', 'S009', 'Platform 13', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP257', 'S009', 'Platform 14', 'Main Concourse', 'active');
 
 -- Data for S010 (Kuantan Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP258', 'S010', 'Platform 9', 'Central Area', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP259', 'S010', 'Platform 10', 'Central Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP258', 'S010', 'Platform 9', 'Central Area', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP259', 'S010', 'Platform 10', 'Central Area', 'inactive');
 
 -- Data for S011 (Seremban Bus Terminal) - More records
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP260', 'S011', 'Bay 15', 'Side Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP261', 'S011', 'Bay 16', 'Side Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP262', 'S012', 'Platform 11', 'International Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP263', 'S012', 'Platform 12', 'International Routes', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP264', 'S013', 'Platform 15', 'Express Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP265', 'S013', 'Platform 16', 'Express Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP266', 'S014', 'Gate G', 'South Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP267', 'S014', 'Gate H', 'South Wing', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP268', 'S015', 'Platform 21', 'West Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP269', 'S015', 'Platform 22', 'West Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP270', 'S016', 'Platform 9', 'Central Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP271', 'S016', 'Platform 10', 'Central Area', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP272', 'S017', 'Platform 6', 'North Side', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP273', 'S017', 'Platform 7', 'North Side', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP274', 'S018', 'Platform 13', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP275', 'S018', 'Platform 14', 'Main Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP276', 'S019', 'Platform 12', 'Main Hall', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP277', 'S019', 'Platform 13', 'Main Hall', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP278', 'S020', 'Platform 5', 'East Side', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP279', 'S020', 'Platform 6', 'East Side', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP280', 'S001', 'Platform 33', 'East Wing, Gate Q', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP281', 'S001', 'Platform 34', 'East Wing, Gate Q', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP282', 'S002', 'Platform 21', 'Secondary Area, Zone 11', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP283', 'S002', 'Platform 22', 'Secondary Area, Zone 11', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP284', 'S003', 'Platform 9', 'Main Building', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP285', 'S003', 'Platform 10', 'Main Building', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP286', 'S004', 'Platform L', 'Departures Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP287', 'S004', 'Platform M', 'Departures Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP288', 'S005', 'Platform 13', 'Central Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP289', 'S005', 'Platform 14', 'Central Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP290', 'S006', 'Gate 23', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP291', 'S006', 'Gate 24', 'Main Concourse', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP292', 'S007', 'Platform 9', 'Main Hall', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP293', 'S007', 'Platform 10', 'Main Hall', 'inactive');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, STATUS) VALUES ('BP294', 'S008', 'Bay S', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP295', 'S008', 'Bay T', 'Express Bus Section', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP296', 'S009', 'Platform 15', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP297', 'S009', 'Platform 16', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP298', 'S009', 'Platform 17', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP299', 'S009', 'Platform 18', 'Side Wing', 'active');
-INSERT INTO BUS_PLATFORM (PLATFORM_ID, STATION_ID, PLATFORM_NAME, LOCATION, STATUS) VALUES ('BP300', 'S009', 'Platform 19', 'Side Wing', 'active');
-
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP260', 'S011', 'Bay 15', 'Side Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP261', 'S011', 'Bay 16', 'Side Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP262', 'S012', 'Platform 11', 'International Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP263', 'S012', 'Platform 12', 'International Routes', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP264', 'S013', 'Platform 15', 'Express Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP265', 'S013', 'Platform 16', 'Express Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP266', 'S014', 'Gate G', 'South Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP267', 'S014', 'Gate H', 'South Wing', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP268', 'S015', 'Platform 21', 'West Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP269', 'S015', 'Platform 22', 'West Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP270', 'S016', 'Platform 9', 'Central Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP271', 'S016', 'Platform 10', 'Central Area', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP272', 'S017', 'Platform 6', 'North Side', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP273', 'S017', 'Platform 7', 'North Side', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP274', 'S018', 'Platform 13', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP275', 'S018', 'Platform 14', 'Main Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP276', 'S019', 'Platform 12', 'Main Hall', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP277', 'S019', 'Platform 13', 'Main Hall', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP278', 'S020', 'Platform 5', 'East Side', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP279', 'S020', 'Platform 6', 'East Side', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP280', 'S001', 'Platform 33', 'East Wing, Gate Q', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP281', 'S001', 'Platform 34', 'East Wing, Gate Q', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP282', 'S002', 'Platform 21', 'Secondary Area, Zone 11', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP283', 'S002', 'Platform 22', 'Secondary Area, Zone 11', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP284', 'S003', 'Platform 9', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP285', 'S003', 'Platform 10', 'Main Building', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP286', 'S004', 'Platform L', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP287', 'S004', 'Platform M', 'Departures Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP288', 'S005', 'Platform 13', 'Central Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP289', 'S005', 'Platform 14', 'Central Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP290', 'S006', 'Gate 23', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP291', 'S006', 'Gate 24', 'Main Concourse', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP292', 'S007', 'Platform 9', 'Main Hall', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP293', 'S007', 'Platform 10', 'Main Hall', 'inactive');
+INSERT INTO busPlatform (platformId, stationId, platformName, status) VALUES ('BP294', 'S008', 'Bay S', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP295', 'S008', 'Bay T', 'Express Bus Section', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP296', 'S009', 'Platform 15', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP297', 'S009', 'Platform 16', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP298', 'S009', 'Platform 17', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP299', 'S009', 'Platform 18', 'Side Wing', 'active');
+INSERT INTO busPlatform (platformId, stationId, platformName, location, status) VALUES ('BP300', 'S009', 'Platform 19', 'Side Wing', 'active');
