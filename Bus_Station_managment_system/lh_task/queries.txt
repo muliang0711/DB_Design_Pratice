@@ -19,3 +19,10 @@ JOIN BusMaintenance bm USING(maintenanceId)
 JOIN MaintenanceService ms USING(serviceId)
 ORDERED BY ms.maintenanceDoneDate;
 
+----------------------
+
+for each bus, calculate the average time between corrective (repair) maintenance services 
+group by bus company
+
+to determine a bus's reliability
+

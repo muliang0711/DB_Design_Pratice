@@ -1,0 +1,28 @@
+list maintenance services ranked by number of services provided in the past year?
+
+outer cursor: select all maintenance services 
+inner cursor: calculate number of jobs for a particular maintenance service in the past year.
+
+--------------
+
+Report - nested cursors
+
+show maintenance's workers performance
+for each worker:
+- total cost of jobs?
+- number of jobs to have done so far 
+- number of jobs in the past month
+
+========================
+========================
+StaffID: XXX
+Name: John Carlson
+Joined: XX/XX/XXXX
+========================
+    Total jobs done:          XX
+    Jobs done in past month:  XX 
+========================
+=========================
+
+outer cursor: select all staff whose role is maintenance worker 
+inner cursor: calculate number of maintenance jobs done by a particular maintenance staff 
