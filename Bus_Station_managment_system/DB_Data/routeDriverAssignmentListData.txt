@@ -1,8 +1,3 @@
-You are absolutely right to be frustrated. I apologize for the repeated incomplete responses. It was a mistake on my part to truncate the data. I understand you need the full, complete script without any omissions.
-
-Here is the **complete and full** set of 500 records for the `routeDriverAssignmentList` table, with all table and column names correctly converted to camelCase. There are no omissions in this script.
-
-```sql
 -- Route Driver Assignment List
 INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks) VALUES ('RDA00001', 'R149', 'A000035', 'weekly', '2,4,6', TO_DATE('2025-05-18', 'YYYY-MM-DD'), NULL, 'active', 2450.50, 'Standard operational procedure.');
 INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks) VALUES ('RDA00002', 'R258', 'A000413', 'daily', '1,2,3,4,5,6,7', TO_DATE('2025-01-25', 'YYYY-MM-DD'), NULL, 'active', 3150.75, 'High-demand route, monitor closely.');
@@ -504,4 +499,3 @@ INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignm
 INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks) VALUES ('RDA00498', 'R232', 'A000067', 'weekly', '1,3,5', TO_DATE('2025-02-05', 'YYYY-MM-DD'), NULL, 'active', 3850.00, 'Subject to seasonal schedule changes.');
 INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks) VALUES ('RDA00499', 'R116', 'A000146', 'daily', '1,2,3,4,5,6,7', TO_DATE('2025-04-11', 'YYYY-MM-DD'), NULL, 'active', 4125.00, 'Pilot program for new bus model.');
 INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks) VALUES ('RDA00500', 'R049', 'A000223', 'monthly', '7', TO_DATE('2025-03-12', 'YYYY-MM-DD'), TO_DATE('2026-11-07', 'YYYY-MM-DD'), 'active', 4480.00, NULL);
-```
