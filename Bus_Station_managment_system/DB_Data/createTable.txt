@@ -159,12 +159,12 @@ CREATE TABLE busPlatform (
 CREATE TABLE route (
   routeId               VARCHAR2(12)  PRIMARY KEY,
   routeName             VARCHAR2(50)  NOT NULL,
-  startPoint            VARCHAR2(12)  NOT NULL,
-  endPoint              VARCHAR2(12)  NOT NULL,
+  startPoint            VARCHAR2(12)  NOT NULL,  -- FK → busStation
+  endPoint              VARCHAR2(12)  NOT NULL,  -- FK → busStation
   distanceKm            NUMBER(6,2),
-  estimatedDuration     NUMBER(10),
-  plannedDepartureTime VARCHAR2(5),
-  plannedArrivalTime   VARCHAR2(5),
+  estimatedDuration     NUMBER(10),   -- minutes
+  plannedDepartureTime VARCHAR2(5),  -- 'HH:MI'
+  plannedArrivalTime   VARCHAR2(5),  -- 'HH:MI'
   status                 VARCHAR2(20),
   createdAt             TIMESTAMP     DEFAULT SYSTIMESTAMP,
   updatedAt             TIMESTAMP     DEFAULT SYSTIMESTAMP,
@@ -212,8 +212,8 @@ CREATE TABLE routeDriverAssignmentList (
   routeDriverAssignmentId VARCHAR2(12) PRIMARY KEY,
   routeId        VARCHAR2(12)  NOT NULL,
   assignmentId   VARCHAR2(12)  NOT NULL,
-  frequency       VARCHAR2(10)  NOT NULL,
-  weekdays        VARCHAR2(20)  NOT NULL,
+  frequency       VARCHAR2(10)  NOT NULL, -- 'daily','weekly','monthly'
+  weekdays        VARCHAR2(20)  NOT NULL, -- e.g. '1,2,3'
   effectiveFrom  DATE          NOT NULL,
   effectiveTo    DATE,
   status          VARCHAR2(20)  DEFAULT 'active',
@@ -253,7 +253,7 @@ CREATE TABLE ticket (
   status            VARCHAR2(30),
   cancellationDate TIMESTAMP,
   extensionDate    TIMESTAMP,
-  extendedToId    VARCHAR2(12),
+  extendedToId    VARCHAR2(12), -- FK → busSchedule
   createdAt        TIMESTAMP     DEFAULT SYSTIMESTAMP,
   updatedAt        TIMESTAMP     DEFAULT SYSTIMESTAMP,
   CONSTRAINT FK_TKT_SCHED   FOREIGN KEY (busScheduleId) REFERENCES busSchedule (busScheduleId),
@@ -311,7 +311,7 @@ CREATE TABLE tripStopLog (
   )
 );
 
--- ========= MAINTENANCE (depends on BUS / STAFF) =========
+-- ========= MAINTENANCE (depends on bus / staff) =========
 CREATE TABLE busMaintenance (
   maintenanceId        VARCHAR2(12)  PRIMARY KEY,
   busId                VARCHAR2(12)  NOT NULL,
@@ -338,7 +338,7 @@ CREATE TABLE maintenanceStaffAssignment (
   CONSTRAINT FK_MSA_STAFF FOREIGN KEY (staffId)       REFERENCES staff (staffId)
 );
 
--- ========= RENTAL (depends on SHOP / STAFF) =========
+-- ========= RENTAL (depends on shop / staff) =========
 CREATE TABLE rentalCollection (
   shopId         VARCHAR2(12)  NOT NULL,
   staffId        VARCHAR2(12)  NOT NULL,
