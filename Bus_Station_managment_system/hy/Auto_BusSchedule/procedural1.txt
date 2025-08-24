@@ -2,9 +2,7 @@ CREATE OR REPLACE PROCEDURE GEN_BUS_SCHEDULES (
   p_rda_id   IN routeDriverAssignmentList.routeDriverAssignmentId%TYPE,
   p_max_days IN NUMBER DEFAULT 90
 ) IS
-  --------------------------------------------------------------------
-  -- RDA fields
-  --------------------------------------------------------------------
+
   v_route_id      route.routeId%TYPE;
   v_assignment_id routeDriverAssignmentList.assignmentId%TYPE;
   v_freq          routeDriverAssignmentList.frequency%TYPE;
@@ -13,25 +11,16 @@ CREATE OR REPLACE PROCEDURE GEN_BUS_SCHEDULES (
   v_eff_to        DATE;
   v_status        routeDriverAssignmentList.status%TYPE;
 
-  --------------------------------------------------------------------
-  -- Route fields
-  --------------------------------------------------------------------
   v_dep_hhmm     route.plannedDepartureTime%TYPE;
   v_arr_hhmm     route.plannedArrivalTime%TYPE;
   v_est_min      route.estimatedDuration%TYPE;
   v_distance_km  route.distanceKm%TYPE;
 
-  --------------------------------------------------------------------
-  -- Working vars
-  --------------------------------------------------------------------
   v_start_date   DATE;
   v_end_date     DATE;
   v_dep_ts       TIMESTAMP;
   v_arr_ts       TIMESTAMP;
 
-  --------------------------------------------------------------------
-  -- Local types and helpers
-  --------------------------------------------------------------------
   TYPE t_numset IS TABLE OF PLS_INTEGER INDEX BY PLS_INTEGER;
 
   -- Monday=1 .. Sunday=7
@@ -86,10 +75,6 @@ CREATE OR REPLACE PROCEDURE GEN_BUS_SCHEDULES (
     END IF;
   END;
 
-  --------------------------------------------------------------------
-  -- New: helpers for 12-char ID
-  --------------------------------------------------------------------
-  -- base36 编码：固定宽度，不足左侧补 0，超长左截断
   FUNCTION to_base36(n IN NUMBER, width IN PLS_INTEGER) RETURN VARCHAR2 IS
     chars CONSTANT VARCHAR2(36) := '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     v     NUMBER := FLOOR(ABS(NVL(n,0)));
@@ -108,7 +93,6 @@ CREATE OR REPLACE PROCEDURE GEN_BUS_SCHEDULES (
     RETURN out;
   END;
 
-  -- 生成 12 字符：'S' + 8位base36时间戳 + 3位base36哈希
   FUNCTION make_bs_id(p_dep_ts TIMESTAMP, p_rda_id VARCHAR2) RETURN VARCHAR2 IS
     j         NUMBER := TO_NUMBER(TO_CHAR(CAST(p_dep_ts AS DATE), 'J'));
     s         NUMBER := TO_NUMBER(TO_CHAR(CAST(p_dep_ts AS DATE), 'SSSSS'));
@@ -152,9 +136,7 @@ CREATE OR REPLACE PROCEDURE GEN_BUS_SCHEDULES (
   END;
 
 BEGIN
-  --------------------------------------------------------------------
-  -- Load the RDA row
-  --------------------------------------------------------------------
+
   SELECT routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status
     INTO v_route_id, v_assignment_id, v_freq, v_weekdays, v_eff_from, v_eff_to, v_status
   FROM routeDriverAssignmentList
@@ -164,9 +146,6 @@ BEGIN
     RETURN;
   END IF;
 
-  --------------------------------------------------------------------
-  -- Load Route data
-  --------------------------------------------------------------------
   SELECT plannedDepartureTime, plannedArrivalTime, estimatedDuration, distanceKm
     INTO v_dep_hhmm, v_arr_hhmm, v_est_min, v_distance_km
   FROM route
@@ -178,9 +157,7 @@ BEGIN
                     ELSE TRUNC(v_eff_from) + p_max_days
                   END;
 
-  --------------------------------------------------------------------
-  -- Frequency branches
-  --------------------------------------------------------------------
+
   IF LOWER(v_freq) = 'daily' THEN
 
     FOR d IN 0 .. (v_end_date - v_start_date) LOOP
