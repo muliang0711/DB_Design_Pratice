@@ -1,13 +1,11 @@
 the script already include 
 
-1. Bus_Station_managment_system/DB_Data/busData.txt
-2. Bus_Station_managment_system/DB_Data/busDriverData.txt
-3. Bus_Station_managment_system/DB_Data/busMaintenanceData.txt
-4. Bus_Station_managment_system/DB_Data/busPlatformData.txt
-5. Bus_Station_managment_system/DB_Data/busPlatformData.txt
-6. Bus_Station_managment_system/DB_Data/driverListAssignmentData.txt
-7. Bus_Station_managment_system/DB_Data/routeData.txt
-8. Bus_Station_managment_system/DB_Data/routeDriverAssignmentListData.txt
-9. Bus_Station_managment_system/DB_Data/routeStationData.txt
-10. Bus_Station_managment_system/DB_Data/shopData.txt
-11. Bus_Station_managment_system/DB_Data/staffData.txt
+1. Bus_Station_managment_system/DB_Data/busData.txt --
+2. Bus_Station_managment_system/DB_Data/busDriverData.txt --
+3. Bus_Station_managment_system/DB_Data/busMaintenanceData.txt --
+4. Bus_Station_managment_system/DB_Data/busPlatformData.txt --
+5. Bus_Station_managment_system/DB_Data/driverListAssignmentData.txt --
+6. Bus_Station_managment_system/DB_Data/routeData.txt --
+7. Bus_Station_managment_system/DB_Data/routeStationData.txt --
+8. Bus_Station_managment_system/DB_Data/shopData.txt --
+9. Bus_Station_managment_system/DB_Data/staffData.txt --
