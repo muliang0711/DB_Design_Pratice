@@ -77,6 +77,8 @@ CREATE TABLE customer (
 CREATE TABLE maintenanceService (
   serviceId      VARCHAR2(12)  PRIMARY KEY,
   serviceItem    VARCHAR2(100) NOT NULL,
+  category       VARCHAR2(20)
+      CHECK (UPPER(category) IN ('MINOR', 'MODERATE', 'MAJOR')),
   serviceCost    NUMBER(8,2),
   serviceRemarks VARCHAR2(200),
   createdAt      TIMESTAMP     DEFAULT SYSTIMESTAMP

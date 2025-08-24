@@ -171,23 +171,23 @@ INSERT INTO customer (customerId, firstName, lastName, icPassportNo, gender, bir
 
 -- Maintenance Service Table Records
 
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S001', 'Engine Oil Change', 250.00, 'Routine engine oil replacement');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S002', 'Brake System Inspection', 180.00, 'Check and adjust brake pads, discs, and fluid');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S003', 'Air Filter Replacement', 90.00, 'Replace clogged air filter for better performance');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S004', 'Tire Replacement', 400.00, 'New tire installation and balancing');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S005', 'Wheel Alignment', 150.00, 'Adjust wheel angles for stability');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S006', 'Battery Replacement', 320.00, 'Install new battery with 1-year warranty');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S007', 'Cooling System Service', 220.00, 'Flush radiator and refill coolant');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S008', 'Transmission Check', 350.00, 'Inspect transmission fluid and gears');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S009', 'Suspension Repair', 450.00, 'Replace worn-out shock absorbers');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S010', 'Exhaust System Repair', 280.00, 'Fix exhaust leakage and replace muffler if needed');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S011', 'Fuel System Cleaning', 200.00, 'Clean injectors and fuel lines');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S012', 'Electrical System Diagnosis', 300.00, 'Scan and repair electrical faults');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S013', 'Air Conditioning Service', 180.00, 'Gas refill and cooling efficiency check');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S014', 'Interior Cleaning', 120.00, 'Deep cleaning and sanitization of bus interior');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S015', 'Exterior Wash & Polish', 100.00, 'Full body wash and wax polish');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S016', 'Headlight Replacement', 160.00, 'Replace faulty headlights and adjust alignment');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S017', 'Door Mechanism Repair', 260.00, 'Repair or replace faulty passenger doors');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S018', 'Wiper Replacement', 80.00, 'Replace front and rear wiper blades');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S019', 'Bus Painting Service', 1200.00, 'Full repaint with anti-rust coating');
-INSERT INTO maintenanceService (serviceId, serviceItem, serviceCost, serviceRemarks) VALUES ('S020', 'Annual Safety Inspection', 500.00, 'Comprehensive yearly safety check');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S001', 'Engine Oil Change', 'Moderate', 250.00, 'Routine engine oil replacement');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S002', 'Brake System Inspection', 'Moderate', 180.00, 'Check and adjust brake pads, discs, and fluid');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S003', 'Air Filter Replacement', 'Minor', 90.00, 'Replace clogged air filter for better performance');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S004', 'Tire Replacement', 'Moderate', 400.00, 'New tire installation and balancing');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S005', 'Wheel Alignment', 'Moderate', 150.00, 'Adjust wheel angles for stability');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S006', 'Battery Replacement', 'Moderate', 320.00, 'Install new battery with 1-year warranty');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S007', 'Cooling System Service', 'Major', 220.00, 'Flush radiator and refill coolant');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S008', 'Transmission Check', 'Major', 350.00, 'Inspect transmission fluid and gears');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S009', 'Suspension Repair', 'Major', 450.00, 'Replace worn-out shock absorbers');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S010', 'Exhaust System Repair', 'Major', 280.00, 'Fix exhaust leakage and replace muffler if needed');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S011', 'Fuel System Cleaning', 'Moderate', 200.00, 'Clean injectors and fuel lines');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S012', 'Electrical System Diagnosis', 'Major', 300.00, 'Scan and repair electrical faults');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S013', 'Air Conditioning Service', 'Moderate', 180.00, 'Gas refill and cooling efficiency check');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S014', 'Interior Cleaning', 'Minor', 120.00, 'Deep cleaning and sanitization of bus interior');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S015', 'Exterior Wash & Polish', 'Minor', 100.00, 'Full body wash and wax polish');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S016', 'Headlight Replacement', 'Minor', 160.00, 'Replace faulty headlights and adjust alignment');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S017', 'Door Mechanism Repair', 'Major', 260.00, 'Repair or replace faulty passenger doors');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S018', 'Wiper Replacement', 'Minor', 80.00, 'Replace front and rear wiper blades');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S019', 'Bus Painting Service', 'Major', 1200.00, 'Full repaint with anti-rust coating');
+INSERT INTO maintenanceService (serviceId, serviceItem, category, serviceCost, serviceRemarks) VALUES ('S020', 'Annual Safety Inspection', 'Major', 500.00, 'Comprehensive yearly safety check');
