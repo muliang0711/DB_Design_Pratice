@@ -52,6 +52,9 @@ IS
     -- Counter for results
     v_count NUMBER := 0;
 
+    -- Flag variable
+    v_curNoData := TRUE
+
 BEGIN
     -- Print header
     DBMS_OUTPUT.PUT_LINE('=======================================================');
@@ -77,6 +80,10 @@ BEGIN
             v_support_last_name;
             
         EXIT WHEN cancelled_schedules_cur%NOTFOUND;
+
+        IF v_curNoData THEN 
+            v_curNoData := FALSE;
+        END IF;
         
         -- Increment counter
         v_count := v_count + 1;
@@ -108,6 +115,11 @@ BEGIN
     
     -- Close cursor
     CLOSE cancelled_schedules_cur;
+
+    -- Raise error if cancelled_schedules_cur returned 0 rows
+    IF v_curNoData THEN 
+        RAISE_APPLICATION_ERROR(-20001, 'Cursor returned zero rows!');
+    END IF;
     
     -- Print summary
     DBMS_OUTPUT.PUT_LINE('');
