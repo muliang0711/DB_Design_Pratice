@@ -10,17 +10,19 @@ BEGIN
     RAISE_APPLICATION_ERROR(-20001, 'Ticket has no customerId; cannot create payment.');
   END IF;
 
-  -- idempotency: only one payment per ticket by default policy
+  -- Check if a payment already exists for this ticket
   SELECT COUNT(*) INTO v_exists
   FROM paymentRecord
   WHERE ticketId = p_ticket_id;
 
   IF v_exists > 0 THEN
-    RETURN;
+    RETURN; -- already has a payment
   END IF;
 
+  -- Generate new paymentId
   v_payment_id := 'PAY' || LPAD(seq_payment_id.NEXTVAL, 9, '0');
 
+  -- Insert into paymentRecord
   INSERT INTO paymentRecord (
     paymentId, customerId, ticketId,
     totalAmount, cashAmount, pointsApplied, pointValue,
@@ -31,6 +33,7 @@ BEGIN
     'pending', SYSTIMESTAMP, 'RCPT-' || TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
     NULL, 'auto', 'Auto-created on ticket assignment'
   );
+
 END;
 /
 SHOW ERRORS PROCEDURE GEN_PAYMENT_FOR_TICKET;
