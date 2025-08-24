@@ -1,3 +1,8 @@
+ALTER TABLE rentalCollection 
+ADD createdAt TIMESTAMP DEFAULT SYSTIMESTAMP;
+UPDATE rentalCollection
+SET createdAt = NULL;
+
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-06', 'YYYY-MM'), 'SH0001', 'ST0016', 491.00, 'paid', TO_TIMESTAMP('2025-06-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-06-05 10:15:00', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-06', 'YYYY-MM'), 'SH0002', 'ST0074', 620.40, 'paid', TO_TIMESTAMP('2025-06-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-06-04 11:30:00', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-06', 'YYYY-MM'), 'SH0003', 'ST0080', 381.50, 'paid', TO_TIMESTAMP('2025-06-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2025-06-06 09:00:00', 'YYYY-MM-DD HH24:MI:SS'));
@@ -586,6 +591,8 @@ INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-08', 'YYYY-MM'), 'SH0194', 'ST0343', 501.50, 'pending', TO_TIMESTAMP('2025-08-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), NULL);
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-08', 'YYYY-MM'), 'SH0195', 'ST0344', 391.80, 'pending', TO_TIMESTAMP('2025-08-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), NULL);
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-08', 'YYYY-MM'), 'SH0196', 'ST0360', 560.60, 'pending', TO_TIMESTAMP('2025-08-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), NULL);
+
+ALTER TABLE rentalCollection DROP COLUMN createdAt;
 
 UPDATE rentalCollection
 SET status = 'unpaid'

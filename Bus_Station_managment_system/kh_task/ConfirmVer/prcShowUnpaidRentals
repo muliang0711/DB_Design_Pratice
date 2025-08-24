@@ -1,6 +1,6 @@
 CREATE OR REPLACE PROCEDURE prcShowUnpaidRentals IS
   CURSOR unpaidCursor IS
-    SELECT s.shopID, r.rentalMonth, r.rentalAmount
+    SELECT s.shopID, r.rentalMonth, r.rentalAmount, s.shopTenantName, s.phoneNumber
     FROM Shop s
     JOIN RentalCollection r ON s.shopID = r.shopID
     WHERE LOWER(r.status) = 'unpaid'
@@ -10,48 +10,50 @@ CREATE OR REPLACE PROCEDURE prcShowUnpaidRentals IS
   v_monthTotal NUMBER := 0;
 BEGIN
   DBMS_OUTPUT.PUT_LINE(CHR(10));
-  DBMS_OUTPUT.PUT_LINE(LPAD('=', 70, '='));
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
   DBMS_OUTPUT.PUT_LINE('List Of Shops With Unpaid Rentals (GROUPED BY MONTH)');
-  DBMS_OUTPUT.PUT_LINE(LPAD('=', 70, '='));
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
 
   FOR u_rec IN unpaidCursor LOOP
     IF v_lastMonth IS NULL OR TRUNC(u_rec.rentalMonth, 'MM') <> v_lastMonth THEN
       IF v_lastMonth IS NOT NULL THEN
-        DBMS_OUTPUT.PUT_LINE(RPAD('-', 32, '-'));
+        DBMS_OUTPUT.PUT_LINE(RPAD('-', 80, '-'));
         DBMS_OUTPUT.PUT_LINE('Monthly Subtotal: ' || TO_CHAR(v_monthTotal, '$999,999.00'));
-        DBMS_OUTPUT.PUT_LINE(LPAD('=', 32, '='));
+        DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
         DBMS_OUTPUT.PUT_LINE(CHR(10));
       END IF;
 
       v_lastMonth := TRUNC(u_rec.rentalMonth, 'MM');
       v_monthTotal := 0;
 
-      DBMS_OUTPUT.PUT_LINE(LPAD('-', 32, '-'));
+      DBMS_OUTPUT.PUT_LINE(LPAD('-', 80, '-'));
       DBMS_OUTPUT.PUT_LINE('>>> Month: ' || TO_CHAR(v_lastMonth, 'Month YYYY'));
-      DBMS_OUTPUT.PUT_LINE(LPAD('-', 32, '-'));
-      DBMS_OUTPUT.PUT_LINE(RPAD('Shop ID', 12) || RPAD('Unpaid Amount', 20));
-      DBMS_OUTPUT.PUT_LINE(RPAD('-', 32, '-'));
+      DBMS_OUTPUT.PUT_LINE(LPAD('-', 80, '-'));
+      DBMS_OUTPUT.PUT_LINE(RPAD('Shop ID', 12) || RPAD('Unpaid Amount', 20) || RPAD('Tenant Name',20) || LPAD('Phone Number', 25));
+      DBMS_OUTPUT.PUT_LINE(RPAD('-', 80, '-'));
     END IF;
 
     v_monthTotal := v_monthTotal + u_rec.rentalAmount;
 
     DBMS_OUTPUT.PUT_LINE(
       RPAD(u_rec.shopID, 12) ||
-      RPAD(TO_CHAR(u_rec.rentalAmount, '$999,999.00'), 12)
+      RPAD(TO_CHAR(u_rec.rentalAmount, '$999,999.00'), 20) ||
+      RPAD(u_rec.shopTenantName, 20) || 
+      LPAD(u_rec.phoneNumber, 25)
     );
   END LOOP;
 
   -- final subtotal after loop
   IF v_lastMonth IS NOT NULL THEN
-    DBMS_OUTPUT.PUT_LINE(RPAD('-', 32, '-'));
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 80, '-'));
     DBMS_OUTPUT.PUT_LINE('Monthly Subtotal: ' || TO_CHAR(v_monthTotal, '$999,999.00'));
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 32, '='));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
   END IF;
 
   DBMS_OUTPUT.PUT_LINE(CHR(10));
-  DBMS_OUTPUT.PUT_LINE(LPAD('=', 70, '='));
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
   DBMS_OUTPUT.PUT_LINE('END OF UNPAID RENTALS REPORT');
-  DBMS_OUTPUT.PUT_LINE(LPAD('=', 70, '='));
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
 
 EXCEPTION
   WHEN OTHERS THEN
