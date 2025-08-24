@@ -129,6 +129,7 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         v_result := 'Error: ' || SQLERRM;
+        DBMS_OUTPUT.PUT_LINE(v_result);
 END ProcessTicketRefund;
 /
 

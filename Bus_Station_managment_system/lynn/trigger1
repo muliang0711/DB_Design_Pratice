@@ -3,63 +3,81 @@ BEFORE INSERT OR UPDATE ON Ticket
 FOR EACH ROW
 DECLARE
     v_scheduleStatus VARCHAR2(20);
-    v_routeID NUMBER;
-    v_extendedRouteID NUMBER;
-    v_busStatus VARCHAR2(20);
-    v_driverStatus VARCHAR2(20);
+    v_routeID        VARCHAR2(12);
+    v_extendedRouteID VARCHAR2(12);
+    v_busStatus      VARCHAR2(20);
+    v_driverStatus   VARCHAR2(20);
 BEGIN
-    -- Check if bus schedule is active
-    SELECT status INTO v_scheduleStatus
+    -- 1. Check if bus schedule is active
+    SELECT status
+    INTO v_scheduleStatus
     FROM BusSchedule
     WHERE busScheduleID = :NEW.busScheduleID;
-    
-    IF v_scheduleStatus != 'Active' THEN
+
+    IF LOWER(v_scheduleStatus) != 'planned' AND LOWER(v_scheduleStatus) != 'in_progress' THEN
         RAISE_APPLICATION_ERROR(-20001, 'Cannot create ticket for inactive bus schedule');
     END IF;
-    
-    -- Check if assigned bus is active
-    SELECT b.status INTO v_busStatus
-    FROM Bus b
-    JOIN DriverAssignment da ON b.busID = da.busID
-    WHERE da.busScheduleID = :NEW.busScheduleID
-    AND ROWNUM = 1;
-    
-    IF v_busStatus != 'Active' THEN
+
+    -- 2. Check assigned bus status
+    SELECT b.status
+    INTO v_busStatus
+    FROM bus b
+    JOIN driverListAssignment dla ON dla.busId = b.busId
+    JOIN routeDriverAssignmentList rda ON rda.assignmentId = dla.assignmentId
+    JOIN busSchedule bs ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    WHERE bs.busScheduleId = :NEW.busScheduleId
+      AND ROWNUM = 1;
+
+    IF LOWER(v_busStatus) != 'active' THEN
         RAISE_APPLICATION_ERROR(-20002, 'Cannot create ticket for schedule with inactive bus');
     END IF;
-    
-    -- Check if assigned driver is active
-    SELECT d.status INTO v_driverStatus
-    FROM BusDriver d
-    JOIN DriverAssignment da ON d.driverID = da.driverID
-    WHERE da.busScheduleID = :NEW.busScheduleID
-    AND ROWNUM = 1;
-    
-    IF v_driverStatus != 'active' THEN
+
+    -- 3. Check assigned main driver status
+    SELECT d.status
+    INTO v_driverStatus
+    FROM busDriver d
+    JOIN driverListAssignment dla ON dla.mainDriverId = d.driverId
+    JOIN routeDriverAssignmentList rda ON rda.assignmentId = dla.assignmentId
+    JOIN busSchedule bs ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    WHERE bs.busScheduleId = :NEW.busScheduleId
+      AND ROWNUM = 1;
+
+    IF LOWER(v_driverStatus) != 'active' THEN
         RAISE_APPLICATION_ERROR(-20003, 'Cannot create ticket for schedule with inactive driver');
     END IF;
-    
-    -- For extended tickets, check route consistency
+
+    -- 4. For extended tickets, ensure same route
     IF :NEW.extendedToID IS NOT NULL THEN
         -- Get original route
-        SELECT routeID INTO v_routeID
-        FROM BusSchedule
-        WHERE busScheduleID = :NEW.busScheduleID;
-        
+        SELECT r.routeId
+        INTO v_routeID
+        FROM busSchedule bs
+        JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+        JOIN route r ON r.routeId = rda.routeId
+        WHERE bs.busScheduleId = :NEW.busScheduleId;
+
         -- Get extended route
-        SELECT routeID INTO v_extendedRouteID
-        FROM BusSchedule
-        WHERE busScheduleID = :NEW.extendedToID;
-        
+        SELECT r.routeId
+        INTO v_extendedRouteID
+        FROM busSchedule bs
+        JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+        JOIN route r ON r.routeId = rda.routeId
+        WHERE bs.busScheduleId = :NEW.extendedToID;
+
         IF v_routeID != v_extendedRouteID THEN
             RAISE_APPLICATION_ERROR(-20004, 'Extended ticket must be on the same route');
         END IF;
     END IF;
-    
-    -- Set timestamps
+
+    -- 5. Set timestamps
     IF INSERTING THEN
-        :NEW.createdAt := SYSDATE;
+        :NEW.createdAt := SYSTIMESTAMP;
     END IF;
-    :NEW.updatedAt := SYSDATE;
+    :NEW.updatedAt := SYSTIMESTAMP;
 END;
 /
+
+-- correct uses
+
+INSERT INTO ticket (ticketId, busScheduleId, customerId, seatNo, price, type, status, cancellationDate, extensionDate, extendedToId) 
+VALUES ('T000000200', 'BS000432', 'CU0055', 'D15', 135.50, 'booking', 'Paid', NULL, NULL, NULL);
