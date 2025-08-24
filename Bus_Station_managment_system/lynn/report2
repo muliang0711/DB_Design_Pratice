@@ -1,0 +1,120 @@
+
+-- Report : Customer Point Transaction Summary with Payment Details
+CREATE OR REPLACE PROCEDURE prc_customer_point_summary(
+    p_startDate IN TIMESTAMP,
+    p_endDate   IN TIMESTAMP
+) IS
+    v_totalPointsEarned NUMBER := 0;
+    v_totalPointsRedeemed NUMBER := 0;
+    v_totalCustomers NUMBER := 0;
+    v_grandTotalAmount NUMBER := 0;
+
+    CURSOR customer_cursor IS
+    SELECT c.customerId, c.firstName || ' ' || c.lastName AS customerName,
+           c.membershipStatus, c.pointBalance
+    FROM customer c
+    WHERE EXISTS (
+        SELECT 1 FROM pointTransaction pt 
+        WHERE pt.customerId = c.customerId 
+        AND pt.createdAt BETWEEN p_startDate AND p_endDate
+    )
+    ORDER BY c.pointBalance DESC;
+
+    customer_rec customer_cursor%ROWTYPE;
+
+    CURSOR point_txn_cursor(v_custId VARCHAR2) IS
+    SELECT pt.pointTxnId, pt.pointChange, pt.source, pt.createdAt,
+           pr.paymentId, pr.totalAmount, pr.paymentMethod,
+           t.ticketId, bs.busScheduleId, r.routeName
+    FROM pointTransaction pt
+    LEFT JOIN paymentRecord pr ON pt.paymentId = pr.paymentId
+    LEFT JOIN ticket t ON pr.ticketId = t.ticketId
+    LEFT JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
+    LEFT JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    LEFT JOIN route r ON rda.routeId = r.routeId
+    WHERE pt.customerId = v_custId
+    AND pt.createdAt BETWEEN p_startDate AND p_endDate
+    ORDER BY pt.createdAt DESC;
+
+    point_txn_rec point_txn_cursor%ROWTYPE;
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
+    DBMS_OUTPUT.PUT_LINE('CUSTOMER POINT TRANSACTION SUMMARY REPORT');
+    DBMS_OUTPUT.PUT_LINE('Period: ' || TO_CHAR(p_startDate, 'DD-MON-YYYY') || ' to ' || TO_CHAR(p_endDate, 'DD-MON-YYYY'));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
+    DBMS_OUTPUT.PUT_LINE(CHR(10));
+
+    OPEN customer_cursor;
+    LOOP
+        FETCH customer_cursor INTO customer_rec;
+        EXIT WHEN customer_cursor%NOTFOUND;
+
+        v_totalCustomers := v_totalCustomers + 1;
+        
+        DBMS_OUTPUT.PUT_LINE('Customer ID: ' || customer_rec.customerId);
+        DBMS_OUTPUT.PUT_LINE('Name: ' || customer_rec.customerName);
+        DBMS_OUTPUT.PUT_LINE('Membership: ' || customer_rec.membershipStatus);
+        DBMS_OUTPUT.PUT_LINE('Current Points: ' || customer_rec.pointBalance);
+        DBMS_OUTPUT.PUT_LINE(LPAD('-', 180, '-'));
+
+        -- Point transaction details
+        DBMS_OUTPUT.PUT_LINE(
+            RPAD('Txn Date', 12) || 
+            RPAD('Points', 10) || 
+            RPAD('Type', 15) || 
+            RPAD('Payment ID', 15) || 
+            RPAD('Amount', 12) || 
+            RPAD('Method', 15) || 
+            RPAD('Route', 25) || 
+            RPAD('Ticket ID', 15)
+        );
+        DBMS_OUTPUT.PUT_LINE(LPAD('-', 180, '-'));
+
+        OPEN point_txn_cursor(customer_rec.customerId);
+        LOOP
+            FETCH point_txn_cursor INTO point_txn_rec;
+            EXIT WHEN point_txn_cursor%NOTFOUND;
+
+            IF point_txn_rec.pointChange > 0 THEN
+                v_totalPointsEarned := v_totalPointsEarned + point_txn_rec.pointChange;
+            ELSE
+                v_totalPointsRedeemed := v_totalPointsRedeemed + ABS(point_txn_rec.pointChange);
+            END IF;
+
+            v_grandTotalAmount := v_grandTotalAmount + NVL(point_txn_rec.totalAmount, 0);
+
+            DBMS_OUTPUT.PUT_LINE(
+                RPAD(TO_CHAR(point_txn_rec.createdAt, 'DD-MON-YY'), 12) ||
+                RPAD(point_txn_rec.pointChange, 10) ||
+                RPAD(point_txn_rec.source, 15) ||
+                RPAD(NVL(point_txn_rec.paymentId, 'N/A'), 15) ||
+                RPAD(NVL(TO_CHAR(point_txn_rec.totalAmount, '999,999.99'), 'N/A'), 12) ||
+                RPAD(NVL(point_txn_rec.paymentMethod, 'N/A'), 15) ||
+                RPAD(NVL(point_txn_rec.routeName, 'N/A'), 25) ||
+                RPAD(NVL(point_txn_rec.ticketId, 'N/A'), 15)
+            );
+        END LOOP;
+        CLOSE point_txn_cursor;
+
+        DBMS_OUTPUT.PUT_LINE(CHR(10));
+    END LOOP;
+    CLOSE customer_cursor;
+
+    -- Summary
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
+    DBMS_OUTPUT.PUT_LINE('SUMMARY REPORT');
+    DBMS_OUTPUT.PUT_LINE('Total Customers: ' || v_totalCustomers);
+    DBMS_OUTPUT.PUT_LINE('Total Points Earned: ' || v_totalPointsEarned);
+    DBMS_OUTPUT.PUT_LINE('Total Points Redeemed: ' || v_totalPointsRedeemed);
+    DBMS_OUTPUT.PUT_LINE('Net Points Change: ' || (v_totalPointsEarned - v_totalPointsRedeemed));
+    DBMS_OUTPUT.PUT_LINE('Total Transaction Amount: $' || TO_CHAR(v_grandTotalAmount, '999,999,999.99'));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/
+
+EXEC prc_bus_schedule_occupancy(TO_TIMESTAMP('01-08-2025 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-08-2025 23:59','DD-MM-YYYY HH24:MI'));
