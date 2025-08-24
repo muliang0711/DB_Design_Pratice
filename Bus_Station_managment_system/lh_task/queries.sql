@@ -75,7 +75,7 @@ FROM (
     FROM BusMaintenance bm
     JOIN MaintenanceService ms 
       ON bm.serviceID = ms.serviceID
-    WHERE UPPER(ms.severity) IN ('MODERATE', 'MAJOR')
+    WHERE UPPER(ms.category) IN ('MODERATE', 'MAJOR')
 ) intervals
 JOIN Bus b ON intervals.busID = b.busID
 JOIN BusCompany c ON b.companyID = c.companyID
