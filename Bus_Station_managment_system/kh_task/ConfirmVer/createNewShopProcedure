@@ -8,13 +8,15 @@ CREATE OR REPLACE PROCEDURE prcAddShop(
 ) IS
 
   v_actualSize shop.shopSize%TYPE;
+  v_newShopId shop.shopId%TYPE;
 
   ex_invalid_size      EXCEPTION;  
   ex_invalid_phone     EXCEPTION;  
   ex_missing_tenant    EXCEPTION;  
   ex_invalid_stationId EXCEPTION;  
-
-BEGIN
+   
+  BEGIN
+  v_newShopId := 'SH' || TO_CHAR(shopId_seq.NEXTVAL, 'FM0000');
   BEGIN
     v_actualSize := TO_NUMBER(v_shopSize);
   EXCEPTION
@@ -46,7 +48,7 @@ BEGIN
   INSERT INTO shop (
     shopId, stationId, shopNo, shopTenantName, phoneNumber, shopType, shopSize, status, createdAt, updatedAt
   ) VALUES (
-    'SH' || TO_CHAR(shopId_seq.NEXTVAL, 'FM0000'),
+    v_newShopId,
     v_stationId,
     v_shopNo,
     v_tenantName,
