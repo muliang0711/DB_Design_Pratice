@@ -2,66 +2,73 @@
 SET serveroutput on
 SET linesize 120
 SET pagesize 100
-
 CREATE OR REPLACE PROCEDURE ExtendTicket(
-    p_ticketID IN Ticket.ticketID%TYPE,
-    p_newScheduleID IN BusSchedule.busScheduleID%TYPE,
-    p_result OUT VARCHAR2
+    p_ticketID      IN Ticket.ticketID%TYPE,
+    p_newScheduleID IN BusSchedule.busScheduleID%TYPE
+    
 )
 AS
-    v_originalScheduleID Ticket.busScheduleID%TYPE;
-    v_originalRouteID BusSchedule.routeID%TYPE;
-    v_newRouteID BusSchedule.routeID%TYPE;
-    v_departureTime BusSchedule.plannedDepartureTime%TYPE;
-    v_currentStatus Ticket.status%TYPE;
-    v_extensionAllowed BOOLEAN := FALSE;
-    v_daysBeforeDeparture NUMBER;
+    v_originalScheduleID    Ticket.busScheduleID%TYPE;
+    v_originalRouteID       route.routeID%TYPE;
+    v_newRouteID            route.routeID%TYPE;
+    v_originalDepartureTime BusSchedule.plannedDepartureTime%TYPE;
+    v_newDepartureTime      BusSchedule.plannedDepartureTime%TYPE;
+    v_currentStatus         Ticket.status%TYPE;
+    v_daysBeforeDeparture   NUMBER;
+    v_result                VARCHAR2(100);
 BEGIN
-    -- 获取原始票务信息
-    SELECT busScheduleID, status INTO v_originalScheduleID, v_currentStatus
-    FROM Ticket WHERE ticketID = p_ticketID;
-    
-    -- 检查票务状态
+    -- Original schedule information
+    SELECT t.busScheduleId, t.status,r.routeId, bs.plannedDepartureTime
+    INTO v_originalScheduleID, v_currentStatus, v_originalRouteID, v_originalDepartureTime
+    FROM ticket t
+    JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
+    JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    JOIN route r ON rda.routeId = r.routeId
+    WHERE t.ticketId = p_ticketID;
+
+    -- new schedule information
+    SELECT r.routeId, bs.plannedDepartureTime
+    INTO v_newRouteID, v_newDepartureTime
+    FROM busSchedule bs
+    JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    JOIN route r ON rda.routeId = r.routeId
+    WHERE bs.busScheduleId = p_newScheduleID;
+
+    -- calculate departure days
+    v_daysBeforeDeparture := TRUNC(v_originalDepartureTime)- TRUNC(SYSDATE);
+
+    -- check the status
     IF v_currentStatus != 'booked' THEN
-        p_result := 'Error: Only booked tickets can be extended';
+        v_result := 'Error: Only booked tickets can be extended';
         RETURN;
     END IF;
-    
-    -- 获取原始路线
-    SELECT routeID INTO v_originalRouteID 
-    FROM BusSchedule WHERE busScheduleID = v_originalScheduleID;
-    
-    -- 获取新班次信息
-    SELECT routeID, plannedDepartureTime INTO v_newRouteID, v_departureTime
-    FROM BusSchedule WHERE busScheduleID = p_newScheduleID;
-    
-    -- 计算出发前天数
-    SELECT EXTRACT(DAY FROM (plannedDepartureTime - SYSDATE)) INTO v_daysBeforeDeparture
-    FROM BusSchedule WHERE busScheduleID = v_originalScheduleID;
-    
-    -- 检查路线匹配和扩展窗口
+
+    -- check the route and extention (the customer only can change the time not the route )
     IF v_originalRouteID = v_newRouteID THEN
         IF v_daysBeforeDeparture BETWEEN 0 AND 2 THEN
-            -- 更新票务状态
-            UPDATE Ticket
+            UPDATE ticket
             SET status = 'booked_extended',
                 extendedToID = p_newScheduleID,
-                extensionDate = SYSDATE,
-                updatedAt = SYSDATE
-            WHERE ticketID = p_ticketID;
-            
-            p_result := 'Success: Ticket extended to new schedule';
+                extensionDate = SYSTIMESTAMP,
+                updatedAt = SYSTIMESTAMP
+            WHERE ticketId = p_ticketID;
+
+            v_result := 'Success: Ticket extended to new schedule';
         ELSE
-            p_result := 'Error: Extension only allowed within 2 days before departure';
+            v_result := 'Error: Extension only allowed within 2 days before departure';
         END IF;
     ELSE
-        p_result := 'Error: New schedule must be on the same route';
+        v_result := 'Error: New schedule must be on the same route';
     END IF;
-    
+
     COMMIT;
+    DBMS_OUTPUT.PUT_LINE(v_result);
+
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
-        p_result := 'Error: ' || SQLERRM;
+        v_result := 'Error: ' || SQLERRM;
+        DBMS_OUTPUT.PUT_LINE(v_result);
 END ExtendTicket;
 /
+EXEC ExtendTicket('T000000001', 'BS000009');

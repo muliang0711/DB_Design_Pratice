@@ -1,4 +1,4 @@
-the script already include 
+`script.txt` includes: 
 
 1. Bus_Station_managment_system/DB_Data/busData.txt --
 2. Bus_Station_managment_system/DB_Data/busDriverData.txt --
@@ -9,3 +9,12 @@ the script already include
 7. Bus_Station_managment_system/DB_Data/routeStationData.txt --
 8. Bus_Station_managment_system/DB_Data/shopData.txt --
 9. Bus_Station_managment_system/DB_Data/staffData.txt --
+
+--------------------------------
+how to use `insertAll.sql` (inserts parent then all child tables):
+--------------------------------
+1. open powershell
+2. (IMPORTANT) cd to the root of this project (DB_Design_Pratice) 
+3. run `sqlplus`
+4. log in to SQL*Plus as usual
+5. run `@"Bus_Station_managment_system\DB_Data\sciptToRunItSimple\insertAll.sql"`

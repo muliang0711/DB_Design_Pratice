@@ -52,7 +52,20 @@ IS
     -- Counter for results
     v_count NUMBER := 0;
 
+    -- Flag variable
+    v_companyExists NUMBER;
+
 BEGIN
+    -- Check if v_companyID exists,
+    -- raise error if not!!
+    SELECT COUNT(*) INTO v_companyExists 
+    FROM BusCompany 
+    WHERE companyID = v_companyID;
+
+    IF NOT v_companyExists THEN 
+        RAISE_APPLICATION_ERROR(-20001, 'Provided company ID does not exist!');
+    END IF;
+
     -- Print header
     DBMS_OUTPUT.PUT_LINE('=======================================================');
     DBMS_OUTPUT.PUT_LINE('CANCELLED BUS SCHEDULES FOR COMPANY ID: ' || v_companyID);
@@ -108,7 +121,7 @@ BEGIN
     
     -- Close cursor
     CLOSE cancelled_schedules_cur;
-    
+
     -- Print summary
     DBMS_OUTPUT.PUT_LINE('');
     DBMS_OUTPUT.PUT_LINE('Total cancelled schedules found: ' || v_count);
@@ -131,3 +144,4 @@ EXCEPTION
         
 END prc_list_cancelled_schedules;
 /
+
