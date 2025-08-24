@@ -342,14 +342,14 @@ CREATE TABLE maintenanceStaffAssignment (
 
 -- ========= RENTAL (depends on shop / staff) =========
 CREATE TABLE rentalCollection (
+  rentalMonth    DATE NOT NULL,	
   shopId         VARCHAR2(12)  NOT NULL,
-  staffId        VARCHAR2(12)  NOT NULL,
+  staffId        VARCHAR2(12),
   rentalAmount   NUMBER(8,2),
   status          VARCHAR2(20),
-  rentalMonth    DATE,
   createdAt      TIMESTAMP     DEFAULT SYSTIMESTAMP,
   collectionDate TIMESTAMP     DEFAULT SYSTIMESTAMP,
-  CONSTRAINT PK_RENTAL_COLLECTION PRIMARY KEY (shopId, staffId, collectionDate),
+  CONSTRAINT PK_RENTAL_COLLECTION PRIMARY KEY (shopId, rentalMonth),
   CONSTRAINT FK_RC_SHOP  FOREIGN KEY (shopId)  REFERENCES shop (shopId),
   CONSTRAINT FK_RC_STAFF FOREIGN KEY (staffId) REFERENCES staff (staffId)
 );
