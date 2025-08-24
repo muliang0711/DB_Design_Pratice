@@ -6,7 +6,7 @@ INSERT INTO staffRole (roleId, roleName, description) VALUES ('R003', 'Ticketing
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R004', 'Senior Ticketing Officer', 'Supervises ticketing staff, handles escalated passenger issues, and prepares ticket sales reports.');
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R005', 'Bus Dispatcher', 'Schedules bus departures, monitors arrivals, and ensures timely operations.');
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R006', 'Assistant Dispatcher', 'Supports the dispatcher with bus scheduling and communication with drivers.');
-INSERT INTO staffRole (roleId, roleName, description) VALUES ('R007', 'Maintenance Supervisor', 'Leads maintenance staff, ensures buses and station facilities are inspected and serviced.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R007', 'Event Coordinator', 'Plans and coordinates events or promotional activities at the bus station to engage passengers and improve customer experience.');
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R008', 'Maintenance Technician', 'Conducts repairs and preventive maintenance on buses and equipment.');
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R009', 'Cleaner', 'Maintains cleanliness and hygiene in the bus station.');
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R010', 'Security Officer', 'Maintains order and ensures safety of passengers and property.');
