@@ -14,20 +14,26 @@ SELECT
     TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM') AS month,
     SUM(pr.totalAmount) AS totalRevenue,
     COUNT(DISTINCT t.ticketID) AS ticketsSold,
-    AVG(pr.totalAmount) AS averageTicketPrice,
+    ROUND(AVG(pr.totalAmount), 2) AS averageTicketPrice,
     SUM(pr.pointsApplied * pr.pointValue) AS pointsRedeemedValue
 FROM 
     PaymentRecord pr
-JOIN Ticket t ON pr.ticketID = t.ticketID
-JOIN BusSchedule bs ON t.busScheduleID = bs.busScheduleID
-JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
-JOIN Route r ON rdal.routeID = r.routeID
-JOIN Customer c ON pr.customerID = c.customerID
+JOIN Ticket t 
+    ON pr.ticketID = t.ticketID
+JOIN BusSchedule bs 
+    ON t.busScheduleID = bs.busScheduleID
+JOIN RouteDriverAssignmentList rdal 
+    ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+JOIN Route r 
+    ON rdal.routeID = r.routeID
+JOIN Customer c 
+    ON pr.customerID = c.customerID
 WHERE 
     pr.status = 'Completed'
+    AND t.status IN ('booked_extended','been_bought','on_selling')
 GROUP BY 
     r.routeID, r.routeName, r.startPoint, r.endPoint, c.membershipStatus, 
     TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM')
 ORDER BY 
-    month, totalRevenue DESC;
-    
+    TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM'),
+    totalRevenue DESC;

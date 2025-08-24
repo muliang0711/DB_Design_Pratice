@@ -1,4 +1,7 @@
 
+SET serveroutput on
+SET linesize 120
+SET pagesize 100
 -- Report : Customer Point Transaction Summary with Payment Details
 CREATE OR REPLACE PROCEDURE prc_customer_point_summary(
     p_startDate IN TIMESTAMP,
@@ -34,6 +37,7 @@ CREATE OR REPLACE PROCEDURE prc_customer_point_summary(
     LEFT JOIN route r ON rda.routeId = r.routeId
     WHERE pt.customerId = v_custId
     AND pt.createdAt BETWEEN p_startDate AND p_endDate
+    AND t.status IN ('booked_extended','been_bought','on_selling')
     ORDER BY pt.createdAt DESC;
 
     point_txn_rec point_txn_cursor%ROWTYPE;
@@ -108,7 +112,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Total Points Earned: ' || v_totalPointsEarned);
     DBMS_OUTPUT.PUT_LINE('Total Points Redeemed: ' || v_totalPointsRedeemed);
     DBMS_OUTPUT.PUT_LINE('Net Points Change: ' || (v_totalPointsEarned - v_totalPointsRedeemed));
-    DBMS_OUTPUT.PUT_LINE('Total Transaction Amount: $' || TO_CHAR(v_grandTotalAmount, '999,999,999.99'));
+    DBMS_OUTPUT.PUT_LINE('Total Transaction Amount: RM' || TO_CHAR(v_grandTotalAmount, '999,999,999.99'));
     DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
 
 EXCEPTION

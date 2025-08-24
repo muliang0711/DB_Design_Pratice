@@ -1,9 +1,12 @@
--- ===========================================================
--- REPORT : Bus Schedule Occupancy Report (Summary + Detail)
--- ===========================================================
+
+SET serveroutput on
+SET linesize 120
+SET pagesize 100
+-- REPORT : Bus Schedule Occupancy Report 
+
 CREATE OR REPLACE PROCEDURE prc_bus_schedule_occupancy(
-    p_startDate IN TIMESTAMP,
-    p_endDate   IN TIMESTAMP
+    p_startDate IN DATE,
+    p_endDate   IN DATE
 )
 IS
     CURSOR scheduleCur IS
@@ -48,7 +51,7 @@ BEGIN
             EXIT WHEN ticketCur%NOTFOUND;
 
             DBMS_OUTPUT.PUT_LINE(
-                RPAD(ticketRec.ticketId,12) || RPAD(ticketRec.seatNo,6) || RPAD(TO_CHAR(ticketRec.price,'$999,999.99'),12) || ticketRec.status
+                RPAD(ticketRec.ticketId,12) || RPAD(ticketRec.seatNo,6) || RPAD(TO_CHAR(ticketRec.price,'999,999.99'),12) || ticketRec.status
             );
 
             v_totalSeats := v_totalSeats + 1;
@@ -60,7 +63,7 @@ BEGIN
     CLOSE scheduleCur;
 
     DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
-    DBMS_OUTPUT.PUT_LINE('TOTAL TICKETS SOLD: ' || v_totalSeats || ', TOTAL REVENUE: ' || TO_CHAR(v_totalRevenue,'$999,999,999.99'));
+    DBMS_OUTPUT.PUT_LINE('TOTAL TICKETS SOLD: ' || v_totalSeats || ', TOTAL REVENUE: ' || TO_CHAR(v_totalRevenue,'999,999,999.99'));
     DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
 END;
 /
