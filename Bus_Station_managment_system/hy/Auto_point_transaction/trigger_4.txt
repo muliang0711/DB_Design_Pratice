@@ -1,0 +1,14 @@
+CREATE OR REPLACE TRIGGER PAY_AI_AU_POINTS
+AFTER INSERT OR UPDATE OF status ON paymentRecord
+FOR EACH ROW
+BEGIN
+  ENSURE_POINT_TXN_FOR_PAYMENT(
+    p_payment_id     => :NEW.paymentId,
+    p_customer_id    => :NEW.customerId,
+    p_status         => :NEW.status,
+    p_total_amount   => :NEW.totalAmount,
+    p_points_applied => :NEW.pointsApplied
+  );
+END;
+/
+SHOW ERRORS TRIGGER PAY_AI_AU_POINTS;

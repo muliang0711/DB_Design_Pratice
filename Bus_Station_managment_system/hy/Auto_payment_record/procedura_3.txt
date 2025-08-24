@@ -1,0 +1,36 @@
+CREATE OR REPLACE PROCEDURE GEN_PAYMENT_FOR_TICKET (
+  p_ticket_id    IN ticket.ticketId%TYPE,
+  p_customer_id  IN ticket.customerId%TYPE,
+  p_ticket_price IN ticket.price%TYPE
+) IS
+  v_payment_id  VARCHAR2(12);
+  v_exists      INTEGER;
+BEGIN
+  IF p_customer_id IS NULL THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Ticket has no customerId; cannot create payment.');
+  END IF;
+
+  -- idempotency: only one payment per ticket by default policy
+  SELECT COUNT(*) INTO v_exists
+  FROM paymentRecord
+  WHERE ticketId = p_ticket_id;
+
+  IF v_exists > 0 THEN
+    RETURN;
+  END IF;
+
+  v_payment_id := 'PAY' || LPAD(seq_payment_id.NEXTVAL, 9, '0');
+
+  INSERT INTO paymentRecord (
+    paymentId, customerId, ticketId,
+    totalAmount, cashAmount, pointsApplied, pointValue,
+    status, paymentTime, receiptNo, paymentMethod, type, remarks
+  ) VALUES (
+    v_payment_id, p_customer_id, p_ticket_id,
+    p_ticket_price, p_ticket_price, 0, 0,
+    'pending', SYSTIMESTAMP, 'RCPT-' || TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+    NULL, 'auto', 'Auto-created on ticket assignment'
+  );
+END;
+/
+SHOW ERRORS PROCEDURE GEN_PAYMENT_FOR_TICKET;

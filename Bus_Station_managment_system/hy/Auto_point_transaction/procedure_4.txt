@@ -1,0 +1,44 @@
+CREATE OR REPLACE PROCEDURE ENSURE_POINT_TXN_FOR_PAYMENT (
+  p_payment_id     IN paymentRecord.paymentId%TYPE,
+  p_customer_id    IN paymentRecord.customerId%TYPE,
+  p_status         IN paymentRecord.status%TYPE,
+  p_total_amount   IN paymentRecord.totalAmount%TYPE,
+  p_points_applied IN paymentRecord.pointsApplied%TYPE
+) IS
+  v_exists   INTEGER;
+  v_change   NUMBER(10);
+  v_txn_id   VARCHAR2(12);
+  c_earn_rate CONSTANT NUMBER := 1;  -- 1 point per 1 unit of currency
+BEGIN
+  -- Only do work on completed payments
+  IF LOWER(p_status) <> 'completed' THEN
+    RETURN;
+  END IF;
+
+  -- Idempotency: only 1 txn per payment
+  SELECT COUNT(*) INTO v_exists
+  FROM pointTransaction
+  WHERE paymentId = p_payment_id;
+
+  IF v_exists > 0 THEN
+    RETURN;
+  END IF;
+
+  v_change := FLOOR(NVL(p_total_amount,0) * c_earn_rate) - NVL(p_points_applied,0);
+
+  v_txn_id := 'PTX' || LPAD(seq_point_txn_id.NEXTVAL, 9, '0');
+
+  INSERT INTO pointTransaction (
+    pointTxnId, customerId, paymentId, pointChange, source, remarks, createdAt
+  ) VALUES (
+    v_txn_id, p_customer_id, p_payment_id, v_change, 'payment',
+    'Auto from payment ' || p_payment_id, SYSTIMESTAMP
+  );
+
+  UPDATE customer
+  SET pointBalance = NVL(pointBalance,0) + NVL(v_change,0),
+      updatedAt    = SYSTIMESTAMP
+  WHERE customerId = p_customer_id;
+END;
+/
+SHOW ERRORS PROCEDURE ENSURE_POINT_TXN_FOR_PAYMENT;
