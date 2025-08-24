@@ -10,13 +10,14 @@ CREATE OR REPLACE PROCEDURE ENSURE_POINT_TXN_FOR_PAYMENT (
   v_txn_id   VARCHAR2(12);
   c_earn_rate CONSTANT NUMBER := 1;  -- 1 point per 1 unit of currency
 BEGIN
-  -- Only do work on completed payments
+  -- Only act on completed payments
   IF LOWER(p_status) <> 'completed' THEN
     RETURN;
   END IF;
 
-  -- Idempotency: only 1 txn per payment
-  SELECT COUNT(*) INTO v_exists
+  -- Idempotency: prevent duplicate point transactions for same payment
+  SELECT COUNT(*)
+  INTO v_exists
   FROM pointTransaction
   WHERE paymentId = p_payment_id;
 
@@ -24,21 +25,54 @@ BEGIN
     RETURN;
   END IF;
 
+  -- Controlled validation: customer ID must exist
+  DECLARE
+    v_cust_exists INTEGER;
+  BEGIN
+    SELECT COUNT(*)
+    INTO v_cust_exists
+    FROM customer
+    WHERE customerId = p_customer_id;
+
+    IF v_cust_exists = 0 THEN
+      RAISE_APPLICATION_ERROR(-20101, 'Customer ' || p_customer_id || ' does not exist');
+    END IF;
+  END;
+
+  -- Controlled validation: payment amount should not be negative
+  IF NVL(p_total_amount,0) < 0 THEN
+    RAISE_APPLICATION_ERROR(-20102, 'Negative payment amount for payment ' || p_payment_id);
+  END IF;
+
+  -- Compute point change
   v_change := FLOOR(NVL(p_total_amount,0) * c_earn_rate) - NVL(p_points_applied,0);
 
+  -- Generate transaction ID
   v_txn_id := 'PTX' || LPAD(seq_point_txn_id.NEXTVAL, 9, '0');
 
+  -- Insert new point transaction
   INSERT INTO pointTransaction (
     pointTxnId, customerId, paymentId, pointChange, source, remarks, createdAt
   ) VALUES (
-    v_txn_id, p_customer_id, p_payment_id, v_change, 'payment',
-    'Auto from payment ' || p_payment_id, SYSTIMESTAMP
+    v_txn_id, p_customer_id, p_payment_id, v_change,
+    'payment', 'Auto from payment ' || p_payment_id, SYSTIMESTAMP
   );
 
+  -- Update customer balance
   UPDATE customer
   SET pointBalance = NVL(pointBalance,0) + NVL(v_change,0),
       updatedAt    = SYSTIMESTAMP
   WHERE customerId = p_customer_id;
+
+EXCEPTION
+  -- Controlled: no matching payment (foreign key mismatch or missing row)
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20103, 'Payment not found for paymentId ' || p_payment_id);
+
+  -- Default safety net: log and rethrow
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in ENSURE_POINT_TXN_FOR_PAYMENT: ' || SQLERRM);
+    RAISE;
 END;
 /
 SHOW ERRORS PROCEDURE ENSURE_POINT_TXN_FOR_PAYMENT;

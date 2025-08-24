@@ -1,6 +1,6 @@
 CREATE OR REPLACE PROCEDURE GEN_TICKETS_FOR_SCHEDULE (
   p_bus_schedule_id IN busSchedule.busScheduleId%TYPE,
-  p_rate_per_km     IN NUMBER DEFAULT 0.25  -- you can tune this
+  p_rate_per_km     IN NUMBER DEFAULT 0.25
 ) IS
   v_capacity      bus.capacity%TYPE;
   v_distance_km   route.distanceKm%TYPE;
@@ -13,8 +13,9 @@ CREATE OR REPLACE PROCEDURE GEN_TICKETS_FOR_SCHEDULE (
 
   v_existing_cnt NUMBER;
   v_price NUMBER(8,2);
+
 BEGIN
-  -- If tickets already exist, get out
+  -- Check if tickets already exist
   SELECT COUNT(*)
   INTO v_existing_cnt
   FROM ticket
@@ -24,7 +25,7 @@ BEGIN
     RETURN;
   END IF;
 
-  -- Read related info (safe now; caller is AFTER STATEMENT)
+  -- Fetch related info
   SELECT bs.routeDriverAssignmentId
     INTO v_rda_id
   FROM busSchedule bs
@@ -46,11 +47,11 @@ BEGIN
   FROM route r
   WHERE r.routeId = v_route_id;
 
+  -- Controlled error (business rule)
   IF v_capacity IS NULL OR v_capacity <= 0 THEN
-    RAISE_APPLICATION_ERROR(-20001, 'Bus capacity invalid for schedule ' || p_bus_schedule_id);
+    RAISE_APPLICATION_ERROR(-20001, 'Invalid bus capacity for schedule ' || p_bus_schedule_id);
   END IF;
 
-  -- compute base price once (or compute per-seat if you want dynamic pricing)
   v_price := ROUND(p_rate_per_km * v_distance_km, 2);
 
   FOR i IN 1..v_capacity LOOP
@@ -71,10 +72,21 @@ BEGIN
       );
     EXCEPTION
       WHEN DUP_VAL_ON_INDEX THEN
-        -- Another session beat us to it; skip this seat
+        -- another session already inserted this seat
         NULL;
     END;
   END LOOP;
+
+EXCEPTION
+  -- Controlled: missing foreign key data
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Required data not found for schedule ' || p_bus_schedule_id);
+
+  -- Default generic error catcher
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_TICKETS_FOR_SCHEDULE: ' || SQLERRM);
+    -- Optional: rethrow to stop silently swallowing
+    RAISE;
 END;
 /
 SHOW ERRORS PROCEDURE GEN_TICKETS_FOR_SCHEDULE;
