@@ -1,0 +1,7 @@
+-- Sequence for shop
+
+CREATE SEQUENCE shopId_seq
+MINVALUE 200
+MAXVALUE 999
+INCREMENT BY 1
+NOCACHE;
