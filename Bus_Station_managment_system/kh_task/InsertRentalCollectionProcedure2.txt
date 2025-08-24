@@ -8,7 +8,7 @@ CREATE OR REPLACE PROCEDURE prc_add_rental_collection(
  CURSOR shop_cursor IS
     SELECT shopID
     FROM Shop
-    WHERE LOWER(status) = 'occupied';
+    WHERE LOWER(status) = 'active';
 
 v_shopID   Shop.shopID%TYPE;
   v_exists   NUMBER;
@@ -42,4 +42,5 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
+
 
