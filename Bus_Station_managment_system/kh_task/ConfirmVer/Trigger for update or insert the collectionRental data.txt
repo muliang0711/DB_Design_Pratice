@@ -20,7 +20,8 @@ BEGIN
 
        SELECT COUNT(*) INTO v_count
        FROM Staff
-       WHERE staffId = :NEW.staffId;
+       WHERE staffId = :NEW.staffId
+    ;
 
        IF v_count = 0 THEN
            RAISE_APPLICATION_ERROR(-20002, 'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
@@ -29,5 +30,6 @@ BEGIN
   END IF;
 END;
 /
+
 
 
