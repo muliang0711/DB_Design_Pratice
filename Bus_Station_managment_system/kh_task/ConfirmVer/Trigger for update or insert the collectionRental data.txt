@@ -18,9 +18,10 @@ BEGIN
        :NEW.collectionDate := SYSTIMESTAMP;
 
        IF :NEW.staffID IS NULL THEN
-         :NEW.staffID := USER;  -- note: USER returns Oracle username
+         :NEW.staffID := USER;
        END IF;
     END IF;
   END IF;
 END;
 /
+

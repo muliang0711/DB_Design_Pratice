@@ -73,6 +73,9 @@ SET SERVEROUTPUT ON
 SET LINESIZE 120
 SET PAGESIZE 200
 
+DROP INDEX idx_company_name;
+CREATE INDEX idx_company_name ON BusCompany (companyName);
+
 CREATE OR REPLACE VIEW BusMaintenanceStatsView AS 
 SELECT 
     -- Makes report prettier by printing the company name
@@ -88,7 +91,7 @@ SELECT
     AVG(interval_days)  AS avgIntervalDays
 FROM (
     SELECT bm.busID,
-           LEAD(bm.maintenanceDate) OVER (PARTITION BY bm.busID ORDER BY bm.maintenanceDate) 
+           LEAD(bm.maintenanceDate) OVER (PARTITION BY bm.busID ORDER BY bm.maintenanceDoneDate) 
                - bm.maintenanceDate AS interval_days
     FROM BusMaintenance bm
     JOIN MaintenanceService ms 

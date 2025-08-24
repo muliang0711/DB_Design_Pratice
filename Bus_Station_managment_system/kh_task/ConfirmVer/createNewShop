@@ -1,0 +1,82 @@
+CREATE OR REPLACE PROCEDURE prcAddShop(
+  v_stationId     IN shop.stationId%TYPE,
+  v_shopNo        IN shop.shopNo%TYPE,
+  v_tenantName    IN shop.shopTenantName%TYPE,
+  v_phoneNumber   IN shop.phoneNumber%TYPE,
+  v_shopType      IN shop.shopType%TYPE,
+  v_shopSize      IN VARCHAR2
+) IS
+
+  v_actualSize shop.shopSize%TYPE;
+
+  ex_invalid_size      EXCEPTION;  
+  ex_invalid_phone     EXCEPTION;  
+  ex_missing_tenant    EXCEPTION;  
+  ex_invalid_stationId EXCEPTION;  
+
+BEGIN
+  BEGIN
+    v_actualSize := TO_NUMBER(v_shopSize);
+  EXCEPTION
+    WHEN VALUE_ERROR THEN
+      RAISE ex_invalid_size;
+  END;
+
+  IF v_actualSize < 200 OR v_actualSize > 500 THEN
+    RAISE ex_invalid_size;
+  END IF;
+
+  IF v_tenantName IS NULL OR TRIM(v_tenantName) = '' THEN
+    RAISE ex_missing_tenant;
+  END IF;
+
+  IF NOT REGEXP_LIKE(v_phoneNumber, '^[0-9]{10,12}$') THEN
+    RAISE ex_invalid_phone;
+  END IF;
+
+  DECLARE
+    v_count NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO v_count FROM busStation WHERE stationId = v_stationId;
+    IF v_count = 0 THEN
+      RAISE ex_invalid_stationId;
+    END IF;
+  END;
+
+  INSERT INTO shop (
+    shopId, stationId, shopNo, shopTenantName, phoneNumber, shopType, shopSize, status, createdAt, updatedAt
+  ) VALUES (
+    'SH' || TO_CHAR(shopId_seq.NEXTVAL, 'FM0000'),
+    v_stationId,
+    v_shopNo,
+    v_tenantName,
+    v_phoneNumber,
+    v_shopType,
+    v_actualSize,
+    'active',
+    SYSDATE,
+    SYSDATE
+  );
+
+  DBMS_OUTPUT.PUT_LINE('Shop ' || v_shopNo || ' added successfully!');
+
+EXCEPTION
+  WHEN ex_invalid_size THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Shop size must be a number between 200 and 500.');
+  WHEN ex_invalid_phone THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Phone number must be 10–12 digits.');
+  WHEN ex_missing_tenant THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Tenant name cannot be empty.');
+  WHEN ex_invalid_stationId THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Station ID does not exist.');
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+END;
+/
+
+exec prcAddShop('S001','KA10', 'KAI', '60123456789', 'Food', 223.1);
+exec prcAddShop('S100','KA10', 'KAI', '60123456789', 'Food', 223.1);
+exec prcAddShop('S001','KA10', '', '60123456789', 'Food', 223.1);
+exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 223.1);
+exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 100.1);
+exec prcAddShop('');
