@@ -49,7 +49,7 @@ BEGIN
         v_count := v_count + 1;
 
         DBMS_OUTPUT.PUT_LINE(
-          RPAD(v_staffID, 5) ||
+          RPAD(NVL(v_staffID, 'unknown'), 5) ||
           RPAD(TO_CHAR(v_amount, '$999,990.00'), 12) ||
           LPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 24) ||
           LPAD(v_status, 9) ||
@@ -74,5 +74,6 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
 END;
 /
+
 
 
