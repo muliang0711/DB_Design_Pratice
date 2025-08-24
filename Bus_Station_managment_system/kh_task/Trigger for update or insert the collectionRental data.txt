@@ -1,26 +1,26 @@
--- Trigger for create and update the row of the rentalCollection table
-
--- Tracking actions of rentalCollection
 CREATE OR REPLACE TRIGGER trg_set_timeStamp
 BEFORE INSERT OR UPDATE ON RentalCollection
 FOR EACH ROW
-BEGIN      	
-  CASE
-    WHEN INSERTING THEN
-      SELECT shopSize INTO v_shopSize
-      FROM Shop
-      WHERE shopID = :NEW.shopID;
+DECLARE
+  v_shopSize Shop.shopSize%TYPE;
+BEGIN
+  IF INSERTING THEN
+    SELECT shopSize INTO v_shopSize
+    FROM Shop
+    WHERE shopID = :NEW.shopID;
 
-      :NEW.rentalAmount := v_shopSize * 2;
-    WHEN UPDATING THEN
-        IF LOWER(:NEW.status) = 'paid'  
-        AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
-        :NEW.collectionDate := SYSTIMESTAMP;
+    :NEW.rentalAmount := v_shopSize * 2;
 
-        IF :NEW.staffID IS NULL THEN
-        :NEW.staffID := USER;
-      END IF;
-  END CASE;
+  ELSIF UPDATING THEN
+    IF LOWER(:NEW.status) = 'paid'
+       AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
+       
+       :NEW.collectionDate := SYSTIMESTAMP;
+
+       IF :NEW.staffID IS NULL THEN
+         :NEW.staffID := USER;  -- note: USER returns Oracle username
+       END IF;
+    END IF;
+  END IF;
 END;
 /
-
