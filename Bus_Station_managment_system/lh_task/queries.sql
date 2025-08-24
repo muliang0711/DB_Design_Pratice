@@ -5,7 +5,7 @@
 -- Staff ID, Name (fname + lname), phoneNumber, email, last maintenance service (<service name> on <bus id>), maintenance date, remarks (from BusMaintenance table)
 
 SET SERVEROUTPUT ON
-SET LINESIZE 120
+SET LINESIZE 200
 SET PAGESIZE 200
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY';
 
@@ -16,7 +16,9 @@ SELECT
     s.phoneNumber AS phoneNumber,
     s.email AS email,
     bm.maintenanceId AS maintenanceId,
-    ms.serviceItem || ' on ' || bm.busId AS maintenanceDetails,
+    ms.serviceItem AS serviceItem,
+    bm.busId AS busId,
+    -- ms.serviceItem || ' on ' || bm.busId AS maintenanceDetails,
     ms.maintenanceDoneDate AS maintenanceDate,
     ms.remarks AS remarks
 FROM Staff s 
@@ -30,7 +32,9 @@ COLUMN fullName HEADING "Name"
 COLUMN phoneNumber HEADING "Contact no." 
 COLUMN email HEADING "Email" 
 COLUMN maintenanceId HEADING "Maint. job ID" 
-COLUMN maintenanceDetails HEADING "Job details" FORMAT A50
+-- COLUMN maintenanceDetails HEADING "Service on bus" FORMAT A50
+COLUMN serviceItem HEADING "Service"
+COLUMN busId HEADING "Bus ID" 
 COLUMN maintenanceDate HEADING "Done on" 
 COLUMN remarks HEADING "Remarks" 
 
