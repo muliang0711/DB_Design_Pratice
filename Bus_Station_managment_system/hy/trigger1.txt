@@ -1,0 +1,31 @@
+CREATE OR REPLACE TRIGGER RDA_AI_GEN_BS
+FOR INSERT ON routeDriverAssignmentList
+COMPOUND TRIGGER
+
+  TYPE t_ids IS TABLE OF routeDriverAssignmentList.routeDriverAssignmentId%TYPE;
+  g_ids t_ids := t_ids();
+
+  BEFORE STATEMENT IS
+  BEGIN
+    NULL;
+  END BEFORE STATEMENT;
+
+  BEFORE EACH ROW IS
+  BEGIN
+    IF LOWER(:NEW.status) = 'active' THEN
+      g_ids.EXTEND;
+      g_ids(g_ids.LAST) := :NEW.routeDriverAssignmentId;
+    END IF;
+  END BEFORE EACH ROW;
+
+  AFTER STATEMENT IS
+  BEGIN
+    IF g_ids.COUNT > 0 THEN
+      FOR i IN 1 .. g_ids.COUNT LOOP
+        GEN_BUS_SCHEDULES(g_ids(i));  -- 现在语句已完成，不再“变异”
+      END LOOP;
+    END IF;
+  END AFTER STATEMENT;
+
+END RDA_AI_GEN_BS;
+/
