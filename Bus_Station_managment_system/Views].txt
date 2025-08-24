@@ -1,0 +1,269 @@
+CREATE OR REPLACE VIEW vwPlatformOps AS
+/* upcoming schedules by platform (future only) */
+WITH upcoming_sched AS (
+  SELECT DISTINCT rs.platformId,
+         bs.busScheduleId,
+         LOWER(bs.status) AS schedStatus,
+         bs.plannedDepartureTime
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda
+         ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs
+         ON rs.routeId = rda.routeId
+  WHERE  bs.plannedDepartureTime >= SYSTIMESTAMP
+),
+next_dep AS (
+  SELECT platformId, MIN(plannedDepartureTime) AS nextPlannedDeparture
+  FROM   upcoming_sched
+  WHERE  schedStatus = 'planned'
+  GROUP  BY platformId
+),
+upcoming_cnt AS (
+  SELECT platformId,
+         SUM(CASE WHEN schedStatus = 'planned' THEN 1 ELSE 0 END) AS upcomingPlanned
+  FROM   upcoming_sched
+  GROUP  BY platformId
+),
+/* last-30-day schedules for cancel rate */
+last30_sched AS (
+  SELECT DISTINCT rs.platformId,
+         bs.busScheduleId,
+         LOWER(bs.status) AS schedStatus
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda
+         ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs
+         ON rs.routeId = rda.routeId
+  WHERE  bs.plannedDepartureTime BETWEEN (SYSTIMESTAMP - INTERVAL '30' DAY) AND SYSTIMESTAMP
+),
+last30_rollup AS (
+  SELECT platformId,
+         SUM(CASE WHEN schedStatus = 'completed' THEN 1 ELSE 0 END) AS last30Completed,
+         SUM(CASE WHEN schedStatus = 'cancelled' THEN 1 ELSE 0 END) AS last30Cancelled
+  FROM   last30_sched
+  GROUP  BY platformId
+),
+/* last-30 actual stop usage count from tripStopLog (no dwell) */
+last30_log AS (
+  SELECT platformId,
+         COUNT(*) AS last30Stops
+  FROM   tripStopLog
+  WHERE  actualArrivalTime BETWEEN (SYSTIMESTAMP - INTERVAL '30' DAY) AND SYSTIMESTAMP
+    AND  actualDepartureTime IS NOT NULL
+    AND  actualArrivalTime   IS NOT NULL
+  GROUP  BY platformId
+),
+routes_by_platform AS (
+  SELECT platformId, COUNT(DISTINCT routeId) AS routesCount
+  FROM   routeStation
+  GROUP  BY platformId
+)
+SELECT
+  bp.platformId,
+  bp.platformName,
+  bp.stationId,
+  bp.status                  AS platformStatus,
+  NVL(rp.routesCount,0)      AS routesCount,
+  NVL(uc.upcomingPlanned,0)  AS upcomingPlanned,
+  nd.nextPlannedDeparture,
+  NVL(l30.last30Completed,0) AS last30Completed,
+  NVL(l30.last30Cancelled,0) AS last30Cancelled,
+  CASE
+    WHEN NVL(l30.last30Completed,0)+NVL(l30.last30Cancelled,0)=0 THEN 0
+    ELSE ROUND(100 * NVL(l30.last30Cancelled,0) /
+               (NVL(l30.last30Completed,0)+NVL(l30.last30Cancelled,0)), 2)
+  END                        AS last30CancelRatePct,
+  NVL(lg.last30Stops,0)      AS last30StopsLogged
+FROM   busPlatform bp
+LEFT   JOIN routes_by_platform rp ON rp.platformId = bp.platformId
+LEFT   JOIN upcoming_cnt       uc ON uc.platformId = bp.platformId
+LEFT   JOIN next_dep           nd ON nd.platformId = bp.platformId
+LEFT   JOIN last30_rollup      l30 ON l30.platformId = bp.platformId
+LEFT   JOIN last30_log         lg ON lg.platformId = bp.platformId;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE OR REPLACE VIEW vwStationOps AS
+/* ---------- base ---------- */
+WITH st AS (
+  SELECT stationId, stationName, status FROM busStation
+),
+/* platforms per station */
+platform_counts AS (
+  SELECT stationId,
+         COUNT(*) AS platformsTotal,
+         SUM(CASE WHEN LOWER(status)='active'   THEN 1 ELSE 0 END) AS platformsActive,
+         SUM(CASE WHEN LOWER(status)='inactive' THEN 1 ELSE 0 END) AS platformsInactive
+  FROM   busPlatform
+  GROUP  BY stationId
+),
+/* routes that touch each station (via its platforms) */
+routes_by_station AS (
+  SELECT bp.stationId, COUNT(DISTINCT rs.routeId) AS routesCount
+  FROM   routeStation rs
+  JOIN   busPlatform bp ON bp.platformId = rs.platformId
+  GROUP  BY bp.stationId
+),
+/* upcoming schedules (distinct station–schedule) */
+upcoming_sched AS (
+  SELECT DISTINCT bp.stationId,
+         bs.busScheduleId,
+         LOWER(bs.status) AS schedStatus,
+         bs.plannedDepartureTime
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda
+         ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs
+         ON rs.routeId = rda.routeId
+  JOIN   busPlatform bp
+         ON bp.platformId = rs.platformId
+  WHERE  bs.plannedDepartureTime >= SYSTIMESTAMP
+),
+/* next planned departure per station */
+next_dep AS (
+  SELECT stationId, MIN(plannedDepartureTime) AS nextPlannedDeparture
+  FROM   upcoming_sched
+  WHERE  schedStatus = 'planned'
+  GROUP  BY stationId
+),
+/* counts of upcoming planned by station */
+upcoming_cnt AS (
+  SELECT stationId,
+         SUM(CASE WHEN schedStatus='planned' THEN 1 ELSE 0 END) AS upcomingPlanned
+  FROM   upcoming_sched
+  GROUP  BY stationId
+),
+/* last-30-day schedules (distinct station–schedule) for cancel rate */
+last30_sched AS (
+  SELECT DISTINCT bp.stationId,
+         bs.busScheduleId,
+         LOWER(bs.status) AS schedStatus
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda
+         ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs
+         ON rs.routeId = rda.routeId
+  JOIN   busPlatform bp
+         ON bp.platformId = rs.platformId
+  WHERE  bs.plannedDepartureTime BETWEEN (SYSTIMESTAMP - INTERVAL '30' DAY) AND SYSTIMESTAMP
+),
+last30_rollup AS (
+  SELECT stationId,
+         SUM(CASE WHEN schedStatus='completed' THEN 1 ELSE 0 END) AS last30Completed,
+         SUM(CASE WHEN schedStatus='cancelled' THEN 1 ELSE 0 END) AS last30Cancelled
+  FROM   last30_sched
+  GROUP  BY stationId
+),
+/* upcoming (next 7 days) seat utilization: tickets vs bus capacity */
+upcoming_util AS (
+  SELECT bp.stationId,
+         SUM(CASE WHEN LOWER(t.status)='been_bought' THEN 1 ELSE 0 END) AS seatsSold,
+         SUM(b.capacity) AS capacityTotal
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   driverListAssignment   dla ON dla.assignmentId = rda.assignmentId
+  JOIN   bus                   b   ON b.busId = dla.busId
+  JOIN   routeStation          rs  ON rs.routeId = rda.routeId
+  JOIN   busPlatform           bp  ON bp.platformId = rs.platformId
+  LEFT   JOIN ticket           t   ON t.busScheduleId = bs.busScheduleId
+  WHERE  bs.plannedDepartureTime BETWEEN SYSTIMESTAMP AND (SYSTIMESTAMP + INTERVAL '7' DAY)
+    AND  LOWER(bs.status) = 'planned'
+  GROUP  BY bp.stationId
+)
+SELECT
+  s.stationId,
+  s.stationName,
+  s.status               AS stationStatus,
+  NVL(pc.platformsTotal,0)    AS platformsTotal,
+  NVL(pc.platformsActive,0)   AS platformsActive,
+  NVL(pc.platformsInactive,0) AS platformsInactive,
+  NVL(r.routesCount,0)        AS routesCount,
+  NVL(uc.upcomingPlanned,0)   AS upcomingPlanned,
+  nd.nextPlannedDeparture,
+  NVL(l30.last30Completed,0)  AS last30Completed,
+  NVL(l30.last30Cancelled,0)  AS last30Cancelled,
+  CASE
+    WHEN NVL(l30.last30Completed,0)+NVL(l30.last30Cancelled,0)=0 THEN 0
+    ELSE ROUND(100 * NVL(l30.last30Cancelled,0) /
+               (NVL(l30.last30Completed,0)+NVL(l30.last30Cancelled,0)), 2)
+  END AS last30CancelRatePct,
+  CASE
+    WHEN NVL(u.capacityTotal,0)=0 THEN NULL
+    ELSE ROUND(100 * NVL(u.seatsSold,0) / u.capacityTotal, 2)
+  END AS upcomingAvgSeatUtilPct
+FROM st s
+LEFT JOIN platform_counts    pc ON pc.stationId = s.stationId
+LEFT JOIN routes_by_station  r  ON r.stationId  = s.stationId
+LEFT JOIN upcoming_cnt       uc ON uc.stationId = s.stationId
+LEFT JOIN next_dep           nd ON nd.stationId = s.stationId
+LEFT JOIN last30_rollup      l30 ON l30.stationId = s.stationId
+LEFT JOIN upcoming_util      u   ON u.stationId  = s.stationId;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- wider line to fit all columns in one row
+SET LINESIZE 180
+SET PAGESIZE 50
+
+-- column formats (adjust widths to your data)
+COLUMN platformId           FORMAT A8
+COLUMN platformName         FORMAT A25 WORD_WRAPPED
+COLUMN stationId            FORMAT A8
+COLUMN platformStatus       FORMAT A10
+COLUMN routesCount          FORMAT 9999
+COLUMN upcomingPlanned      FORMAT 9999
+COLUMN nextPlannedDeparture FORMAT A19
+COLUMN last30Completed      FORMAT 9999
+COLUMN last30Cancelled      FORMAT 9999
+COLUMN last30CancelRatePct  FORMAT 990.99
+COLUMN last30StopsLogged    FORMAT 99999
+
+
+COLUMN stationId             FORMAT A8
+COLUMN stationName           FORMAT A25 WORD_WRAPPED
+COLUMN stationStatus         FORMAT A10
+COLUMN platformsTotal        FORMAT 999
+COLUMN platformsActive       FORMAT 999
+COLUMN platformsInactive     FORMAT 999
+COLUMN routesCount           FORMAT 9999
+COLUMN upcomingPlanned       FORMAT 9999
+COLUMN nextPlannedDeparture  FORMAT A19
+COLUMN last30Completed       FORMAT 9999
+COLUMN last30Cancelled       FORMAT 9999
+COLUMN last30CancelRatePct   FORMAT 990.99
+COLUMN upcomingAvgSeatUtilPct FORMAT 990.99
