@@ -30,9 +30,9 @@ BEGIN
     v_count := 0;
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 71, '='));
     DBMS_OUTPUT.PUT_LINE('Shop Rental Record for Shop ID: ' || v_shopID);
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 71, '='));
     DBMS_OUTPUT.PUT_LINE(RPAD('Staff ID', 10) || RPAD('Amount', 12) || RPAD('Created At', 22) || RPAD('Status', 12) || RPAD('Paid At', 15));
     DBMS_OUTPUT.PUT_LINE(RPAD('-', 71, '-'));
 
@@ -74,3 +74,4 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
 END;
 /
+
