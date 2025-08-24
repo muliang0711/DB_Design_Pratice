@@ -1,10 +1,11 @@
 -- Sequence for StaffRole
 
-CREATE SEQUENCE roleID_seq
-MINVALUE 50
+CREATE SEQUENCE shopId_seq
+MINVALUE 200
 MAXVALUE 999
 INCREMENT BY 1
 NOCACHE;
 
-INSERT INTO StaffRole
-VALUES('SF' || TO_CHAR(roleID_seq.nextval, 'FM00000'), 'Guard', 'Responsible for the safety of the bus station.');
+-- INSERT INTO StaffRole
+-- VALUES('SF' || TO_CHAR(roleID_seq.nextval, 'FM00000'), 'Guard', 'Responsible for the safety of the bus station.');
+
