@@ -1,22 +1,13 @@
 CREATE OR REPLACE TRIGGER trgAutoAssignRentalCollection
-AFTER INSERT ON Shop
+AFTER INSERT ON shop
 FOR EACH ROW
 DECLARE
   v_day NUMBER;
 BEGIN
-  INSERT INTO RentalCollection (
+  INSERT INTO rentalCollection (
     rentalMonth, shopId, staffId, rentalAmount, status, collectionDate
   ) VALUES (
-    SYSDATE, :NEW.shopId, NULL, NULL, 'unpaid', NULL
+    SYSDATE, :NEW.shopId, NULL, 400, 'unpaid', NULL
   );
-
-   v_day := TO_NUMBER(TO_CHAR(SYSDATE, 'DD'));
-
-  IF v_day > 15 THEN
-    UPDATE RentalCollection
-    SET rentalAmount = rentalAmount / 2
-    WHERE shopId = :NEW.shopID
-      AND rentalMonth = TRUNC(SYSDATE, 'MM');
-  END IF;
 END;
 /
