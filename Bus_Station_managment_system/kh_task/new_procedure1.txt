@@ -13,7 +13,7 @@ CREATE OR REPLACE PROCEDURE prc_show_rentals IS
   CURSOR shopCursor IS
     SELECT shopID
     FROM Shop
-    WHERE status = 'Occupied'
+    WHERE status = 'active'
     ORDER BY shopID;
 
   -- Declare and open nested cursor for this shop
@@ -82,3 +82,4 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
 END;
 /
+
