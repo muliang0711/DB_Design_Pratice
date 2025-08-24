@@ -255,7 +255,7 @@ CREATE TABLE ticket (
   status            VARCHAR2(30),
   cancellationDate TIMESTAMP,
   extensionDate    TIMESTAMP,
-  extendedToId    VARCHAR2(12), -- FK → busSchedule
+  extendedToId    VARCHAR2(12), 
   createdAt        TIMESTAMP     DEFAULT SYSTIMESTAMP,
   updatedAt        TIMESTAMP     DEFAULT SYSTIMESTAMP,
   CONSTRAINT FK_TKT_SCHED   FOREIGN KEY (busScheduleId) REFERENCES busSchedule (busScheduleId),
