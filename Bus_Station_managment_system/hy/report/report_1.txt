@@ -1,0 +1,235 @@
+CREATE OR REPLACE PROCEDURE ReportRouteScheduleProfit_Nested (
+  p_max_rows IN NUMBER DEFAULT 20,                 -- 最大输出行数（含班次行）
+  p_route_id IN route.routeId%TYPE DEFAULT NULL    -- 可选：只看某一个 route
+) IS
+  ------------------------------------------------------------------------------
+  -- 游标定义
+  ------------------------------------------------------------------------------
+  CURSOR c_routes IS
+    SELECT routeId, routeName
+    FROM   route
+    WHERE  p_route_id IS NULL OR routeId = p_route_id
+    ORDER  BY routeId;
+
+  CURSOR c_schedules(p_routeID route.routeId%TYPE) IS
+    SELECT 
+      bs.busScheduleId,
+      rdal.expectedProfit AS routeExpectedProfit,
+      bs.expectedProfit   AS scheduleExpectedProfit,
+      COALESCE(SUM(CASE 
+        WHEN LOWER(t.status) = 'been_bought' AND t.customerId IS NOT NULL
+        THEN t.price ELSE 0 END), 0) AS actualRevenue
+    FROM routeDriverAssignmentList rdal
+    JOIN busSchedule bs
+      ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
+    LEFT JOIN ticket t
+      ON t.busScheduleId = bs.busScheduleId
+    WHERE rdal.routeId = p_routeID
+    GROUP BY bs.busScheduleId, rdal.expectedProfit, bs.expectedProfit
+    ORDER BY bs.busScheduleId;
+
+  ------------------------------------------------------------------------------
+  -- 变量
+  ------------------------------------------------------------------------------
+  v_lastRouteID route.routeId%TYPE := NULL;
+  v_count       NUMBER := 0;             -- 已输出的“班次行”计数
+  v_cost        CONSTANT NUMBER := 150;  -- 成本常量，你要动态就改这里
+BEGIN
+  -- 表头
+  DBMS_OUTPUT.PUT_LINE(
+    RPAD('RouteID', 10) || RPAD('RouteName', 20) || RPAD('RouteProfit', 14) ||
+    RPAD('ScheduleID', 14) || RPAD('SchedProfit', 14) || RPAD('Cost', 8) ||
+    RPAD('Revenue', 12) || RPAD('Profit', 12) || RPAD('Result', 15)
+  );
+
+  -- 外层遍历路由
+  FOR route_rec IN c_routes LOOP
+    -- 内层遍历该路由的班次
+    FOR sched_rec IN c_schedules(route_rec.routeId) LOOP
+      EXIT WHEN v_count >= p_max_rows;  -- 达到上限就不再打印
+
+      DECLARE
+        v_profit NUMBER := NVL(sched_rec.actualRevenue,0) - v_cost;
+        v_target NUMBER := NVL(sched_rec.scheduleExpectedProfit,0);
+        v_result VARCHAR2(20) := CASE 
+          WHEN v_profit >= v_target THEN 'Profitable' 
+          ELSE 'Underperformed' 
+        END;
+      BEGIN
+        -- 每个路由的第一行打印路由抬头，其余行用空白对齐
+        IF v_lastRouteID IS NULL OR v_lastRouteID <> route_rec.routeId THEN
+          DBMS_OUTPUT.PUT_LINE(
+            RPAD(route_rec.routeId, 10) ||
+            RPAD(route_rec.routeName, 20) ||
+            RPAD(TO_CHAR(NVL(sched_rec.routeExpectedProfit,0), '999999.99'), 14)
+          );
+          v_lastRouteID := route_rec.routeId;
+        ELSE
+          DBMS_OUTPUT.PUT_LINE(RPAD(' ', 44));
+        END IF;
+
+        -- 打印班次行
+        DBMS_OUTPUT.PUT_LINE(
+          RPAD(sched_rec.busScheduleId, 14) ||
+          RPAD(TO_CHAR(NVL(sched_rec.scheduleExpectedProfit,0), '999999.99'), 14) ||
+          RPAD(TO_CHAR(v_cost, '999999.99'), 8) ||
+          RPAD(TO_CHAR(NVL(sched_rec.actualRevenue,0), '999999.99'), 12) ||
+          RPAD(TO_CHAR(v_profit, '999999.99'), 12) ||
+          RPAD(v_result, 15)
+        );
+
+        v_count := v_count + 1; -- 只计班次行
+      END;
+    END LOOP;
+
+    EXIT WHEN v_count >= p_max_rows;  -- 外层也防一下
+  END LOOP;
+END;
+/
+
+
+CREATE OR REPLACE PROCEDURE GenerateSmartDelayReport_CursorStyle(
+  p_routeID IN VARCHAR2
+) IS
+  CURSOR c_route IS
+    SELECT routeId, routeName FROM route WHERE routeId = p_routeID;
+
+  CURSOR c_schedule(p_routeID VARCHAR2) IS
+    SELECT bs.busScheduleId, TRUNC(bs.plannedDepartureTime) AS schedDate
+    FROM   busSchedule bs
+    JOIN   routeDriverAssignmentList rdal
+           ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
+    WHERE  rdal.routeId = p_routeID;
+
+  /* TIMESTAMP -> DATE 再相减，得到天数，乘 1440 得分钟 */
+  CURSOR c_tripLog(p_scheduleID VARCHAR2) IS
+    SELECT status,
+           remarks,
+           ROUND((
+             NVL(CAST(actualDepartureTime AS DATE), CAST(actualArrivalTime AS DATE))
+             - CAST(actualArrivalTime AS DATE)
+           ) * 1440) AS duration_minutes
+    FROM   tripStopLog
+    WHERE  busScheduleId = p_scheduleID;
+
+  v_routeID   route.routeId%TYPE;
+  v_routeName route.routeName%TYPE;
+  v_schedID   busSchedule.busScheduleId%TYPE;
+  v_schedDate DATE;
+
+  v_delayCount  NUMBER;
+  v_skipCount   NUMBER;
+  v_delayMins   NUMBER;
+  v_delayReasons CLOB;
+  v_skipReasons  CLOB;
+  v_index NUMBER := 0;
+
+  v_totalSchedules        NUMBER := 0;
+  v_totalDelayedSchedules NUMBER := 0;
+  v_totalSkippedStops     NUMBER := 0;
+  v_topDelayReason VARCHAR2(200);
+  v_topSkipReason  VARCHAR2(200);
+BEGIN
+  OPEN c_route; FETCH c_route INTO v_routeID, v_routeName;
+  IF c_route%NOTFOUND THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Invalid route ID: ' || p_routeID);
+    CLOSE c_route; RETURN;
+  END IF; CLOSE c_route;
+
+  SELECT COUNT(*) INTO v_totalSchedules
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
+  WHERE  rdal.routeId = p_routeID;
+
+  SELECT COUNT(DISTINCT tsl.busScheduleId)
+  INTO   v_totalDelayedSchedules
+  FROM   tripStopLog tsl
+  JOIN   busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
+  JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
+  WHERE  rdal.routeId = p_routeID AND UPPER(tsl.status) = 'DELAYED';
+
+  SELECT COUNT(*)
+  INTO   v_totalSkippedStops
+  FROM   tripStopLog tsl
+  JOIN   busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
+  JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
+  WHERE  rdal.routeId = p_routeID AND UPPER(tsl.status) = 'SKIPPED';
+
+  BEGIN
+    SELECT remarks INTO v_topDelayReason FROM (
+      SELECT tsl.remarks
+      FROM   tripStopLog tsl
+      JOIN   busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
+      JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
+      WHERE  rdal.routeId = p_routeID AND UPPER(tsl.status) = 'DELAYED' AND tsl.remarks IS NOT NULL
+      GROUP  BY tsl.remarks
+      ORDER  BY COUNT(*) DESC
+    ) WHERE ROWNUM = 1;
+  EXCEPTION WHEN NO_DATA_FOUND THEN v_topDelayReason := 'N/A';
+  END;
+
+  BEGIN
+    SELECT remarks INTO v_topSkipReason FROM (
+      SELECT tsl.remarks
+      FROM   tripStopLog tsl
+      JOIN   busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
+      JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
+      WHERE  rdal.routeId = p_routeID AND UPPER(tsl.status) = 'SKIPPED' AND tsl.remarks IS NOT NULL
+      GROUP  BY tsl.remarks
+      ORDER  BY COUNT(*) DESC
+    ) WHERE ROWNUM = 1;
+  EXCEPTION WHEN NO_DATA_FOUND THEN v_topSkipReason := 'N/A';
+  END;
+
+  DBMS_OUTPUT.PUT_LINE('Route Summary');
+  DBMS_OUTPUT.PUT_LINE('-------------');
+  DBMS_OUTPUT.PUT_LINE('Route ID           : ' || v_routeID);
+  DBMS_OUTPUT.PUT_LINE('Route Name         : ' || v_routeName);
+  DBMS_OUTPUT.PUT_LINE('Total Schedules    : ' || v_totalSchedules);
+  DBMS_OUTPUT.PUT_LINE('Delayed Schedules  : ' || v_totalDelayedSchedules);
+  DBMS_OUTPUT.PUT_LINE('Skipped Stops      : ' || v_totalSkippedStops);
+  DBMS_OUTPUT.PUT_LINE('Top Delay Reason   : ' || v_topDelayReason);
+  DBMS_OUTPUT.PUT_LINE('Top Skip  Reason   : ' || v_topSkipReason);
+  DBMS_OUTPUT.PUT_LINE('');
+
+  DBMS_OUTPUT.PUT_LINE('Top 5 Problematic BusSchedules');
+  DBMS_OUTPUT.PUT_LINE('-------------------------------');
+
+  OPEN c_schedule(p_routeID);
+  LOOP
+    FETCH c_schedule INTO v_schedID, v_schedDate;
+    EXIT WHEN c_schedule%NOTFOUND;
+
+    v_delayCount := 0; 
+    v_skipCount  := 0; 
+    v_delayMins  := 0; 
+    v_delayReasons := NULL; 
+    v_skipReasons  := NULL;
+
+    /* 注意：tr 是只读记录，不能对 tr 的字段赋值 */
+    FOR tr IN c_tripLog(v_schedID) LOOP
+      IF UPPER(tr.status) = 'DELAYED' THEN
+        v_delayCount := v_delayCount + 1;
+        v_delayMins  := v_delayMins + NVL(tr.duration_minutes, 0);
+        v_delayReasons := v_delayReasons || TO_CLOB(NVL(tr.remarks, '')) || TO_CLOB('; ');
+      ELSIF UPPER(tr.status) = 'SKIPPED' THEN
+        v_skipCount := v_skipCount + 1;
+        v_skipReasons := v_skipReasons || TO_CLOB(NVL(tr.remarks, '')) || TO_CLOB('; ');
+      END IF;
+    END LOOP;
+
+    IF v_delayCount + v_skipCount > 0 AND v_index < 5 THEN
+      v_index := v_index + 1;
+      DBMS_OUTPUT.PUT_LINE('Schedule ID     : ' || v_schedID);
+      DBMS_OUTPUT.PUT_LINE('Departure Date  : ' || TO_CHAR(v_schedDate, 'YYYY-MM-DD'));
+      DBMS_OUTPUT.PUT_LINE('Delay Count     : ' || v_delayCount);
+      DBMS_OUTPUT.PUT_LINE('Skip  Count     : ' || v_skipCount);
+      DBMS_OUTPUT.PUT_LINE('Delay Minutes   : ' || v_delayMins);
+      DBMS_OUTPUT.PUT_LINE('Delay Reasons   : ' || NVL(TO_CHAR(v_delayReasons), ''));
+      DBMS_OUTPUT.PUT_LINE('Skip  Reasons   : ' || NVL(TO_CHAR(v_skipReasons), ''));
+      DBMS_OUTPUT.PUT_LINE('---------------------------------------------');
+    END IF;
+  END LOOP;
+  CLOSE c_schedule;
+END;
+/
