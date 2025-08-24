@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE prc_show_rentals IS
+CREATE OR REPLACE PROCEDURE prcShowRentals IS
   v_shopID  Shop.shopID%TYPE;
   v_staffID RentalCollection.staffID%TYPE;
   v_amount  RentalCollection.rentalAmount%TYPE;
@@ -8,29 +8,20 @@ CREATE OR REPLACE PROCEDURE prc_show_rentals IS
   v_total   NUMBER;
   v_count   NUMBER;
 
-
   CURSOR shopCursor IS
     SELECT shopID
     FROM Shop
     WHERE status = 'active'
     ORDER BY shopID;
 
-  CURSOR rentCursor IS
+  CURSOR rentCursor(p_shopID Shop.shopID%TYPE) IS
      SELECT staffID, rentalAmount, status, createdAt, collectionDate
      FROM RentalCollection
-     WHERE shopID = v_shopID
+     WHERE shopID = p_shopID
      ORDER BY collectionDate;
-
-  CURSOR unpaidCursor IS
-    SELECT s.shopID, r.rentalMonth, r.rentalAmount
-    FROM Shop s
-    JOIN RentalCollection r ON s.shopID = r.shopID
-    WHERE LOWER(r.status) = 'unpaid'
-    ORDER BY s.shopID, r.rentalMonth;
 
 BEGIN
   OPEN shopCursor;
-
   LOOP
     FETCH shopCursor INTO v_shopID;
     EXIT WHEN shopCursor%NOTFOUND;
@@ -43,26 +34,26 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Shop Rental Record for Shop ID: ' || v_shopID);
     DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
     DBMS_OUTPUT.PUT_LINE(RPAD('Staff ID', 10) || RPAD('Amount', 12) || RPAD('Created At', 22) || RPAD('Status', 12) || RPAD('Paid At', 15));
-    DBMS_OUTPUT.PUT_LINE(RPAD('-', 57, '-'));
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 71, '-'));
 
     BEGIN
-      OPEN rentCursor;
+      OPEN rentCursor(v_shopID);
       LOOP
-        FETCH rentCursor INTO v_staffID, v_amount, v_status, v_createdTime, v_collectionDate
+        FETCH rentCursor INTO v_staffID, v_amount, v_status, v_createdTime, v_collectionDate;
         EXIT WHEN rentCursor%NOTFOUND;
-	
-	IF LOWER(v_status) = 'paid' THEN
-        v_total := v_total + v_amount;
+
+        IF LOWER(v_status) = 'paid' THEN
+          v_total := v_total + v_amount;
         END IF;
 
-	v_count := v_count + 1;
+        v_count := v_count + 1;
 
-         DBMS_OUTPUT.PUT_LINE(
-          RPAD(v_staffID, 10) ||
-          LPAD(TO_CHAR(v_amount, '$999,990.00'), 12) ||
-          RPAD(TO_CHAR(v_createdTime, 'YYYY-MM-DD HH24:MI:SS'), 22) ||
-          RPAD(v_status, 12) ||
-          RPAD(TO_CHAR(v_collectionDate, 'YYYY-MM-DD'), 15)
+        DBMS_OUTPUT.PUT_LINE(
+          RPAD(v_staffID, 5) ||
+          RPAD(TO_CHAR(v_amount, '$999,990.00'), 12) ||
+          LPAD(TO_CHAR(v_createdTime, 'YYYY-MM-DD HH24:MI:SS'), 24) ||
+          LPAD(v_status, 9) ||
+          LPAD(NVL(TO_CHAR(v_collectionDate, 'YYYY-MM-DD'), '-'), 15)
         );
       END LOOP;
       CLOSE rentCursor;
@@ -71,33 +62,15 @@ BEGIN
     IF v_count = 0 THEN
       DBMS_OUTPUT.PUT_LINE('No rental records found for Shop ID: ' || v_shopID);
     ELSE
-      DBMS_OUTPUT.PUT_LINE(RPAD('-', 57, '-'));
+      DBMS_OUTPUT.PUT_LINE(RPAD('-', 71, '-'));
       DBMS_OUTPUT.PUT_LINE('Total Records: ' || v_count);
       DBMS_OUTPUT.PUT_LINE('Total Collected: ' || TO_CHAR(v_total, '$999,999.00'));
     END IF;
   END LOOP;
-  
   CLOSE shopCursor;
-
-  DBMS_OUTPUT.PUT_LINE(CHR(10));
-  DBMS_OUTPUT.PUT_LINE(LPAD('=', 70, '='));
-  DBMS_OUTPUT.PUT_LINE('List of Shops with UNPAID rentals');
-  DBMS_OUTPUT.PUT_LINE(LPAD('=', 70, '='));
-  DBMS_OUTPUT.PUT_LINE(RPAD('Shop ID', 12) || RPAD('Month', 15) || RPAD('Amount', 15));
-  DBMS_OUTPUT.PUT_LINE(RPAD('-', 42, '-'));
-
-  FOR u_rec IN unpaidCursor LOOP
-    DBMS_OUTPUT.PUT_LINE(
-      RPAD(u_rec.shopID, 12) ||
-      RPAD(TO_CHAR(u_rec.rentalMonth, 'YYYY-MM'), 15) ||
-      RPAD(TO_CHAR(u_rec.rentalAmount, '$999,990.00'), 15)
-    );
-  END LOOP;
 
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
 END;
 /
-
-
