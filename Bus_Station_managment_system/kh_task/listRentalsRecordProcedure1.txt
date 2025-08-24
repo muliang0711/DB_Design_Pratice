@@ -3,7 +3,7 @@ CREATE OR REPLACE PROCEDURE prcShowRentals IS
   v_staffID RentalCollection.staffID%TYPE;
   v_amount  RentalCollection.rentalAmount%TYPE;
   v_status  RentalCollection.status%TYPE;
-  v_createdTime RentalCollection.createdAt%TYPE;
+  v_rentalMonth RentalCollection.rentalMonth%TYPE;
   v_collectionDate RentalCollection.collectionDate%TYPE;
   v_total   NUMBER;
   v_count   NUMBER;
@@ -15,7 +15,7 @@ CREATE OR REPLACE PROCEDURE prcShowRentals IS
     ORDER BY shopID;
 
   CURSOR rentCursor(p_shopID Shop.shopID%TYPE) IS
-     SELECT staffID, rentalAmount, status, createdAt, collectionDate
+     SELECT rentalMonth, staffID, rentalAmount, status, collectionDate
      FROM RentalCollection
      WHERE shopID = p_shopID
      ORDER BY collectionDate;
@@ -33,13 +33,13 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(LPAD('=', 71, '='));
     DBMS_OUTPUT.PUT_LINE('Shop Rental Record for Shop ID: ' || v_shopID);
     DBMS_OUTPUT.PUT_LINE(LPAD('=', 71, '='));
-    DBMS_OUTPUT.PUT_LINE(RPAD('Staff ID', 10) || RPAD('Amount', 12) || RPAD('Created At', 22) || RPAD('Status', 12) || RPAD('Paid At', 15));
+    DBMS_OUTPUT.PUT_LINE(RPAD('Staff ID', 10) || RPAD('Amount', 12) || RPAD('Rental Month', 22) || RPAD('Status', 12) || RPAD('Paid At', 15));
     DBMS_OUTPUT.PUT_LINE(RPAD('-', 71, '-'));
 
     BEGIN
       OPEN rentCursor(v_shopID);
       LOOP
-        FETCH rentCursor INTO v_staffID, v_amount, v_status, v_createdTime, v_collectionDate;
+        FETCH rentCursor INTO v_rentalMonth, v_staffID, v_amount, v_status, v_collectionDate;
         EXIT WHEN rentCursor%NOTFOUND;
 
         IF LOWER(v_status) = 'paid' THEN
@@ -51,7 +51,7 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE(
           RPAD(v_staffID, 5) ||
           RPAD(TO_CHAR(v_amount, '$999,990.00'), 12) ||
-          LPAD(TO_CHAR(v_createdTime, 'YYYY-MM-DD HH24:MI:SS'), 24) ||
+          LPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 24) ||
           LPAD(v_status, 9) ||
           LPAD(NVL(TO_CHAR(v_collectionDate, 'YYYY-MM-DD'), '-'), 15)
         );
@@ -74,4 +74,5 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
 END;
 /
+
 
