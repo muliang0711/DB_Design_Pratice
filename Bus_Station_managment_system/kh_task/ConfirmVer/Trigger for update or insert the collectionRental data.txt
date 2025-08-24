@@ -3,6 +3,7 @@ BEFORE INSERT OR UPDATE ON RentalCollection
 FOR EACH ROW
 DECLARE
   v_shopSize Shop.shopSize%TYPE;
+  v_count      NUMBER;
 BEGIN
   IF INSERTING THEN
     SELECT shopSize INTO v_shopSize
@@ -17,11 +18,16 @@ BEGIN
        
        :NEW.collectionDate := SYSTIMESTAMP;
 
-       IF :NEW.staffID IS NULL THEN
-         :NEW.staffID := USER;
+       SELECT COUNT(*) INTO v_count
+       FROM Staff
+       WHERE staffId = :NEW.staffId;
+
+       IF v_count = 0 THEN
+           RAISE_APPLICATION_ERROR(-20002, 'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
        END IF;
     END IF;
   END IF;
 END;
 /
+
 
