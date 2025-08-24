@@ -4,20 +4,38 @@
 
 -- Staff ID, Name (fname + lname), phoneNumber, email, last maintenance service (<service name> on <bus id>), maintenance date, remarks (from BusMaintenance table)
 
+SET SERVEROUTPUT ON
+SET LINESIZE 120
+SET PAGESIZE 200
+ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY';
+
+CREATE OR REPLACE VIEW MaintenanceStaffRecentJobView AS 
 SELECT 
-    s.staffID, 
+    s.staffID AS staffID, 
     s.firstName || ' ' || s.lastName AS fullName, 
-    s.phoneNumber,
-    s.email,
-    bm.maintenanceId,
+    s.phoneNumber AS phoneNumber,
+    s.email AS email,
+    bm.maintenanceId AS maintenanceId,
     ms.serviceItem || ' on ' || bm.busId AS maintenanceDetails,
-    ms.maintenanceDoneDate,
-    ms.remarks
+    ms.maintenanceDoneDate AS maintenanceDate,
+    ms.remarks AS remarks
 FROM Staff s 
 JOIN MaintenanceStaffAssignment USING(staffID)
 JOIN BusMaintenance bm USING(maintenanceId)
 JOIN MaintenanceService ms USING(serviceId)
 ORDERED BY ms.maintenanceDoneDate;
+
+COLUMN staffID HEADING "Staff ID" 
+COLUMN fullName HEADING "Name" 
+COLUMN phoneNumber HEADING "Contact no." 
+COLUMN email HEADING "Email" 
+COLUMN maintenanceId HEADING "Maint. job ID" 
+COLUMN maintenanceDetails HEADING "Job details" FORMAT A50
+COLUMN maintenanceDate HEADING "Done on" 
+COLUMN remarks HEADING "Remarks" 
+
+SELECT * FROM MaintenanceStaffRecentJobView;
+
 
 ----------------------
 
@@ -33,7 +51,7 @@ SET SERVEROUTPUT ON
 SET LINESIZE 120
 SET PAGESIZE 200
 
-CREATE OR REPLACE VIEW BusMaintenanceStats AS 
+CREATE OR REPLACE VIEW BusMaintenanceStatsView AS 
 SELECT 
     -- Makes report prettier by printing the company name
     -- only for the first row in each group.
@@ -42,10 +60,10 @@ SELECT
     --     THEN c.companyName 
     --     ELSE NULL 
     -- END AS companyName,
-    c.companyName AS "Company Name",
-    b.busID AS "Bus ID",
-    b.plateNo AS "Plate No.",
-    AVG(interval_days) AS "Avg. interval days"
+    c.companyName       AS companyName,
+    b.busID             AS busID,
+    b.plateNo           AS plateNo,
+    AVG(interval_days)  AS avgIntervalDays
 FROM (
     SELECT bm.busID,
            LEAD(bm.maintenanceDate) OVER (PARTITION BY bm.busID ORDER BY bm.maintenanceDate) 
@@ -61,9 +79,10 @@ WHERE interval_days IS NOT NULL
 GROUP BY b.busID
 ORDER BY c.companyName, b.busID;
 
-COLUMN "Company Name" FORMAT A20
-COLUMN "Bus ID" FORMAT A10
-COLUMN "Avg. interval days" FORMAT A5
+COLUMN companyName      HEADING "Company Name"          FORMAT A20
+COLUMN busID            HEADING "Bus ID"                FORMAT A10
+COLUMN plateNo          HEADING "Plate No."             FORMAT A10
+COLUMN avgIntervalDays  HEADING "Avg. interval days"    FORMAT A5
 
 BREAK ON companyName SKIP 1
 
