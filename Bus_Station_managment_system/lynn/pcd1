@@ -1,3 +1,8 @@
+
+SET serveroutput on
+SET linesize 120
+SET pagesize 100
+
 CREATE OR REPLACE PROCEDURE ExtendTicket(
     p_ticketID IN Ticket.ticketID%TYPE,
     p_newScheduleID IN BusSchedule.busScheduleID%TYPE,
