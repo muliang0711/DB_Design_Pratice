@@ -269,6 +269,20 @@ CREATE TABLE ticket (
   ))
 );
 
+ALTER TABLE ticket
+DROP CONSTRAINT CHK_TKT_STATUS;
+
+ALTER TABLE ticket
+ADD CONSTRAINT CHK_TKT_STATUS CHECK (
+  LOWER(status) IN (
+    'cancelled_by_company',
+    'cancelled_by_user',
+    'booked_extended',
+    'been_bought',
+    'on_selling'
+  )
+);
+
 CREATE TABLE paymentRecord (
   paymentId     VARCHAR2(12)  PRIMARY KEY,
   customerId    VARCHAR2(12),
