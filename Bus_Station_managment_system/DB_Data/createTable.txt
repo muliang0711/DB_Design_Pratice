@@ -159,8 +159,8 @@ CREATE TABLE busPlatform (
 CREATE TABLE route (
   routeId               VARCHAR2(12)  PRIMARY KEY,
   routeName             VARCHAR2(50)  NOT NULL,
-  startPoint            VARCHAR2(12)  NOT NULL,  -- FK → busStation
-  endPoint              VARCHAR2(12)  NOT NULL,  -- FK → busStation
+  startPoint            VARCHAR2(12)  NOT NULL,  
+  endPoint              VARCHAR2(12)  NOT NULL, 
   distanceKm            NUMBER(6,2),
   estimatedDuration     NUMBER(10),   -- minutes
   plannedDepartureTime VARCHAR2(5),  -- 'HH:MI'
