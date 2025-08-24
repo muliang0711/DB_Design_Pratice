@@ -1,0 +1,1499 @@
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0001', 'CUST0050', 'TIC0075', 447.7, 240.39, 0, 0.0, 'failed', TIMESTAMP '2022-10-28 04:36:00', 'RCPT10001', 'Customer used promo', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0002', 'CUST0064', 'TIC0124', 329.1, 213.27, 126, 12.6, 'failed', TIMESTAMP '2024-02-01 16:48:00', 'RCPT10002', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0003', 'CUST0092', 'TIC0093', 189.6, 96.87, 59, 5.9, 'pending', TIMESTAMP '2021-11-15 22:30:00', 'RCPT10003', 'Late night booking', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0004', 'CUST0035', 'TIC0285', 260.75, 223.59, 40, 4.0, 'completed', TIMESTAMP '2020-03-24 16:47:00', 'RCPT10004', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0005', 'CUST0039', 'TIC0182', 379.5, 263.99, 0, 0.0, 'failed', TIMESTAMP '2023-06-23 21:22:00', 'RCPT10005', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0006', 'CUST0049', 'TIC0021', 116.91, 38.63, 0, 0.0, 'failed', TIMESTAMP '2023-11-04 00:46:00', 'RCPT10006', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0007', 'CUST0020', 'TIC0213', 425.86, 345.57, 0, 0.0, 'completed', TIMESTAMP '2020-08-04 09:30:00', 'RCPT10007', 'VIP Customer', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0008', 'CUST0091', 'TIC0088', 237.91, 201.52, 21, 2.1, 'pending', TIMESTAMP '2021-09-02 14:28:00', 'RCPT10008', 'Late night booking', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0009', 'CUST0100', 'TIC0149', 265.77, 232.77, 0, 0.0, 'completed', TIMESTAMP '2022-02-06 07:54:00', 'RCPT10009', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0010', 'CUST0015', 'TIC0138', 70.49, 23.04, 151, 15.1, 'completed', TIMESTAMP '2022-08-13 12:01:00', 'RCPT10010', 'Customer used promo', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0011', 'CUST0058', 'TIC0290', 231.2, 88.79, 163, 16.3, 'failed', TIMESTAMP '2023-05-14 16:14:00', 'RCPT10011', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0012', 'CUST0014', 'TIC0011', 374.49, 134.95, 0, 0.0, 'failed', TIMESTAMP '2023-09-08 02:53:00', 'RCPT10012', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0013', 'CUST0093', 'TIC0192', 442.81, 280.83, 0, 0.0, 'pending', TIMESTAMP '2023-01-03 14:43:00', 'RCPT10013', 'VIP Customer', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0014', 'CUST0083', 'TIC0225', 238.07, 213.07, 0, 0.0, 'completed', TIMESTAMP '2021-05-23 19:30:00', 'RCPT10014', 'VIP Customer', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0015', 'CUST0044', 'TIC0072', 270.59, 99.48, 0, 0.0, 'failed', TIMESTAMP '2020-05-26 08:45:00', 'RCPT10015', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0016', 'CUST0087', 'TIC0192', 371.35, 168.47, 0, 0.0, 'completed', TIMESTAMP '2022-06-27 06:07:00', 'RCPT10016', '', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0017', 'CUST0061', 'TIC0294', 31.56, 24.13, 55, 5.5, 'pending', TIMESTAMP '2023-11-17 19:13:00', 'RCPT10017', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0018', 'CUST0052', 'TIC0087', 310.83, 142.76, 190, 19.0, 'failed', TIMESTAMP '2023-03-19 11:21:00', 'RCPT10018', 'VIP Customer', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0019', 'CUST0049', 'TIC0009', 221.14, 107.29, 183, 18.3, 'failed', TIMESTAMP '2020-10-30 21:38:00', 'RCPT10019', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0020', 'CUST0051', 'TIC0143', 434.1, 278.36, 0, 0.0, 'pending', TIMESTAMP '2024-01-12 03:46:00', 'RCPT10020', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0021', 'CUST0062', 'TIC0069', 449.57, 152.9, 0, 0.0, 'pending', TIMESTAMP '2020-01-22 23:14:00', 'RCPT10021', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0022', 'CUST0002', 'TIC0279', 323.83, 133.19, 184, 18.4, 'pending', TIMESTAMP '2021-06-29 00:39:00', 'RCPT10022', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0023', 'CUST0029', 'TIC0215', 288.43, 234.22, 0, 0.0, 'failed', TIMESTAMP '2021-11-05 19:14:00', 'RCPT10023', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0024', 'CUST0068', 'TIC0151', 37.95, 26.64, 116, 11.6, 'pending', TIMESTAMP '2023-12-05 15:52:00', 'RCPT10024', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0025', 'CUST0042', 'TIC0273', 174.11, 92.64, 161, 16.1, 'completed', TIMESTAMP '2022-06-04 09:51:00', 'RCPT10025', '', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0026', 'CUST0011', 'TIC0243', 437.97, 203.0, 17, 1.7, 'completed', TIMESTAMP '2020-09-15 23:05:00', 'RCPT10026', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0027', 'CUST0067', 'TIC0224', 309.78, 264.39, 185, 18.5, 'pending', TIMESTAMP '2021-12-01 11:39:00', 'RCPT10027', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0028', 'CUST0021', 'TIC0260', 66.97, 32.38, 0, 0.0, 'pending', TIMESTAMP '2022-01-05 23:02:00', 'RCPT10028', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0029', 'CUST0078', 'TIC0287', 383.88, 188.27, 40, 4.0, 'completed', TIMESTAMP '2023-11-27 04:45:00', 'RCPT10029', 'VIP Customer', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0030', 'CUST0033', 'TIC0232', 365.86, 113.95, 68, 6.8, 'failed', TIMESTAMP '2023-11-13 06:33:00', 'RCPT10030', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0031', 'CUST0001', 'TIC0151', 220.59, 97.3, 48, 4.8, 'pending', TIMESTAMP '2022-04-17 11:19:00', 'RCPT10031', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0032', 'CUST0048', 'TIC0240', 443.23, 179.19, 103, 10.3, 'failed', TIMESTAMP '2023-11-10 18:02:00', 'RCPT10032', 'VIP Customer', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0033', 'CUST0018', 'TIC0012', 14.36, 9.28, 56, 5.6, 'pending', TIMESTAMP '2022-03-01 18:59:00', 'RCPT10033', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0034', 'CUST0006', 'TIC0131', 331.56, 317.14, 190, 19.0, 'failed', TIMESTAMP '2021-03-31 02:39:00', 'RCPT10034', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0035', 'CUST0050', 'TIC0135', 182.7, 170.24, 97, 9.7, 'pending', TIMESTAMP '2023-05-02 22:24:00', 'RCPT10035', 'VIP Customer', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0036', 'CUST0030', 'TIC0285', 365.82, 241.33, 0, 0.0, 'failed', TIMESTAMP '2021-01-11 15:39:00', 'RCPT10036', 'Customer used promo', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0037', 'CUST0020', 'TIC0142', 246.51, 152.89, 0, 0.0, 'pending', TIMESTAMP '2023-04-03 14:10:00', 'RCPT10037', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0038', 'CUST0073', 'TIC0005', 128.97, 120.09, 52, 5.2, 'completed', TIMESTAMP '2023-09-25 19:57:00', 'RCPT10038', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0039', 'CUST0097', 'TIC0050', 323.13, 145.86, 197, 19.7, 'failed', TIMESTAMP '2021-09-01 13:36:00', 'RCPT10039', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0040', 'CUST0079', 'TIC0275', 378.54, 153.03, 111, 11.1, 'pending', TIMESTAMP '2023-12-10 00:01:00', 'RCPT10040', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0041', 'CUST0092', 'TIC0258', 352.98, 306.4, 0, 0.0, 'completed', TIMESTAMP '2023-09-06 08:32:00', 'RCPT10041', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0042', 'CUST0019', 'TIC0080', 288.76, 254.52, 34, 3.4, 'pending', TIMESTAMP '2020-01-11 02:32:00', 'RCPT10042', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0043', 'CUST0060', 'TIC0176', 352.3, 166.26, 0, 0.0, 'completed', TIMESTAMP '2021-10-27 16:31:00', 'RCPT10043', 'Customer used promo', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0044', 'CUST0027', 'TIC0101', 44.48, 20.97, 0, 0.0, 'pending', TIMESTAMP '2020-05-09 22:12:00', 'RCPT10044', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0045', 'CUST0023', 'TIC0214', 71.23, 28.93, 162, 16.2, 'failed', TIMESTAMP '2023-10-24 21:19:00', 'RCPT10045', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0046', 'CUST0010', 'TIC0081', 212.07, 187.97, 140, 14.0, 'pending', TIMESTAMP '2023-07-25 18:08:00', 'RCPT10046', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0047', 'CUST0063', 'TIC0150', 434.51, 259.93, 79, 7.9, 'pending', TIMESTAMP '2022-06-19 13:09:00', 'RCPT10047', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0048', 'CUST0092', 'TIC0271', 317.49, 191.06, 100, 10.0, 'pending', TIMESTAMP '2021-11-07 07:09:00', 'RCPT10048', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0049', 'CUST0073', 'TIC0092', 10.92, 7.87, 0, 0.0, 'pending', TIMESTAMP '2021-01-18 10:41:00', 'RCPT10049', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0050', 'CUST0060', 'TIC0286', 473.79, 177.62, 0, 0.0, 'pending', TIMESTAMP '2020-01-04 08:24:00', 'RCPT10050', 'Late night booking', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0051', 'CUST0043', 'TIC0247', 258.46, 212.88, 119, 11.9, 'failed', TIMESTAMP '2022-11-07 17:40:00', 'RCPT10051', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0052', 'CUST0048', 'TIC0237', 152.62, 54.04, 48, 4.8, 'pending', TIMESTAMP '2023-08-01 16:26:00', 'RCPT10052', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0053', 'CUST0005', 'TIC0019', 475.8, 188.89, 170, 17.0, 'failed', TIMESTAMP '2021-12-10 10:21:00', 'RCPT10053', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0054', 'CUST0063', 'TIC0276', 180.11, 156.54, 0, 0.0, 'completed', TIMESTAMP '2022-09-18 19:30:00', 'RCPT10054', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0055', 'CUST0018', 'TIC0172', 111.66, 51.43, 0, 0.0, 'failed', TIMESTAMP '2023-04-01 01:36:00', 'RCPT10055', 'VIP Customer', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0056', 'CUST0078', 'TIC0295', 166.32, 98.67, 38, 3.8, 'failed', TIMESTAMP '2020-11-18 05:01:00', 'RCPT10056', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0057', 'CUST0069', 'TIC0019', 168.73, 72.51, 0, 0.0, 'failed', TIMESTAMP '2022-08-26 18:13:00', 'RCPT10057', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0058', 'CUST0009', 'TIC0104', 55.66, 47.3, 89, 8.9, 'completed', TIMESTAMP '2022-07-05 10:11:00', 'RCPT10058', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0059', 'CUST0058', 'TIC0248', 178.3, 165.94, 10, 1.0, 'failed', TIMESTAMP '2023-05-01 13:08:00', 'RCPT10059', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0060', 'CUST0091', 'TIC0074', 241.1, 198.34, 0, 0.0, 'pending', TIMESTAMP '2021-07-29 19:12:00', 'RCPT10060', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0061', 'CUST0017', 'TIC0038', 309.08, 200.42, 0, 0.0, 'completed', TIMESTAMP '2023-03-10 17:35:00', 'RCPT10061', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0062', 'CUST0026', 'TIC0266', 365.29, 187.03, 0, 0.0, 'pending', TIMESTAMP '2021-08-21 02:03:00', 'RCPT10062', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0063', 'CUST0017', 'TIC0050', 359.94, 274.18, 0, 0.0, 'failed', TIMESTAMP '2023-06-20 23:18:00', 'RCPT10063', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0064', 'CUST0020', 'TIC0127', 244.62, 123.7, 69, 6.9, 'failed', TIMESTAMP '2020-05-05 15:55:00', 'RCPT10064', 'Late night booking', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0065', 'CUST0084', 'TIC0232', 172.34, 65.31, 79, 7.9, 'pending', TIMESTAMP '2020-06-18 10:36:00', 'RCPT10065', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0066', 'CUST0005', 'TIC0168', 457.63, 138.42, 108, 10.8, 'failed', TIMESTAMP '2021-10-21 17:23:00', 'RCPT10066', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0067', 'CUST0001', 'TIC0075', 464.57, 354.46, 152, 15.2, 'pending', TIMESTAMP '2022-10-12 20:48:00', 'RCPT10067', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0068', 'CUST0071', 'TIC0057', 305.3, 276.83, 0, 0.0, 'pending', TIMESTAMP '2021-07-06 13:20:00', 'RCPT10068', 'VIP Customer', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0069', 'CUST0088', 'TIC0056', 60.99, 25.25, 0, 0.0, 'failed', TIMESTAMP '2020-03-01 05:43:00', 'RCPT10069', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0070', 'CUST0048', 'TIC0204', 45.32, 37.09, 175, 17.5, 'failed', TIMESTAMP '2022-09-14 08:05:00', 'RCPT10070', 'Customer used promo', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0071', 'CUST0056', 'TIC0047', 255.31, 108.23, 0, 0.0, 'failed', TIMESTAMP '2021-07-05 00:38:00', 'RCPT10071', 'Late night booking', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0072', 'CUST0067', 'TIC0154', 268.43, 170.3, 197, 19.7, 'pending', TIMESTAMP '2022-10-03 23:42:00', 'RCPT10072', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0073', 'CUST0042', 'TIC0159', 221.76, 89.15, 0, 0.0, 'completed', TIMESTAMP '2020-07-13 23:46:00', 'RCPT10073', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0074', 'CUST0008', 'TIC0059', 196.09, 83.5, 149, 14.9, 'pending', TIMESTAMP '2021-05-15 10:45:00', 'RCPT10074', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0075', 'CUST0084', 'TIC0105', 188.91, 62.59, 178, 17.8, 'completed', TIMESTAMP '2023-03-14 05:35:00', 'RCPT10075', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0076', 'CUST0085', 'TIC0187', 174.47, 80.08, 170, 17.0, 'pending', TIMESTAMP '2021-07-26 00:11:00', 'RCPT10076', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0077', 'CUST0008', 'TIC0203', 68.14, 40.29, 0, 0.0, 'completed', TIMESTAMP '2021-08-08 16:45:00', 'RCPT10077', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0078', 'CUST0033', 'TIC0044', 56.22, 48.19, 0, 0.0, 'pending', TIMESTAMP '2022-07-04 13:07:00', 'RCPT10078', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0079', 'CUST0017', 'TIC0153', 440.42, 397.96, 0, 0.0, 'completed', TIMESTAMP '2022-07-30 01:12:00', 'RCPT10079', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0080', 'CUST0087', 'TIC0166', 287.21, 110.51, 0, 0.0, 'completed', TIMESTAMP '2023-12-03 13:46:00', 'RCPT10080', 'Customer used promo', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0081', 'CUST0017', 'TIC0135', 170.99, 119.79, 96, 9.6, 'completed', TIMESTAMP '2023-03-29 08:43:00', 'RCPT10081', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0082', 'CUST0061', 'TIC0194', 472.47, 394.99, 178, 17.8, 'completed', TIMESTAMP '2021-06-25 23:28:00', 'RCPT10082', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0083', 'CUST0075', 'TIC0087', 93.77, 34.5, 24, 2.4, 'pending', TIMESTAMP '2021-11-17 21:35:00', 'RCPT10083', '', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0084', 'CUST0020', 'TIC0243', 274.48, 169.16, 0, 0.0, 'failed', TIMESTAMP '2022-04-16 17:38:00', 'RCPT10084', 'Late night booking', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0085', 'CUST0043', 'TIC0173', 469.46, 176.65, 100, 10.0, 'pending', TIMESTAMP '2021-11-13 15:30:00', 'RCPT10085', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0086', 'CUST0087', 'TIC0100', 331.76, 297.84, 0, 0.0, 'completed', TIMESTAMP '2021-10-27 21:49:00', 'RCPT10086', 'VIP Customer', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0087', 'CUST0034', 'TIC0237', 374.37, 340.52, 0, 0.0, 'completed', TIMESTAMP '2023-08-01 09:42:00', 'RCPT10087', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0088', 'CUST0074', 'TIC0139', 185.16, 120.3, 0, 0.0, 'failed', TIMESTAMP '2020-10-16 01:50:00', 'RCPT10088', 'VIP Customer', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0089', 'CUST0023', 'TIC0048', 363.26, 239.24, 123, 12.3, 'failed', TIMESTAMP '2022-05-11 20:37:00', 'RCPT10089', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0090', 'CUST0094', 'TIC0099', 83.38, 55.69, 0, 0.0, 'completed', TIMESTAMP '2023-07-19 18:21:00', 'RCPT10090', 'VIP Customer', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0091', 'CUST0085', 'TIC0067', 246.54, 118.62, 0, 0.0, 'failed', TIMESTAMP '2020-03-21 23:37:00', 'RCPT10091', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0092', 'CUST0024', 'TIC0114', 199.97, 62.13, 37, 3.7, 'completed', TIMESTAMP '2023-01-26 15:06:00', 'RCPT10092', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0093', 'CUST0013', 'TIC0275', 140.61, 43.96, 155, 15.5, 'completed', TIMESTAMP '2021-07-20 15:44:00', 'RCPT10093', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0094', 'CUST0041', 'TIC0262', 485.72, 335.89, 0, 0.0, 'pending', TIMESTAMP '2023-04-26 05:16:00', 'RCPT10094', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0095', 'CUST0058', 'TIC0128', 449.13, 220.48, 0, 0.0, 'pending', TIMESTAMP '2021-10-27 22:50:00', 'RCPT10095', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0096', 'CUST0055', 'TIC0228', 204.62, 162.17, 175, 17.5, 'pending', TIMESTAMP '2022-01-20 09:19:00', 'RCPT10096', 'Customer used promo', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0097', 'CUST0071', 'TIC0134', 352.37, 248.61, 154, 15.4, 'completed', TIMESTAMP '2022-03-06 00:24:00', 'RCPT10097', 'Customer used promo', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0098', 'CUST0086', 'TIC0002', 175.72, 90.81, 0, 0.0, 'completed', TIMESTAMP '2020-07-05 03:19:00', 'RCPT10098', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0099', 'CUST0019', 'TIC0019', 90.24, 35.69, 0, 0.0, 'completed', TIMESTAMP '2021-11-11 22:02:00', 'RCPT10099', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0100', 'CUST0086', 'TIC0197', 43.06, 30.98, 0, 0.0, 'completed', TIMESTAMP '2022-05-05 19:51:00', 'RCPT10100', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0101', 'CUST0006', 'TIC0175', 214.05, 82.34, 177, 17.7, 'pending', TIMESTAMP '2020-08-26 19:44:00', 'RCPT10101', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0102', 'CUST0065', 'TIC0118', 368.37, 255.42, 15, 1.5, 'completed', TIMESTAMP '2021-06-03 08:20:00', 'RCPT10102', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0103', 'CUST0099', 'TIC0295', 134.94, 98.45, 145, 14.5, 'pending', TIMESTAMP '2020-06-11 20:49:00', 'RCPT10103', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0104', 'CUST0068', 'TIC0011', 334.78, 192.38, 0, 0.0, 'completed', TIMESTAMP '2023-03-25 21:34:00', 'RCPT10104', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0105', 'CUST0076', 'TIC0092', 422.39, 233.9, 20, 2.0, 'failed', TIMESTAMP '2022-03-06 06:38:00', 'RCPT10105', 'VIP Customer', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0106', 'CUST0047', 'TIC0105', 364.99, 212.85, 24, 2.4, 'completed', TIMESTAMP '2020-01-13 00:24:00', 'RCPT10106', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0107', 'CUST0085', 'TIC0185', 495.01, 483.7, 0, 0.0, 'failed', TIMESTAMP '2021-03-28 13:31:00', 'RCPT10107', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0108', 'CUST0031', 'TIC0231', 28.82, 28.7, 154, 15.4, 'pending', TIMESTAMP '2022-07-07 11:31:00', 'RCPT10108', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0109', 'CUST0025', 'TIC0127', 348.21, 314.11, 72, 7.2, 'pending', TIMESTAMP '2022-08-04 15:17:00', 'RCPT10109', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0110', 'CUST0006', 'TIC0177', 328.56, 112.15, 0, 0.0, 'completed', TIMESTAMP '2021-07-01 18:41:00', 'RCPT10110', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0111', 'CUST0075', 'TIC0067', 313.17, 205.49, 142, 14.2, 'pending', TIMESTAMP '2023-03-31 18:59:00', 'RCPT10111', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0112', 'CUST0046', 'TIC0256', 473.89, 350.45, 0, 0.0, 'completed', TIMESTAMP '2020-12-03 11:09:00', 'RCPT10112', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0113', 'CUST0084', 'TIC0145', 201.0, 172.25, 200, 20.0, 'completed', TIMESTAMP '2020-09-15 01:23:00', 'RCPT10113', 'Late night booking', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0114', 'CUST0060', 'TIC0044', 310.51, 210.64, 0, 0.0, 'pending', TIMESTAMP '2023-03-28 21:01:00', 'RCPT10114', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0115', 'CUST0041', 'TIC0186', 282.48, 149.98, 0, 0.0, 'completed', TIMESTAMP '2020-09-01 04:20:00', 'RCPT10115', 'Late night booking', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0116', 'CUST0045', 'TIC0215', 219.87, 141.46, 77, 7.7, 'failed', TIMESTAMP '2022-02-22 23:21:00', 'RCPT10116', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0117', 'CUST0054', 'TIC0117', 323.91, 298.43, 0, 0.0, 'failed', TIMESTAMP '2023-04-05 01:06:00', 'RCPT10117', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0118', 'CUST0031', 'TIC0041', 328.18, 129.96, 84, 8.4, 'pending', TIMESTAMP '2021-04-27 09:12:00', 'RCPT10118', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0119', 'CUST0092', 'TIC0275', 425.4, 201.84, 0, 0.0, 'failed', TIMESTAMP '2020-08-20 16:27:00', 'RCPT10119', '', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0120', 'CUST0076', 'TIC0065', 424.94, 366.29, 0, 0.0, 'completed', TIMESTAMP '2021-06-30 11:03:00', 'RCPT10120', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0121', 'CUST0086', 'TIC0170', 438.12, 172.11, 69, 6.9, 'pending', TIMESTAMP '2021-12-22 01:48:00', 'RCPT10121', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0122', 'CUST0082', 'TIC0230', 154.17, 56.55, 188, 18.8, 'pending', TIMESTAMP '2020-01-01 23:19:00', 'RCPT10122', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0123', 'CUST0046', 'TIC0078', 294.01, 124.8, 99, 9.9, 'pending', TIMESTAMP '2022-03-22 07:26:00', 'RCPT10123', 'VIP Customer', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0124', 'CUST0045', 'TIC0070', 84.12, 63.47, 189, 18.9, 'completed', TIMESTAMP '2021-11-20 22:28:00', 'RCPT10124', 'Late night booking', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0125', 'CUST0029', 'TIC0099', 336.04, 188.2, 0, 0.0, 'completed', TIMESTAMP '2020-09-19 15:58:00', 'RCPT10125', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0126', 'CUST0067', 'TIC0131', 168.65, 146.91, 198, 19.8, 'completed', TIMESTAMP '2020-07-29 05:37:00', 'RCPT10126', 'Late night booking', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0127', 'CUST0072', 'TIC0088', 64.79, 47.55, 172, 17.2, 'completed', TIMESTAMP '2020-07-11 08:14:00', 'RCPT10127', 'Late night booking', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0128', 'CUST0080', 'TIC0029', 351.67, 324.73, 50, 5.0, 'completed', TIMESTAMP '2023-01-05 01:50:00', 'RCPT10128', 'VIP Customer', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0129', 'CUST0005', 'TIC0191', 298.08, 284.9, 0, 0.0, 'completed', TIMESTAMP '2020-04-25 00:53:00', 'RCPT10129', '', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0130', 'CUST0013', 'TIC0232', 177.26, 84.84, 0, 0.0, 'pending', TIMESTAMP '2020-07-21 14:31:00', 'RCPT10130', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0131', 'CUST0075', 'TIC0082', 276.46, 227.28, 0, 0.0, 'completed', TIMESTAMP '2020-12-06 15:56:00', 'RCPT10131', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0132', 'CUST0071', 'TIC0190', 307.24, 213.0, 0, 0.0, 'completed', TIMESTAMP '2021-06-15 07:41:00', 'RCPT10132', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0133', 'CUST0077', 'TIC0148', 373.63, 237.37, 0, 0.0, 'failed', TIMESTAMP '2020-05-21 18:56:00', 'RCPT10133', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0134', 'CUST0003', 'TIC0138', 295.87, 135.75, 0, 0.0, 'failed', TIMESTAMP '2022-12-20 10:38:00', 'RCPT10134', 'Customer used promo', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0135', 'CUST0072', 'TIC0020', 383.34, 285.32, 0, 0.0, 'completed', TIMESTAMP '2021-10-06 10:28:00', 'RCPT10135', 'VIP Customer', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0136', 'CUST0058', 'TIC0073', 232.59, 224.84, 87, 8.7, 'completed', TIMESTAMP '2022-12-14 17:17:00', 'RCPT10136', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0137', 'CUST0046', 'TIC0140', 467.33, 277.85, 0, 0.0, 'failed', TIMESTAMP '2024-02-05 23:41:00', 'RCPT10137', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0138', 'CUST0017', 'TIC0199', 70.21, 25.5, 0, 0.0, 'failed', TIMESTAMP '2021-12-30 12:59:00', 'RCPT10138', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0139', 'CUST0026', 'TIC0297', 234.08, 199.3, 158, 15.8, 'completed', TIMESTAMP '2022-12-18 04:16:00', 'RCPT10139', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0140', 'CUST0037', 'TIC0278', 214.35, 176.49, 33, 3.3, 'completed', TIMESTAMP '2022-09-28 04:17:00', 'RCPT10140', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0141', 'CUST0018', 'TIC0261', 364.08, 203.2, 0, 0.0, 'failed', TIMESTAMP '2021-03-07 13:53:00', 'RCPT10141', 'Late night booking', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0142', 'CUST0099', 'TIC0163', 484.16, 250.02, 0, 0.0, 'failed', TIMESTAMP '2023-07-11 11:24:00', 'RCPT10142', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0143', 'CUST0052', 'TIC0297', 268.52, 221.6, 182, 18.2, 'failed', TIMESTAMP '2020-02-12 17:44:00', 'RCPT10143', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0144', 'CUST0003', 'TIC0056', 174.11, 153.35, 0, 0.0, 'pending', TIMESTAMP '2020-08-15 12:49:00', 'RCPT10144', 'Late night booking', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0145', 'CUST0054', 'TIC0205', 341.29, 121.27, 51, 5.1, 'pending', TIMESTAMP '2023-12-10 06:16:00', 'RCPT10145', 'Customer used promo', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0146', 'CUST0066', 'TIC0094', 403.43, 132.68, 0, 0.0, 'pending', TIMESTAMP '2023-06-17 15:53:00', 'RCPT10146', 'Customer used promo', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0147', 'CUST0077', 'TIC0091', 376.47, 304.6, 157, 15.7, 'failed', TIMESTAMP '2020-07-28 07:12:00', 'RCPT10147', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0148', 'CUST0073', 'TIC0279', 50.79, 27.61, 166, 16.6, 'completed', TIMESTAMP '2021-11-25 20:20:00', 'RCPT10148', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0149', 'CUST0063', 'TIC0163', 348.12, 302.86, 13, 1.3, 'completed', TIMESTAMP '2022-12-30 20:54:00', 'RCPT10149', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0150', 'CUST0062', 'TIC0126', 382.03, 346.89, 0, 0.0, 'pending', TIMESTAMP '2023-08-04 12:14:00', 'RCPT10150', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0151', 'CUST0044', 'TIC0082', 328.82, 240.59, 0, 0.0, 'failed', TIMESTAMP '2021-05-01 15:32:00', 'RCPT10151', 'Customer used promo', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0152', 'CUST0034', 'TIC0205', 179.87, 85.93, 0, 0.0, 'completed', TIMESTAMP '2021-11-10 22:35:00', 'RCPT10152', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0153', 'CUST0044', 'TIC0139', 67.36, 54.07, 164, 16.4, 'completed', TIMESTAMP '2020-06-29 23:17:00', 'RCPT10153', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0154', 'CUST0081', 'TIC0257', 438.07, 236.66, 0, 0.0, 'failed', TIMESTAMP '2021-11-20 23:35:00', 'RCPT10154', '', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0155', 'CUST0057', 'TIC0257', 353.5, 350.51, 187, 18.7, 'failed', TIMESTAMP '2023-07-14 17:46:00', 'RCPT10155', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0156', 'CUST0011', 'TIC0076', 167.34, 101.26, 0, 0.0, 'completed', TIMESTAMP '2020-12-13 17:24:00', 'RCPT10156', 'Customer used promo', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0157', 'CUST0048', 'TIC0027', 448.19, 327.88, 0, 0.0, 'failed', TIMESTAMP '2021-11-10 13:47:00', 'RCPT10157', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0158', 'CUST0025', 'TIC0093', 440.63, 371.58, 0, 0.0, 'failed', TIMESTAMP '2022-11-09 03:14:00', 'RCPT10158', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0159', 'CUST0050', 'TIC0194', 96.76, 53.58, 0, 0.0, 'pending', TIMESTAMP '2020-04-18 08:45:00', 'RCPT10159', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0160', 'CUST0048', 'TIC0232', 201.21, 65.34, 165, 16.5, 'failed', TIMESTAMP '2022-09-29 18:53:00', 'RCPT10160', '', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0161', 'CUST0031', 'TIC0276', 25.91, 13.07, 176, 17.6, 'failed', TIMESTAMP '2020-12-05 06:51:00', 'RCPT10161', '', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0162', 'CUST0052', 'TIC0200', 65.32, 26.68, 0, 0.0, 'pending', TIMESTAMP '2023-10-01 00:33:00', 'RCPT10162', 'VIP Customer', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0163', 'CUST0038', 'TIC0172', 434.36, 144.44, 61, 6.1, 'failed', TIMESTAMP '2023-04-03 01:41:00', 'RCPT10163', 'Customer used promo', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0164', 'CUST0041', 'TIC0108', 202.59, 185.93, 92, 9.2, 'failed', TIMESTAMP '2022-01-30 03:25:00', 'RCPT10164', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0165', 'CUST0041', 'TIC0244', 340.78, 277.44, 142, 14.2, 'failed', TIMESTAMP '2022-06-04 02:56:00', 'RCPT10165', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0166', 'CUST0084', 'TIC0069', 17.48, 10.31, 0, 0.0, 'pending', TIMESTAMP '2022-04-26 13:55:00', 'RCPT10166', 'VIP Customer', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0167', 'CUST0007', 'TIC0023', 63.1, 58.47, 0, 0.0, 'completed', TIMESTAMP '2021-02-16 10:39:00', 'RCPT10167', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0168', 'CUST0047', 'TIC0274', 227.18, 95.69, 150, 15.0, 'pending', TIMESTAMP '2023-06-30 00:03:00', 'RCPT10168', 'Late night booking', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0169', 'CUST0083', 'TIC0026', 301.75, 120.29, 48, 4.8, 'failed', TIMESTAMP '2022-12-01 21:05:00', 'RCPT10169', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0170', 'CUST0098', 'TIC0046', 155.86, 88.09, 35, 3.5, 'completed', TIMESTAMP '2020-04-17 21:52:00', 'RCPT10170', 'Late night booking', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0171', 'CUST0057', 'TIC0049', 422.81, 257.45, 11, 1.1, 'completed', TIMESTAMP '2023-08-11 08:14:00', 'RCPT10171', 'Customer used promo', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0172', 'CUST0003', 'TIC0039', 200.58, 149.5, 24, 2.4, 'failed', TIMESTAMP '2023-10-17 18:30:00', 'RCPT10172', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0173', 'CUST0086', 'TIC0228', 227.15, 122.24, 0, 0.0, 'pending', TIMESTAMP '2020-04-24 19:56:00', 'RCPT10173', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0174', 'CUST0012', 'TIC0160', 434.47, 428.62, 55, 5.5, 'failed', TIMESTAMP '2021-01-11 04:30:00', 'RCPT10174', 'Customer used promo', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0175', 'CUST0057', 'TIC0097', 166.08, 59.8, 169, 16.9, 'failed', TIMESTAMP '2022-09-17 04:08:00', 'RCPT10175', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0176', 'CUST0055', 'TIC0143', 480.61, 380.56, 0, 0.0, 'pending', TIMESTAMP '2023-05-15 04:42:00', 'RCPT10176', '', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0177', 'CUST0057', 'TIC0082', 309.48, 300.89, 0, 0.0, 'pending', TIMESTAMP '2023-06-28 12:59:00', 'RCPT10177', 'VIP Customer', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0178', 'CUST0073', 'TIC0136', 437.4, 316.69, 29, 2.9, 'completed', TIMESTAMP '2020-05-31 07:42:00', 'RCPT10178', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0179', 'CUST0063', 'TIC0265', 100.36, 74.05, 153, 15.3, 'failed', TIMESTAMP '2023-12-10 12:33:00', 'RCPT10179', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0180', 'CUST0081', 'TIC0015', 205.89, 199.98, 116, 11.6, 'failed', TIMESTAMP '2021-07-01 16:05:00', 'RCPT10180', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0181', 'CUST0053', 'TIC0021', 62.92, 40.03, 0, 0.0, 'failed', TIMESTAMP '2020-02-25 05:00:00', 'RCPT10181', 'VIP Customer', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0182', 'CUST0049', 'TIC0046', 274.77, 105.55, 0, 0.0, 'failed', TIMESTAMP '2023-09-04 00:19:00', 'RCPT10182', 'Customer used promo', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0183', 'CUST0007', 'TIC0188', 21.75, 19.62, 134, 13.4, 'failed', TIMESTAMP '2022-07-10 13:21:00', 'RCPT10183', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0184', 'CUST0088', 'TIC0160', 102.44, 77.45, 0, 0.0, 'completed', TIMESTAMP '2021-02-14 20:14:00', 'RCPT10184', 'VIP Customer', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0185', 'CUST0025', 'TIC0018', 210.89, 178.34, 0, 0.0, 'completed', TIMESTAMP '2023-01-19 20:09:00', 'RCPT10185', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0186', 'CUST0013', 'TIC0292', 443.2, 440.85, 0, 0.0, 'failed', TIMESTAMP '2023-08-17 07:51:00', 'RCPT10186', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0187', 'CUST0073', 'TIC0189', 368.02, 203.52, 147, 14.7, 'pending', TIMESTAMP '2022-05-05 16:03:00', 'RCPT10187', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0188', 'CUST0039', 'TIC0146', 308.2, 182.49, 0, 0.0, 'completed', TIMESTAMP '2021-03-23 16:28:00', 'RCPT10188', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0189', 'CUST0086', 'TIC0267', 497.88, 359.07, 185, 18.5, 'pending', TIMESTAMP '2020-06-10 20:35:00', 'RCPT10189', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0190', 'CUST0081', 'TIC0068', 169.34, 130.7, 0, 0.0, 'pending', TIMESTAMP '2020-03-13 04:52:00', 'RCPT10190', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0191', 'CUST0052', 'TIC0233', 481.8, 245.67, 126, 12.6, 'completed', TIMESTAMP '2021-06-07 00:30:00', 'RCPT10191', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0192', 'CUST0055', 'TIC0252', 497.19, 197.98, 0, 0.0, 'completed', TIMESTAMP '2022-11-24 14:59:00', 'RCPT10192', '', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0193', 'CUST0002', 'TIC0008', 32.19, 10.53, 25, 2.5, 'completed', TIMESTAMP '2020-09-09 07:59:00', 'RCPT10193', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0194', 'CUST0020', 'TIC0241', 127.64, 60.91, 28, 2.8, 'failed', TIMESTAMP '2022-06-09 10:41:00', 'RCPT10194', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0195', 'CUST0014', 'TIC0282', 27.32, 25.57, 191, 19.1, 'failed', TIMESTAMP '2022-04-30 21:39:00', 'RCPT10195', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0196', 'CUST0060', 'TIC0027', 172.04, 142.46, 0, 0.0, 'pending', TIMESTAMP '2020-04-07 22:40:00', 'RCPT10196', 'Late night booking', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0197', 'CUST0004', 'TIC0054', 52.38, 22.34, 0, 0.0, 'completed', TIMESTAMP '2022-05-02 15:36:00', 'RCPT10197', 'VIP Customer', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0198', 'CUST0099', 'TIC0021', 330.42, 255.85, 175, 17.5, 'failed', TIMESTAMP '2020-05-13 04:00:00', 'RCPT10198', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0199', 'CUST0074', 'TIC0227', 255.45, 217.03, 0, 0.0, 'failed', TIMESTAMP '2021-06-23 04:09:00', 'RCPT10199', 'Customer used promo', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0200', 'CUST0062', 'TIC0046', 252.65, 250.63, 151, 15.1, 'completed', TIMESTAMP '2023-04-01 11:32:00', 'RCPT10200', 'VIP Customer', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0201', 'CUST0081', 'TIC0116', 313.83, 128.77, 0, 0.0, 'pending', TIMESTAMP '2023-05-07 06:18:00', 'RCPT10201', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0202', 'CUST0033', 'TIC0134', 127.63, 76.29, 137, 13.7, 'completed', TIMESTAMP '2022-04-11 19:47:00', 'RCPT10202', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0203', 'CUST0082', 'TIC0181', 209.17, 120.94, 137, 13.7, 'failed', TIMESTAMP '2020-05-18 12:14:00', 'RCPT10203', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0204', 'CUST0003', 'TIC0132', 309.6, 301.75, 181, 18.1, 'pending', TIMESTAMP '2020-06-01 18:02:00', 'RCPT10204', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0205', 'CUST0068', 'TIC0266', 219.05, 168.96, 35, 3.5, 'failed', TIMESTAMP '2020-08-13 20:49:00', 'RCPT10205', '', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0206', 'CUST0024', 'TIC0096', 264.65, 220.16, 107, 10.7, 'pending', TIMESTAMP '2022-07-10 22:49:00', 'RCPT10206', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0207', 'CUST0002', 'TIC0110', 493.73, 181.73, 0, 0.0, 'pending', TIMESTAMP '2020-08-05 16:09:00', 'RCPT10207', 'VIP Customer', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0208', 'CUST0022', 'TIC0018', 140.46, 94.5, 154, 15.4, 'failed', TIMESTAMP '2020-04-05 12:19:00', 'RCPT10208', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0209', 'CUST0063', 'TIC0091', 224.07, 113.56, 0, 0.0, 'pending', TIMESTAMP '2021-08-01 18:03:00', 'RCPT10209', '', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0210', 'CUST0047', 'TIC0263', 381.32, 158.18, 0, 0.0, 'failed', TIMESTAMP '2021-05-18 07:31:00', 'RCPT10210', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0211', 'CUST0070', 'TIC0223', 364.69, 255.05, 22, 2.2, 'failed', TIMESTAMP '2020-01-21 19:04:00', 'RCPT10211', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0212', 'CUST0059', 'TIC0236', 112.63, 67.42, 53, 5.3, 'pending', TIMESTAMP '2021-01-19 16:10:00', 'RCPT10212', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0213', 'CUST0022', 'TIC0029', 111.83, 47.69, 131, 13.1, 'pending', TIMESTAMP '2022-09-23 05:28:00', 'RCPT10213', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0214', 'CUST0006', 'TIC0138', 363.78, 253.32, 0, 0.0, 'pending', TIMESTAMP '2020-01-21 11:24:00', 'RCPT10214', 'VIP Customer', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0215', 'CUST0022', 'TIC0093', 372.0, 231.97, 159, 15.9, 'completed', TIMESTAMP '2021-06-25 08:38:00', 'RCPT10215', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0216', 'CUST0007', 'TIC0132', 180.61, 56.45, 0, 0.0, 'pending', TIMESTAMP '2023-03-17 05:52:00', 'RCPT10216', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0217', 'CUST0099', 'TIC0245', 88.59, 75.71, 94, 9.4, 'pending', TIMESTAMP '2022-09-16 22:01:00', 'RCPT10217', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0218', 'CUST0069', 'TIC0236', 400.2, 247.09, 0, 0.0, 'completed', TIMESTAMP '2020-01-06 06:23:00', 'RCPT10218', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0219', 'CUST0083', 'TIC0098', 32.44, 28.67, 0, 0.0, 'pending', TIMESTAMP '2021-08-22 09:13:00', 'RCPT10219', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0220', 'CUST0052', 'TIC0089', 264.81, 219.86, 33, 3.3, 'pending', TIMESTAMP '2023-10-06 11:50:00', 'RCPT10220', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0221', 'CUST0069', 'TIC0075', 376.3, 174.84, 0, 0.0, 'failed', TIMESTAMP '2020-11-30 17:37:00', 'RCPT10221', 'VIP Customer', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0222', 'CUST0093', 'TIC0153', 236.21, 153.87, 0, 0.0, 'pending', TIMESTAMP '2022-08-24 00:40:00', 'RCPT10222', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0223', 'CUST0010', 'TIC0171', 116.09, 74.56, 51, 5.1, 'failed', TIMESTAMP '2020-12-08 08:34:00', 'RCPT10223', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0224', 'CUST0047', 'TIC0099', 247.37, 101.46, 35, 3.5, 'pending', TIMESTAMP '2021-03-25 08:34:00', 'RCPT10224', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0225', 'CUST0069', 'TIC0243', 210.57, 110.8, 177, 17.7, 'failed', TIMESTAMP '2022-10-25 00:22:00', 'RCPT10225', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0226', 'CUST0062', 'TIC0079', 62.56, 37.74, 0, 0.0, 'failed', TIMESTAMP '2023-12-16 15:02:00', 'RCPT10226', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0227', 'CUST0089', 'TIC0021', 367.4, 193.7, 0, 0.0, 'pending', TIMESTAMP '2024-01-06 07:15:00', 'RCPT10227', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0228', 'CUST0084', 'TIC0101', 413.28, 170.62, 68, 6.8, 'pending', TIMESTAMP '2021-03-29 20:35:00', 'RCPT10228', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0229', 'CUST0009', 'TIC0108', 89.07, 41.66, 158, 15.8, 'pending', TIMESTAMP '2021-08-18 03:26:00', 'RCPT10229', 'VIP Customer', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0230', 'CUST0054', 'TIC0130', 203.51, 64.49, 91, 9.1, 'failed', TIMESTAMP '2022-04-04 16:46:00', 'RCPT10230', 'VIP Customer', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0231', 'CUST0085', 'TIC0103', 53.43, 25.04, 0, 0.0, 'completed', TIMESTAMP '2020-08-26 22:55:00', 'RCPT10231', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0232', 'CUST0017', 'TIC0092', 321.69, 221.25, 100, 10.0, 'pending', TIMESTAMP '2023-01-08 19:56:00', 'RCPT10232', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0233', 'CUST0083', 'TIC0217', 122.34, 84.89, 0, 0.0, 'completed', TIMESTAMP '2022-09-07 16:04:00', 'RCPT10233', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0234', 'CUST0017', 'TIC0096', 41.04, 38.02, 0, 0.0, 'completed', TIMESTAMP '2020-02-25 03:32:00', 'RCPT10234', 'VIP Customer', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0235', 'CUST0071', 'TIC0048', 209.64, 123.62, 0, 0.0, 'pending', TIMESTAMP '2023-07-31 17:45:00', 'RCPT10235', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0236', 'CUST0054', 'TIC0140', 361.19, 226.42, 75, 7.5, 'completed', TIMESTAMP '2021-06-02 17:25:00', 'RCPT10236', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0237', 'CUST0046', 'TIC0192', 445.74, 224.0, 182, 18.2, 'pending', TIMESTAMP '2021-11-12 14:57:00', 'RCPT10237', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0238', 'CUST0005', 'TIC0121', 33.27, 23.13, 121, 12.1, 'pending', TIMESTAMP '2023-10-29 09:48:00', 'RCPT10238', 'Customer used promo', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0239', 'CUST0071', 'TIC0114', 231.01, 126.8, 133, 13.3, 'completed', TIMESTAMP '2023-12-30 23:08:00', 'RCPT10239', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0240', 'CUST0098', 'TIC0063', 40.5, 38.27, 0, 0.0, 'failed', TIMESTAMP '2023-03-13 15:02:00', 'RCPT10240', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0241', 'CUST0063', 'TIC0078', 56.48, 30.0, 170, 17.0, 'pending', TIMESTAMP '2020-09-19 00:01:00', 'RCPT10241', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0242', 'CUST0045', 'TIC0199', 450.14, 300.19, 103, 10.3, 'failed', TIMESTAMP '2023-04-30 03:58:00', 'RCPT10242', 'Customer used promo', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0243', 'CUST0061', 'TIC0262', 473.73, 399.96, 180, 18.0, 'completed', TIMESTAMP '2023-03-28 14:46:00', 'RCPT10243', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0244', 'CUST0009', 'TIC0234', 268.78, 137.73, 0, 0.0, 'completed', TIMESTAMP '2023-10-18 13:07:00', 'RCPT10244', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0245', 'CUST0050', 'TIC0190', 162.88, 57.1, 60, 6.0, 'failed', TIMESTAMP '2020-08-01 12:19:00', 'RCPT10245', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0246', 'CUST0026', 'TIC0076', 193.3, 152.37, 0, 0.0, 'pending', TIMESTAMP '2022-12-03 14:09:00', 'RCPT10246', 'Customer used promo', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0247', 'CUST0013', 'TIC0004', 476.33, 236.17, 97, 9.7, 'pending', TIMESTAMP '2023-09-29 08:48:00', 'RCPT10247', '', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0248', 'CUST0054', 'TIC0041', 74.83, 55.28, 0, 0.0, 'failed', TIMESTAMP '2023-01-20 09:35:00', 'RCPT10248', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0249', 'CUST0093', 'TIC0026', 220.27, 204.77, 100, 10.0, 'pending', TIMESTAMP '2020-11-22 16:48:00', 'RCPT10249', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0250', 'CUST0003', 'TIC0283', 445.24, 221.02, 0, 0.0, 'failed', TIMESTAMP '2021-08-25 09:53:00', 'RCPT10250', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0251', 'CUST0058', 'TIC0064', 181.7, 85.64, 134, 13.4, 'failed', TIMESTAMP '2022-06-16 19:19:00', 'RCPT10251', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0252', 'CUST0038', 'TIC0157', 334.51, 282.98, 0, 0.0, 'completed', TIMESTAMP '2020-04-05 09:04:00', 'RCPT10252', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0253', 'CUST0013', 'TIC0016', 408.84, 324.72, 122, 12.2, 'pending', TIMESTAMP '2022-06-08 09:18:00', 'RCPT10253', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0254', 'CUST0056', 'TIC0120', 349.43, 148.82, 0, 0.0, 'failed', TIMESTAMP '2020-06-19 19:51:00', 'RCPT10254', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0255', 'CUST0024', 'TIC0188', 271.15, 226.39, 59, 5.9, 'failed', TIMESTAMP '2022-05-03 12:07:00', 'RCPT10255', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0256', 'CUST0020', 'TIC0200', 222.02, 71.96, 144, 14.4, 'completed', TIMESTAMP '2020-11-28 10:13:00', 'RCPT10256', 'VIP Customer', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0257', 'CUST0094', 'TIC0221', 61.32, 43.72, 0, 0.0, 'completed', TIMESTAMP '2020-05-19 17:10:00', 'RCPT10257', 'VIP Customer', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0258', 'CUST0051', 'TIC0251', 298.49, 171.64, 41, 4.1, 'failed', TIMESTAMP '2023-03-27 06:28:00', 'RCPT10258', 'Late night booking', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0259', 'CUST0007', 'TIC0134', 114.69, 96.12, 127, 12.7, 'failed', TIMESTAMP '2023-11-18 13:30:00', 'RCPT10259', '', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0260', 'CUST0082', 'TIC0003', 302.65, 182.68, 0, 0.0, 'completed', TIMESTAMP '2022-12-17 08:26:00', 'RCPT10260', 'VIP Customer', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0261', 'CUST0041', 'TIC0186', 404.62, 207.95, 0, 0.0, 'pending', TIMESTAMP '2022-04-09 10:28:00', 'RCPT10261', 'Late night booking', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0262', 'CUST0043', 'TIC0243', 467.22, 153.24, 0, 0.0, 'failed', TIMESTAMP '2022-07-25 07:40:00', 'RCPT10262', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0263', 'CUST0070', 'TIC0164', 364.64, 301.38, 184, 18.4, 'pending', TIMESTAMP '2020-11-17 14:21:00', 'RCPT10263', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0264', 'CUST0080', 'TIC0263', 145.29, 128.87, 0, 0.0, 'pending', TIMESTAMP '2022-06-05 11:02:00', 'RCPT10264', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0265', 'CUST0093', 'TIC0209', 391.98, 298.28, 0, 0.0, 'failed', TIMESTAMP '2020-10-06 17:21:00', 'RCPT10265', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0266', 'CUST0070', 'TIC0001', 102.01, 77.58, 111, 11.1, 'completed', TIMESTAMP '2021-02-19 11:10:00', 'RCPT10266', 'Late night booking', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0267', 'CUST0051', 'TIC0229', 464.9, 402.24, 65, 6.5, 'failed', TIMESTAMP '2020-09-15 09:53:00', 'RCPT10267', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0268', 'CUST0004', 'TIC0068', 192.57, 68.79, 132, 13.2, 'completed', TIMESTAMP '2020-12-21 22:46:00', 'RCPT10268', 'VIP Customer', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0269', 'CUST0089', 'TIC0160', 429.58, 369.53, 77, 7.7, 'completed', TIMESTAMP '2021-02-23 09:15:00', 'RCPT10269', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0270', 'CUST0049', 'TIC0089', 231.8, 218.11, 0, 0.0, 'completed', TIMESTAMP '2021-03-07 11:16:00', 'RCPT10270', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0271', 'CUST0062', 'TIC0119', 134.0, 98.8, 0, 0.0, 'failed', TIMESTAMP '2022-10-05 01:42:00', 'RCPT10271', 'Customer used promo', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0272', 'CUST0072', 'TIC0270', 361.78, 114.91, 81, 8.1, 'failed', TIMESTAMP '2021-06-25 18:45:00', 'RCPT10272', 'Customer used promo', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0273', 'CUST0065', 'TIC0222', 437.82, 420.01, 0, 0.0, 'completed', TIMESTAMP '2023-07-24 19:52:00', 'RCPT10273', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0274', 'CUST0032', 'TIC0095', 40.7, 13.08, 0, 0.0, 'completed', TIMESTAMP '2021-03-19 03:01:00', 'RCPT10274', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0275', 'CUST0055', 'TIC0073', 401.35, 255.08, 94, 9.4, 'pending', TIMESTAMP '2021-11-10 13:48:00', 'RCPT10275', 'Late night booking', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0276', 'CUST0061', 'TIC0181', 274.78, 221.43, 0, 0.0, 'pending', TIMESTAMP '2023-05-31 05:34:00', 'RCPT10276', 'Customer used promo', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0277', 'CUST0069', 'TIC0017', 224.9, 110.57, 0, 0.0, 'failed', TIMESTAMP '2020-12-25 21:27:00', 'RCPT10277', 'Customer used promo', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0278', 'CUST0034', 'TIC0212', 185.81, 91.9, 0, 0.0, 'failed', TIMESTAMP '2021-05-28 23:13:00', 'RCPT10278', 'Late night booking', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0279', 'CUST0058', 'TIC0114', 24.41, 16.48, 40, 4.0, 'failed', TIMESTAMP '2020-04-24 16:38:00', 'RCPT10279', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0280', 'CUST0042', 'TIC0190', 334.88, 321.62, 166, 16.6, 'completed', TIMESTAMP '2022-12-19 08:13:00', 'RCPT10280', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0281', 'CUST0064', 'TIC0114', 225.16, 223.7, 0, 0.0, 'completed', TIMESTAMP '2020-05-29 02:17:00', 'RCPT10281', '', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0282', 'CUST0070', 'TIC0113', 433.93, 158.0, 91, 9.1, 'pending', TIMESTAMP '2022-05-10 10:53:00', 'RCPT10282', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0283', 'CUST0091', 'TIC0262', 441.93, 405.4, 77, 7.7, 'completed', TIMESTAMP '2020-10-19 05:37:00', 'RCPT10283', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0284', 'CUST0035', 'TIC0008', 154.39, 66.35, 99, 9.9, 'completed', TIMESTAMP '2023-04-01 14:24:00', 'RCPT10284', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0285', 'CUST0016', 'TIC0155', 28.27, 23.93, 128, 12.8, 'failed', TIMESTAMP '2023-11-29 09:39:00', 'RCPT10285', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0286', 'CUST0056', 'TIC0186', 174.33, 65.21, 114, 11.4, 'failed', TIMESTAMP '2020-04-02 13:49:00', 'RCPT10286', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0287', 'CUST0030', 'TIC0221', 252.86, 113.53, 167, 16.7, 'pending', TIMESTAMP '2020-02-10 21:35:00', 'RCPT10287', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0288', 'CUST0086', 'TIC0232', 348.54, 343.36, 138, 13.8, 'failed', TIMESTAMP '2020-06-10 10:32:00', 'RCPT10288', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0289', 'CUST0090', 'TIC0288', 264.31, 165.34, 0, 0.0, 'pending', TIMESTAMP '2022-07-26 10:24:00', 'RCPT10289', 'Customer used promo', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0290', 'CUST0083', 'TIC0221', 15.49, 6.66, 0, 0.0, 'completed', TIMESTAMP '2022-09-21 06:17:00', 'RCPT10290', 'VIP Customer', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0291', 'CUST0082', 'TIC0084', 364.01, 141.06, 75, 7.5, 'pending', TIMESTAMP '2020-03-19 19:22:00', 'RCPT10291', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0292', 'CUST0060', 'TIC0280', 143.68, 82.88, 52, 5.2, 'failed', TIMESTAMP '2022-05-02 17:41:00', 'RCPT10292', 'Customer used promo', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0293', 'CUST0038', 'TIC0005', 410.17, 382.86, 37, 3.7, 'completed', TIMESTAMP '2023-04-04 11:05:00', 'RCPT10293', 'Customer used promo', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0294', 'CUST0043', 'TIC0073', 336.22, 141.3, 0, 0.0, 'failed', TIMESTAMP '2023-06-18 10:39:00', 'RCPT10294', 'Late night booking', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0295', 'CUST0042', 'TIC0294', 68.01, 57.21, 108, 10.8, 'pending', TIMESTAMP '2020-08-22 04:31:00', 'RCPT10295', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0296', 'CUST0075', 'TIC0197', 146.4, 127.54, 0, 0.0, 'completed', TIMESTAMP '2020-12-11 01:04:00', 'RCPT10296', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0297', 'CUST0014', 'TIC0249', 67.79, 36.91, 156, 15.6, 'completed', TIMESTAMP '2022-08-03 10:57:00', 'RCPT10297', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0298', 'CUST0052', 'TIC0068', 170.98, 95.51, 163, 16.3, 'pending', TIMESTAMP '2020-10-10 02:14:00', 'RCPT10298', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0299', 'CUST0037', 'TIC0057', 337.22, 210.82, 0, 0.0, 'pending', TIMESTAMP '2020-06-03 07:09:00', 'RCPT10299', '', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0300', 'CUST0045', 'TIC0174', 300.9, 277.13, 0, 0.0, 'failed', TIMESTAMP '2022-12-22 23:13:00', 'RCPT10300', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0301', 'CUST0074', 'TIC0221', 17.32, 13.34, 138, 13.8, 'pending', TIMESTAMP '2023-01-01 07:00:00', 'RCPT10301', 'Late night booking', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0302', 'CUST0065', 'TIC0222', 490.15, 200.16, 13, 1.3, 'pending', TIMESTAMP '2024-01-29 01:50:00', 'RCPT10302', 'Late night booking', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0303', 'CUST0027', 'TIC0293', 463.78, 343.72, 0, 0.0, 'failed', TIMESTAMP '2021-12-03 14:51:00', 'RCPT10303', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0304', 'CUST0099', 'TIC0175', 52.75, 28.45, 16, 1.6, 'pending', TIMESTAMP '2024-01-24 02:42:00', 'RCPT10304', 'Customer used promo', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0305', 'CUST0051', 'TIC0016', 244.36, 79.78, 157, 15.7, 'completed', TIMESTAMP '2023-09-06 19:54:00', 'RCPT10305', 'VIP Customer', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0306', 'CUST0073', 'TIC0190', 138.39, 55.1, 144, 14.4, 'failed', TIMESTAMP '2021-04-14 14:03:00', 'RCPT10306', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0307', 'CUST0030', 'TIC0015', 168.6, 155.28, 0, 0.0, 'completed', TIMESTAMP '2022-03-07 09:33:00', 'RCPT10307', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0308', 'CUST0048', 'TIC0280', 476.73, 465.74, 0, 0.0, 'failed', TIMESTAMP '2020-09-18 17:58:00', 'RCPT10308', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0309', 'CUST0085', 'TIC0275', 347.42, 338.15, 0, 0.0, 'pending', TIMESTAMP '2022-06-13 23:47:00', 'RCPT10309', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0310', 'CUST0023', 'TIC0300', 182.42, 115.47, 165, 16.5, 'completed', TIMESTAMP '2022-12-06 04:43:00', 'RCPT10310', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0311', 'CUST0032', 'TIC0095', 303.67, 100.18, 45, 4.5, 'completed', TIMESTAMP '2021-04-02 00:34:00', 'RCPT10311', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0312', 'CUST0026', 'TIC0141', 446.51, 155.48, 0, 0.0, 'completed', TIMESTAMP '2021-10-21 18:06:00', 'RCPT10312', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0313', 'CUST0055', 'TIC0065', 292.57, 275.36, 40, 4.0, 'pending', TIMESTAMP '2021-04-08 18:26:00', 'RCPT10313', '', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0314', 'CUST0058', 'TIC0127', 347.66, 310.68, 0, 0.0, 'pending', TIMESTAMP '2021-09-09 09:19:00', 'RCPT10314', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0315', 'CUST0013', 'TIC0070', 59.97, 47.86, 0, 0.0, 'pending', TIMESTAMP '2021-06-13 00:27:00', 'RCPT10315', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0316', 'CUST0073', 'TIC0166', 360.29, 346.25, 0, 0.0, 'pending', TIMESTAMP '2023-07-30 13:22:00', 'RCPT10316', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0317', 'CUST0059', 'TIC0004', 464.7, 288.91, 0, 0.0, 'completed', TIMESTAMP '2021-05-14 17:51:00', 'RCPT10317', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0318', 'CUST0080', 'TIC0244', 140.26, 95.97, 134, 13.4, 'pending', TIMESTAMP '2023-02-15 05:32:00', 'RCPT10318', 'VIP Customer', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0319', 'CUST0083', 'TIC0092', 484.36, 262.99, 61, 6.1, 'failed', TIMESTAMP '2023-06-13 06:41:00', 'RCPT10319', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0320', 'CUST0035', 'TIC0265', 126.55, 101.5, 75, 7.5, 'failed', TIMESTAMP '2022-07-27 07:26:00', 'RCPT10320', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0321', 'CUST0097', 'TIC0137', 158.39, 151.35, 181, 18.1, 'failed', TIMESTAMP '2021-09-26 04:27:00', 'RCPT10321', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0322', 'CUST0092', 'TIC0262', 220.42, 91.23, 0, 0.0, 'failed', TIMESTAMP '2022-03-31 07:27:00', 'RCPT10322', 'Late night booking', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0323', 'CUST0034', 'TIC0080', 201.78, 123.21, 40, 4.0, 'failed', TIMESTAMP '2021-04-09 08:43:00', 'RCPT10323', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0324', 'CUST0062', 'TIC0076', 392.87, 234.95, 0, 0.0, 'completed', TIMESTAMP '2022-02-19 12:21:00', 'RCPT10324', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0325', 'CUST0059', 'TIC0096', 338.95, 177.71, 0, 0.0, 'completed', TIMESTAMP '2021-05-09 02:00:00', 'RCPT10325', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0326', 'CUST0043', 'TIC0167', 10.77, 9.4, 0, 0.0, 'failed', TIMESTAMP '2023-01-20 03:16:00', 'RCPT10326', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0327', 'CUST0006', 'TIC0015', 452.29, 156.78, 0, 0.0, 'completed', TIMESTAMP '2022-05-14 20:40:00', 'RCPT10327', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0328', 'CUST0089', 'TIC0051', 334.29, 216.86, 146, 14.6, 'pending', TIMESTAMP '2020-04-11 19:39:00', 'RCPT10328', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0329', 'CUST0084', 'TIC0270', 291.69, 213.07, 24, 2.4, 'completed', TIMESTAMP '2023-07-23 10:44:00', 'RCPT10329', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0330', 'CUST0077', 'TIC0247', 402.64, 136.63, 14, 1.4, 'completed', TIMESTAMP '2020-08-25 14:30:00', 'RCPT10330', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0331', 'CUST0010', 'TIC0161', 337.48, 258.07, 77, 7.7, 'failed', TIMESTAMP '2021-05-09 09:51:00', 'RCPT10331', 'Late night booking', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0332', 'CUST0021', 'TIC0028', 15.94, 9.43, 0, 0.0, 'completed', TIMESTAMP '2023-07-13 11:36:00', 'RCPT10332', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0333', 'CUST0029', 'TIC0123', 231.69, 200.52, 10, 1.0, 'completed', TIMESTAMP '2020-05-03 19:34:00', 'RCPT10333', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0334', 'CUST0026', 'TIC0246', 104.9, 32.8, 187, 18.7, 'failed', TIMESTAMP '2020-07-06 02:41:00', 'RCPT10334', 'VIP Customer', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0335', 'CUST0054', 'TIC0047', 467.11, 347.9, 180, 18.0, 'pending', TIMESTAMP '2020-05-27 09:52:00', 'RCPT10335', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0336', 'CUST0059', 'TIC0086', 379.85, 148.81, 0, 0.0, 'pending', TIMESTAMP '2020-07-18 03:15:00', 'RCPT10336', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0337', 'CUST0025', 'TIC0004', 194.87, 127.78, 0, 0.0, 'failed', TIMESTAMP '2023-07-01 23:11:00', 'RCPT10337', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0338', 'CUST0085', 'TIC0048', 18.77, 9.49, 0, 0.0, 'completed', TIMESTAMP '2020-10-14 18:05:00', 'RCPT10338', 'Late night booking', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0339', 'CUST0100', 'TIC0052', 183.29, 63.07, 65, 6.5, 'completed', TIMESTAMP '2020-10-08 17:50:00', 'RCPT10339', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0340', 'CUST0053', 'TIC0018', 494.56, 458.22, 128, 12.8, 'pending', TIMESTAMP '2020-05-23 09:00:00', 'RCPT10340', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0341', 'CUST0002', 'TIC0218', 216.97, 74.58, 77, 7.7, 'pending', TIMESTAMP '2021-11-08 07:43:00', 'RCPT10341', '', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0342', 'CUST0037', 'TIC0278', 346.61, 117.68, 121, 12.1, 'completed', TIMESTAMP '2023-10-07 15:40:00', 'RCPT10342', '', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0343', 'CUST0004', 'TIC0296', 343.58, 252.68, 177, 17.7, 'completed', TIMESTAMP '2020-09-05 02:32:00', 'RCPT10343', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0344', 'CUST0022', 'TIC0096', 176.85, 95.45, 0, 0.0, 'completed', TIMESTAMP '2022-04-11 23:50:00', 'RCPT10344', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0345', 'CUST0099', 'TIC0189', 324.47, 283.89, 0, 0.0, 'completed', TIMESTAMP '2023-06-20 06:13:00', 'RCPT10345', 'Late night booking', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0346', 'CUST0040', 'TIC0181', 169.97, 57.38, 0, 0.0, 'failed', TIMESTAMP '2020-10-16 03:41:00', 'RCPT10346', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0347', 'CUST0001', 'TIC0193', 389.43, 308.56, 190, 19.0, 'completed', TIMESTAMP '2022-03-27 12:56:00', 'RCPT10347', 'VIP Customer', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0348', 'CUST0013', 'TIC0151', 217.11, 200.97, 0, 0.0, 'completed', TIMESTAMP '2023-09-15 20:31:00', 'RCPT10348', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0349', 'CUST0095', 'TIC0031', 138.58, 104.24, 0, 0.0, 'completed', TIMESTAMP '2021-03-15 22:06:00', 'RCPT10349', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0350', 'CUST0076', 'TIC0224', 482.69, 411.91, 0, 0.0, 'failed', TIMESTAMP '2022-11-22 02:46:00', 'RCPT10350', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0351', 'CUST0099', 'TIC0265', 102.77, 64.11, 32, 3.2, 'completed', TIMESTAMP '2022-04-19 09:38:00', 'RCPT10351', 'VIP Customer', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0352', 'CUST0068', 'TIC0280', 424.37, 157.46, 0, 0.0, 'completed', TIMESTAMP '2021-04-27 15:33:00', 'RCPT10352', '', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0353', 'CUST0068', 'TIC0023', 326.22, 213.36, 153, 15.3, 'pending', TIMESTAMP '2021-04-07 21:34:00', 'RCPT10353', 'Late night booking', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0354', 'CUST0059', 'TIC0259', 50.17, 33.38, 165, 16.5, 'completed', TIMESTAMP '2021-05-16 07:41:00', 'RCPT10354', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0355', 'CUST0063', 'TIC0173', 201.72, 144.84, 91, 9.1, 'completed', TIMESTAMP '2020-07-18 15:51:00', 'RCPT10355', '', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0356', 'CUST0030', 'TIC0008', 268.14, 247.02, 0, 0.0, 'completed', TIMESTAMP '2020-01-11 16:13:00', 'RCPT10356', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0357', 'CUST0077', 'TIC0070', 417.71, 410.24, 0, 0.0, 'completed', TIMESTAMP '2020-02-24 19:39:00', 'RCPT10357', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0358', 'CUST0064', 'TIC0070', 236.45, 109.0, 0, 0.0, 'completed', TIMESTAMP '2020-08-13 04:33:00', 'RCPT10358', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0359', 'CUST0049', 'TIC0124', 408.0, 252.12, 0, 0.0, 'pending', TIMESTAMP '2022-10-06 00:50:00', 'RCPT10359', 'Late night booking', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0360', 'CUST0073', 'TIC0146', 219.99, 124.14, 155, 15.5, 'failed', TIMESTAMP '2022-07-28 21:18:00', 'RCPT10360', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0361', 'CUST0038', 'TIC0235', 146.59, 94.85, 141, 14.1, 'completed', TIMESTAMP '2022-01-03 14:22:00', 'RCPT10361', 'Customer used promo', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0362', 'CUST0088', 'TIC0129', 50.63, 46.75, 0, 0.0, 'failed', TIMESTAMP '2020-05-25 17:15:00', 'RCPT10362', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0363', 'CUST0028', 'TIC0279', 23.33, 15.55, 22, 2.2, 'completed', TIMESTAMP '2021-05-29 12:05:00', 'RCPT10363', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0364', 'CUST0035', 'TIC0180', 63.65, 49.86, 79, 7.9, 'failed', TIMESTAMP '2020-06-03 04:27:00', 'RCPT10364', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0365', 'CUST0030', 'TIC0092', 137.59, 76.11, 74, 7.4, 'completed', TIMESTAMP '2022-01-24 14:38:00', 'RCPT10365', 'Customer used promo', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0366', 'CUST0024', 'TIC0011', 36.94, 35.78, 164, 16.4, 'failed', TIMESTAMP '2021-07-03 20:41:00', 'RCPT10366', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0367', 'CUST0073', 'TIC0272', 499.85, 418.61, 0, 0.0, 'failed', TIMESTAMP '2020-07-18 20:18:00', 'RCPT10367', 'Customer used promo', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0368', 'CUST0062', 'TIC0262', 348.43, 139.63, 14, 1.4, 'pending', TIMESTAMP '2024-01-21 11:24:00', 'RCPT10368', 'VIP Customer', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0369', 'CUST0014', 'TIC0206', 390.05, 197.71, 0, 0.0, 'completed', TIMESTAMP '2020-08-18 23:12:00', 'RCPT10369', '', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0370', 'CUST0013', 'TIC0293', 413.57, 247.27, 0, 0.0, 'failed', TIMESTAMP '2021-05-08 13:11:00', 'RCPT10370', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0371', 'CUST0055', 'TIC0033', 400.65, 139.51, 0, 0.0, 'pending', TIMESTAMP '2023-08-26 00:16:00', 'RCPT10371', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0372', 'CUST0073', 'TIC0042', 295.54, 246.17, 0, 0.0, 'completed', TIMESTAMP '2020-05-28 12:47:00', 'RCPT10372', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0373', 'CUST0045', 'TIC0233', 246.83, 159.97, 76, 7.6, 'pending', TIMESTAMP '2021-03-12 02:21:00', 'RCPT10373', 'VIP Customer', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0374', 'CUST0072', 'TIC0145', 29.93, 9.79, 0, 0.0, 'completed', TIMESTAMP '2023-02-14 21:06:00', 'RCPT10374', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0375', 'CUST0087', 'TIC0177', 296.87, 186.97, 0, 0.0, 'failed', TIMESTAMP '2020-12-15 23:34:00', 'RCPT10375', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0376', 'CUST0036', 'TIC0035', 47.01, 38.23, 0, 0.0, 'failed', TIMESTAMP '2022-02-24 15:19:00', 'RCPT10376', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0377', 'CUST0071', 'TIC0093', 22.55, 14.74, 0, 0.0, 'pending', TIMESTAMP '2023-05-15 12:56:00', 'RCPT10377', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0378', 'CUST0077', 'TIC0124', 24.55, 14.83, 0, 0.0, 'pending', TIMESTAMP '2022-08-18 21:31:00', 'RCPT10378', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0379', 'CUST0056', 'TIC0085', 175.57, 55.98, 0, 0.0, 'failed', TIMESTAMP '2021-09-18 03:50:00', 'RCPT10379', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0380', 'CUST0020', 'TIC0173', 268.23, 217.82, 58, 5.8, 'pending', TIMESTAMP '2020-11-25 03:45:00', 'RCPT10380', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0381', 'CUST0001', 'TIC0237', 447.18, 402.11, 59, 5.9, 'failed', TIMESTAMP '2023-10-24 14:58:00', 'RCPT10381', '', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0382', 'CUST0084', 'TIC0101', 197.68, 182.17, 0, 0.0, 'completed', TIMESTAMP '2022-10-19 11:58:00', 'RCPT10382', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0383', 'CUST0082', 'TIC0076', 323.36, 167.95, 0, 0.0, 'pending', TIMESTAMP '2020-06-04 18:59:00', 'RCPT10383', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0384', 'CUST0097', 'TIC0160', 118.31, 77.39, 0, 0.0, 'failed', TIMESTAMP '2022-11-06 18:50:00', 'RCPT10384', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0385', 'CUST0011', 'TIC0040', 297.4, 245.49, 122, 12.2, 'completed', TIMESTAMP '2022-01-20 03:44:00', 'RCPT10385', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0386', 'CUST0007', 'TIC0150', 276.97, 157.58, 56, 5.6, 'completed', TIMESTAMP '2021-10-21 16:52:00', 'RCPT10386', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0387', 'CUST0029', 'TIC0130', 377.55, 288.5, 108, 10.8, 'completed', TIMESTAMP '2022-09-15 22:13:00', 'RCPT10387', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0388', 'CUST0081', 'TIC0223', 420.22, 335.95, 57, 5.7, 'completed', TIMESTAMP '2020-03-21 14:49:00', 'RCPT10388', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0389', 'CUST0045', 'TIC0102', 440.55, 212.71, 30, 3.0, 'completed', TIMESTAMP '2022-09-10 05:46:00', 'RCPT10389', '', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0390', 'CUST0031', 'TIC0118', 423.99, 361.87, 100, 10.0, 'failed', TIMESTAMP '2022-09-05 12:00:00', 'RCPT10390', 'Late night booking', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0391', 'CUST0060', 'TIC0221', 158.52, 156.18, 166, 16.6, 'pending', TIMESTAMP '2022-07-22 21:23:00', 'RCPT10391', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0392', 'CUST0080', 'TIC0097', 204.21, 144.27, 0, 0.0, 'failed', TIMESTAMP '2020-12-17 20:58:00', 'RCPT10392', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0393', 'CUST0063', 'TIC0013', 291.16, 246.13, 0, 0.0, 'failed', TIMESTAMP '2020-08-17 17:14:00', 'RCPT10393', 'Customer used promo', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0394', 'CUST0042', 'TIC0202', 481.63, 413.09, 0, 0.0, 'pending', TIMESTAMP '2022-02-28 12:20:00', 'RCPT10394', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0395', 'CUST0034', 'TIC0057', 309.98, 205.4, 0, 0.0, 'failed', TIMESTAMP '2023-03-05 04:02:00', 'RCPT10395', 'Customer used promo', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0396', 'CUST0035', 'TIC0204', 460.44, 195.22, 16, 1.6, 'failed', TIMESTAMP '2023-05-24 11:42:00', 'RCPT10396', 'VIP Customer', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0397', 'CUST0095', 'TIC0118', 96.87, 93.1, 169, 16.9, 'completed', TIMESTAMP '2021-12-13 05:38:00', 'RCPT10397', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0398', 'CUST0030', 'TIC0164', 65.22, 59.24, 178, 17.8, 'pending', TIMESTAMP '2024-01-03 04:57:00', 'RCPT10398', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0399', 'CUST0071', 'TIC0142', 447.64, 303.34, 0, 0.0, 'completed', TIMESTAMP '2022-08-20 19:51:00', 'RCPT10399', '', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0400', 'CUST0058', 'TIC0162', 40.86, 33.07, 0, 0.0, 'pending', TIMESTAMP '2022-04-22 00:45:00', 'RCPT10400', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0401', 'CUST0090', 'TIC0208', 496.78, 354.47, 190, 19.0, 'completed', TIMESTAMP '2020-12-22 13:01:00', 'RCPT10401', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0402', 'CUST0031', 'TIC0058', 350.17, 332.9, 0, 0.0, 'completed', TIMESTAMP '2022-07-30 03:11:00', 'RCPT10402', '', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0403', 'CUST0051', 'TIC0281', 415.25, 128.79, 75, 7.5, 'failed', TIMESTAMP '2020-08-30 01:39:00', 'RCPT10403', 'VIP Customer', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0404', 'CUST0013', 'TIC0161', 116.75, 45.83, 0, 0.0, 'failed', TIMESTAMP '2020-09-21 09:33:00', 'RCPT10404', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0405', 'CUST0078', 'TIC0032', 347.93, 216.91, 189, 18.9, 'completed', TIMESTAMP '2023-02-08 23:23:00', 'RCPT10405', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0406', 'CUST0023', 'TIC0250', 267.17, 223.36, 0, 0.0, 'completed', TIMESTAMP '2023-05-13 21:31:00', 'RCPT10406', 'Late night booking', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0407', 'CUST0019', 'TIC0222', 215.82, 110.1, 78, 7.8, 'completed', TIMESTAMP '2023-08-13 05:11:00', 'RCPT10407', 'Customer used promo', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0408', 'CUST0026', 'TIC0277', 449.77, 389.36, 93, 9.3, 'failed', TIMESTAMP '2020-07-04 06:57:00', 'RCPT10408', '', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0409', 'CUST0040', 'TIC0032', 453.32, 444.39, 0, 0.0, 'pending', TIMESTAMP '2023-06-22 08:54:00', 'RCPT10409', 'VIP Customer', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0410', 'CUST0019', 'TIC0201', 114.91, 59.4, 150, 15.0, 'failed', TIMESTAMP '2020-12-25 20:04:00', 'RCPT10410', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0411', 'CUST0070', 'TIC0007', 234.58, 172.09, 55, 5.5, 'pending', TIMESTAMP '2022-03-23 23:30:00', 'RCPT10411', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0412', 'CUST0083', 'TIC0163', 312.95, 294.74, 0, 0.0, 'failed', TIMESTAMP '2021-03-18 17:30:00', 'RCPT10412', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0413', 'CUST0045', 'TIC0114', 31.11, 13.33, 0, 0.0, 'pending', TIMESTAMP '2023-03-11 19:07:00', 'RCPT10413', 'Late night booking', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0414', 'CUST0041', 'TIC0039', 51.81, 17.87, 27, 2.7, 'completed', TIMESTAMP '2020-06-17 06:17:00', 'RCPT10414', 'Late night booking', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0415', 'CUST0084', 'TIC0113', 414.26, 291.6, 198, 19.8, 'failed', TIMESTAMP '2020-05-23 01:16:00', 'RCPT10415', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0416', 'CUST0041', 'TIC0067', 125.14, 55.93, 153, 15.3, 'pending', TIMESTAMP '2020-06-21 00:26:00', 'RCPT10416', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0417', 'CUST0099', 'TIC0080', 299.83, 254.85, 107, 10.7, 'failed', TIMESTAMP '2023-11-17 21:19:00', 'RCPT10417', 'VIP Customer', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0418', 'CUST0021', 'TIC0176', 250.79, 171.55, 45, 4.5, 'pending', TIMESTAMP '2020-01-01 18:21:00', 'RCPT10418', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0419', 'CUST0100', 'TIC0110', 257.32, 132.34, 103, 10.3, 'completed', TIMESTAMP '2023-01-26 19:41:00', 'RCPT10419', 'Customer used promo', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0420', 'CUST0003', 'TIC0037', 392.51, 233.1, 152, 15.2, 'completed', TIMESTAMP '2021-09-05 00:47:00', 'RCPT10420', '', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0421', 'CUST0043', 'TIC0266', 225.08, 104.39, 92, 9.2, 'failed', TIMESTAMP '2021-02-05 16:15:00', 'RCPT10421', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0422', 'CUST0090', 'TIC0110', 365.67, 193.16, 0, 0.0, 'completed', TIMESTAMP '2021-05-24 07:53:00', 'RCPT10422', 'Customer used promo', 'E-Wallet', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0423', 'CUST0091', 'TIC0183', 433.7, 362.41, 0, 0.0, 'failed', TIMESTAMP '2022-10-24 16:36:00', 'RCPT10423', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0424', 'CUST0056', 'TIC0127', 332.93, 317.64, 159, 15.9, 'pending', TIMESTAMP '2021-03-11 06:33:00', 'RCPT10424', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0425', 'CUST0052', 'TIC0288', 429.54, 340.95, 0, 0.0, 'pending', TIMESTAMP '2021-05-05 05:56:00', 'RCPT10425', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0426', 'CUST0023', 'TIC0209', 99.84, 64.38, 0, 0.0, 'pending', TIMESTAMP '2020-03-07 19:46:00', 'RCPT10426', '', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0427', 'CUST0035', 'TIC0010', 144.98, 105.96, 0, 0.0, 'failed', TIMESTAMP '2020-05-25 04:40:00', 'RCPT10427', 'Late night booking', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0428', 'CUST0060', 'TIC0196', 446.36, 361.26, 194, 19.4, 'pending', TIMESTAMP '2021-02-07 05:32:00', 'RCPT10428', 'VIP Customer', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0429', 'CUST0094', 'TIC0088', 440.26, 287.53, 175, 17.5, 'pending', TIMESTAMP '2021-03-30 15:17:00', 'RCPT10429', 'Late night booking', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0430', 'CUST0005', 'TIC0267', 185.19, 123.46, 0, 0.0, 'completed', TIMESTAMP '2023-12-13 18:25:00', 'RCPT10430', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0431', 'CUST0005', 'TIC0299', 253.67, 170.0, 0, 0.0, 'failed', TIMESTAMP '2023-11-05 20:02:00', 'RCPT10431', 'Late night booking', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0432', 'CUST0061', 'TIC0215', 42.1, 14.77, 0, 0.0, 'pending', TIMESTAMP '2023-11-13 02:46:00', 'RCPT10432', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0433', 'CUST0061', 'TIC0138', 142.69, 129.64, 0, 0.0, 'pending', TIMESTAMP '2020-08-21 18:47:00', 'RCPT10433', 'Late night booking', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0434', 'CUST0099', 'TIC0260', 33.81, 32.9, 69, 6.9, 'completed', TIMESTAMP '2023-04-17 11:12:00', 'RCPT10434', '', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0435', 'CUST0074', 'TIC0256', 57.74, 37.85, 39, 3.9, 'pending', TIMESTAMP '2020-10-28 15:49:00', 'RCPT10435', '', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0436', 'CUST0018', 'TIC0216', 374.82, 147.12, 25, 2.5, 'pending', TIMESTAMP '2022-10-12 05:37:00', 'RCPT10436', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0437', 'CUST0073', 'TIC0271', 262.3, 115.56, 19, 1.9, 'pending', TIMESTAMP '2021-01-18 04:43:00', 'RCPT10437', 'Customer used promo', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0438', 'CUST0007', 'TIC0072', 217.83, 206.07, 133, 13.3, 'failed', TIMESTAMP '2020-12-29 19:18:00', 'RCPT10438', '', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0439', 'CUST0049', 'TIC0120', 384.62, 152.72, 102, 10.2, 'failed', TIMESTAMP '2020-11-05 10:46:00', 'RCPT10439', '', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0440', 'CUST0096', 'TIC0251', 15.89, 14.94, 44, 4.4, 'failed', TIMESTAMP '2022-04-14 11:01:00', 'RCPT10440', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0441', 'CUST0093', 'TIC0187', 443.22, 244.07, 0, 0.0, 'failed', TIMESTAMP '2022-08-27 18:55:00', 'RCPT10441', 'Late night booking', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0442', 'CUST0021', 'TIC0018', 244.45, 156.65, 70, 7.0, 'completed', TIMESTAMP '2022-02-26 03:33:00', 'RCPT10442', 'VIP Customer', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0443', 'CUST0045', 'TIC0217', 239.36, 196.02, 0, 0.0, 'failed', TIMESTAMP '2022-06-12 20:17:00', 'RCPT10443', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0444', 'CUST0095', 'TIC0241', 128.99, 41.62, 64, 6.4, 'pending', TIMESTAMP '2023-10-19 09:55:00', 'RCPT10444', 'VIP Customer', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0445', 'CUST0061', 'TIC0289', 258.84, 88.79, 0, 0.0, 'failed', TIMESTAMP '2020-03-19 18:31:00', 'RCPT10445', 'VIP Customer', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0446', 'CUST0047', 'TIC0045', 351.15, 139.03, 43, 4.3, 'pending', TIMESTAMP '2022-09-19 18:21:00', 'RCPT10446', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0447', 'CUST0039', 'TIC0234', 100.98, 59.82, 187, 18.7, 'failed', TIMESTAMP '2023-07-02 01:25:00', 'RCPT10447', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0448', 'CUST0055', 'TIC0067', 84.95, 33.19, 157, 15.7, 'pending', TIMESTAMP '2022-12-02 05:43:00', 'RCPT10448', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0449', 'CUST0049', 'TIC0175', 431.45, 411.53, 106, 10.6, 'completed', TIMESTAMP '2022-12-24 00:11:00', 'RCPT10449', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0450', 'CUST0098', 'TIC0283', 385.63, 304.35, 0, 0.0, 'pending', TIMESTAMP '2023-03-26 04:02:00', 'RCPT10450', '', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0451', 'CUST0008', 'TIC0049', 115.91, 37.77, 55, 5.5, 'pending', TIMESTAMP '2022-03-09 06:52:00', 'RCPT10451', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0452', 'CUST0034', 'TIC0295', 343.45, 207.2, 115, 11.5, 'completed', TIMESTAMP '2020-11-19 16:57:00', 'RCPT10452', 'Late night booking', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0453', 'CUST0034', 'TIC0056', 29.38, 22.17, 176, 17.6, 'completed', TIMESTAMP '2023-03-01 22:52:00', 'RCPT10453', 'Customer used promo', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0454', 'CUST0095', 'TIC0251', 51.78, 34.46, 0, 0.0, 'pending', TIMESTAMP '2020-08-10 07:13:00', 'RCPT10454', 'VIP Customer', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0455', 'CUST0097', 'TIC0279', 183.86, 140.42, 0, 0.0, 'failed', TIMESTAMP '2022-01-14 07:22:00', 'RCPT10455', 'Customer used promo', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0456', 'CUST0033', 'TIC0088', 211.44, 187.55, 19, 1.9, 'completed', TIMESTAMP '2021-06-22 14:39:00', 'RCPT10456', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0457', 'CUST0069', 'TIC0164', 188.21, 163.65, 0, 0.0, 'pending', TIMESTAMP '2020-06-02 08:49:00', 'RCPT10457', '', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0458', 'CUST0078', 'TIC0173', 51.23, 20.48, 97, 9.7, 'completed', TIMESTAMP '2023-09-03 18:17:00', 'RCPT10458', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0459', 'CUST0088', 'TIC0028', 249.06, 166.16, 144, 14.4, 'failed', TIMESTAMP '2020-03-10 10:50:00', 'RCPT10459', 'Customer used promo', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0460', 'CUST0068', 'TIC0074', 425.79, 371.82, 42, 4.2, 'failed', TIMESTAMP '2021-08-22 03:59:00', 'RCPT10460', '', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0461', 'CUST0052', 'TIC0128', 168.68, 147.61, 21, 2.1, 'completed', TIMESTAMP '2020-01-29 01:57:00', 'RCPT10461', 'Customer used promo', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0462', 'CUST0031', 'TIC0298', 379.22, 322.24, 0, 0.0, 'pending', TIMESTAMP '2020-05-27 17:11:00', 'RCPT10462', 'VIP Customer', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0463', 'CUST0067', 'TIC0108', 61.62, 61.49, 145, 14.5, 'pending', TIMESTAMP '2022-12-10 08:15:00', 'RCPT10463', 'VIP Customer', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0464', 'CUST0094', 'TIC0199', 105.22, 84.94, 0, 0.0, 'failed', TIMESTAMP '2022-10-05 15:19:00', 'RCPT10464', '', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0465', 'CUST0041', 'TIC0121', 416.6, 215.95, 0, 0.0, 'failed', TIMESTAMP '2020-07-03 19:21:00', 'RCPT10465', 'Late night booking', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0466', 'CUST0063', 'TIC0217', 463.21, 390.97, 0, 0.0, 'pending', TIMESTAMP '2023-12-05 10:06:00', 'RCPT10466', 'Late night booking', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0467', 'CUST0082', 'TIC0214', 258.84, 85.07, 0, 0.0, 'pending', TIMESTAMP '2022-09-14 12:50:00', 'RCPT10467', '', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0468', 'CUST0025', 'TIC0224', 435.43, 139.51, 0, 0.0, 'completed', TIMESTAMP '2020-07-09 05:28:00', 'RCPT10468', '', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0469', 'CUST0079', 'TIC0045', 408.37, 278.06, 0, 0.0, 'pending', TIMESTAMP '2023-11-17 23:35:00', 'RCPT10469', 'Customer used promo', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0470', 'CUST0047', 'TIC0208', 192.14, 75.84, 0, 0.0, 'failed', TIMESTAMP '2021-06-06 05:30:00', 'RCPT10470', 'Customer used promo', 'Credit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0471', 'CUST0085', 'TIC0060', 267.12, 140.1, 192, 19.2, 'completed', TIMESTAMP '2022-04-13 15:33:00', 'RCPT10471', 'Customer used promo', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0472', 'CUST0065', 'TIC0285', 467.91, 423.99, 0, 0.0, 'pending', TIMESTAMP '2023-04-16 23:09:00', 'RCPT10472', 'Customer used promo', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0473', 'CUST0098', 'TIC0281', 48.01, 15.02, 14, 1.4, 'failed', TIMESTAMP '2021-08-30 10:44:00', 'RCPT10473', 'VIP Customer', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0474', 'CUST0052', 'TIC0168', 123.14, 43.18, 0, 0.0, 'completed', TIMESTAMP '2022-01-19 18:55:00', 'RCPT10474', 'Customer used promo', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0475', 'CUST0020', 'TIC0004', 158.14, 151.41, 0, 0.0, 'pending', TIMESTAMP '2023-07-08 01:09:00', 'RCPT10475', '', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0476', 'CUST0043', 'TIC0066', 324.59, 116.46, 0, 0.0, 'pending', TIMESTAMP '2023-04-25 15:37:00', 'RCPT10476', 'Late night booking', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0477', 'CUST0046', 'TIC0003', 219.51, 161.52, 171, 17.1, 'failed', TIMESTAMP '2021-09-23 10:19:00', 'RCPT10477', 'Customer used promo', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0478', 'CUST0062', 'TIC0245', 366.77, 354.84, 123, 12.3, 'completed', TIMESTAMP '2022-10-24 20:30:00', 'RCPT10478', 'Customer used promo', 'Credit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0479', 'CUST0043', 'TIC0138', 448.95, 181.72, 0, 0.0, 'failed', TIMESTAMP '2023-09-29 13:57:00', 'RCPT10479', 'Late night booking', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0480', 'CUST0044', 'TIC0186', 367.15, 349.28, 18, 1.8, 'completed', TIMESTAMP '2024-01-14 09:38:00', 'RCPT10480', 'Late night booking', 'Cash', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0481', 'CUST0057', 'TIC0064', 266.83, 113.42, 0, 0.0, 'failed', TIMESTAMP '2022-06-06 13:02:00', 'RCPT10481', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0482', 'CUST0001', 'TIC0107', 43.02, 15.42, 0, 0.0, 'failed', TIMESTAMP '2020-05-16 23:40:00', 'RCPT10482', '', 'Debit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0483', 'CUST0040', 'TIC0256', 367.84, 207.76, 19, 1.9, 'pending', TIMESTAMP '2023-05-12 21:44:00', 'RCPT10483', 'Customer used promo', 'Debit Card', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0484', 'CUST0061', 'TIC0069', 131.82, 99.51, 0, 0.0, 'failed', TIMESTAMP '2020-09-09 09:15:00', 'RCPT10484', 'Customer used promo', 'Online Banking', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0485', 'CUST0078', 'TIC0099', 285.48, 169.67, 0, 0.0, 'failed', TIMESTAMP '2021-12-23 12:51:00', 'RCPT10485', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0486', 'CUST0034', 'TIC0096', 181.42, 131.02, 0, 0.0, 'completed', TIMESTAMP '2022-04-18 18:54:00', 'RCPT10486', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0487', 'CUST0022', 'TIC0154', 113.93, 113.19, 0, 0.0, 'pending', TIMESTAMP '2022-08-30 14:22:00', 'RCPT10487', 'Customer used promo', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0488', 'CUST0043', 'TIC0019', 68.06, 42.41, 80, 8.0, 'pending', TIMESTAMP '2023-03-02 22:28:00', 'RCPT10488', '', 'Online Banking', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0489', 'CUST0042', 'TIC0188', 455.24, 265.81, 0, 0.0, 'completed', TIMESTAMP '2020-07-28 06:00:00', 'RCPT10489', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0490', 'CUST0056', 'TIC0183', 145.05, 134.05, 0, 0.0, 'failed', TIMESTAMP '2020-10-14 05:46:00', 'RCPT10490', '', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0491', 'CUST0042', 'TIC0053', 337.8, 198.27, 0, 0.0, 'pending', TIMESTAMP '2023-07-15 14:28:00', 'RCPT10491', '', 'E-Wallet', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0492', 'CUST0065', 'TIC0106', 296.68, 229.85, 0, 0.0, 'completed', TIMESTAMP '2023-12-15 21:50:00', 'RCPT10492', 'VIP Customer', 'Credit Card', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0493', 'CUST0043', 'TIC0008', 474.6, 236.25, 0, 0.0, 'completed', TIMESTAMP '2021-03-09 16:56:00', 'RCPT10493', 'VIP Customer', 'Cash', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0494', 'CUST0046', 'TIC0065', 195.1, 84.17, 109, 10.9, 'completed', TIMESTAMP '2021-05-17 06:03:00', 'RCPT10494', 'Late night booking', 'Debit Card', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0495', 'CUST0088', 'TIC0107', 314.4, 135.4, 0, 0.0, 'failed', TIMESTAMP '2022-01-23 12:31:00', 'RCPT10495', 'VIP Customer', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0496', 'CUST0096', 'TIC0044', 105.67, 56.03, 0, 0.0, 'completed', TIMESTAMP '2021-03-03 14:02:00', 'RCPT10496', '', 'E-Wallet', 'Top-Up');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0497', 'CUST0054', 'TIC0207', 22.29, 14.15, 120, 12.0, 'failed', TIMESTAMP '2022-04-20 02:56:00', 'RCPT10497', 'Late night booking', 'Cash', 'Penalty Payment');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0498', 'CUST0043', 'TIC0064', 18.8, 8.63, 144, 14.4, 'failed', TIMESTAMP '2022-07-10 21:17:00', 'RCPT10498', '', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0499', 'CUST0087', 'TIC0294', 66.9, 55.89, 94, 9.4, 'failed', TIMESTAMP '2020-10-27 12:50:00', 'RCPT10499', 'Late night booking', 'Online Banking', 'Ticket Purchase');
+
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type)
+VALUES ('PAY0500', 'CUST0075', 'TIC0094', 326.38, 122.47, 182, 18.2, 'pending', TIMESTAMP '2020-08-26 07:31:00', 'RCPT10500', '', 'Online Banking', 'Ticket Purchase');
