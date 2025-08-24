@@ -1,44 +1,39 @@
-CREATE OR REPLACE PROCEDURE prcAddRentalCollection(
-  v_month   	 IN DATE DEFAULT TRUNC(SYSDATE, 'YYYY-MM')
-) IS
-
- CURSOR shop_cursor IS
+CREATE OR REPLACE PROCEDURE prcAddRentalCollection IS
+  CURSOR shop_cursor IS
     SELECT shopID
     FROM Shop
     WHERE LOWER(status) = 'active';
 
-v_shopID   Shop.shopID%TYPE;
+  v_shopID   Shop.shopID%TYPE;
   v_exists   NUMBER;
 BEGIN
   FOR shop_rec IN shop_cursor LOOP
     v_shopID := shop_rec.shopID;
 
- SELECT COUNT(*) INTO v_exists
+    SELECT COUNT(*) INTO v_exists
     FROM RentalCollection
     WHERE shopID = v_shopID
-    AND TRUNC(rentalMonth, 'YYYY-MM') = TRUNC(v_month, 'YYYY-MM');
+      AND (
+            TRUNC(rentalMonth, 'MM') = TRUNC(SYSDATE, 'MM')
+            OR TRUNC(rentalMonth, 'YYYY') = TRUNC(SYSDATE, 'YYYY')
+          );
 
-   IF v_exists = 0 THEN
+    IF v_exists = 0 THEN
       INSERT INTO RentalCollection (
-        rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate
+        rentalMonth, shopId, staffId, rentalAmount, status, collectionDate
       ) VALUES (
-        v_month, v_shopID, null, null, 'unpaid', SYSTIMESTAMP, null
+        SYSDATE, v_shopID, NULL, NULL, 'unpaid', NULL
       );
-     ELSE
+    ELSE
       RAISE_APPLICATION_ERROR(-20001,
-        'Rental collection record already exists for ShopID: ' || v_shopID ||
-        ' in month ' || TO_CHAR(v_month, 'YYYY-MM'));
-  END IF;
-END LOOP
+        'Rental collection record already exists in month: ' || TO_CHAR(SYSDATE, 'YYYY-MM'));
+    END IF;
+  END LOOP;
 
-COMMIT;
+  COMMIT;
 
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
-
-
-
-
