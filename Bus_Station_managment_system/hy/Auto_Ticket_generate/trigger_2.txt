@@ -1,0 +1,30 @@
+CREATE OR REPLACE TRIGGER BS_AI_GEN_TICKETS
+FOR INSERT ON busSchedule
+COMPOUND TRIGGER
+
+  TYPE t_ids IS TABLE OF busSchedule.busScheduleId%TYPE;
+  g_ids t_ids := t_ids();
+
+  BEFORE STATEMENT IS
+  BEGIN
+    g_ids.DELETE;
+  END BEFORE STATEMENT;
+
+  AFTER EACH ROW IS
+  BEGIN
+    g_ids.EXTEND;
+    g_ids(g_ids.LAST) := :NEW.busScheduleId;
+  END AFTER EACH ROW;
+
+  AFTER STATEMENT IS
+  BEGIN
+    IF g_ids.COUNT > 0 THEN
+      FOR i IN 1 .. g_ids.COUNT LOOP
+        -- Safe now: the INSERT statement has finished; busSchedule is not mutating
+        GEN_TICKETS_FOR_SCHEDULE(g_ids(i));
+      END LOOP;
+    END IF;
+  END AFTER STATEMENT;
+
+END BS_AI_GEN_TICKETS;
+/

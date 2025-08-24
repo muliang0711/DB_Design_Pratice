@@ -1,0 +1,80 @@
+CREATE OR REPLACE PROCEDURE GEN_TICKETS_FOR_SCHEDULE (
+  p_bus_schedule_id IN busSchedule.busScheduleId%TYPE,
+  p_rate_per_km     IN NUMBER DEFAULT 0.25  -- you can tune this
+) IS
+  v_capacity      bus.capacity%TYPE;
+  v_distance_km   route.distanceKm%TYPE;
+  v_rda_id        routeDriverAssignmentList.routeDriverAssignmentId%TYPE;
+  v_route_id      route.routeId%TYPE;
+  v_assignment_id driverListAssignment.assignmentId%TYPE;
+
+  v_type_default    ticket.type%TYPE   := 'booking';
+  v_status_default  ticket.status%TYPE := 'on_selling';
+
+  v_existing_cnt NUMBER;
+  v_price NUMBER(8,2);
+BEGIN
+  -- If tickets already exist, get out
+  SELECT COUNT(*)
+  INTO v_existing_cnt
+  FROM ticket
+  WHERE busScheduleId = p_bus_schedule_id;
+
+  IF v_existing_cnt > 0 THEN
+    RETURN;
+  END IF;
+
+  -- Read related info (safe now; caller is AFTER STATEMENT)
+  SELECT bs.routeDriverAssignmentId
+    INTO v_rda_id
+  FROM busSchedule bs
+  WHERE bs.busScheduleId = p_bus_schedule_id;
+
+  SELECT rda.routeId, rda.assignmentId
+    INTO v_route_id, v_assignment_id
+  FROM routeDriverAssignmentList rda
+  WHERE rda.routeDriverAssignmentId = v_rda_id;
+
+  SELECT b.capacity
+    INTO v_capacity
+  FROM driverListAssignment dla
+  JOIN bus b ON b.busId = dla.busId
+  WHERE dla.assignmentId = v_assignment_id;
+
+  SELECT NVL(r.distanceKm, 0)
+    INTO v_distance_km
+  FROM route r
+  WHERE r.routeId = v_route_id;
+
+  IF v_capacity IS NULL OR v_capacity <= 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Bus capacity invalid for schedule ' || p_bus_schedule_id);
+  END IF;
+
+  -- compute base price once (or compute per-seat if you want dynamic pricing)
+  v_price := ROUND(p_rate_per_km * v_distance_km, 2);
+
+  FOR i IN 1..v_capacity LOOP
+    BEGIN
+      INSERT INTO ticket (
+        ticketId, busScheduleId, customerId, seatNo, price, type, status,
+        cancellationDate, extensionDate, extendedToId, createdAt, updatedAt
+      ) VALUES (
+        FN_NEXT_TICKET_ID(),
+        p_bus_schedule_id,
+        NULL,
+        'S' || LPAD(i, 3, '0'),
+        v_price,
+        v_type_default,
+        v_status_default,
+        NULL, NULL, NULL,
+        SYSTIMESTAMP, SYSTIMESTAMP
+      );
+    EXCEPTION
+      WHEN DUP_VAL_ON_INDEX THEN
+        -- Another session beat us to it; skip this seat
+        NULL;
+    END;
+  END LOOP;
+END;
+/
+SHOW ERRORS PROCEDURE GEN_TICKETS_FOR_SCHEDULE;
