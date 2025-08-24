@@ -1,0 +1,28 @@
+list all maintenance staff who are free, i.e. do not have maintenance work recently,
+ordered by maintenancedate of their last maintenance service serviced 
+(those whose last maintenance service was done least recently will be at the top~)
+
+Staff ID, Name (fname + lname), phoneNumber, email, last maintenance service (<service name> on <bus id>), maintenance date, remarks (from BusMaintenance table)
+
+SELECT 
+    s.staffID, 
+    s.firstName || ' ' || s.lastName AS fullName, 
+    s.phoneNumber,
+    s.email,
+    bm.maintenanceId,
+    ms.serviceItem || ' on ' || bm.busId AS maintenanceDetails,
+    ms.maintenanceDoneDate,
+    ms.remarks
+FROM Staff s 
+JOIN MaintenanceStaffAssignment USING(staffID)
+JOIN BusMaintenance bm USING(maintenanceId)
+JOIN MaintenanceService ms USING(serviceId)
+ORDERED BY ms.maintenanceDoneDate;
+
+----------------------
+
+for each bus, calculate the average time between corrective (repair) maintenance services 
+group by bus company
+
+to determine a bus's reliability
+

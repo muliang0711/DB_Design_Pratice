@@ -1,0 +1,131 @@
+write a procedure, using cursors where necessary that
+lists all bus schedules that:
+- status = 'cancelled'
+- plannedDepartureTime >= CURRENT_TIMESTAMP
+- companyID of bus = v_companyID (user-input)
+
+for each bus schedule that fulfills the above criteria,
+show these info:
+- routeID
+- route start point -> route end point (as one string)
+- depart time -> arrive time (as one string)
+- main driver name
+- support driver name (if exists)
+
+tables needed for this query:
+- BusSchedule
+- RouteDriverAssignmentList
+- Route
+- DriverListAssignment
+- BusDriver
+- Bus
+- BusStation
+
+DBML for these tables (ignore any FK references to tables not listed here, unless there are some tables that are actually needed for the query that I missed out):
+Table BusStation {
+  stationID NUMBER(10) [pk, increment]
+  stationName VARCHAR2(100)
+  location VARCHAR2(150)
+  status ENUM('active' , 'inactive')
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+Table Route {
+  routeID NUMBER(10) [pk, increment, note: 'Unique ID for this route']
+  routeName VARCHAR2(50) [not null, note: 'Name or code like "U34", "KLCC - Bukit Bintang"']
+  startPoint VARCHAR2(100) [ref: > BusStation.stationID, not null, note: 'Starting terminal / station name']
+  endPoint VARCHAR2(100) [ref: > BusStation.stationID, not null, note: 'Ending terminal / station name']
+  distanceKM NUMBER(6,2) [note: 'Total distance in km']
+  estimatedDuration NUMBER(10) [note: 'Typical trip duration in minutes']
+  plannedDepartureTime TIME [note: 'Typical departure time from start point']
+  plannedArrivalTime TIME [note: 'Typical arrival time at end point' ,'only have time not date']
+  status ENUM('active' , 'inactive')
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+
+  Indexes {
+    unique_route (startPoint, endPoint) [unique]
+  }
+}
+
+Table BusSchedule {
+  BusScheduleID NUMBER(10) [pk, increment, note: 'Unique ID for each planned trip']
+  routeDriverAssignmentID int [ref: > RouteDriverAssignmentList.routeDriverAssignmentID, not null, note: 'FK to RouteDriverAssignmentList']
+  plannedDepartureTime TIMESTAMP [not null, note: 'When this trip starts']
+  plannedArrivalTime TIMESTAMP [note: 'Estimated end time']
+  status ENUM('planned' ,'cancelled' ,'completed' ,'in_progress' ,'pending') [default: 'Planned', note: 'Current status of this schedule']
+  remarks VARCHAR2(200) [note: 'Any notes']
+  expectedProfit NUMBER(8,2) [note: 'Expected profit from this trip']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+}
+
+Table BusDriver {
+  driverID NUMBER(10) [pk, increment]
+  companyID NUMBER(10) [ref: > BusCompany.companyID]
+  licenseNo VARCHAR2(50) [unique, note: 'Driving license number if driver']
+  // All bus drivers must have PSV license anyway, so no point recording licenseType
+  // licenseType VARCHAR2(20) [note: "e.g. 'PSV' (Public Service Vehicle), 'GDL' (Goods Driving Licence)"]
+  licenseExpiry DATE [not null]
+  firstName VARCHAR2(50) [not null]
+  lastName VARCHAR2(50) [not null]
+  phoneNumber VARCHAR2(20)
+  status ENUM('active', 'inactive', 'suspended') [default: 'active']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+}
+
+Table DriverListAssignment {
+  assignmentID NUMBER(10) [pk, increment, note: 'Unique assignment record']
+  mainDriverID NUMBER(10) [ref: > BusDriver.driverID, not null, note: 'FK to BusDriver']
+  supportDriverID NUMBER(10) [ref: > BusDriver.driverID, note: 'FK to BusDriver']
+  busID NUMBER(10) [ref: > Bus.busID, not null, not null, note: 'FK to Bus']
+  assignedFrom TIMESTAMP 
+  assignedTo TIMESTAMP
+  status ENUM('inactive', 'active', 'not_assigned') [default: 'not_assigned', note: 'not_assigned means not assigned to any schedule yet , active means currently assigned to a schedule , inactive means one of the bus or driver is not active but it might still have OR  not have bus schedule assigned']
+  remarks VARCHAR2(200)
+
+  Indexes {
+    unique_driverlist (mainDriverID, supportDriverID, busID, assignedFrom) [unique]
+  }
+
+  Note: 'Assigns one or two drivers and a bus to run a scheduled trip'
+}
+
+Table RouteDriverAssignmentList {
+  routeDriverAssignmentID int [pk, increment, note: 'Unique recurring assignment record']
+  routeID int [ref: > Route.routeID, not null, note: 'FK to Route']
+  assignmentID int [ref: > DriverListAssignment.assignmentID, not null, note: 'FK to DriverListAssignment']
+  frequency enum('daily', 'weekly', 'monthly') [not null, note: 'Frequency of recurrence, e.g., daily, weekly, monthly'] // values: daily, weekly, monthly
+  weekdays varchar(20) [not null, note: 'Comma-separated weekdays: 1=Mon, 7=Sun' , note: 'e.g. "1,2,3"']
+  effectiveFrom date [not null, note: 'Start date of this recurring assignment']
+  effectiveTo date [note: 'End date (optional), NULL for indefinite']   
+  status enum('active', 'inactive') [default: 'active', note: 'inactive when the referenced DriverListAssignment is not active'] // values: active, inactive
+  expectedProfit NUMBER(8,2) [note: 'Expected profit from this recurring assignment']
+  remarks varchar(200) [note: 'Optional notes']
+
+  Indexes {
+    unique_routedriverassignmentlist (routeID, assignmentID, effectiveFrom) [unique]
+  }
+}
+
+Table Bus {
+  busID NUMBER(10) [pk, increment, note: 'Unique identifier for bus']
+  companyID NUMBER(10) [ref: > BusCompany.companyID, not null, note: 'FK to BusCompany']
+  plateNo VARCHAR2(20) [unique, not null, note: 'Vehicle registration number']
+  model VARCHAR2(50) [note: 'Bus model / type (e.g. Hino 40-Seater)']
+  capacity NUMBER(10) [note: 'Number of seats']
+  status ENUM('active', 'inactive', 'under_maintenance', 'retired')
+  year NUMBER(4) [note: 'Year of manufacture / acquisition']
+  remarks VARCHAR2(200) [note: 'Notes like AC, TV etc.']
+  createdAt TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updatedAt TIMESTAMP [default: `CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`]
+}
+
+purpose: provides a quick view of all cancelled bus schedules 
+for a certain company
+
+target user: bus company 
+
+makes it easier for that company to reschedule? (assuming
+it is bus companies that do the rescheduling)
