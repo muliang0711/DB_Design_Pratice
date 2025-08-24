@@ -1,0 +1,35 @@
+CREATE OR REPLACE PROCEDURE prcShowUnpaidRentals IS
+  CURSOR unpaidCursor IS
+    SELECT s.shopID, r.rentalMonth, r.rentalAmount
+    FROM Shop s
+    JOIN RentalCollection r ON s.shopID = r.shopID
+    WHERE LOWER(r.status) = 'unpaid'
+    ORDER BY r.rentalMonth, s.shopID;
+
+  v_lastMonth DATE := NULL;
+BEGIN
+  DBMS_OUTPUT.PUT_LINE(CHR(10));
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 70, '='));
+  DBMS_OUTPUT.PUT_LINE('List of Shops with UNPAID rentals (Grouped by Month)');
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 70, '='));
+
+  FOR u_rec IN unpaidCursor LOOP
+    IF v_lastMonth IS NULL OR TRUNC(u_rec.rentalMonth, 'MM') <> v_lastMonth THEN
+      v_lastMonth := TRUNC(u_rec.rentalMonth, 'MM');
+      DBMS_OUTPUT.PUT_LINE(CHR(10));
+      DBMS_OUTPUT.PUT_LINE('>>> Month: ' || TO_CHAR(v_lastMonth, 'YYYY-MM'));
+      DBMS_OUTPUT.PUT_LINE(RPAD('Shop ID', 12) || RPAD('Amount', 15));
+      DBMS_OUTPUT.PUT_LINE(RPAD('-', 27, '-'));
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE(
+      RPAD(u_rec.shopID, 12) ||
+      RPAD(TO_CHAR(u_rec.rentalAmount, '$999,990.00'), 15)
+    );
+  END LOOP;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/
