@@ -1,0 +1,131 @@
+--Practical 7: CREATE & DROP INDEX
+/* 
+Oracle create Primary Index Automatically. (Don't create for Assignment)
+We focus Secondary Indexes for Assignment.
+Add UPPER() for character and varchar; but exclude number and date.
+Other than Primary Key, don't create multiple attributes index.
+*/
+Select ProductCode, ProductName, MSRP, quantityInStock
+from PRODUCTS
+where ProductName LIKE '%FORD%';
+
+Select ProductCode, ProductName, MSRP, quantityInStock
+from PRODUCTS
+where UPPER(ProductName) LIKE '%FORD%';
+
+DROP INDEX prod_name_idx;
+CREATE INDEX prod_name_idx ON PRODUCTS (UPPER(ProductName));
+
+--Practical 7: SIMPLE & COMPLEX VIEW (Virtual Table)
+/*
+** 2 Main Categories:
+- simple view (only one table without any special keywords such as GROUP BY, 
+  HAVING and DISTINCT): then have 3 options => Option 1, 2 and 3
+- complex view (more than one table or table with any special keywords such as GROUP BY, 
+  HAVING and DISTINCT): then only have 1 option => Option 3 (set automatically).
+
+** 3 Usage Options for view (virtual table):
+Option 1) Can Modify (insert, update and delete) without condition(s)
+
+Option 2) Can Modify (insert, update and delete) with condition(s) - WITH CHECK OPTION CONSTRAINT
+          ERROR at line 1:
+          ORA-01402: view WITH CHECK OPTION where-clause violation
+
+Option 3) Cannot Modify (insert, update and delete) - WITH READ ONLY CONSTRAINT
+          ERROR at line 1:
+          ORA-42399: cannot perform a DML operation on a read-only view
+
+** Can create subview from main view.
+
+** Can treat view (virtual table) as other actual tables.
+*/
+
+--Main View
+CREATE OR REPLACE VIEW Office1Staff AS
+SELECT * 
+FROM employees;
+
+SELECT * FROM Office1Staff;
+
+--Subview: Create Subview from Main View
+CREATE OR REPLACE VIEW SimpleOffice1Staff AS
+SELECT EmployeeNumber, LastName, FirstName, Email, officeCode
+FROM Office1Staff;
+
+SELECT * FROM SimpleOffice1Staff;
+
+--Option 1: Simple View that can modify without condition(s)
+CREATE OR REPLACE VIEW SimpleOffice1Staff AS
+SELECT EmployeeNumber, LastName, FirstName, Email, officeCode
+FROM Office1Staff
+WHERE OfficeCode = 1;
+
+INSERT INTO SimpleOffice1Staff
+VALUES(1800,'George','Gun','georgegun@classicmodelcars.com', 1);
+
+INSERT INTO SimpleOffice1Staff
+VALUES(1801,'Metal','Gun','georgegun@classicmodelcars.com', 2);
+
+SELECT EmployeeNumber, LastName, FirstName, Email, officeCode
+FROM employees;
+
+--Option 2: Simple View that can modify with condition(s)
+CREATE OR REPLACE VIEW SimpleOffice1Staff AS
+SELECT EmployeeNumber, LastName, FirstName, Email, officeCode
+FROM Office1Staff
+WHERE OfficeCode = 1
+WITH CHECK OPTION CONSTRAINT limit_OfficeCode;
+
+INSERT INTO SimpleOffice1Staff
+VALUES(1801,'George','Stone','georgestone@classicmodelcars.com', 2);
+---ORA-01402: view WITH CHECK OPTION where-clause violation
+
+INSERT INTO SimpleOffice1Staff
+VALUES(1801,'George','Stone','georgestone@classicmodelcars.com', 1);
+
+--Option 3: Read Only View
+CREATE OR REPLACE VIEW SimpleOffice1Staff AS
+SELECT EmployeeNumber, LastName, FirstName, Email, officeCode
+FROM Office1Staff
+WHERE OfficeCode = 1
+WITH READ ONLY CONSTRAINT simple_office1_readOnly;
+
+INSERT INTO SimpleOffice1Staff
+VALUES(1803,'George','Stone','georgestone@classicmodelcars.com',1);
+---ORA-42399: cannot perform a DML operation on a read-only view
+
+--Complex View
+CREATE OR REPLACE VIEW high_order_view AS
+SELECT customerNumber, O.orderNumber, orderDate, sum(priceEach * quantityOrdered) AS "Order Value", count(productCode) AS "No. of Products"
+FROM orders O, orderDetails OD
+WHERE  O.orderNumber = OD.orderNumber
+GROUP BY customerNumber, O.orderNumber, orderDate
+HAVING SUM( priceEach* quantityOrdered)>5000;
+
+SELECT * FROM high_order_view;
+
+-Mix Actual Table and Virtual Table (View)
+SELECT customerName, country, H.*
+FROM customers C, high_order_view H
+WHERE C.customerNumber = H.customerNumber;
+
+--Data Dictionary: user_constraints, user_tables, user_views, user_source
+SELECT OWNER, CONSTRAINT_NAME, CONSTRAINT_TYPE, TABLE_NAME, STATUS
+FROM user_constraints 
+ORDER BY owner, table_name;
+
+SELECT table_name
+FROM user_tables;
+
+SELECT *
+FROM user_views;
+
+SELECT line, text
+FROM user_source
+WHERE name = 'TRG_CAL_SST_SELLINGPRICE';
+
+
+
+
+
+

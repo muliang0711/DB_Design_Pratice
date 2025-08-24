@@ -1,0 +1,5 @@
+DROP INDEX first_name_idx;
+CREATE INDEX first_name_idx ON CUSTOMER (UPPER(FirstName));
+
+DROP INDEX phone_number_idx;
+CREATE INDEX phone_number_idx ON CUSTOMER (phoneNumber);

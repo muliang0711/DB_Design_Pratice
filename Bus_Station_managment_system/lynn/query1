@@ -1,4 +1,8 @@
--- 
+
+SET linesize 120
+SET pagesize 100
+ALTER SESSION SET nls_date_format='dd-mm-yyyy';
+
 CREATE OR REPLACE VIEW RevenueAnalysis AS
 SELECT 
     r.routeID,
@@ -15,7 +19,8 @@ FROM
     PaymentRecord pr
 JOIN Ticket t ON pr.ticketID = t.ticketID
 JOIN BusSchedule bs ON t.busScheduleID = bs.busScheduleID
-JOIN Route r ON bs.routeID = r.routeID
+JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+JOIN Route r ON rdal.routeID = r.routeID
 JOIN Customer c ON pr.customerID = c.customerID
 WHERE 
     pr.status = 'Completed'

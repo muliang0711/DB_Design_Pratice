@@ -1,4 +1,8 @@
 
+SET linesize 120
+SET pagesize 100
+ALTER SESSION SET nls_date_format='dd-mm-yyyy';
+
 CREATE OR REPLACE VIEW CancellationAnalysis AS
 SELECT
     r.routeID,
@@ -11,7 +15,8 @@ SELECT
 FROM
     Ticket t
 JOIN BusSchedule bs ON t.busScheduleID = bs.busScheduleID
-JOIN Route r ON bs.routeID = r.routeID
+JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+JOIN Route r ON rdal.routeID = rdal.routeID
 JOIN Bus b ON (SELECT busID FROM DriverAssignment WHERE busScheduleID = bs.busScheduleID AND ROWNUM = 1) = b.busID
 JOIN BusCompany bc ON b.companyID = bc.companyID
 LEFT JOIN PaymentRecord pr ON t.ticketID = pr.ticketID
