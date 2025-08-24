@@ -33,7 +33,13 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(LPAD('=', 71, '='));
     DBMS_OUTPUT.PUT_LINE('Shop Rental Record for Shop ID: ' || v_shopID);
     DBMS_OUTPUT.PUT_LINE(LPAD('=', 71, '='));
-    DBMS_OUTPUT.PUT_LINE(RPAD('Staff ID', 10) || RPAD('Amount', 12) || RPAD('Rental Month', 22) || RPAD('Status', 12) || RPAD('Paid At', 15));
+        DBMS_OUTPUT.PUT_LINE(
+        RPAD('Staff ID', 12) ||
+        RPAD('Amount', 10) ||
+        RPAD('Rental Month', 15) ||
+        RPAD('Status', 12) ||
+        RPAD('Paid At', 15)
+    );
     DBMS_OUTPUT.PUT_LINE(RPAD('-', 71, '-'));
 
     BEGIN
@@ -49,11 +55,11 @@ BEGIN
         v_count := v_count + 1;
 
         DBMS_OUTPUT.PUT_LINE(
-          RPAD(NVL(v_staffID, 'unknown'), 5) ||
-          RPAD(TO_CHAR(v_amount, '$999,990.00'), 12) ||
-          LPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 24) ||
-          LPAD(v_status, 9) ||
-          LPAD(NVL(TO_CHAR(v_collectionDate, 'YYYY-MM-DD'), '-'), 15)
+          (NVL(v_staffID, 'unknown')) ||
+          RPAD(NVL(TO_CHAR(v_amount, '$9,999.00'), '$0.00'), 15) ||
+          RPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 15) ||
+          RPAD(v_status, 12) ||
+          RPAD(NVL(TO_CHAR(v_collectionDate, 'YYYY-MM-DD'), '-'), 15)
         );
       END LOOP;
       CLOSE rentCursor;
@@ -64,7 +70,7 @@ BEGIN
     ELSE
       DBMS_OUTPUT.PUT_LINE(RPAD('-', 71, '-'));
       DBMS_OUTPUT.PUT_LINE('Total Records: ' || v_count);
-      DBMS_OUTPUT.PUT_LINE('Total Collected: ' || TO_CHAR(v_total, '$999,999.00'));
+      DBMS_OUTPUT.PUT_LINE('Total Collected: ' || (NVL(TO_CHAR(v_total, '$999,999.00'), '$0.00')));
     END IF;
   END LOOP;
   CLOSE shopCursor;
@@ -74,6 +80,7 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
 END;
 /
+
 
 
 
