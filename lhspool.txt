@@ -1,0 +1,13457 @@
+SQL> @"Bus_Station_managment_system\FInal\createTable.txt"
+DROP TABLE pointTransaction
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE paymentRecord
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE ticket
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE tripStopLog
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE busSchedule
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE routeDriverAssignmentList
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE driverListAssignment
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE routeStation
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE maintenanceStaffAssignment
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE busMaintenance
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE rentalCollection
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE shop
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE busDriver
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE bus
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE route
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE busPlatform
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE staff
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE customer
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE busStation
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE busCompany
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE staffRole
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+DROP TABLE maintenanceService
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+SQL> @"Bus_Station_managment_system\DB_Data\sciptToRunItSimple\insertAll.sql"
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+102 rows updated.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R051', 'KL to Kuala Terengganu', 'S001', 'S014', 450.00, 390, '09:00', '15:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R062', 'KL to Petaling Jaya', 'S001', 'S002', 15.00, 20, '08:00', '08:20', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R072', 'KL to Seremban', 'S001', 'S011', 65.00, 60, '12:00', '13:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R073', 'Johor Bahru to KL', 'S006', 'S001', 330.50, 270, '19:00', '23:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R077', 'Miri to Sibu', 'S018', 'S019', 400.00, 360, '22:00', '04:00', 'inactive')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R078', 'Sibu to Bintulu', 'S019', 'S020', 200.00, 180, '15:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R082', 'KL to KLIA', 'S001', 'S021', 50.00, 60, '05:00', '06:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R083', 'KLIA to KL', 'S021', 'S001', 50.00, 60, '18:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R092', 'KL to George Town', 'S001', 'S008', 355.80, 280, '23:00', '03:40', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R099', 'Sibu to Miri', 'S019', 'S018', 400.00, 360, '17:00', '23:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R100', 'Bintulu to Kuching', 'S020', 'S022', 450.00, 390, '08:00', '14:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R101', 'Kuching to Sibu', 'S022', 'S019', 300.00, 270, '10:00', '14:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R102', 'KL to Port Dickson', 'S001', 'S023', 90.00, 90, '09:00', '10:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R103', 'Port Dickson to KL', 'S023', 'S001', 90.00, 90, '17:00', '18:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R104', 'KL to Malacca', 'S001', 'S007', 145.00, 120, '10:00', '12:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R106', 'Johor Bahru to Malacca', 'S006', 'S007', 220.70, 180, '07:00', '10:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R107', 'Malacca to Johor Bahru', 'S007', 'S006', 220.70, 180, '11:00', '14:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R108', 'Ipoh to KL', 'S009', 'S001', 205.20, 160, '11:00', '13:40', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R109', 'KL to Ipoh', 'S001', 'S009', 205.20, 160, '16:00', '18:40', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R110', 'Kuantan to Seremban', 'S010', 'S011', 260.00, 210, '07:00', '10:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R111', 'Seremban to Kuantan', 'S011', 'S010', 260.00, 210, '14:00', '17:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R112', 'Alor Setar to Kota Bharu', 'S012', 'S013', 380.00, 300, '09:00', '14:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R113', 'Kota Bharu to Alor Setar', 'S013', 'S012', 380.00, 300, '15:00', '20:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R116', 'Kota Kinabalu to Kuching', 'S015', 'S022', 750.00, 660, '19:00', '06:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R117', 'Kuching to Kota Kinabalu', 'S022', 'S015', 750.00, 660, '20:00', '07:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R118', 'Tawau to Sandakan', 'S017', 'S016', 300.00, 270, '10:00', '14:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R119', 'Sandakan to Tawau', 'S016', 'S017', 300.00, 270, '15:00', '19:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R120', 'Miri to Bintulu', 'S018', 'S020', 190.00, 150, '06:00', '08:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R121', 'Bintulu to Miri', 'S020', 'S018', 190.00, 150, '12:00', '14:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R122', 'Sibu to Kuching', 'S019', 'S022', 300.00, 270, '16:00', '20:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R123', 'Kuching to Bintulu', 'S022', 'S020', 450.00, 390, '22:00', '04:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R124', 'KL to Seremban', 'S001', 'S011', 65.00, 60, '18:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R125', 'Seremban to KL', 'S011', 'S001', 65.00, 60, '06:00', '07:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R127', 'George Town to Johor Bahru', 'S008', 'S006', 360.00, 300, '13:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R130', 'Alor Setar to Malacca', 'S012', 'S007', 420.00, 360, '11:00', '17:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R131', 'Kota Bharu to Johor Bahru', 'S013', 'S006', 600.00, 540, '22:00', '07:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R136', 'KL to Seremban', 'S001', 'S011', 65.00, 60, '20:00', '21:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R137', 'Johor Bahru to Malacca', 'S006', 'S007', 220.70, 180, '14:00', '17:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R140', 'Alor Setar to Ipoh', 'S012', 'S009', 275.00, 210, '15:00', '18:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R142', 'Kuala Terengganu to Kota Bharu', 'S014', 'S013', 160.00, 120, '13:00', '15:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R143', 'Kota Kinabalu to Tawau', 'S015', 'S017', 500.00, 480, '20:00', '04:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R145', 'Tawau to Miri', 'S017', 'S018', 450.00, 420, '06:00', '13:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R146', 'Miri to Kuching', 'S018', 'S022', 700.00, 600, '22:00', '08:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R147', 'Sibu to Kuching', 'S019', 'S022', 300.00, 270, '10:00', '14:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R149', 'Johor Bahru to Kota Bharu', 'S006', 'S013', 600.00, 540, '10:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R150', 'Malacca to Ipoh', 'S007', 'S009', 290.00, 240, '08:00', '12:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R151', 'George Town to Kuantan', 'S008', 'S010', 400.00, 360, '12:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R152', 'Ipoh to George Town', 'S009', 'S008', 155.00, 120, '16:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R153', 'Kuantan to Malacca', 'S010', 'S007', 280.00, 240, '11:00', '15:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R155', 'Alor Setar to KL', 'S012', 'S001', 450.00, 390, '06:00', '12:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R156', 'Kota Bharu to KL', 'S013', 'S001', 450.00, 390, '21:00', '03:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R157', 'Kuala Terengganu to Seremban', 'S014', 'S011', 300.00, 270, '15:00', '19:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R159', 'Sandakan to Miri', 'S016', 'S018', 480.00, 420, '14:00', '21:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R161', 'Miri to Kuching', 'S018', 'S022', 700.00, 600, '08:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R164', 'Kuching to Miri', 'S022', 'S018', 700.00, 600, '22:00', '08:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R165', 'KL to Petaling Jaya', 'S001', 'S002', 15.00, 20, '09:00', '09:20', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R167', 'Malacca to Kuala Terengganu', 'S007', 'S014', 350.00, 300, '16:00', '21:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R171', 'Seremban to Johor Bahru', 'S011', 'S006', 270.00, 240, '14:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R173', 'Kota Bharu to Ipoh', 'S013', 'S009', 380.00, 300, '11:00', '16:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R175', 'Kota Kinabalu to Sibu', 'S015', 'S019', 550.00, 540, '07:00', '16:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R176', 'Sandakan to Kuching', 'S016', 'S022', 650.00, 540, '22:00', '07:00', 'inactive')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R177', 'Tawau to Bintulu', 'S017', 'S020', 500.00, 480, '10:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R178', 'Miri to Sibu', 'S018', 'S019', 400.00, 360, '12:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R180', 'Bintulu to Kota Kinabalu', 'S020', 'S015', 600.00, 540, '06:00', '15:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R181', 'Kuching to Sandakan', 'S022', 'S016', 650.00, 540, '08:00', '17:00', 'inactive')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R182', 'KL to Ipoh', 'S001', 'S009', 205.20, 160, '08:00', '10:40', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R183', 'Johor Bahru to George Town', 'S006', 'S008', 360.00, 300, '22:00', '03:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R184', 'Malacca to KL', 'S007', 'S001', 145.00, 120, '18:00', '20:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R185', 'George Town to Ipoh', 'S008', 'S009', 155.00, 120, '11:00', '13:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R186', 'Ipoh to Kota Bharu', 'S009', 'S013', 380.00, 300, '21:00', '02:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R187', 'Kuantan to Seremban', 'S010', 'S011', 260.00, 210, '06:00', '09:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R188', 'Seremban to Alor Setar', 'S011', 'S012', 450.00, 390, '08:00', '14:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R189', 'Alor Setar to Kota Bharu', 'S012', 'S013', 380.00, 300, '23:00', '04:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R190', 'Kota Bharu to Johor Bahru', 'S013', 'S006', 600.00, 540, '10:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R191', 'Kuala Terengganu to Malacca', 'S014', 'S007', 350.00, 300, '05:00', '10:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R192', 'Kota Kinabalu to Kuching', 'S015', 'S022', 750.00, 660, '12:00', '23:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R193', 'Sandakan to Bintulu', 'S016', 'S020', 500.00, 450, '08:00', '15:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R194', 'Tawau to Sibu', 'S017', 'S019', 450.00, 420, '15:00', '22:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R195', 'Miri to Tawau', 'S018', 'S017', 450.00, 420, '21:00', '04:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R196', 'Sibu to Kota Kinabalu', 'S019', 'S015', 550.00, 540, '10:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R197', 'Bintulu to Sibu', 'S020', 'S019', 200.00, 180, '18:00', '21:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R198', 'Kuching to Miri', 'S022', 'S018', 700.00, 600, '09:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R199', 'KL to Seremban', 'S001', 'S011', 65.00, 60, '16:00', '17:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R200', 'Johor Bahru to Malacca', 'S006', 'S007', 220.70, 180, '06:00', '09:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R201', 'KL to Ipoh', 'S001', 'S009', 205.20, 160, '13:00', '15:40', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R202', 'Malacca to Seremban', 'S007', 'S011', 80.00, 70, '09:00', '10:10', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R203', 'Ipoh to George Town', 'S009', 'S008', 155.00, 120, '10:00', '12:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R204', 'Kuantan to Kuala Terengganu', 'S010', 'S014', 200.50, 180, '12:00', '15:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R205', 'Seremban to KL', 'S011', 'S001', 65.00, 60, '19:00', '20:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R206', 'Alor Setar to George Town', 'S012', 'S008', 120.40, 90, '06:00', '07:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R209', 'Kota Kinabalu to Miri', 'S015', 'S018', 480.00, 420, '09:00', '16:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R210', 'Sandakan to Tawau', 'S016', 'S017', 300.00, 270, '11:00', '15:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R211', 'Tawau to Sibu', 'S017', 'S019', 450.00, 420, '18:00', '01:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R212', 'Miri to Bintulu', 'S018', 'S020', 190.00, 150, '10:00', '12:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R213', 'Sibu to Miri', 'S019', 'S018', 400.00, 360, '14:00', '20:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R214', 'Bintulu to Kuching', 'S020', 'S022', 450.00, 390, '07:00', '13:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R215', 'Kuching to Sibu', 'S022', 'S019', 300.00, 270, '17:00', '21:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R216', 'KL to Port Dickson', 'S001', 'S023', 90.00, 90, '14:00', '15:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R217', 'Johor Bahru to Kuantan', 'S006', 'S010', 400.00, 360, '08:00', '14:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R218', 'Malacca to Johor Bahru', 'S007', 'S006', 220.70, 180, '19:00', '22:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R219', 'George Town to Malacca', 'S008', 'S007', 350.00, 300, '09:00', '14:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R220', 'Ipoh to Alor Setar', 'S009', 'S012', 275.00, 210, '17:00', '20:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R222', 'Seremban to Klang', 'S011', 'S005', 70.00, 75, '08:00', '09:15', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R223', 'Alor Setar to Seremban', 'S012', 'S011', 450.00, 390, '12:00', '18:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R224', 'Kota Bharu to Kuala Terengganu', 'S013', 'S014', 160.00, 120, '16:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R225', 'Kuala Terengganu to Kuantan', 'S014', 'S010', 200.50, 180, '10:00', '13:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R226', 'Kota Kinabalu to Tawau', 'S015', 'S017', 500.00, 480, '22:00', '06:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R227', 'Sandakan to Kota Kinabalu', 'S016', 'S015', 320.00, 300, '06:00', '11:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R228', 'Tawau to Sandakan', 'S017', 'S016', 300.00, 270, '14:00', '18:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R229', 'Miri to Bintulu', 'S018', 'S020', 190.00, 150, '16:00', '18:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R230', 'Sibu to Kuching', 'S019', 'S022', 300.00, 270, '09:00', '13:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R232', 'Kuching to Tawau', 'S022', 'S017', 700.00, 600, '21:00', '07:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R233', 'Port Dickson to Seremban', 'S023', 'S011', 40.00, 45, '11:00', '11:45', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R234', 'KL to Seremban', 'S001', 'S011', 65.00, 60, '10:00', '11:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R235', 'Johor Bahru to KL', 'S006', 'S001', 330.50, 270, '18:00', '22:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R236', 'Malacca to Ipoh', 'S007', 'S009', 290.00, 240, '13:00', '17:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R237', 'George Town to Kuala Terengganu', 'S008', 'S014', 300.00, 270, '06:00', '10:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R238', 'Ipoh to Johor Bahru', 'S009', 'S006', 420.00, 360, '23:00', '05:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R241', 'Alor Setar to Malacca', 'S012', 'S007', 420.00, 360, '22:00', '04:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R242', 'Kota Bharu to Kuantan', 'S013', 'S010', 200.00, 180, '09:00', '12:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R243', 'Kuala Terengganu to George Town', 'S014', 'S008', 300.00, 270, '18:00', '22:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R244', 'Kota Kinabalu to Sandakan', 'S015', 'S016', 320.00, 300, '12:00', '17:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R245', 'Sandakan to Tawau', 'S016', 'S017', 300.00, 270, '10:00', '14:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R246', 'Tawau to Kuching', 'S017', 'S022', 700.00, 600, '06:00', '16:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R248', 'Sibu to Sandakan', 'S019', 'S016', 400.00, 360, '19:00', '01:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R249', 'Bintulu to Sibu', 'S020', 'S019', 200.00, 180, '09:00', '12:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R250', 'Kuching to Bintulu', 'S022', 'S020', 450.00, 390, '14:00', '20:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R251', 'KL to Kuala Terengganu', 'S001', 'S014', 450.00, 390, '17:00', '23:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R252', 'Johor Bahru to Malacca', 'S006', 'S007', 220.70, 180, '13:00', '16:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R253', 'Malacca to Seremban', 'S007', 'S011', 80.00, 70, '15:00', '16:10', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R254', 'George Town to Kuala Terengganu', 'S008', 'S014', 300.00, 270, '20:00', '00:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R255', 'Ipoh to George Town', 'S009', 'S008', 155.00, 120, '06:00', '08:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R256', 'Kuantan to KL', 'S010', 'S001', 250.00, 210, '09:00', '12:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R257', 'Seremban to Ipoh', 'S011', 'S009', 195.00, 150, '13:00', '15:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R260', 'Kuala Terengganu to Ipoh', 'S014', 'S009', 370.00, 330, '07:00', '12:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R261', 'Kota Kinabalu to Sibu', 'S015', 'S019', 550.00, 540, '10:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R262', 'Sandakan to Miri', 'S016', 'S018', 480.00, 420, '22:00', '05:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R263', 'Tawau to Bintulu', 'S017', 'S020', 500.00, 480, '09:00', '17:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R264', 'Miri to Kuching', 'S018', 'S022', 700.00, 600, '11:00', '21:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R265', 'Sibu to Kota Kinabalu', 'S019', 'S015', 550.00, 540, '20:00', '05:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R266', 'Bintulu to Miri', 'S020', 'S018', 190.00, 150, '06:00', '08:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R267', 'Kuching to Tawau', 'S022', 'S017', 700.00, 600, '08:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R268', 'KL to George Town', 'S001', 'S008', 355.80, 280, '08:00', '12:40', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R269', 'Johor Bahru to Malacca', 'S006', 'S007', 220.70, 180, '16:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+
+1 row created.
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R271', 'George Town to KL', 'S008', 'S001', 355.80, 280, '19:00', '23:40', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R272', 'Ipoh to Kuala Terengganu', 'S009', 'S014', 370.00, 330, '08:00', '13:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R273', 'Kuantan to Alor Setar', 'S010', 'S012', 450.00, 390, '15:00', '21:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R274', 'Seremban to Klang', 'S011', 'S005', 70.00, 75, '17:00', '18:15', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R275', 'Alor Setar to Ipoh', 'S012', 'S009', 275.00, 210, '10:00', '13:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R276', 'Kota Bharu to Malacca', 'S013', 'S007', 480.00, 420, '10:00', '17:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R277', 'Kuala Terengganu to Johor Bahru', 'S014', 'S006', 450.00, 390, '06:00', '12:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R278', 'Kota Kinabalu to Kuching', 'S015', 'S022', 750.00, 660, '09:00', '20:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R279', 'Sandakan to Bintulu', 'S016', 'S020', 500.00, 450, '18:00', '01:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R280', 'Tawau to Miri', 'S017', 'S018', 450.00, 420, '13:00', '20:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R281', 'Miri to Sibu', 'S018', 'S019', 400.00, 360, '18:00', '00:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R282', 'Sibu to Tawau', 'S019', 'S017', 450.00, 420, '08:00', '15:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R283', 'Bintulu to Kota Kinabalu', 'S020', 'S015', 600.00, 540, '12:00', '21:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R284', 'Kuching to Miri', 'S022', 'S018', 700.00, 600, '22:00', '08:00', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R285', 'Port Dickson to KL', 'S023', 'S001', 90.00, 90, '08:00', '09:30', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_START) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R286', 'Seremban to Port Dickson', 'S011', 'S023', 40.00, 45, '14:00', '14:45', 'active')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_ROUTE_END) violated - parent key not 
+found 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R287', 'KL to Seremban', 'S001', 'S011', 65.00, 60, '07:00', '08:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R288', 'Johor Bahru to KL', 'S006', 'S001', 330.50, 270, '06:00', '10:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R289', 'Malacca to Ipoh', 'S007', 'S009', 290.00, 240, '09:00', '13:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R290', 'George Town to Malacca', 'S008', 'S007', 350.00, 300, '14:00', '19:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R291', 'Ipoh to Alor Setar', 'S009', 'S012', 275.00, 210, '08:00', '11:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R292', 'Kuantan to Kota Bharu', 'S010', 'S013', 200.00, 180, '18:00', '21:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R293', 'Seremban to Alor Setar', 'S011', 'S012', 450.00, 390, '20:00', '02:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R294', 'Alor Setar to George Town', 'S012', 'S008', 120.40, 90, '09:00', '10:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R295', 'Kota Bharu to Johor Bahru', 'S013', 'S006', 600.00, 540, '21:00', '06:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R296', 'Kuala Terengganu to Seremban', 'S014', 'S011', 300.00, 270, '11:00', '15:30', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R297', 'Kota Kinabalu to Miri', 'S015', 'S018', 480.00, 420, '18:00', '01:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R298', 'Sandakan to Sibu', 'S016', 'S019', 400.00, 360, '12:00', '18:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R299', 'Tawau to Bintulu', 'S017', 'S020', 500.00, 480, '16:00', '00:00', 'active')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_ROUTE_START_END) violated 
+
+
+INSERT INTO route (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, plannedDepartureTime, plannedArrivalTime, status) VALUES ('R300', 'Miri to Kuching', 'S018', 'S022', 700.00, 600, '10:00', '20:00', 'active');```
+                                                                                                                                                                                                                                         *
+ERROR at line 1:
+ORA-00911: invalid character 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS153', 'R051', 'BP156', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS154', 'R051', 'BP157', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS155', 'R051', 'BP158', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS186', 'R062', 'BP189', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS187', 'R062', 'BP190', 2, 55)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS188', 'R062', 'BP191', 3, 110)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS216', 'R072', 'BP219', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS217', 'R072', 'BP220', 2, 40)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS218', 'R072', 'BP221', 3, 80)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS219', 'R073', 'BP222', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS220', 'R073', 'BP223', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS221', 'R073', 'BP224', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS231', 'R077', 'BP234', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS232', 'R077', 'BP235', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS233', 'R077', 'BP236', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS234', 'R078', 'BP237', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS235', 'R078', 'BP238', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS236', 'R078', 'BP239', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS246', 'R082', 'BP249', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS247', 'R082', 'BP250', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS248', 'R082', 'BP251', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS249', 'R083', 'BP252', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS250', 'R083', 'BP253', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS251', 'R083', 'BP254', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS276', 'R092', 'BP279', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS277', 'R092', 'BP280', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS278', 'R092', 'BP281', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS297', 'R099', 'BP300', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS298', 'R099', 'BP001', 2, 40)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS299', 'R099', 'BP002', 3, 80)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS300', 'R100', 'BP003', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS301', 'R100', 'BP004', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS302', 'R100', 'BP005', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS303', 'R101', 'BP006', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS304', 'R101', 'BP007', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS305', 'R101', 'BP008', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS306', 'R102', 'BP009', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS307', 'R102', 'BP010', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS308', 'R102', 'BP011', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS309', 'R103', 'BP012', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS310', 'R103', 'BP013', 2, 60)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS311', 'R103', 'BP014', 3, 120)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS312', 'R104', 'BP015', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS313', 'R104', 'BP016', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS314', 'R104', 'BP017', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS318', 'R106', 'BP021', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS319', 'R106', 'BP022', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS320', 'R106', 'BP023', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS321', 'R107', 'BP024', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS322', 'R107', 'BP025', 2, 55)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS323', 'R107', 'BP026', 3, 110)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS324', 'R108', 'BP027', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS325', 'R108', 'BP028', 2, 40)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS326', 'R108', 'BP029', 3, 80)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS327', 'R109', 'BP030', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS328', 'R109', 'BP031', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS329', 'R109', 'BP032', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS330', 'R110', 'BP033', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS331', 'R110', 'BP034', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS332', 'R110', 'BP035', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS333', 'R111', 'BP036', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS334', 'R111', 'BP037', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS335', 'R111', 'BP038', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS336', 'R112', 'BP039', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS337', 'R112', 'BP040', 2, 60)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS338', 'R112', 'BP041', 3, 120)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS339', 'R113', 'BP042', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS340', 'R113', 'BP043', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS341', 'R113', 'BP044', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS348', 'R116', 'BP051', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS349', 'R116', 'BP052', 2, 55)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS350', 'R116', 'BP053', 3, 110)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS351', 'R117', 'BP054', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS352', 'R117', 'BP055', 2, 40)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS353', 'R117', 'BP056', 3, 80)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS354', 'R118', 'BP057', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS355', 'R118', 'BP058', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS356', 'R118', 'BP059', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS357', 'R119', 'BP060', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS358', 'R119', 'BP061', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS359', 'R119', 'BP062', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS360', 'R120', 'BP063', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS361', 'R120', 'BP064', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS362', 'R120', 'BP065', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS363', 'R121', 'BP066', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS364', 'R121', 'BP067', 2, 60)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS365', 'R121', 'BP068', 3, 120)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS366', 'R122', 'BP069', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS367', 'R122', 'BP070', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS368', 'R122', 'BP071', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS369', 'R123', 'BP072', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS370', 'R123', 'BP073', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS371', 'R123', 'BP074', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS372', 'R124', 'BP075', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS373', 'R124', 'BP076', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS374', 'R124', 'BP077', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS375', 'R125', 'BP078', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS376', 'R125', 'BP079', 2, 55)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS377', 'R125', 'BP080', 3, 110)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS381', 'R127', 'BP084', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS382', 'R127', 'BP085', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS383', 'R127', 'BP086', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS390', 'R130', 'BP093', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS391', 'R130', 'BP094', 2, 60)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS392', 'R130', 'BP095', 3, 120)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS393', 'R131', 'BP096', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS394', 'R131', 'BP097', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS395', 'R131', 'BP098', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS408', 'R136', 'BP111', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS409', 'R136', 'BP112', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS410', 'R136', 'BP113', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS411', 'R137', 'BP114', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS412', 'R137', 'BP115', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS413', 'R137', 'BP116', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS420', 'R140', 'BP123', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS421', 'R140', 'BP124', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS422', 'R140', 'BP125', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS426', 'R142', 'BP129', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS427', 'R142', 'BP130', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS428', 'R142', 'BP131', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS429', 'R143', 'BP132', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS430', 'R143', 'BP133', 2, 55)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS431', 'R143', 'BP134', 3, 110)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS435', 'R145', 'BP138', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS436', 'R145', 'BP139', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS437', 'R145', 'BP140', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS438', 'R146', 'BP141', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS439', 'R146', 'BP142', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS440', 'R146', 'BP143', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS441', 'R147', 'BP144', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS442', 'R147', 'BP145', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS443', 'R147', 'BP146', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS447', 'R149', 'BP150', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS448', 'R149', 'BP151', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS449', 'R149', 'BP152', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS450', 'R150', 'BP153', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS451', 'R150', 'BP154', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS452', 'R150', 'BP155', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS453', 'R151', 'BP156', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS454', 'R151', 'BP157', 2, 35)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS455', 'R151', 'BP158', 3, 70)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS456', 'R152', 'BP159', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS457', 'R152', 'BP160', 2, 55)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS458', 'R152', 'BP161', 3, 110)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS459', 'R153', 'BP162', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS460', 'R153', 'BP163', 2, 40)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS461', 'R153', 'BP164', 3, 80)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS465', 'R155', 'BP168', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS466', 'R155', 'BP169', 2, 50)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS467', 'R155', 'BP170', 3, 100)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS468', 'R156', 'BP171', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS469', 'R156', 'BP172', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS470', 'R156', 'BP173', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS471', 'R157', 'BP174', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS472', 'R157', 'BP175', 2, 60)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS473', 'R157', 'BP176', 3, 120)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS477', 'R159', 'BP180', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS478', 'R159', 'BP181', 2, 45)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS479', 'R159', 'BP182', 3, 90)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS483', 'R161', 'BP186', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS484', 'R161', 'BP187', 2, 55)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS485', 'R161', 'BP188', 3, 110)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS492', 'R164', 'BP195', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS493', 'R164', 'BP196', 2, 55)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS494', 'R164', 'BP197', 3, 110)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS495', 'R165', 'BP198', 1, 0)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS496', 'R165', 'BP199', 2, 40)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+INSERT INTO routeStation (routeStationId, routeId, platformId, stopOrder, estimatedArrivalOffset) VALUES ('RS497', 'R165', 'BP200', 3, 80)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST.FK_RS_ROUTE) violated - parent key not 
+found 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0042', 'S001', 'KL03', 'Retail', 310.50, 'inactive', TIMESTAMP '2019-12-18 10:20:25', TIMESTAMP '2020-11-22 12:40:10')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0064', 'S014', 'KT201', 'Souvenir', 400.50, 'active', TIMESTAMP '2021-05-10 07:50:15', TIMESTAMP '2022-06-18 11:15:35')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0069', 'S019', 'SB201', 'Convenience', 280.75, 'active', TIMESTAMP '2019-11-12 09:25:40', TIMESTAMP '2020-12-20 13:10:30')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0084', 'S014', 'KT202', 'Convenience', 280.90, 'active', TIMESTAMP '2019-12-18 10:20:25', TIMESTAMP '2020-11-22 12:40:10')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0089', 'S019', 'SB202', 'Food', 195.25, 'active', TIMESTAMP '2020-06-25 07:50:25', TIMESTAMP '2021-08-18 10:20:15')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0101', 'S001', 'KL06', 'Food', 245.50, 'active', TIMESTAMP '2020-03-12 10:15:20', TIMESTAMP '2021-05-18 12:40:35')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0102', 'S002', 'PJ06', 'Retail', 310.75, 'inactive', TIMESTAMP '2021-04-18 08:45:15', TIMESTAMP '2022-06-20 11:30:25')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0103', 'S003', 'SA05', 'Cafe', 195.20, 'active', TIMESTAMP '2019-08-22 09:30:40', TIMESTAMP '2021-02-14 14:10:50')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0104', 'S004', 'SJ05', 'Pharmacy', 280.60, 'active', TIMESTAMP '2020-07-10 07:50:30', TIMESTAMP '2022-01-22 12:25:15')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0105', 'S005', 'KN05', 'Souvenir', 400.10, 'under renovation', TIMESTAMP '2021-05-22 10:05:20', TIMESTAMP '2022-06-18 13:50:35')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0106', 'S006', 'JB05', 'Bookstore', 320.40, 'active', TIMESTAMP '2020-01-12 09:20:25', TIMESTAMP '2021-03-22 12:35:10')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0107', 'S007', 'ML05', 'Retail', 180.75, 'inactive', TIMESTAMP '2019-08-05 08:55:40', TIMESTAMP '2020-10-15 11:25:30')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0108', 'S008', 'GT05', 'Food', 270.60, 'active', TIMESTAMP '2021-02-18 10:15:10', TIMESTAMP '2022-04-22 12:50:20')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0109', 'S009', 'IP05', 'Convenience', 305.25, 'active', TIMESTAMP '2020-06-25 07:55:30', TIMESTAMP '2021-08-18 10:20:40')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0110', 'S010', 'KT05', 'Cafe', 220.90, 'under renovation', TIMESTAMP '2019-11-12 09:30:20', TIMESTAMP '2020-12-20 13:15:25')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0111', 'S011', 'SB05', 'Retail', 250.75, 'active', TIMESTAMP '2021-03-15 08:40:10', TIMESTAMP '2022-05-22 12:30:40')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0112', 'S012', 'AS05', 'Food', 190.50, 'inactive', TIMESTAMP '2020-07-05 09:30:20', TIMESTAMP '2021-09-10 14:25:15')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0113', 'S013', 'KB05', 'Convenience', 280.80, 'active', TIMESTAMP '2019-12-18 10:20:25', TIMESTAMP '2020-11-22 12:40:10')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+
+1 row created.
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0115', 'S015', 'KK05', 'Bookstore', 320.25, 'under renovation', TIMESTAMP '2020-01-12 09:40:25', TIMESTAMP '2021-03-22 13:50:30')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0116', 'S016', 'SD05', 'Cafe', 210.10, 'active', TIMESTAMP '2019-08-05 08:55:40', TIMESTAMP '2020-10-15 11:35:20')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0117', 'S017', 'TW05', 'Retail', 305.60, 'inactive', TIMESTAMP '2021-02-18 10:15:10', TIMESTAMP '2022-04-22 12:45:35')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0118', 'S018', 'MR05', 'Food', 195.40, 'active', TIMESTAMP '2020-06-25 07:50:25', TIMESTAMP '2021-08-18 10:20:15')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+
+1 row created.
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0120', 'S020', 'BT05', 'Souvenir', 400.20, 'under renovation', TIMESTAMP '2021-03-15 08:35:20', TIMESTAMP '2022-05-22 11:40:10')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0121', 'S001', 'KL07', 'Bookstore', 320.10, 'active', TIMESTAMP '2020-07-05 09:20:30', TIMESTAMP '2021-09-10 14:05:25')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0122', 'S002', 'PJ07', 'Retail', 250.40, 'inactive', TIMESTAMP '2019-10-12 10:15:20', TIMESTAMP '2020-12-18 12:40:35')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0123', 'S003', 'SA06', 'Food', 195.75, 'active', TIMESTAMP '2021-04-18 08:45:15', TIMESTAMP '2022-06-20 11:30:25')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0124', 'S004', 'SJ06', 'Convenience', 280.20, 'active', TIMESTAMP '2020-07-22 09:30:40', TIMESTAMP '2021-09-15 14:10:50')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0125', 'S005', 'KN06', 'Souvenir', 400.00, 'under renovation', TIMESTAMP '2019-12-18 07:50:30', TIMESTAMP '2020-11-22 12:25:15')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0126', 'S006', 'JB06', 'Bookstore', 320.30, 'active', TIMESTAMP '2021-05-10 10:05:20', TIMESTAMP '2022-06-18 13:50:35')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0127', 'S007', 'ML06', 'Cafe', 210.50, 'inactive', TIMESTAMP '2020-01-12 09:20:25', TIMESTAMP '2021-03-22 12:35:10')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0128', 'S008', 'GT06', 'Retail', 305.75, 'active', TIMESTAMP '2019-08-05 08:55:40', TIMESTAMP '2020-10-15 11:25:30')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0129', 'S009', 'IP06', 'Food', 195.60, 'active', TIMESTAMP '2021-02-18 10:15:10', TIMESTAMP '2022-04-22 12:50:20')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+INSERT INTO shop (shopId, stationId, shopNo, shopType, shopSize, status, createdAt, updatedAt) VALUES ('SH0130', 'S010', 'KT06', 'Convenience', 280.40, 'under renovation', TIMESTAMP '2020-06-25 07:55:30', TIMESTAMP '2021-08-18 10:20:40')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (TEST.UK_SHOP_STATION_NO) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+INSERT INTO staff (staffId, roleId, stationId, firstName, lastName, icPassportNo, phoneNumber, email, hireDate, salary, status, createdAt, updatedAt) VALUES ('ST0494', 'R009', 'S012', 'Timothy', 'Jones', '971003-88-4669', '+60-12-2068175', 'timothy.jones841@example.com', DATE '2021-04-18', 7066.44, 'active', TIMESTAMP '2025-08-22 15:14:56', TIMESTAMFP '2025-08-22 15:14:56')
+                                                                                                                                                                                                                                                                                                                                                                  *
+ERROR at line 1:
+ORA-00917: missing comma 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+SQL> spool off
