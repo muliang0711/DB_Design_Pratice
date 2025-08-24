@@ -137,6 +137,8 @@ CREATE TABLE shop (
   shopId     VARCHAR2(12)  PRIMARY KEY,
   stationId  VARCHAR2(12)  NOT NULL,
   shopNo     VARCHAR2(20)  NOT NULL,
+  shopTenantName VARCHAR2(30) NOT NULL,
+  phoneNumber VARCHAR2(20) NOT NULL,
   shopType   VARCHAR2(20),
   shopSize   NUMBER(8,2),
   status      VARCHAR2(20),
