@@ -1,4 +1,5 @@
-
+-- use to view the income of different route and month according to memberstatus category, and analysis the ticket sold, avarage ticket money, the uses of the point
+-- use for straegy: which route earn the most, the average ticket price is reasonable or not, and the point system bring how much discount
 SET linesize 120
 SET pagesize 100
 ALTER SESSION SET nls_date_format='dd-mm-yyyy';

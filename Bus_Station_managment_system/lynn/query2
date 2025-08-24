@@ -1,27 +1,36 @@
-
+-- categories the customer spending to find the loyality customer
 SET linesize 120
 SET pagesize 100
-ALTER SESSION SET nls_date_format='dd-mm-yyyy';
 
-CREATE OR REPLACE VIEW CancellationAnalysis AS
+CREATE OR REPLACE VIEW StrategicCustomerValue AS
 SELECT
-    r.routeID,
-    r.routeName || ' (' || r.startPoint || ' to ' || r.endPoint || ')' AS route,
-    t.status AS cancellationType,
-    COUNT(*) AS cancellationCount,
-    AVG(MONTHS_BETWEEN(bs.plannedDepartureTime, t.cancellationDate)) AS avgDaysBeforeDeparture,
-    SUM(pr.totalAmount) AS totalRefundAmount,
-    bc.companyName AS busCompany
-FROM
-    Ticket t
-JOIN BusSchedule bs ON t.busScheduleID = bs.busScheduleID
-JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
-JOIN Route r ON rdal.routeID = rdal.routeID
-JOIN Bus b ON (SELECT busID FROM DriverAssignment WHERE busScheduleID = bs.busScheduleID AND ROWNUM = 1) = b.busID
-JOIN BusCompany bc ON b.companyID = bc.companyID
-LEFT JOIN PaymentRecord pr ON t.ticketID = pr.ticketID
-WHERE
-    t.status IN ('Cancelled_By_User', 'Cancelled_By_Company')
-    AND t.cancellationDate IS NOT NULL
-GROUP BY
-    r.routeID, r.routeName, r.startPoint, r.endPoint, t.status, bc.companyName;
+    c.customerId,
+    c.firstName || ' ' || c.lastName AS customerName,
+    c.membershipStatus,
+    bc.companyName,
+    r.routeName,
+    SUM(pr.totalAmount) AS totalSpending,
+    NVL(SUM(pt.pointChange),0) AS totalPointsEarned,
+    COUNT(DISTINCT t.ticketId) AS totalTickets,
+    COUNT(DISTINCT bs.busScheduleId) AS schedulesUsed,
+    ROUND(AVG(pr.totalAmount),2) AS avgSpendPerTrip,
+    CASE 
+      WHEN SUM(pr.totalAmount) > 1000 THEN 'High Value'
+      WHEN SUM(pr.totalAmount) BETWEEN 500 AND 1000 THEN 'Medium Value'
+      ELSE 'Low Value'
+    END AS customerCategory
+FROM customer c
+JOIN ticket t ON c.customerId = t.customerId
+JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
+JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+JOIN route r ON rda.routeId = r.routeId
+JOIN bus b ON rda.assignmentId IN (
+    SELECT assignmentId FROM driverListAssignment WHERE busId = b.busId
+)
+JOIN busCompany bc ON b.companyId = bc.companyId
+LEFT JOIN paymentRecord pr ON t.ticketId = pr.ticketId
+LEFT JOIN pointTransaction pt ON pr.paymentId = pt.paymentId
+GROUP BY c.customerId, c.firstName, c.lastName, c.membershipStatus, bc.companyName, r.routeName;
+
+-- NVL use for process the null value
+-- distinct use to remove dulpicate rows

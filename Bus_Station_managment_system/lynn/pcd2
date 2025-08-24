@@ -1,44 +1,79 @@
+DROP SEQUENCE PaymentID_seq;
+DROP SEQUENCE PaymentID_seq;
+
+CREATE SEQUENCE PaymentID_seq
+MAXVALUE 999999999
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+CREATE SEQUENCE PointTxnID_seq
+MAXVALUE 999999999
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+SET serveroutput on
+SET linesize 120
+SET pagesize 100
+
 CREATE OR REPLACE PROCEDURE ProcessTicketRefund(
-    p_ticketID IN Ticket.ticketID%TYPE,
+    p_ticketID   IN Ticket.ticketID%TYPE,
     p_refundType IN VARCHAR2, 
-    p_adminID IN NUMBER, -
-    p_result OUT VARCHAR2
+    p_adminID    IN VARCHAR2
+    --p_result     OUT VARCHAR2
 )
 AS
-    v_ticketStatus Ticket.status%TYPE;
-    v_paymentID PaymentRecord.paymentID%TYPE;
-    v_totalAmount PaymentRecord.totalAmount%TYPE;
-    v_pointsApplied PaymentRecord.pointsApplied%TYPE;
-    v_pointValue PaymentRecord.pointValue%TYPE;
-    v_customerID PaymentRecord.customerID%TYPE;
-    v_refundAmount PaymentRecord.totalAmount%TYPE;
+    v_ticketStatus   Ticket.status%TYPE;
+    v_paymentID      PaymentRecord.paymentID%TYPE;
+    v_totalAmount    PaymentRecord.totalAmount%TYPE;
+    v_pointsApplied  PaymentRecord.pointsApplied%TYPE;
+    v_pointValue     PaymentRecord.pointValue%TYPE;
+    v_customerID     Ticket.customerID%TYPE;
+    v_refundAmount   NUMBER(8,2);
     v_daysBeforeDeparture NUMBER;
-    v_departureTime BusSchedule.plannedDepartureTime%TYPE;
+    v_departureTime  BusSchedule.plannedDepartureTime%TYPE;
+
+    v_newPaymentID   VARCHAR2(12);
+    v_newPointTxnID  VARCHAR2(12);
+    v_result         VARCHAR2(100);
 BEGIN
     -- Get ticket and payment details
-    SELECT t.status, pr.paymentID, pr.totalAmount, pr.pointsApplied, pr.pointValue,
-           pr.customerID, bs.plannedDepartureTime
-    INTO v_ticketStatus, v_paymentID, v_totalAmount, v_pointsApplied, v_pointValue,
-         v_customerID, v_departureTime
+    SELECT t.status,
+        pr.paymentID,
+        pr.totalAmount,
+        pr.pointsApplied,
+        pr.pointValue,
+        t.customerID,
+        bs.plannedDepartureTime
+    INTO v_ticketStatus,
+        v_paymentID,
+        v_totalAmount,
+        v_pointsApplied,
+        v_pointValue,
+        v_customerID,
+        v_departureTime
     FROM Ticket t
-    JOIN PaymentRecord pr ON t.ticketID = pr.ticketID
-    JOIN BusSchedule bs ON t.busScheduleID = bs.busScheduleID
+    JOIN PaymentRecord pr 
+        ON t.ticketID = pr.ticketID
+    JOIN BusSchedule bs 
+        ON t.busScheduleID = bs.busScheduleID
     WHERE t.ticketID = p_ticketID;
 
+
     -- Check if ticket can be refunded
-    IF v_ticketStatus NOT IN ('Cancelled_By_User', 'Cancelled_By_Company') THEN
-        p_result := 'Error: Ticket is not cancelled';
+    IF LOWER(v_ticketStatus) NOT IN ('cancelled_by_user', 'cancelled_by_company') THEN
+        v_result := 'Error: Ticket is not cancelled';
         RETURN;
     END IF;
 
     -- Calculate days before departure
-    v_daysBeforeDeparture := EXTRACT(DAY FROM (v_departureTime - SYSDATE));
+    v_daysBeforeDeparture := TRUNC(v_departureTime) - TRUNC(SYSDATE);
 
-    -- Calculate refund amount based on policy
-    IF p_refundType = 'full' THEN
+    -- Refund amount based on policy
+    IF LOWER(p_refundType) = 'full' THEN
         v_refundAmount := v_totalAmount;
     ELSE
-        -- Partial refund policy: 80% if >7 days, 50% if >1 day, 0% otherwise
         IF v_daysBeforeDeparture > 7 THEN
             v_refundAmount := v_totalAmount * 0.8;
         ELSIF v_daysBeforeDeparture > 1 THEN
@@ -48,50 +83,62 @@ BEGIN
         END IF;
     END IF;
 
-    DECLARE
-        v_payment_seq PaymentRecord.paymentID%TYPE;
-        v_pointtxn_seq PointTransaction.pointTxnID%TYPE;
-    BEGIN
-        -- Always use max ID + 1 approach
-        SELECT NVL(MAX(paymentID), 0) + 1 INTO v_payment_seq FROM PaymentRecord;
-        SELECT NVL(MAX(pointTxnID), 0) + 1 INTO v_pointtxn_seq FROM PointTransaction;
+    -- Generate new IDs (use SEQUENCE in real system)
+    SELECT 'RPY' || PaymentID_seq.NEXTVAL
+    INTO v_newPaymentID
+    FROM dual;
+    
+    SELECT 'RPT' || PointTxnID_seq.NEXTVAL
+    INTO v_newPointTxnID
+    FROM dual;
 
-        -- Create refund payment record
-        INSERT INTO PaymentRecord (
-            paymentID, customerID, ticketID, totalAmount, cashAmount,
-            pointsApplied, pointValue, status, paymentTime,
-            receiptNo, remarks, paymentMethod, type
+    -- Insert refund payment record
+    INSERT INTO PaymentRecord (
+        paymentID, customerID, ticketID, totalAmount, cashAmount,
+        pointsApplied, pointValue, status, paymentTime,
+        receiptNo, remarks, paymentMethod, type
+    ) VALUES (
+        v_newPaymentID, v_customerID, p_ticketID, v_refundAmount, v_refundAmount,
+        0, 0, 'Completed', SYSDATE,
+        'REF-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || p_ticketID,
+        'Refund for ticket ' || p_ticketID || ' processed by admin ' || p_adminID,
+        'Bank Transfer', 'Refund'
+    );
+
+    -- Return points if any were used
+    IF v_pointsApplied > 0 THEN
+        INSERT INTO PointTransaction (
+            pointTxnID, customerID, paymentID, pointChange, source, remarks, createdAt
         ) VALUES (
-            v_payment_seq, v_customerID, p_ticketID, -v_refundAmount, -v_refundAmount,
-            0, 0, 'Completed', SYSDATE,
-            'REF-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || p_ticketID,
-            'Refund for ticket ' || p_ticketID || ' processed by admin ' || p_adminID,
-            'Bank Transfer', 'Refund'
+            v_newPointTxnID, v_customerID, v_newPaymentID, v_pointsApplied,
+            'Ticket Refund', 'Points returned for ticket ' || p_ticketID,
+            SYSDATE
         );
 
-        -- Return points if any were used
-        IF v_pointsApplied > 0 THEN
-            -- Add point transaction
-            INSERT INTO PointTransaction (
-                pointTxnID, customerID, paymentID, pointChange, source, remarks
-            ) VALUES (
-                v_pointtxn_seq, v_customerID, v_paymentID, v_pointsApplied,
-                'Ticket Refund', 'Points returned for ticket ' || p_ticketID
-            );
+        UPDATE Customer
+        SET pointBalance = pointBalance + v_pointsApplied,
+            updatedAt = SYSDATE
+        WHERE customerID = v_customerID;
+    END IF;
 
-            -- Update customer point balance
-            UPDATE Customer
-            SET pointBalance = pointBalance + v_pointsApplied,
-                updatedAt = SYSDATE
-            WHERE customerID = v_customerID;
-        END IF;
-    END;
-
-    p_result := 'Success: Refund processed for amount ' || v_refundAmount;
+    v_result := 'Success: Refund processed for amount ' || v_refundAmount;
     COMMIT;
+DBMS_OUTPUT.PUT_LINE(v_result);
+
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
-        p_result := 'Error: ' || SQLERRM;
+        v_result := 'Error: ' || SQLERRM;
 END ProcessTicketRefund;
 /
+
+
+
+EXEC ProcessTicketRefund('T000001', 'partial', 'A123');
+
+
+-- v_result     OUT VARCHAR2 : output the parameters
+--user need to input the data of p_??? 
+-- as is use to store the data 
+-- when other : for example table is not found ,duplicate insertion or any compilation error
+-- SQLERRM : return error message
