@@ -265,7 +265,7 @@ CREATE TABLE ticket (
   CONSTRAINT FK_TKT_EXT_TO  FOREIGN KEY (extendedToId)  REFERENCES busSchedule (busScheduleId),
   CONSTRAINT CHK_TKT_TYPE   CHECK (LOWER(type) IN ('regular','booking')),
   CONSTRAINT CHK_TKT_STATUS CHECK (LOWER(status) IN (
-    'cancelled_by_company','cancelled_by_user','booked_extended','been_bought' ，'on_selling'
+    'cancelled_by_company','cancelled_by_user','booked_extended','been_bought', 'on_selling'
   ))
 );
 
@@ -280,7 +280,7 @@ ADD CONSTRAINT CHK_TKT_STATUS CHECK (
     'booked_extended',
     'been_bought',
     'on_selling'
-  )
+  )
 );
 
 CREATE TABLE paymentRecord (
