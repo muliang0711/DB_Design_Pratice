@@ -589,3 +589,7 @@ INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-08', 'YYYY-MM'), 'SH0194', 'ST0343', 501.50, 'pending', TO_TIMESTAMP('2025-08-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), NULL);
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-08', 'YYYY-MM'), 'SH0195', 'ST0344', 391.80, 'pending', TO_TIMESTAMP('2025-08-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), NULL);
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, createdAt, collectionDate) VALUES (TO_DATE('2025-08', 'YYYY-MM'), 'SH0196', 'ST0360', 560.60, 'pending', TO_TIMESTAMP('2025-08-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), NULL);
+
+UPDATE rentalCollection
+SET status = "unpaid"
+WHERE status = "overdue" OR status = "pending";
