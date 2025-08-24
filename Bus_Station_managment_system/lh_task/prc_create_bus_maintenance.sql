@@ -1,6 +1,13 @@
 CREATE OR REPLACE TYPE t_staffList AS VARRAY(10) OF NUMBER;
 /
 
+CREATE SEQUENCE MaintenanceID_Seq
+MINVALUE 501
+MAXVALUE 999999999999999999999999999
+START WITH 501
+INCREMENT BY 1
+NOCACHE;
+
 CREATE OR REPLACE PROCEDURE prc_create_bus_maintenance(
     in_busID IN Bus.busID%TYPE,
     in_serviceID IN MaintenanceService.serviceID%TYPE,
@@ -60,10 +67,8 @@ BEGIN
     END IF;
     CLOSE c_bus_exists;
 
-    -- Generate new maintenanceID (same as before)
-    SELECT NVL(MAX(maintenanceID), 0) + 1
-    INTO v_maintenanceID
-    FROM BusMaintenance;
+    -- Generate new maintenanceID
+    v_maintenanceID := MaintenanceID_Seq.nextval;
 
     -- Insert BusMaintenance
     INSERT INTO BusMaintenance (maintenanceID, busID, serviceID)
