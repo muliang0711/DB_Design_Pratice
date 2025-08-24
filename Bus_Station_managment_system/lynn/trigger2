@@ -7,10 +7,11 @@ DECLARE
     v_paymentAmount NUMBER(8,2);
     v_pointsUsed NUMBER(5);
 BEGIN
-    -- For point redemption (negative pointChange)
+    -- For point redemption (negative pointChange: reedeem,consumption deduction)
     IF :NEW.pointChange < 0 THEN
         -- Get current balance
-        SELECT pointBalance INTO v_currentBalance
+        SELECT pointBalance 
+        INTO v_currentBalance
         FROM Customer
         WHERE customerID = :NEW.customerID;
         
@@ -42,3 +43,19 @@ BEGIN
         updatedAt = SYSDATE
     WHERE customerID = :NEW.customerID;
 END;
+/
+-- redeemtion cannot > customer own
+-- redeemtion only after the payment is done
+
+
+-- use
+INSERT INTO PaymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, 
+                           pointsApplied, pointValue, status, paymentTime, receiptNo, paymentMethod, type)
+VALUES ('P001', 'CU0003', 'T000000200', 200, 170, 30, 30, 'Completed', SYSTIMESTAMP, 'R001', 'Cash', 'Ticket');
+INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
+VALUES ('PT001', 'CU0003', 'P001', -30, 'Payment Redeem', 'Used points for ticket payment');
+
+--invalid  example
+
+INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
+VALUES ('PT002', 'CU0002', 'P001', -50, 'Payment Redeem', 'Trying to use more points');

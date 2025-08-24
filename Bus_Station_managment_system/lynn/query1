@@ -30,3 +30,4 @@ GROUP BY
     TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM')
 ORDER BY 
     month, totalRevenue DESC;
+    
