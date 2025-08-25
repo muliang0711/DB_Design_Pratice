@@ -1,0 +1,7 @@
+CREATE OR REPLACE VIEW vw_ShopCategories AS
+SELECT 
+    shopType,
+    COUNT(*) AS totalShops,
+    LISTAGG(shopNo, ', ') WITHIN GROUP (ORDER BY shopNo) AS shopNumbers
+FROM shop
+GROUP BY shopType;
