@@ -11,3 +11,9 @@ SELECT
 FROM ticket t
 LEFT JOIN customer c 
     ON t.customerId = c.customerId;
+
+CREATE INDEX IDX_TICKET_STATUS
+  ON ticket(status);
+
+
+
