@@ -1,5 +1,5 @@
-COLUMN "Rental Month" FORMAT A10 HEADING 'Month'
-COLUMN "Total Collections" FORMAT 9999 HEADING 'Collections'
+COLUMN "Rental Month" HEADING 'Month'
+COLUMN "Total Collections" HEADING 'Collections'
 COLUMN "Total Amount" FORMAT 999,999.99 HEADING 'Total (RM)'
 COLUMN "Total Paid" FORMAT 999,999.99 HEADING 'Paid (RM)'
 COLUMN "Total Unpaid" FORMAT 999,999.99 HEADING 'Unpaid (RM)'
