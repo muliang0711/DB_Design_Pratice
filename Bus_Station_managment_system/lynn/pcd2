@@ -99,11 +99,12 @@ BEGIN
         receiptNo, remarks, paymentMethod, type
     ) VALUES (
         v_newPaymentID, v_customerID, p_ticketID, v_refundAmount, v_refundAmount,
-        0, 0, 'Completed', SYSDATE,
+        0, 0, 'completed', SYSDATE,
         'REF-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || p_ticketID,
         'Refund for ticket ' || p_ticketID || ' processed by admin ' || p_adminID,
         'Bank Transfer', 'Refund'
     );
+
 
     -- Return points if any were used
     IF v_pointsApplied > 0 THEN
