@@ -84,7 +84,7 @@ END;
 
 
 
-CREATE OR REPLACE PROCEDURE GenerateSmartDelayReport_CursorStyle(
+CREATE OR REPLACE PROCEDURE Report2(
   p_routeID IN VARCHAR2
 ) IS
   CURSOR c_route IS
