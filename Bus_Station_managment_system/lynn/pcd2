@@ -135,6 +135,24 @@ END ProcessTicketRefund;
 /
 
 
+UPDATE ticket SET customerId = 'CU0415' , status = 'cancelled_by_company' WHERE ticketId = 'T00000147327';
+EXEC ProcessTicketRefund('T00000147327', 'full');
+SELECT *
+FROM PaymentRecord
+WHERE ticketID = 'T00000147327'
+ORDER BY paymentTime DESC;
 
-EXEC ProcessTicketRefund('T00000281318', 'full');
+SELECT *
+FROM PointTransaction
+WHERE customerID = 'CU0415'
+ORDER BY createdAt DESC;
+
+SELECT customerID, pointBalance, updatedAt
+FROM Customer
+WHERE customerID = 'CU0415';
+
+--fail
+UPDATE ticket SET customerId = 'CU0111' , price    = 20.50, type= 'regular',status= 'been_bought' WHERE ticketId = 'T00000147023';
+EXEC ProcessTicketRefund('T00000147327', 'full');
+
 

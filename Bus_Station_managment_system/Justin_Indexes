@@ -1,0 +1,5 @@
+CREATE INDEX ix_busstation_name_upper
+  ON busStation (UPPER(stationName));
+
+CREATE INDEX ix_busplatform_name_upper
+  ON busPlatform (UPPER(platformName));
