@@ -135,7 +135,71 @@ END sp_deactivate_platform;
 
 
 
+-- delay procedure
+CREATE OR REPLACE PROCEDURE sp_delay_schedules_at_station (
+  p_station_id    IN busStation.stationId%TYPE,
+  p_delay_minutes IN NUMBER,                       -- can be negative
+  p_from          IN TIMESTAMP DEFAULT SYSTIMESTAMP,
+  p_to            IN TIMESTAMP DEFAULT (SYSTIMESTAMP + NUMTODSINTERVAL(7,'DAY')),
+  p_reason        IN VARCHAR2  DEFAULT 'operational delay'
+) AS
+  v_exists   NUMBER;
+  v_affected NUMBER := 0;
+BEGIN
+  -- Validate station
+  SELECT COUNT(*) INTO v_exists FROM busStation WHERE stationId = p_station_id;
+  IF v_exists = 0 THEN
+    RAISE_APPLICATION_ERROR(-20101, 'Station '||p_station_id||' does not exist.');
+  END IF;
 
+  IF p_delay_minutes = 0 THEN
+    DBMS_OUTPUT.PUT_LINE('INFO: delay is 0 minute(s) - nothing to do.');
+    RETURN;
+  END IF;
+
+  DBMS_OUTPUT.PUT_LINE(
+    'Delaying schedules touching station '||p_station_id||
+    ' by '||p_delay_minutes||' minute(s). Window: '||
+    TO_CHAR(p_from, 'DD-MON-YYYY HH24:MI:SS')||' -> '||
+    TO_CHAR(p_to,   'DD-MON-YYYY HH24:MI:SS')||'.'
+  );
+
+  -- Update planned departures
+  UPDATE busSchedule bs
+  SET
+    bs.plannedDepartureTime = bs.plannedDepartureTime + NUMTODSINTERVAL(p_delay_minutes,'MINUTE'),
+    bs.plannedArrivalTime   = CASE
+                                WHEN bs.plannedArrivalTime IS NOT NULL
+                                THEN bs.plannedArrivalTime + NUMTODSINTERVAL(p_delay_minutes,'MINUTE')
+                                ELSE bs.plannedArrivalTime
+                              END,
+    bs.remarks = NVL(bs.remarks,'') ||
+                 CASE WHEN bs.remarks IS NULL THEN '' ELSE ' | ' END ||
+                 'Delayed '||p_delay_minutes||'m due to: '||p_reason
+  WHERE
+    LOWER(bs.status) = 'planned'
+    AND bs.plannedDepartureTime BETWEEN p_from AND p_to
+    AND EXISTS (
+          SELECT 1
+          FROM   routeDriverAssignmentList rda
+          JOIN   routeStation rs ON rs.routeId = rda.routeId
+          JOIN   busPlatform bp ON bp.platformId = rs.platformId
+          WHERE  rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+            AND  bp.stationId = p_station_id
+        );
+
+  v_affected := SQL%ROWCOUNT;
+
+  COMMIT;
+  DBMS_OUTPUT.PUT_LINE('SUCCESS: shifted '||v_affected||' schedule(s).');
+
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    DBMS_OUTPUT.PUT_LINE('ERROR: sp_delay_schedules_at_station failed: '||SQLERRM);
+    RAISE;
+END;
+/
 
 
 
@@ -205,3 +269,4 @@ BEGIN
   END IF;
 END;
 /
+
