@@ -1,0 +1,328 @@
+CREATE OR REPLACE PROCEDURE prcAddRentalCollection IS
+  CURSOR shop_cursor IS
+    SELECT shopID
+    FROM Shop
+    WHERE LOWER(status) = 'active';
+
+  v_shopID   Shop.shopID%TYPE;
+  v_exists   NUMBER;
+BEGIN
+  FOR shop_rec IN shop_cursor LOOP
+    v_shopID := shop_rec.shopID;
+
+    SELECT COUNT(*) INTO v_exists
+    FROM RentalCollection
+    WHERE shopID = v_shopID
+      AND (
+            TRUNC(rentalMonth, 'MM') = TRUNC(SYSDATE, 'MM')
+            OR TRUNC(rentalMonth, 'YYYY') = TRUNC(SYSDATE, 'YYYY')
+          );
+
+    IF v_exists = 0 THEN
+      INSERT INTO RentalCollection (
+        rentalMonth, shopId, staffId, rentalAmount, status, collectionDate
+      ) VALUES (
+        SYSDATE, v_shopID, NULL, NULL, 'unpaid', NULL
+      );
+    ELSE
+      RAISE_APPLICATION_ERROR(-20001,
+        'Rental collection record already exists in month: ' || TO_CHAR(SYSDATE, 'YYYY-MM'));
+    END IF;
+  END LOOP;
+
+  COMMIT;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+END;
+/
+
+-- Sequence for shop
+
+CREATE SEQUENCE shopId_seq
+MINVALUE 200
+MAXVALUE 999
+INCREMENT BY 1
+NOCACHE;
+
+CREATE OR REPLACE TRIGGER trg_set_timeStamp
+BEFORE INSERT OR UPDATE ON RentalCollection
+FOR EACH ROW
+DECLARE
+  v_shopSize Shop.shopSize%TYPE;
+  v_count      NUMBER;
+BEGIN
+  IF INSERTING THEN
+    SELECT shopSize INTO v_shopSize
+    FROM Shop
+    WHERE shopID = :NEW.shopID;
+
+    :NEW.rentalAmount := v_shopSize * 2;
+
+  ELSIF UPDATING THEN
+    IF LOWER(:NEW.status) = 'paid'
+       AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
+       
+       :NEW.collectionDate := SYSTIMESTAMP;
+
+       SELECT COUNT(*) INTO v_count
+       FROM Staff
+       WHERE staffId = :NEW.staffId
+    ;
+
+       IF v_count = 0 THEN
+           RAISE_APPLICATION_ERROR(-20002, 'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
+       END IF;
+    END IF;
+  END IF;
+END;
+/
+
+
+CREATE OR REPLACE PROCEDURE prcAddShop(
+  v_stationId     IN shop.stationId%TYPE,
+  v_shopNo        IN shop.shopNo%TYPE,
+  v_tenantName    IN shop.shopTenantName%TYPE,
+  v_phoneNumber   IN shop.phoneNumber%TYPE,
+  v_shopType      IN shop.shopType%TYPE,
+  v_shopSize      IN VARCHAR2
+) IS
+
+  v_actualSize shop.shopSize%TYPE;
+  v_newShopId shop.shopId%TYPE;
+
+  ex_invalid_size      EXCEPTION;  
+  ex_invalid_phone     EXCEPTION;  
+  ex_missing_tenant    EXCEPTION;  
+  ex_invalid_stationId EXCEPTION;  
+   
+  BEGIN
+  v_newShopId := 'SH' || TO_CHAR(shopId_seq.NEXTVAL, 'FM0000');
+  BEGIN
+    v_actualSize := TO_NUMBER(v_shopSize);
+  EXCEPTION
+    WHEN VALUE_ERROR THEN
+      RAISE ex_invalid_size;
+  END;
+
+  IF v_actualSize < 200 OR v_actualSize > 500 THEN
+    RAISE ex_invalid_size;
+  END IF;
+
+  IF v_tenantName IS NULL OR TRIM(v_tenantName) = '' THEN
+    RAISE ex_missing_tenant;
+  END IF;
+
+  IF NOT REGEXP_LIKE(v_phoneNumber, '^[0-9]{10,12}$') THEN
+    RAISE ex_invalid_phone;
+  END IF;
+
+  DECLARE
+    v_count NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO v_count FROM busStation WHERE stationId = v_stationId;
+    IF v_count = 0 THEN
+      RAISE ex_invalid_stationId;
+    END IF;
+  END;
+
+  INSERT INTO shop (
+    shopId, stationId, shopNo, shopTenantName, phoneNumber, shopType, shopSize, status, createdAt, updatedAt
+  ) VALUES (
+    v_newShopId,
+    v_stationId,
+    v_shopNo,
+    v_tenantName,
+    v_phoneNumber,
+    v_shopType,
+    v_actualSize,
+    'active',
+    SYSDATE,
+    SYSDATE
+  );
+
+  DBMS_OUTPUT.PUT_LINE('Shop ' || v_shopNo || ' added successfully!');
+
+EXCEPTION
+  WHEN ex_invalid_size THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Shop size must be a number between 200 and 500.');
+  WHEN ex_invalid_phone THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Phone number must be 10–12 digits.');
+  WHEN ex_missing_tenant THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Tenant name cannot be empty.');
+  WHEN ex_invalid_stationId THEN
+    DBMS_OUTPUT.PUT_LINE('Error: Station ID does not exist.');
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+END;
+/
+
+exec prcAddShop('S001','KA10', 'KAI', '60123456789', 'Food', 223.1);
+exec prcAddShop('S100','KA10', 'KAI', '60123456789', 'Food', 223.1);
+exec prcAddShop('S001','KA10', '', '60123456789', 'Food', 223.1);
+exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 223.1);
+exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 100.1);
+exec prcAddShop('');
+
+CREATE OR REPLACE PROCEDURE prcShowRentals IS
+  v_shopID  Shop.shopID%TYPE;
+  v_staffID RentalCollection.staffID%TYPE;
+  v_amount  RentalCollection.rentalAmount%TYPE;
+  v_status  RentalCollection.status%TYPE;
+  v_rentalMonth RentalCollection.rentalMonth%TYPE;
+  v_collectionDate RentalCollection.collectionDate%TYPE;
+  v_total   NUMBER;
+  v_count   NUMBER;
+
+  CURSOR shopCursor IS
+    SELECT shopID
+    FROM Shop
+    WHERE status = 'active'
+    ORDER BY shopID;
+
+  CURSOR rentCursor(p_shopID Shop.shopID%TYPE) IS
+     SELECT rentalMonth, staffID, rentalAmount, status, collectionDate
+     FROM RentalCollection
+     WHERE shopID = p_shopID
+     ORDER BY collectionDate;
+
+BEGIN
+  OPEN shopCursor;
+  LOOP
+    FETCH shopCursor INTO v_shopID;
+    EXIT WHEN shopCursor%NOTFOUND;
+
+    v_total := 0;
+    v_count := 0;
+
+    DBMS_OUTPUT.PUT_LINE(CHR(10));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 71, '='));
+    DBMS_OUTPUT.PUT_LINE('Shop Rental Record for Shop ID: ' || v_shopID);
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 71, '='));
+        DBMS_OUTPUT.PUT_LINE(
+        RPAD('Staff ID', 12) ||
+        RPAD('Amount', 10) ||
+        RPAD('Rental Month', 15) ||
+        RPAD('Status', 12) ||
+        RPAD('Paid At', 15)
+    );
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 71, '-'));
+
+    BEGIN
+      OPEN rentCursor(v_shopID);
+      LOOP
+        FETCH rentCursor INTO v_rentalMonth, v_staffID, v_amount, v_status, v_collectionDate;
+        EXIT WHEN rentCursor%NOTFOUND;
+
+        IF LOWER(v_status) = 'paid' THEN
+          v_total := v_total + v_amount;
+        END IF;
+
+        v_count := v_count + 1;
+
+        DBMS_OUTPUT.PUT_LINE(
+          (NVL(v_staffID, 'unknown')) ||
+          RPAD(NVL(TO_CHAR(v_amount, '$9,999.00'), '$0.00'), 15) ||
+          RPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 15) ||
+          RPAD(v_status, 12) ||
+          RPAD(NVL(TO_CHAR(v_collectionDate, 'YYYY-MM-DD'), '-'), 15)
+        );
+      END LOOP;
+      CLOSE rentCursor;
+    END;
+
+    IF v_count = 0 THEN
+      DBMS_OUTPUT.PUT_LINE('No rental records found for Shop ID: ' || v_shopID);
+    ELSE
+      DBMS_OUTPUT.PUT_LINE(RPAD('-', 71, '-'));
+      DBMS_OUTPUT.PUT_LINE('Total Records: ' || v_count);
+      DBMS_OUTPUT.PUT_LINE('Total Collected: ' || (NVL(TO_CHAR(v_total, '$999,999.00'), '$0.00')));
+    END IF;
+  END LOOP;
+  CLOSE shopCursor;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE prcShowUnpaidRentals IS
+  CURSOR unpaidCursor IS
+    SELECT s.shopID, r.rentalMonth, r.rentalAmount, s.shopTenantName, s.phoneNumber
+    FROM Shop s
+    JOIN RentalCollection r ON s.shopID = r.shopID
+    WHERE LOWER(r.status) = 'unpaid'
+    ORDER BY r.rentalMonth, s.shopID;
+
+  v_lastMonth DATE := NULL;
+  v_monthTotal NUMBER := 0;
+BEGIN
+  DBMS_OUTPUT.PUT_LINE(CHR(10));
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
+  DBMS_OUTPUT.PUT_LINE('List Of Shops With Unpaid Rentals (GROUPED BY MONTH)');
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
+
+  FOR u_rec IN unpaidCursor LOOP
+    IF v_lastMonth IS NULL OR TRUNC(u_rec.rentalMonth, 'MM') <> v_lastMonth THEN
+      IF v_lastMonth IS NOT NULL THEN
+        DBMS_OUTPUT.PUT_LINE(RPAD('-', 80, '-'));
+        DBMS_OUTPUT.PUT_LINE('Monthly Subtotal: ' || TO_CHAR(v_monthTotal, '$999,999.00'));
+        DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
+        DBMS_OUTPUT.PUT_LINE(CHR(10));
+      END IF;
+
+      v_lastMonth := TRUNC(u_rec.rentalMonth, 'MM');
+      v_monthTotal := 0;
+
+      DBMS_OUTPUT.PUT_LINE(LPAD('-', 80, '-'));
+      DBMS_OUTPUT.PUT_LINE('>>> Month: ' || TO_CHAR(v_lastMonth, 'Month YYYY'));
+      DBMS_OUTPUT.PUT_LINE(LPAD('-', 80, '-'));
+      DBMS_OUTPUT.PUT_LINE(RPAD('Shop ID', 12) || RPAD('Unpaid Amount', 20) || RPAD('Tenant Name',20) || LPAD('Phone Number', 25));
+      DBMS_OUTPUT.PUT_LINE(RPAD('-', 80, '-'));
+    END IF;
+
+    v_monthTotal := v_monthTotal + u_rec.rentalAmount;
+
+    DBMS_OUTPUT.PUT_LINE(
+      RPAD(u_rec.shopID, 12) ||
+      RPAD(TO_CHAR(u_rec.rentalAmount, '$999,999.00'), 20) ||
+      RPAD(u_rec.shopTenantName, 20) || 
+      LPAD(u_rec.phoneNumber, 25)
+    );
+  END LOOP;
+
+  -- final subtotal after loop
+  IF v_lastMonth IS NOT NULL THEN
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', 80, '-'));
+    DBMS_OUTPUT.PUT_LINE('Monthly Subtotal: ' || TO_CHAR(v_monthTotal, '$999,999.00'));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
+  END IF;
+
+  DBMS_OUTPUT.PUT_LINE(CHR(10));
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
+  DBMS_OUTPUT.PUT_LINE('END OF UNPAID RENTALS REPORT');
+  DBMS_OUTPUT.PUT_LINE(LPAD('=', 80, '='));
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/
+
+CREATE OR REPLACE TRIGGER trgAutoAssignRentalCollection
+AFTER INSERT ON shop
+FOR EACH ROW
+DECLARE
+  v_day NUMBER;
+BEGIN
+  INSERT INTO rentalCollection (
+    rentalMonth, shopId, staffId, rentalAmount, status, collectionDate
+  ) VALUES (
+    SYSDATE, :NEW.shopId, NULL, 400, 'unpaid', NULL
+  );
+END;
+/
