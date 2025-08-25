@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE t_staffList AS VARRAY(10) OF VARCHAR(12);
+CREATE OR REPLACE TYPE t_staffList AS VARRAY(10) OF VARCHAR2(12);
 /
 
 
@@ -14,7 +14,7 @@ CREATE OR REPLACE PROCEDURE prc_create_bus_maintenance(
         FROM Staff s
         JOIN StaffRole r USING(roleID)
         WHERE s.staffID = p_staffID
-        AND r.roleName = 'Maintenance worker';
+        AND LOWER(r.roleName) = 'maintenance technician';
 
     CURSOR c_service_exists IS
         SELECT 1 FROM MaintenanceService WHERE serviceID = in_serviceID;
@@ -64,10 +64,13 @@ BEGIN
 
     -- Generate new maintenanceID
     v_maintenanceID := 'M' || TO_CHAR(MaintenanceID_Seq.nextval, 'FM00000');
+    DBMS_OUTPUT.PUT_LINE('v_maintenanceID: ' || v_maintenanceID);
 
     -- Insert BusMaintenance
     INSERT INTO BusMaintenance (maintenanceID, busID, serviceID)
     VALUES (v_maintenanceID, in_busID, in_serviceID);
+    -- SYSTIMESTAMP is TIMESTAMP WITH TIME ZONE, so
+    -- need to cast it as TIMESTAMP, the data type of maintenanceDoneDate.
 
     DBMS_OUTPUT.PUT_LINE('Inserted BusMaintenance record with ID ' || v_maintenanceID);
 
@@ -99,3 +102,6 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('ERROR: ' || SQLERRM);
 END;
 /
+
+-- test run procedure
+EXEC prc_create_bus_maintenance('B0001', 'S001', t_staffList('ST0002', 'ST0009', 'ST0034'));
