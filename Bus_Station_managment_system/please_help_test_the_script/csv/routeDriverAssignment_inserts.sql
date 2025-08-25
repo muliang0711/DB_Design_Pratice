@@ -7998,3 +7998,5 @@ INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignm
 VALUES ('RDA003999', 'R3999', 'A003999', 'daily', '1,2,3,4,5,6,7', TO_DATE('2027-01-24', 'YYYY-MM-DD'), TO_DATE('2027-01-24', 'YYYY-MM-DD'), 'active', 1784.14, NULL);
 INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks)
 VALUES ('RDA004000', 'R4000', 'A004000', 'weekly', '2,7', TO_DATE('2027-01-24', 'YYYY-MM-DD'), TO_DATE('2027-01-24', 'YYYY-MM-DD'), 'active', 1557.58, NULL);
+INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks)
+VALUES ('RDA004001', 'R1000', 'A001000', 'weekly', '2,7', TO_DATE('2027-01-24', 'YYYY-MM-DD'), TO_DATE('2027-01-24', 'YYYY-MM-DD'), 'active', 1557.58, NULL);
