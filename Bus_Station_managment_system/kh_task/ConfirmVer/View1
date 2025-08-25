@@ -1,3 +1,7 @@
+COLUMN shopType FORMAT A15 HEADING 'Shop Type'
+COLUMN totalShops FORMAT 999 HEADING 'Total'
+COLUMN shopNumbers FORMAT A50 HEADING 'Shop Numbers'
+
 CREATE OR REPLACE VIEW vw_ShopCategories AS
 SELECT 
     shopType,
