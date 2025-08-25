@@ -145,6 +145,7 @@ EXEC ProcessTicketRefund('T00000281318', 'partial', 'A123');
 -- when other : for example table is not found ,duplicate insertion or any compilation error
 -- SQLERRM : return error message
 
+UPDATE 
 
 Test Case : EXEC ProcessTicketRefund('T00000281318', 'partial', 'A123');
 REsult : Success on changing ticket status from been bought to pending 

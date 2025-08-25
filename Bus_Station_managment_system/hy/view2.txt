@@ -1,0 +1,13 @@
+CREATE OR REPLACE VIEW v_ticket_overview AS
+SELECT 
+    t.ticketId,
+    t.busScheduleId,
+    c.firstName || ' ' || c.lastName AS customerName,
+    t.seatNo,
+    t.price,
+    t.type,
+    t.status,
+    t.createdAt
+FROM ticket t
+LEFT JOIN customer c 
+    ON t.customerId = c.customerId;
