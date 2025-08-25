@@ -80,6 +80,13 @@ END;
 
 CREATE OR REPLACE PROCEDURE prc_report_worker_performance IS
 
+    -- Variables to hold data
+    v_worker   c_workers%ROWTYPE;
+    v_jobs     c_jobs%ROWTYPE;
+
+    -- Bridge between outer and inner cursors
+    v_staffID  Staff.staffID%TYPE;
+
     -- Outer cursor: all staff who are maintenance workers
     CURSOR c_workers IS
         SELECT s.staffId, s.firstName, s.lastName, s.hireDate
@@ -94,18 +101,12 @@ CREATE OR REPLACE PROCEDURE prc_report_worker_performance IS
     -- Inner cursor: jobs done by a particular staff
     CURSOR c_jobs IS
         SELECT COUNT(*) AS total_jobs,
-               SUM(actualCost + additionalCost) AS total_cost,
-               SUM(CASE WHEN maintenanceDoneDate >= ADD_MONTHS(TRUNC(SYSDATE), -12) 
+               SUM(bm.actualCost + bm.additionalCost) AS total_cost,
+               SUM(CASE WHEN bm.maintenanceDoneDate >= ADD_MONTHS(TRUNC(SYSDATE), -12) 
                         THEN 1 ELSE 0 END) AS jobs_past_year
-        FROM maintenanceService
-        WHERE staffId = v_staffID;
-
-    -- Variables to hold data
-    v_worker   c_workers%ROWTYPE;
-    v_jobs     c_jobs%ROWTYPE;
-
-    -- Bridge between outer and inner cursors
-    v_staffID  Staff.staffID%TYPE;
+        FROM BusMaintenance bm 
+        JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
+        WHERE msa.staffID = v_staffID;    
 
 BEGIN
     -- Loop over all workers
@@ -120,7 +121,7 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('Joined:  ' || TO_CHAR(v_worker.hireDate, 'DD/MM/YYYY'));
         DBMS_OUTPUT.PUT_LINE('========================');
 
-        v_staffID = v_worker.staffID;
+        v_staffID := v_worker.staffID;
 
         -- Nested cursor: jobs for this worker
         OPEN c_jobs;

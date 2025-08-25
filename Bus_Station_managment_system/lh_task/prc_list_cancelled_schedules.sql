@@ -62,7 +62,7 @@ BEGIN
     FROM BusCompany 
     WHERE companyID = v_companyID;
 
-    IF NOT v_companyExists THEN 
+    IF v_companyExists = 0 THEN 
         RAISE_APPLICATION_ERROR(-20001, 'Provided company ID does not exist!');
     END IF;
 
