@@ -19,7 +19,7 @@ SET pagesize 100
 
 CREATE OR REPLACE PROCEDURE ProcessTicketRefund(
     p_ticketID   IN Ticket.ticketID%TYPE,
-    p_refundType IN VARCHAR2, 
+    p_refundType IN VARCHAR2 
    
     --p_result     OUT VARCHAR2
 )
