@@ -1,5 +1,5 @@
 -- Sequence
-@"Bus_Station_managment_system\lh_task\seq_,maintenanceID.sql"
+@"Bus_Station_managment_system\lh_task\seq_maintenanceID.sql"
 
 -- triggers
 @"Bus_Station_managment_system\lh_task\trg_on_bus_start_maintenance.sql"
