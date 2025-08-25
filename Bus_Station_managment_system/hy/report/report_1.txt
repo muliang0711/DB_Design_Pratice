@@ -167,7 +167,6 @@ CREATE OR REPLACE PROCEDURE Report2(
            ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
     WHERE  rdal.routeId = p_routeID;
 
-  /* TIMESTAMP -> DATE 再相减，得到天数，乘 1440 得分钟 */
   CURSOR c_tripLog(p_scheduleID VARCHAR2) IS
     SELECT status,
            remarks,
@@ -272,7 +271,6 @@ BEGIN
     v_delayReasons := NULL; 
     v_skipReasons  := NULL;
 
-    /* 注意：tr 是只读记录，不能对 tr 的字段赋值 */
     FOR tr IN c_tripLog(v_schedID) LOOP
       IF UPPER(tr.status) = 'DELAYED' THEN
         v_delayCount := v_delayCount + 1;
