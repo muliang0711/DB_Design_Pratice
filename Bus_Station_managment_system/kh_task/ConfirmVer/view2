@@ -1,0 +1,10 @@
+CREATE OR REPLACE VIEW vw_RentalSummary AS
+SELECT 
+    rentalMonth,
+    COUNT(*) AS totalCollections,
+    SUM(rentalAmount) AS totalAmount,
+    SUM(CASE WHEN status = 'paid' THEN rentalAmount ELSE 0 END) AS totalPaid,
+    SUM(CASE WHEN status <> 'paid' THEN rentalAmount ELSE 0 END) AS totalUnpaid
+FROM rentalCollection
+GROUP BY rentalMonth
+ORDER BY rentalMonth;
