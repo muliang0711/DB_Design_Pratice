@@ -65,6 +65,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
     DBMS_OUTPUT.PUT_LINE('TOTAL TICKETS SOLD: ' || v_totalSeats || ', TOTAL REVENUE: ' || TO_CHAR(v_totalRevenue,'999,999,999.99'));
     DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
+
 END;
 /
 

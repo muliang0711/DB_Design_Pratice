@@ -11,8 +11,8 @@ SELECT
     r.routeName,
     SUM(pr.totalAmount) AS totalSpending,
     NVL(SUM(pt.pointChange),0) AS totalPointsEarned,
-    COUNT(DISTINCT t.ticketId) AS totalTickets,
-    COUNT(DISTINCT bs.busScheduleId) AS schedulesUsed,
+    COUNT(t.ticketId) AS totalTickets,
+    COUNT(bs.busScheduleId) AS schedulesUsed,
     ROUND(AVG(pr.totalAmount),2) AS avgSpendPerTrip,
     CASE 
       WHEN SUM(pr.totalAmount) > 1000 THEN 'High Value'
@@ -36,4 +36,3 @@ WHERE
 GROUP BY c.customerId, c.firstName, c.lastName, c.membershipStatus, bc.companyName, r.routeName;
 
 -- NVL use for process the null value
--- distinct use to remove dulpicate rows
