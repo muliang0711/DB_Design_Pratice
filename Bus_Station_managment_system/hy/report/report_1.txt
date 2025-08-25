@@ -1,10 +1,8 @@
 CREATE OR REPLACE PROCEDURE ReportRouteScheduleProfit_Nested (
-  p_max_rows IN NUMBER DEFAULT 20,                 -- 最大输出行数（含班次行）
-  p_route_id IN route.routeId%TYPE DEFAULT NULL    -- 可选：只看某一个 route
+  p_max_rows IN NUMBER DEFAULT 20,                
+  p_route_id IN route.routeId%TYPE DEFAULT NULL   
 ) IS
-  ------------------------------------------------------------------------------
-  -- 游标定义
-  ------------------------------------------------------------------------------
+
   CURSOR c_routes IS
     SELECT routeId, routeName
     FROM   route
@@ -28,25 +26,22 @@ CREATE OR REPLACE PROCEDURE ReportRouteScheduleProfit_Nested (
     GROUP BY bs.busScheduleId, rdal.expectedProfit, bs.expectedProfit
     ORDER BY bs.busScheduleId;
 
-  ------------------------------------------------------------------------------
-  -- 变量
-  ------------------------------------------------------------------------------
   v_lastRouteID route.routeId%TYPE := NULL;
-  v_count       NUMBER := 0;             -- 已输出的“班次行”计数
-  v_cost        CONSTANT NUMBER := 150;  -- 成本常量，你要动态就改这里
+  v_count       NUMBER := 0;             
+  v_cost        CONSTANT NUMBER := 150;  
 BEGIN
-  -- 表头
+
   DBMS_OUTPUT.PUT_LINE(
     RPAD('RouteID', 10) || RPAD('RouteName', 20) || RPAD('RouteProfit', 14) ||
     RPAD('ScheduleID', 14) || RPAD('SchedProfit', 14) || RPAD('Cost', 8) ||
     RPAD('Revenue', 12) || RPAD('Profit', 12) || RPAD('Result', 15)
   );
 
-  -- 外层遍历路由
+
   FOR route_rec IN c_routes LOOP
-    -- 内层遍历该路由的班次
+
     FOR sched_rec IN c_schedules(route_rec.routeId) LOOP
-      EXIT WHEN v_count >= p_max_rows;  -- 达到上限就不再打印
+      EXIT WHEN v_count >= p_max_rows;  
 
       DECLARE
         v_profit NUMBER := NVL(sched_rec.actualRevenue,0) - v_cost;
@@ -56,7 +51,7 @@ BEGIN
           ELSE 'Underperformed' 
         END;
       BEGIN
-        -- 每个路由的第一行打印路由抬头，其余行用空白对齐
+
         IF v_lastRouteID IS NULL OR v_lastRouteID <> route_rec.routeId THEN
           DBMS_OUTPUT.PUT_LINE(
             RPAD(route_rec.routeId, 10) ||
@@ -68,7 +63,7 @@ BEGIN
           DBMS_OUTPUT.PUT_LINE(RPAD(' ', 44));
         END IF;
 
-        -- 打印班次行
+
         DBMS_OUTPUT.PUT_LINE(
           RPAD(sched_rec.busScheduleId, 14) ||
           RPAD(TO_CHAR(NVL(sched_rec.scheduleExpectedProfit,0), '999999.99'), 14) ||
@@ -78,11 +73,11 @@ BEGIN
           RPAD(v_result, 15)
         );
 
-        v_count := v_count + 1; -- 只计班次行
+        v_count := v_count + 1; 
       END;
     END LOOP;
 
-    EXIT WHEN v_count >= p_max_rows;  -- 外层也防一下
+    EXIT WHEN v_count >= p_max_rows;  
   END LOOP;
 END;
 /
