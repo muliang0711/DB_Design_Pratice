@@ -28,28 +28,39 @@ CREATE OR REPLACE PROCEDURE prc_maint_service_ranking AS
         AND maintenanceDoneDate >= ADD_MONTHS(SYSDATE, -12);
 
 BEGIN
+   -- Print header once before the loop
+   DBMS_OUTPUT.PUT_LINE(RPAD('-', 67, '-'));
+   DBMS_OUTPUT.PUT_LINE('| ' || RPAD('Service ID', 10) || ' | ' ||
+                               RPAD('Service item',30) || ' | ' ||
+                               LPAD('Jobs in Past Year', 17) || ' |');
+   DBMS_OUTPUT.PUT_LINE(RPAD('-', 67, '-'));
+
    OPEN service_cursor;
    FETCH service_cursor INTO v_serviceId, v_serviceItem;
 
    WHILE service_cursor%FOUND LOOP
-      DBMS_OUTPUT.PUT_LINE('Service: ' || v_serviceItem || ' (' || v_serviceId || ')');
 
       OPEN jobCount_cursor;
       FETCH jobCount_cursor INTO v_jobCount;
 
-      IF jobCount_cursor%FOUND THEN
-         DBMS_OUTPUT.PUT_LINE('Jobs in past year: ' || v_jobCount);
-      ELSE
-         DBMS_OUTPUT.PUT_LINE('Jobs in past year: 0');
+      IF NOT jobCount_cursor%FOUND THEN
+         v_jobCount := 0;
       END IF;
 
       CLOSE jobCount_cursor;
-      DBMS_OUTPUT.PUT_LINE('------------------------------');
+      
+      DBMS_OUTPUT.PUT_LINE('| ' || RPAD(v_serviceId, 10) || ' | ' ||
+                               RPAD(v_serviceItem, 30) || ' | ' ||
+                               LPAD(v_jobCount, 17) || ' |');
 
       FETCH service_cursor INTO v_serviceId, v_serviceItem;
    END LOOP;
 
    CLOSE service_cursor;
+
+   DBMS_OUTPUT.PUT_LINE(RPAD('-', 67, '-'));
 END;
 /
+
+-- EXEC prc_maint_service_ranking
 
