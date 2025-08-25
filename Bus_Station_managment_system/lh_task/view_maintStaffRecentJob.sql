@@ -35,13 +35,13 @@ FROM (
             msa.staffID,
             ROW_NUMBER() OVER (PARTITION BY msa.staffID ORDER BY bm.maintenanceDoneDate DESC) AS rn
         FROM BusMaintenance bm
-        JOIN MaintenanceStaffAssignment msa bm.maintenanceID = msa.maintenanceID
+        JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
     ) 
     WHERE rn = 1
 ) bm2 
 JOIN Staff s ON bm2.staffID = s.staffID
 JOIN MaintenanceService ms ON bm2.serviceID = ms.serviceID
-ORDER BY bm.maintenanceDoneDate;
+ORDER BY bm2.maintenanceDoneDate;
 
 COLUMN staffID HEADING "Staff ID" 
 COLUMN fullName HEADING "Name" 
@@ -54,5 +54,6 @@ COLUMN busId HEADING "Bus ID"
 COLUMN maintenanceDate HEADING "Done on" 
 COLUMN remarks HEADING "Remarks" 
 
-SELECT * FROM MaintenanceStaffRecentJobView;
+-- SELECT * FROM MaintenanceStaffRecentJobView;
 
+CLEAR COLUMN 
