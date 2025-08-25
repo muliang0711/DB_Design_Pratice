@@ -338,7 +338,7 @@ CREATE TABLE busMaintenance (
   additionalCost       NUMBER(8,2),
   additionalRemarks    VARCHAR2(200),
   status                VARCHAR2(20)  DEFAULT 'in_progress',
-  maintenanceDoneDate TIMESTAMP     NOT NULL,
+  maintenanceDoneDate TIMESTAMP      NULL,
   createdAt            TIMESTAMP     DEFAULT SYSTIMESTAMP,
   remarks               VARCHAR2(200),
   CONSTRAINT FK_BM_BUS     FOREIGN KEY (busId)     REFERENCES bus (busId),
