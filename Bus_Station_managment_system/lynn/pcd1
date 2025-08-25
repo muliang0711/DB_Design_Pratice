@@ -71,4 +71,4 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE(v_result);
 END ExtendTicket;
 /
-EXEC ExtendTicket('T000000001', 'BS000009');
+EXEC ExtendTicket('T00000281318', 'S2PP4VEFOV0L');
