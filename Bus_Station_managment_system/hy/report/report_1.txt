@@ -1,7 +1,28 @@
 CREATE OR REPLACE PROCEDURE Report1 (
-  p_max_rows IN NUMBER DEFAULT 20,                
-  p_route_id IN route.routeId%TYPE DEFAULT NULL   
+  p_max_rows IN NUMBER DEFAULT 20,
+  p_route_id IN route.routeId%TYPE DEFAULT NULL
 ) IS
+  -- column widths
+  c_w_route_id      CONSTANT PLS_INTEGER := 10;
+  c_w_route_name    CONSTANT PLS_INTEGER := 20;
+  c_w_route_profit  CONSTANT PLS_INTEGER := 14;
+  c_w_sched_id      CONSTANT PLS_INTEGER := 14;
+  c_w_sched_profit  CONSTANT PLS_INTEGER := 14;
+  c_w_cost          CONSTANT PLS_INTEGER := 10;
+  c_w_revenue       CONSTANT PLS_INTEGER := 14;
+  c_w_profit        CONSTANT PLS_INTEGER := 12;
+  c_w_result        CONSTANT PLS_INTEGER := 15;
+
+  c_space CONSTANT VARCHAR2(1) := ' ';
+
+  -- total table width (sum of columns)
+  c_total_width CONSTANT PLS_INTEGER :=
+       c_w_route_id + c_w_route_name + c_w_route_profit
+     + c_w_sched_id + c_w_sched_profit + c_w_cost
+     + c_w_revenue + c_w_profit + c_w_result;
+
+  -- number formats
+  c_nf_money CONSTANT VARCHAR2(50) := 'FM999G999G990D00';
 
   CURSOR c_routes IS
     SELECT routeId, routeName
@@ -27,58 +48,107 @@ CREATE OR REPLACE PROCEDURE Report1 (
     ORDER BY bs.busScheduleId;
 
   v_lastRouteID route.routeId%TYPE := NULL;
-  v_count       NUMBER := 0;             
-  v_cost        CONSTANT NUMBER := 150;  
+  v_count       NUMBER := 0;
+  v_cost        CONSTANT NUMBER := 150;
+
+  PROCEDURE print_sep IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE(RPAD('-', c_total_width, '-'));
+  END;
+
+  PROCEDURE print_header IS
+    v_title VARCHAR2(200);
+  BEGIN
+    v_title := 'Route Profitability Report  |  As of ' ||
+               TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS TZH:TZM');
+    DBMS_OUTPUT.PUT_LINE(v_title);
+    print_sep;
+    DBMS_OUTPUT.PUT_LINE(
+      RPAD('RouteID',     c_w_route_id)   ||
+      RPAD('RouteName',   c_w_route_name) ||
+      LPAD('RouteProfit', c_w_route_profit) ||
+      RPAD('ScheduleID',  c_w_sched_id)   ||
+      LPAD('SchedProfit', c_w_sched_profit) ||
+      LPAD('Cost',        c_w_cost)       ||
+      LPAD('Revenue',     c_w_revenue)    ||
+      LPAD('Profit',      c_w_profit)     ||
+      RPAD('Result',      c_w_result)
+    );
+    print_sep;
+  END;
+
+  PROCEDURE print_route_line(p_route_id route.routeId%TYPE,
+                             p_route_name route.routeName%TYPE,
+                             p_route_profit NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE(
+      RPAD(NVL(p_route_id,'-'),  c_w_route_id)   ||
+      RPAD(NVL(p_route_name,'-'),c_w_route_name) ||
+      LPAD(TO_CHAR(NVL(p_route_profit,0), c_nf_money), c_w_route_profit) ||
+      RPAD('', c_w_sched_id) ||
+      LPAD('', c_w_sched_profit) ||
+      LPAD('', c_w_cost) ||
+      LPAD('', c_w_revenue) ||
+      LPAD('', c_w_profit) ||
+      RPAD('', c_w_result)
+    );
+  END;
+
+  PROCEDURE print_schedule_line(p_sched_id busSchedule.busScheduleId%TYPE,
+                                p_sched_profit NUMBER,
+                                p_cost NUMBER,
+                                p_revenue NUMBER,
+                                p_profit NUMBER,
+                                p_result VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE(
+      RPAD('', c_w_route_id + c_w_route_name + c_w_route_profit) ||
+      RPAD(NVL(p_sched_id,'-'), c_w_sched_id) ||
+      LPAD(TO_CHAR(NVL(p_sched_profit,0), c_nf_money), c_w_sched_profit) ||
+      LPAD(TO_CHAR(NVL(p_cost,0),         c_nf_money), c_w_cost) ||
+      LPAD(TO_CHAR(NVL(p_revenue,0),      c_nf_money), c_w_revenue) ||
+      LPAD(TO_CHAR(NVL(p_profit,0),       c_nf_money), c_w_profit) ||
+      RPAD(NVL(p_result,'-'), c_w_result)
+    );
+  END;
+
 BEGIN
-
-  DBMS_OUTPUT.PUT_LINE(
-    RPAD('RouteID', 10) || RPAD('RouteName', 20) || RPAD('RouteProfit', 14) ||
-    RPAD('ScheduleID', 14) || RPAD('SchedProfit', 14) || RPAD('Cost', 8) ||
-    RPAD('Revenue', 12) || RPAD('Profit', 12) || RPAD('Result', 15)
-  );
-
+  print_header;
 
   FOR route_rec IN c_routes LOOP
-
     FOR sched_rec IN c_schedules(route_rec.routeId) LOOP
-      EXIT WHEN v_count >= p_max_rows;  
+      EXIT WHEN v_count >= p_max_rows;
 
       DECLARE
         v_profit NUMBER := NVL(sched_rec.actualRevenue,0) - v_cost;
         v_target NUMBER := NVL(sched_rec.scheduleExpectedProfit,0);
-        v_result VARCHAR2(20) := CASE 
-          WHEN v_profit >= v_target THEN 'Profitable' 
-          ELSE 'Underperformed' 
-        END;
+        v_result VARCHAR2(20) := CASE WHEN v_profit >= v_target THEN 'Profitable' ELSE 'Underperformed' END;
       BEGIN
-
         IF v_lastRouteID IS NULL OR v_lastRouteID <> route_rec.routeId THEN
-          DBMS_OUTPUT.PUT_LINE(
-            RPAD(route_rec.routeId, 10) ||
-            RPAD(route_rec.routeName, 20) ||
-            RPAD(TO_CHAR(NVL(sched_rec.routeExpectedProfit,0), '999999.99'), 14)
-          );
+          print_route_line(route_rec.routeId,
+                           route_rec.routeName,
+                           NVL(sched_rec.routeExpectedProfit,0));
           v_lastRouteID := route_rec.routeId;
-        ELSE
-          DBMS_OUTPUT.PUT_LINE(RPAD(' ', 44));
         END IF;
 
-
-        DBMS_OUTPUT.PUT_LINE(
-          RPAD(sched_rec.busScheduleId, 14) ||
-          RPAD(TO_CHAR(NVL(sched_rec.scheduleExpectedProfit,0), '999999.99'), 14) ||
-          RPAD(TO_CHAR(v_cost, '999999.99'), 8) ||
-          RPAD(TO_CHAR(NVL(sched_rec.actualRevenue,0), '999999.99'), 12) ||
-          RPAD(TO_CHAR(v_profit, '999999.99'), 12) ||
-          RPAD(v_result, 15)
+        print_schedule_line(
+          p_sched_id     => sched_rec.busScheduleId,
+          p_sched_profit => NVL(sched_rec.scheduleExpectedProfit,0),
+          p_cost         => v_cost,
+          p_revenue      => NVL(sched_rec.actualRevenue,0),
+          p_profit       => v_profit,
+          p_result       => v_result
         );
 
-        v_count := v_count + 1; 
+        v_count := v_count + 1;
       END;
     END LOOP;
 
-    EXIT WHEN v_count >= p_max_rows;  
+    EXIT WHEN v_count >= p_max_rows;
   END LOOP;
+
+  print_sep;
+  DBMS_OUTPUT.PUT_LINE('Rows shown: ' || v_count || '   (limit ' || p_max_rows || ')');
 END;
 /
 
