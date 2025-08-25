@@ -20,7 +20,7 @@ SET pagesize 100
 CREATE OR REPLACE PROCEDURE ProcessTicketRefund(
     p_ticketID   IN Ticket.ticketID%TYPE,
     p_refundType IN VARCHAR2, 
-    p_adminID    IN VARCHAR2
+   
     --p_result     OUT VARCHAR2
 )
 AS
@@ -101,7 +101,7 @@ BEGIN
         v_newPaymentID, v_customerID, p_ticketID, v_refundAmount, v_refundAmount,
         0, 0, 'completed', SYSDATE,
         'REF-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || p_ticketID,
-        'Refund for ticket ' || p_ticketID || ' processed by admin ' || p_adminID,
+        'Refund for ticket ' || p_ticketID ,
         'Bank Transfer', 'Refund'
     );
 
@@ -136,5 +136,5 @@ END ProcessTicketRefund;
 
 
 
-EXEC ProcessTicketRefund('T00000281318', 'full', 'A123');
+EXEC ProcessTicketRefund('T00000281318', 'full');
 
