@@ -15,5 +15,5 @@ LEFT JOIN customer c
 CREATE INDEX IDX_TICKET_STATUS
   ON ticket(status);
 
-
+CREATE INDEX IDX_TICKET_PRICE        ON ticket(price);
 
