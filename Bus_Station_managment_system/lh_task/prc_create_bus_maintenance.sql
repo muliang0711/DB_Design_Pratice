@@ -1,6 +1,7 @@
 CREATE OR REPLACE TYPE t_staffList AS VARRAY(10) OF NUMBER;
 /
 
+DROP SEQUENCE MaintenanceID_Seq;
 CREATE SEQUENCE MaintenanceID_Seq
 MINVALUE 501
 MAXVALUE 999999999999999999999999999
@@ -68,7 +69,7 @@ BEGIN
     CLOSE c_bus_exists;
 
     -- Generate new maintenanceID
-    v_maintenanceID := MaintenanceID_Seq.nextval;
+    v_maintenanceID := 'M' || TO_CHAR(MaintenanceID_Seq.nextval, 'FM00000');
 
     -- Insert BusMaintenance
     INSERT INTO BusMaintenance (maintenanceID, busID, serviceID)

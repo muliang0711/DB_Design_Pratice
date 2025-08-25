@@ -1,0 +1,1449 @@
+SQL> @"Bus_Station_managment_system\hy\Auto_Ticket_generate\procedural_2.txt"
+
+Warning: Procedure created with compilation errors.
+
+Errors for PROCEDURE GEN_TICKETS_FOR_SCHEDULE:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+59/7     PL/SQL: SQL Statement ignored                                          
+63/9     PL/SQL: ORA-00904: "FN_NEXT_TICKET_ID": invalid identifier             
+SQL> @"Bus_Station_managment_system\hy\Auto_Ticket_generate\support.txt"
+
+PL/SQL procedure successfully completed.
+
+
+Function created.
+
+SQL> @"Bus_Station_managment_system\hy\Auto_Ticket_generate\procedural_2.txt"
+
+Procedure created.
+
+No errors.
+SQL> @"Bus_Station_managment_system\hy\Auto_Ticket_generate\trigger_2.txt"
+
+Trigger created.
+
+No errors.
+SQL> @"Bus_Station_managment_system\hy\Auto_payment_record\procedura_3.txt"
+
+Warning: Procedure created with compilation errors.
+
+Errors for PROCEDURE GEN_PAYMENT_FOR_TICKET:
+
+LINE/COL ERROR                                                                  
+-------- -----------------------------------------------------------------      
+30/3     PL/SQL: Statement ignored                                              
+30/33    PLS-00201: identifier 'SEQ_PAYMENT_ID.NEXTVAL' must be declared        
+SQL> @"Bus_Station_managment_system\hy\sequence\s1.txt"
+
+Sequence created.
+
+
+Sequence dropped.
+
+CREATE SEQUENCE SEQ_TICKET_ID
+                *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+
+Sequence created.
+
+
+Sequence created.
+
+SQL> @"Bus_Station_managment_system\hy\Auto_payment_record\procedura_3.txt"
+
+Procedure created.
+
+No errors.
+SQL> @"Bus_Station_managment_system\hy\Auto_payment_record\trigger_3.txt"
+
+Trigger created.
+
+No errors.
+SQL> @"Bus_Station_managment_system\hy\Auto_point_transaction\procedure_4.txt"
+
+Procedure created.
+
+No errors.
+SQL> @"Bus_Station_managment_system\hy\Auto_point_transaction\trigger_4.txt"
+
+Trigger created.
+
+No errors.
+SQL> @"Bus_Station_managment_system\please_help_test_the_script\csv\bus_out.sql"
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0501', 'C006', 'C4911G', 'Alexander Dennis Enviro500', 65, 'inactive', 2013, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0502', 'C003', 'M3261L', 'Yutong ZK6126', 47, 'active', 2009, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0503', 'C016', 'L4180X', 'BYD K9', 37, 'inactive', 2015, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0504', 'C018', 'C6260U', 'Alexander Dennis Enviro500', 64, 'retired', 2018, 'To be auctioned')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0505', 'C010', 'N1891O', 'Hino RK1J', 43, 'active', 2009, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0506', 'C016', 'L7763C', 'Alexander Dennis Enviro500', 60, 'active', 2025, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0507', 'C001', 'P4293O', 'Mercedes-Benz OC500', 46, 'active', 2008, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0508', 'C004', 'W5084S', 'MAN A95', 51, 'under_maintenance', 2012, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0509', 'C003', 'Q5304D', 'MAN A95', 47, 'under_maintenance', 2014, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0510', 'C004', 'N7847A', 'Mercedes-Benz OC500', 41, 'inactive', 2018, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0511', 'C005', 'P2419N', 'Alexander Dennis Enviro500', 80, 'active', 2013, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0512', 'C011', 'S6953C', 'Scania K410', 39, 'under_maintenance', 2009, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0513', 'C008', 'N2745J', 'Volvo B8R', 44, 'active', 2016, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0514', 'C001', 'M1306E', 'Alexander Dennis Enviro500', 71, 'active', 2017, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0515', 'C009', 'R8475A', 'Mercedes-Benz OC500', 44, 'inactive', 2019, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0516', 'C018', 'P7270J', 'Alexander Dennis Enviro500', 62, 'under_maintenance', 2010, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0517', 'C005', 'M3956K', 'Hino RK1J', 38, 'active', 2007, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0518', 'C009', 'C4300Z', 'Yutong ZK6126', 49, 'inactive', 2018, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0519', 'C006', 'L3281P', 'Alexander Dennis Enviro500', 75, 'active', 2023, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0520', 'C006', 'M8153N', 'BYD K9', 38, 'active', 2025, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0521', 'C009', 'M2045O', 'Alexander Dennis Enviro500', 63, 'active', 2009, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0522', 'C007', 'W4987T', 'BYD K9', 38, 'active', 2011, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0523', 'C009', 'C7588C', 'BYD K9', 38, 'active', 2021, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0524', 'C020', 'D5811K', 'MAN A95', 53, 'active', 2012, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0525', 'C012', 'B4193F', 'BYD K9', 37, 'inactive', 2015, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0526', 'C002', 'C2131G', 'BYD K9', 39, 'inactive', 2011, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0527', 'C002', 'K2972M', 'Alexander Dennis Enviro500', 64, 'active', 2008, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0528', 'C014', 'B4924N', 'Alexander Dennis Enviro500', 68, 'under_maintenance', 2006, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0529', 'C019', 'S9595U', 'Mercedes-Benz OC500', 45, 'under_maintenance', 2007, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0530', 'C004', 'M3506N', 'Scania K410', 41, 'inactive', 2006, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0531', 'C008', 'R2180L', 'Alexander Dennis Enviro500', 68, 'active', 2013, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0532', 'C007', 'C9252Q', 'Mercedes-Benz OC500', 40, 'retired', 2011, 'To be auctioned')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0533', 'C002', 'M5868D', 'Yutong ZK6126', 49, 'retired', 2018, 'Decommissioned')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0534', 'C008', 'J3923C', 'Scania K410', 45, 'under_maintenance', 2005, 'Engine diagnostics')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0535', 'C012', 'N2935Q', 'Yutong ZK6126', 46, 'active', 2021, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0536', 'C003', 'Q3349L', 'Mercedes-Benz OC500', 52, 'active', 2010, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0537', 'C003', 'S4700N', 'Mercedes-Benz OC500', 53, 'under_maintenance', 2025, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0538', 'C019', 'W4081D', 'Mercedes-Benz OC500', 55, 'active', 2012, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0539', 'C007', 'B9397F', 'Yutong ZK6126', 50, 'active', 2021, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0540', 'C003', 'R1582R', 'BYD K9', 33, 'active', 2021, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0541', 'C013', 'S1077V', 'Alexander Dennis Enviro500', 79, 'under_maintenance', 2015, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0542', 'C004', 'Q9813H', 'Volvo B8R', 43, 'active', 2016, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0543', 'C006', 'B8118Q', 'Volvo B8R', 46, 'inactive', 2011, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0544', 'C005', 'M4404S', 'MAN A95', 45, 'active', 2011, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0545', 'C016', 'W6822A', 'Hino RK1J', 40, 'active', 2010, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0546', 'C019', 'R1754F', 'Yutong ZK6126', 51, 'active', 2014, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0547', 'C004', 'J1465P', 'MAN A95', 52, 'under_maintenance', 2025, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0548', 'C016', 'Q3478H', 'MAN A95', 54, 'retired', 2018, 'Scrapped')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0549', 'C014', 'W6183U', 'Mercedes-Benz OC500', 47, 'active', 2006, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0550', 'C007', 'K9894U', 'MAN A95', 46, 'active', 2016, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0551', 'C004', 'B3469N', 'BYD K9', 39, 'inactive', 2009, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0552', 'C001', 'K2338L', 'Volvo B8R', 46, 'inactive', 2014, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0553', 'C011', 'M6518G', 'Volvo B8R', 39, 'active', 2011, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0554', 'C004', 'L1780K', 'Yutong ZK6126', 46, 'active', 2009, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0555', 'C016', 'R1972I', 'Hino RK1J', 39, 'active', 2021, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0556', 'C013', 'D6470N', 'Scania K410', 44, 'active', 2011, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0557', 'C016', 'C5514R', 'BYD K9', 32, 'active', 2012, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0558', 'C019', 'A7387E', 'Yutong ZK6126', 46, 'active', 2011, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0559', 'C013', 'C1665Y', 'Mercedes-Benz OC500', 50, 'inactive', 2020, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0560', 'C009', 'S4115S', 'Scania K410', 40, 'active', 2025, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0561', 'C005', 'N1459H', 'Mercedes-Benz OC500', 48, 'active', 2014, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0562', 'C005', 'B5174Q', 'Alexander Dennis Enviro500', 62, 'active', 2007, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0563', 'C015', 'T1432M', 'Alexander Dennis Enviro500', 84, 'inactive', 2017, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0564', 'C005', 'M2543Q', 'MAN A95', 55, 'inactive', 2011, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0565', 'C019', 'T6909V', 'Volvo B8R', 39, 'active', 2016, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0566', 'C019', 'C9893M', 'Volvo B8R', 47, 'under_maintenance', 2009, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0567', 'C018', 'R1316M', 'Yutong ZK6126', 52, 'under_maintenance', 2021, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0568', 'C016', 'J5207K', 'Alexander Dennis Enviro500', 71, 'active', 2021, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0569', 'C011', 'P7057Z', 'Alexander Dennis Enviro500', 66, 'inactive', 2014, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0570', 'C008', 'P1172G', 'BYD K9', 38, 'inactive', 2006, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0571', 'C012', 'K8731V', 'Mercedes-Benz OC500', 49, 'active', 2016, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0572', 'C006', 'R6921R', 'Yutong ZK6126', 48, 'inactive', 2025, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0573', 'C018', 'S4824I', 'Volvo B8R', 39, 'inactive', 2010, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0574', 'C009', 'B6685I', 'BYD K9', 34, 'inactive', 2011, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0575', 'C005', 'W2993I', 'Mercedes-Benz OC500', 54, 'active', 2014, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0576', 'C003', 'J6048Q', 'Alexander Dennis Enviro500', 72, 'active', 2024, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0577', 'C003', 'P3368X', 'Mercedes-Benz OC500', 46, 'active', 2018, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0578', 'C007', 'L4673O', 'Scania K410', 41, 'active', 2012, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0579', 'C020', 'Q2505N', 'Mercedes-Benz OC500', 48, 'active', 2009, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0580', 'C001', 'S1761Z', 'MAN A95', 55, 'active', 2007, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0581', 'C019', 'N7897Y', 'Hino RK1J', 38, 'under_maintenance', 2007, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0582', 'C015', 'K2395C', 'BYD K9', 38, 'active', 2010, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0583', 'C015', 'L6576I', 'BYD K9', 34, 'active', 2021, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0584', 'C013', 'C1266K', 'BYD K9', 31, 'inactive', 2006, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0585', 'C020', 'C9568R', 'Scania K410', 44, 'active', 2019, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0586', 'C004', 'N8119V', 'Scania K410', 40, 'active', 2009, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0587', 'C016', 'D6990I', 'Mercedes-Benz OC500', 50, 'active', 2015, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0588', 'C010', 'A1306L', 'BYD K9', 32, 'under_maintenance', 2020, 'Engine diagnostics')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0589', 'C013', 'W6784Z', 'Scania K410', 39, 'inactive', 2005, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0590', 'C009', 'M9195G', 'MAN A95', 47, 'active', 2007, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0591', 'C003', 'K2930T', 'Scania K410', 39, 'under_maintenance', 2022, 'Engine diagnostics')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0592', 'C017', 'K9487N', 'Volvo B8R', 47, 'active', 2022, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0593', 'C020', 'L7791E', 'Alexander Dennis Enviro500', 65, 'retired', 2012, 'Scrapped')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0594', 'C016', 'T4686U', 'BYD K9', 32, 'active', 2020, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0595', 'C020', 'A9942I', 'Hino RK1J', 37, 'inactive', 2016, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0596', 'C003', 'N8387Y', 'Volvo B8R', 41, 'active', 2005, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0597', 'C001', 'S5872D', 'Scania K410', 42, 'under_maintenance', 2006, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0598', 'C002', 'M7280P', 'Scania K410', 45, 'active', 2019, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0599', 'C018', 'S9786J', 'Yutong ZK6126', 38, 'active', 2021, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0600', 'C012', 'N5546Q', 'Hino RK1J', 39, 'inactive', 2018, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0601', 'C009', 'Q7514R', 'Scania K410', 45, 'active', 2019, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0602', 'C016', 'Q3889Y', 'Alexander Dennis Enviro500', 70, 'under_maintenance', 2016, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0603', 'C001', 'L7517F', 'MAN A95', 48, 'active', 2019, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0604', 'C011', 'W6051L', 'MAN A95', 48, 'inactive', 2019, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0605', 'C001', 'J7860Q', 'Scania K410', 38, 'active', 2017, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0606', 'C013', 'L4094D', 'Mercedes-Benz OC500', 48, 'active', 2024, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0607', 'C010', 'T9735M', 'Hino RK1J', 45, 'active', 2008, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0608', 'C004', 'J6880U', 'Scania K410', 43, 'under_maintenance', 2011, 'Engine diagnostics')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0609', 'C003', 'D6636I', 'Yutong ZK6126', 45, 'active', 2014, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0610', 'C009', 'M2313B', 'MAN A95', 54, 'active', 2013, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0611', 'C008', 'D9502V', 'BYD K9', 33, 'active', 2016, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0612', 'C001', 'L5609J', 'Hino RK1J', 36, 'under_maintenance', 2025, 'Engine diagnostics')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0613', 'C002', 'C1092V', 'Hino RK1J', 36, 'active', 2012, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0614', 'C012', 'B7675G', 'Yutong ZK6126', 44, 'active', 2025, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0615', 'C001', 'N8982S', 'Yutong ZK6126', 50, 'active', 2022, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0616', 'C014', 'Q8111C', 'Yutong ZK6126', 48, 'inactive', 2022, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0617', 'C006', 'K9998E', 'MAN A95', 51, 'active', 2006, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0618', 'C007', 'B9345R', 'Alexander Dennis Enviro500', 64, 'inactive', 2022, 'Low season reserve')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0619', 'C005', 'S9564G', 'BYD K9', 33, 'active', 2013, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0620', 'C014', 'C6744W', 'Scania K410', 44, 'under_maintenance', 2013, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0621', 'C006', 'A7213J', 'Yutong ZK6126', 46, 'active', 2025, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0622', 'C016', 'P5256C', 'Scania K410', 44, 'active', 2022, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0623', 'C013', 'P4660H', 'Hino RK1J', 38, 'inactive', 2016, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0624', 'C006', 'N6804E', 'Scania K410', 39, 'active', 2023, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0625', 'C002', 'C8667Y', 'Volvo B8R', 44, 'active', 2023, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0626', 'C020', 'N2247C', 'Hino RK1J', 44, 'active', 2016, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0627', 'C002', 'Q2435H', 'Scania K410', 39, 'active', 2015, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0628', 'C018', 'J1758P', 'Volvo B8R', 42, 'active', 2023, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0629', 'C003', 'C6094G', 'Alexander Dennis Enviro500', 81, 'under_maintenance', 2018, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0630', 'C010', 'J6911G', 'Volvo B8R', 43, 'under_maintenance', 2005, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0631', 'C008', 'J3791T', 'MAN A95', 54, 'active', 2024, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0632', 'C004', 'B8702B', 'Alexander Dennis Enviro500', 70, 'active', 2016, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0633', 'C019', 'A8512N', 'Yutong ZK6126', 42, 'under_maintenance', 2014, 'Engine diagnostics')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0634', 'C014', 'N8907B', 'Alexander Dennis Enviro500', 78, 'active', 2014, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0635', 'C009', 'B2665B', 'Volvo B8R', 38, 'active', 2015, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0636', 'C018', 'M3889H', 'Yutong ZK6126', 48, 'active', 2016, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0637', 'C012', 'L9460H', 'MAN A95', 48, 'inactive', 2008, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0638', 'C001', 'M4533O', 'Mercedes-Benz OC500', 53, 'active', 2017, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0639', 'C004', 'A8683Z', 'Scania K410', 43, 'active', 2007, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0640', 'C018', 'C3165T', 'BYD K9', 34, 'active', 2008, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0641', 'C009', 'D1795W', 'MAN A95', 52, 'active', 2009, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0642', 'C007', 'B2773M', 'Hino RK1J', 40, 'under_maintenance', 2023, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0643', 'C001', 'W2867B', 'Scania K410', 38, 'active', 2008, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0644', 'C017', 'B8632X', 'Volvo B8R', 41, 'under_maintenance', 2013, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0645', 'C018', 'S2099Z', 'Alexander Dennis Enviro500', 75, 'under_maintenance', 2005, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0646', 'C015', 'N6666U', 'Alexander Dennis Enviro500', 66, 'active', 2016, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0647', 'C006', 'N4357J', 'MAN A95', 56, 'retired', 2005, 'Scrapped')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0648', 'C002', 'P4538Y', 'BYD K9', 35, 'active', 2018, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0649', 'C004', 'D5328R', 'Alexander Dennis Enviro500', 73, 'under_maintenance', 2009, 'Engine diagnostics')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0650', 'C006', 'D5385W', 'Alexander Dennis Enviro500', 66, 'active', 2009, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0651', 'C010', 'R3072V', 'Mercedes-Benz OC500', 47, 'active', 2006, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0652', 'C018', 'C1120U', 'Yutong ZK6126', 42, 'active', 2019, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0653', 'C013', 'A1034G', 'Yutong ZK6126', 45, 'active', 2018, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0654', 'C012', 'C8642J', 'Yutong ZK6126', 48, 'retired', 2024, 'Scrapped')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0655', 'C015', 'R6384W', 'MAN A95', 47, 'active', 2021, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0656', 'C007', 'W4726C', 'Volvo B8R', 45, 'active', 2010, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0657', 'C020', 'P4804G', 'Scania K410', 41, 'under_maintenance', 2019, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0658', 'C015', 'R2634N', 'Volvo B8R', 46, 'active', 2019, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0659', 'C004', 'W3647Z', 'MAN A95', 51, 'active', 2024, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0660', 'C003', 'M9013G', 'Yutong ZK6126', 46, 'under_maintenance', 2008, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0661', 'C016', 'A7807G', 'Mercedes-Benz OC500', 47, 'retired', 2015, 'Scrapped')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0662', 'C001', 'W5553M', 'Alexander Dennis Enviro500', 61, 'active', 2013, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0663', 'C016', 'K7409C', 'Yutong ZK6126', 39, 'active', 2009, 'Assigned to urban route')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0664', 'C005', 'K1376Y', 'Yutong ZK6126', 48, 'active', 2019, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0665', 'C010', 'C3744I', 'Mercedes-Benz OC500', 41, 'under_maintenance', 2018, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0666', 'C015', 'A2299D', 'MAN A95', 52, 'retired', 2021, 'To be auctioned')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0667', 'C020', 'K9650I', 'Mercedes-Benz OC500', 54, 'under_maintenance', 2015, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0668', 'C019', 'W7322H', 'BYD K9', 37, 'active', 2010, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0669', 'C018', 'Q1307K', 'Mercedes-Benz OC500', 44, 'active', 2008, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0670', 'C016', 'C9956U', 'Hino RK1J', 45, 'active', 2006, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0671', 'C018', 'T7694B', 'MAN A95', 53, 'inactive', 2016, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0672', 'C005', 'B1812D', 'BYD K9', 31, 'inactive', 2011, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0673', 'C017', 'C2581U', 'Mercedes-Benz OC500', 55, 'active', 2014, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0674', 'C011', 'W4384L', 'Scania K410', 45, 'under_maintenance', 2025, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0675', 'C009', 'R2431P', 'Mercedes-Benz OC500', 44, 'under_maintenance', 2020, 'Brake service')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0676', 'C019', 'W1769N', 'BYD K9', 38, 'inactive', 2018, 'Standby')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0677', 'C013', 'W5916M', 'Yutong ZK6126', 38, 'active', 2010, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0678', 'C007', 'N8551V', 'Yutong ZK6126', 51, 'active', 2011, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0679', 'C012', 'M4135S', 'Scania K410', 40, 'under_maintenance', 2020, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0680', 'C020', 'W4871S', 'Mercedes-Benz OC500', 45, 'active', 2022, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0681', 'C017', 'D6985D', 'Mercedes-Benz OC500', 54, 'under_maintenance', 2013, 'Awaiting spare parts')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0682', 'C012', 'D7273Z', 'Scania K410', 43, 'active', 2025, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0683', 'C004', 'M6515J', 'BYD K9', 35, 'retired', 2016, 'Decommissioned')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0684', 'C004', 'L1256E', 'Mercedes-Benz OC500', 50, 'inactive', 2005, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0685', 'C007', 'R5945J', 'Mercedes-Benz OC500', 40, 'active', 2009, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0686', 'C019', 'W5613K', 'Volvo B8R', 47, 'active', 2009, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0687', 'C019', 'K4177U', 'Volvo B8R', 44, 'active', 2018, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0688', 'C012', 'A6835A', 'Volvo B8R', 40, 'active', 2021, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0689', 'C001', 'L7723P', 'MAN A95', 48, 'under_maintenance', 2025, 'Bodywork repaint')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0690', 'C020', 'S6591Q', 'Volvo B8R', 47, 'active', 2021, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0691', 'C008', 'L2196A', 'Mercedes-Benz OC500', 49, 'active', 2019, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0692', 'C002', 'W7041Y', 'Alexander Dennis Enviro500', 76, 'active', 2024, 'Operational')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0693', 'C016', 'Q6539S', 'MAN A95', 57, 'active', 2011, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0694', 'C005', 'A4976Y', 'Alexander Dennis Enviro500', 75, 'active', 2008, '')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0695', 'C006', 'D1502U', 'BYD K9', 32, 'inactive', 2017, 'Pending assignment')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
+INSERT INTO bus (busId, companyId, plateNo, model, capacity, status, year, remarks) VALUES ('B0696', 'C012', 'T5809O', 'Scania K410', 38, 'active', 2023, 'Intercity duty')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (TEST2.FK_BUS_COMPANY) violated - parent key 
+not found 
+
+
