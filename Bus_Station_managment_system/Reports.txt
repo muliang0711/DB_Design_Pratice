@@ -11,28 +11,34 @@ CREATE OR REPLACE PROCEDURE sp_report_platform (
   v_cnt_cancelled NUMBER;
   v_cnt_inprog    NUMBER;
   v_cnt_completed NUMBER;
-  v_printed       PLS_INTEGER := 0;
 
-  CURSOR c_upcoming IS
+  v_printed  PLS_INTEGER := 0;
+  v_done     BOOLEAN := FALSE;
+
+  -- OUTER cursor: distinct routes that use this platform
+  CURSOR c_routes IS
+    SELECT DISTINCT r.routeId, r.routeName
+    FROM   route r
+    WHERE  EXISTS (
+              SELECT 1
+              FROM   routeStation rs
+              WHERE  rs.routeId = r.routeId
+              AND    rs.platformId = p_platform_id
+           )
+    ORDER  BY r.routeId;
+
+  -- INNER cursor (parameterized): upcoming planned schedules for one route
+  CURSOR c_sched (p_route_id route.routeId%TYPE) IS
     SELECT bs.busScheduleId AS schedId,
            bs.plannedDepartureTime AS depTime,
            NVL(bs.plannedArrivalTime, bs.plannedDepartureTime) AS arrTime,
-           bs.status AS schedStatus,
-           r.routeId,
-           r.routeName
+           bs.status AS schedStatus
     FROM   busSchedule bs
     JOIN   routeDriverAssignmentList rda
            ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-    JOIN   route r
-           ON r.routeId = rda.routeId
-    WHERE  bs.plannedDepartureTime >= p_as_of
-       AND LOWER(bs.status) = 'planned'
-       AND EXISTS (
-             SELECT 1
-             FROM   routeStation rs
-             WHERE  rs.routeId = r.routeId
-             AND    rs.platformId = p_platform_id
-           )
+    WHERE  rda.routeId = p_route_id
+      AND  bs.plannedDepartureTime >= p_as_of
+      AND  LOWER(bs.status) = 'planned'
     ORDER  BY bs.plannedDepartureTime;
 BEGIN
   -- Basic platform + station info
@@ -47,13 +53,12 @@ BEGIN
       RAISE_APPLICATION_ERROR(-20011, 'Platform '||p_platform_id||' does not exist.');
   END;
 
-  -- Distinct routes using this platform
+  -- Summary metrics
   SELECT COUNT(DISTINCT routeId)
     INTO v_routes_cnt
     FROM routeStation
    WHERE platformId = p_platform_id;
 
-  -- Future schedules by status (as of p_as_of)
   SELECT COUNT(*) INTO v_cnt_planned
   FROM busSchedule bs
   JOIN routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
@@ -86,37 +91,40 @@ BEGIN
     AND bs.plannedDepartureTime >= p_as_of
     AND LOWER(bs.status) = 'completed';
 
-  -- Header (ASCII only)
-  DBMS_OUTPUT.PUT_LINE('=== Platform Report ===');
+  -- Header
+  DBMS_OUTPUT.PUT_LINE('=== Platform Report (nested cursors) ===');
   DBMS_OUTPUT.PUT_LINE('Platform: '||p_platform_id||'  Status: '||v_status||
                        '  Station: '||v_station_id||' ('||v_station_name||')');
   DBMS_OUTPUT.PUT_LINE('Routes using this platform: '||v_routes_cnt);
   DBMS_OUTPUT.PUT_LINE('As of: '||TO_CHAR(p_as_of, 'DD-MON-YYYY HH24:MI:SS'));
   DBMS_OUTPUT.PUT_LINE('Future schedules - planned='||v_cnt_planned||', cancelled='||v_cnt_cancelled||
                        ', in_progress='||v_cnt_inprog||', completed='||v_cnt_completed);
-  DBMS_OUTPUT.PUT_LINE('--- Next planned schedules (max '||p_show_limit||') ---');
-  DBMS_OUTPUT.PUT_LINE('SchedId   Route   Depart                Arrive                Status  RouteName');
+  DBMS_OUTPUT.PUT_LINE('--- Next planned schedules by route (max '||p_show_limit||') ---');
 
-  -- Detail lines (limited)
-  FOR r IN c_upcoming LOOP
-    IF v_printed < NVL(p_show_limit, 10) THEN
+  -- Nested cursor loops (grouped by route)
+  FOR r IN c_routes LOOP
+    IF v_done THEN EXIT; END IF;
+    DBMS_OUTPUT.PUT_LINE('Route '||r.routeId||' - '||NVL(r.routeName,'-'));
+    FOR s IN c_sched(r.routeId) LOOP
       DBMS_OUTPUT.PUT_LINE(
-        RPAD(r.schedId,8)||'  '||
-        RPAD(r.routeId,6)||'  '||
-        TO_CHAR(r.depTime,'DD-MON-YYYY HH24:MI:SS')||'  '||
-        TO_CHAR(r.arrTime,'DD-MON-YYYY HH24:MI:SS')||'  '||
-        RPAD(r.schedStatus,9)||'  '||
-        NVL(r.routeName,'-')
+        '  '||
+        RPAD(s.schedId,10)||'  '||
+        TO_CHAR(s.depTime,'DD-MON-YYYY HH24:MI:SS')||'  '||
+        TO_CHAR(s.arrTime,'DD-MON-YYYY HH24:MI:SS')||'  '||
+        s.schedStatus
       );
       v_printed := v_printed + 1;
-    ELSE
-      EXIT;
-    END IF;
+      IF v_printed >= NVL(p_show_limit,10) THEN
+        v_done := TRUE;
+        EXIT;
+      END IF;
+    END LOOP;
   END LOOP;
 
   DBMS_OUTPUT.PUT_LINE('=== End Platform Report ===');
 END sp_report_platform;
 /
+
 
 
 
@@ -141,29 +149,35 @@ CREATE OR REPLACE PROCEDURE sp_report_station (
   v_cnt_cancelled   NUMBER;
   v_cnt_inprog      NUMBER;
   v_cnt_completed   NUMBER;
-  v_printed         PLS_INTEGER := 0;
 
-  CURSOR c_upcoming IS
-    SELECT bs.busScheduleId AS schedId,
-           bs.plannedDepartureTime AS depTime,
-           NVL(bs.plannedArrivalTime, bs.plannedDepartureTime) AS arrTime,
-           bs.status AS schedStatus,
-           r.routeId,
-           r.routeName
-    FROM   busSchedule bs
-    JOIN   routeDriverAssignmentList rda
-           ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-    JOIN   route r
-           ON r.routeId = rda.routeId
-    WHERE  bs.plannedDepartureTime >= p_as_of
-       AND LOWER(bs.status) = 'planned'
-       AND EXISTS (
+  v_printed  PLS_INTEGER := 0;
+  v_done     BOOLEAN := FALSE;
+
+  -- OUTER cursor: distinct routes that touch this station (via its platforms)
+  CURSOR c_routes IS
+    SELECT DISTINCT r.routeId, r.routeName
+    FROM   route r
+    WHERE  EXISTS (
              SELECT 1
              FROM   routeStation rs
              JOIN   busPlatform bp ON bp.platformId = rs.platformId
              WHERE  rs.routeId = r.routeId
              AND    bp.stationId = p_station_id
            )
+    ORDER  BY r.routeId;
+
+  -- INNER cursor: upcoming planned schedules for one route (these pass the station)
+  CURSOR c_sched (p_route_id route.routeId%TYPE) IS
+    SELECT bs.busScheduleId AS schedId,
+           bs.plannedDepartureTime AS depTime,
+           NVL(bs.plannedArrivalTime, bs.plannedDepartureTime) AS arrTime,
+           bs.status AS schedStatus
+    FROM   busSchedule bs
+    JOIN   routeDriverAssignmentList rda
+           ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+    WHERE  rda.routeId = p_route_id
+      AND  bs.plannedDepartureTime >= p_as_of
+      AND  LOWER(bs.status) = 'planned'
     ORDER  BY bs.plannedDepartureTime;
 BEGIN
   -- Station info
@@ -177,7 +191,7 @@ BEGIN
       RAISE_APPLICATION_ERROR(-20001, 'Station '||p_station_id||' does not exist.');
   END;
 
-  -- Platform stats
+  -- Platform counts
   SELECT COUNT(*) INTO v_platforms_all FROM busPlatform WHERE stationId = p_station_id;
   SELECT COUNT(*) INTO v_platforms_act FROM busPlatform WHERE stationId = p_station_id AND LOWER(status)='active';
   SELECT COUNT(*) INTO v_platforms_inact FROM busPlatform WHERE stationId = p_station_id AND LOWER(status)='inactive';
@@ -227,37 +241,41 @@ BEGIN
     AND bs.plannedDepartureTime >= p_as_of
     AND LOWER(bs.status) = 'completed';
 
-  -- Header (ASCII only)
-  DBMS_OUTPUT.PUT_LINE('=== Station Report ===');
+  -- Header
+  DBMS_OUTPUT.PUT_LINE('=== Station Report (nested cursors) ===');
   DBMS_OUTPUT.PUT_LINE('Station: '||p_station_id||'  Name: '||v_name||'  Status: '||v_status);
   DBMS_OUTPUT.PUT_LINE('Platforms: total='||v_platforms_all||', active='||v_platforms_act||', inactive='||v_platforms_inact);
   DBMS_OUTPUT.PUT_LINE('Routes touching this station: '||v_routes_cnt);
   DBMS_OUTPUT.PUT_LINE('As of: '||TO_CHAR(p_as_of, 'DD-MON-YYYY HH24:MI:SS'));
   DBMS_OUTPUT.PUT_LINE('Future schedules - planned='||v_cnt_planned||', cancelled='||v_cnt_cancelled||
                        ', in_progress='||v_cnt_inprog||', completed='||v_cnt_completed);
-  DBMS_OUTPUT.PUT_LINE('--- Next planned schedules (max '||p_show_limit||') ---');
-  DBMS_OUTPUT.PUT_LINE('SchedId   Route   Depart                Arrive                Status  RouteName');
+  DBMS_OUTPUT.PUT_LINE('--- Next planned schedules by route (max '||p_show_limit||') ---');
 
-  -- Detail lines (limited)
-  FOR r IN c_upcoming LOOP
-    IF v_printed < NVL(p_show_limit, 10) THEN
+  -- Nested cursor loops (grouped by route)
+  FOR r IN c_routes LOOP
+    IF v_done THEN EXIT; END IF;
+    DBMS_OUTPUT.PUT_LINE('Route '||r.routeId||' - '||NVL(r.routeName,'-'));
+    FOR s IN c_sched(r.routeId) LOOP
       DBMS_OUTPUT.PUT_LINE(
-        RPAD(r.schedId,8)||'  '||
-        RPAD(r.routeId,6)||'  '||
-        TO_CHAR(r.depTime,'DD-MON-YYYY HH24:MI:SS')||'  '||
-        TO_CHAR(r.arrTime,'DD-MON-YYYY HH24:MI:SS')||'  '||
-        RPAD(r.schedStatus,9)||'  '||
-        NVL(r.routeName,'-')
+        '  '||
+        RPAD(s.schedId,10)||'  '||
+        TO_CHAR(s.depTime,'DD-MON-YYYY HH24:MI:SS')||'  '||
+        TO_CHAR(s.arrTime,'DD-MON-YYYY HH24:MI:SS')||'  '||
+        s.schedStatus
       );
       v_printed := v_printed + 1;
-    ELSE
-      EXIT;
-    END IF;
+      IF v_printed >= NVL(p_show_limit,10) THEN
+        v_done := TRUE;
+        EXIT;
+      END IF;
+    END LOOP;
   END LOOP;
 
   DBMS_OUTPUT.PUT_LINE('=== End Station Report ===');
 END sp_report_station;
 /
+
+
 
 
 
