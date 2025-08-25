@@ -80,13 +80,6 @@ END;
 
 CREATE OR REPLACE PROCEDURE prc_report_worker_performance IS
 
-    -- Variables to hold data
-    v_worker   c_workers%ROWTYPE;
-    v_jobs     c_jobs%ROWTYPE;
-
-    -- Bridge between outer and inner cursors
-    v_staffID  Staff.staffID%TYPE;
-
     -- Outer cursor: all staff who are maintenance workers
     CURSOR c_workers IS
         SELECT s.staffId, s.firstName, s.lastName, s.hireDate
@@ -98,6 +91,9 @@ CREATE OR REPLACE PROCEDURE prc_report_worker_performance IS
             AND UPPER(r.roleName) = 'MAINTENANCE TECHNICIAN'
         );
 
+    -- Bridge between outer and inner cursors
+    v_staffID  Staff.staffID%TYPE;
+
     -- Inner cursor: jobs done by a particular staff
     CURSOR c_jobs IS
         SELECT COUNT(*) AS total_jobs,
@@ -106,7 +102,11 @@ CREATE OR REPLACE PROCEDURE prc_report_worker_performance IS
                         THEN 1 ELSE 0 END) AS jobs_past_year
         FROM BusMaintenance bm 
         JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
-        WHERE msa.staffID = v_staffID;    
+        WHERE msa.staffID = v_staffID;  
+
+    -- Variables to hold data
+    v_worker   c_workers%ROWTYPE;
+    v_jobs     c_jobs%ROWTYPE;  
 
 BEGIN
     -- Loop over all workers
