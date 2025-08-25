@@ -35,16 +35,16 @@ FROM (
             msa.staffID,
             ROW_NUMBER() OVER (PARTITION BY msa.staffID ORDER BY bm.maintenanceDoneDate DESC) AS rn
         FROM BusMaintenance bm
-        JOIN MaintenanceStaffAssignment msa bm.maintenanceID = msa.maintenanceID
+        JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
     ) 
     WHERE rn = 1
 ) bm2 
 JOIN Staff s ON bm2.staffID = s.staffID
 JOIN MaintenanceService ms ON bm2.serviceID = ms.serviceID
-ORDER BY bm.maintenanceDoneDate;
+ORDER BY bm2.maintenanceDoneDate;
 
 COLUMN staffID HEADING "Staff ID" 
-COLUMN fullName HEADING "Name" 
+COLUMN fullName HEADING "Name" FORMAT A20
 COLUMN phoneNumber HEADING "Contact no." 
 COLUMN email HEADING "Email" 
 COLUMN maintenanceId HEADING "Maint. job ID" 
@@ -55,6 +55,8 @@ COLUMN maintenanceDate HEADING "Done on"
 COLUMN remarks HEADING "Remarks" 
 
 SELECT * FROM MaintenanceStaffRecentJobView;
+
+CLEAR COLUMN
 
 
 
@@ -88,11 +90,13 @@ SELECT
     c.companyName       AS companyName,
     b.busID             AS busID,
     b.plateNo           AS plateNo,
-    AVG(interval_days)  AS avgIntervalDays
+    ROUND(AVG(interval_days))  AS avgIntervalDays
 FROM (
-    SELECT bm.busID,
-           LEAD(bm.maintenanceDate) OVER (PARTITION BY bm.busID ORDER BY bm.maintenanceDoneDate) 
-               - bm.maintenanceDate AS interval_days
+    SELECT 
+        bm.busID,
+        CAST(LEAD(bm.maintenanceDoneDate) OVER (PARTITION BY bm.busID ORDER BY bm.maintenanceDoneDate) AS DATE) 
+        - CAST(bm.maintenanceDoneDate AS DATE)
+            AS interval_days
     FROM BusMaintenance bm
     JOIN MaintenanceService ms 
       ON bm.serviceID = ms.serviceID
@@ -101,18 +105,22 @@ FROM (
 JOIN Bus b ON intervals.busID = b.busID
 JOIN BusCompany c ON b.companyID = c.companyID
 WHERE interval_days IS NOT NULL
-GROUP BY b.busID
+GROUP BY b.busID, c.companyName, b.plateNo
 ORDER BY c.companyName, b.busID;
+
+-- bm, ms, b, bc
 
 COLUMN companyName      HEADING "Company Name"          FORMAT A20
 COLUMN busID            HEADING "Bus ID"                FORMAT A10
 COLUMN plateNo          HEADING "Plate No."             FORMAT A10
-COLUMN avgIntervalDays  HEADING "Avg. interval days"    FORMAT A5
+COLUMN avgIntervalDays  HEADING "Avg. interval days"    
 
 BREAK ON companyName SKIP 1
 
-SELECT * FROM BusMaintenanceStats;
+SELECT * FROM BusMaintenanceStatsView;
 
+CLEAR COLUMN
+CLEAR BREAK
 
 
 
