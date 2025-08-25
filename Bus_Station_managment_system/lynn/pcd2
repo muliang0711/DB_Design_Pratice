@@ -155,4 +155,4 @@ WHERE customerID = 'CU0415';
 UPDATE ticket SET customerId = 'CU0111' , price    = 20.50, type= 'regular',status= 'been_bought' WHERE ticketId = 'T00000147023';
 EXEC ProcessTicketRefund('T00000147327', 'full');
 
-
+select * from ticket where ticketid= 'T00000147023';
