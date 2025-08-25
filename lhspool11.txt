@@ -1,0 +1,172 @@
+SQL> select staffid from staff where rownum <=5;
+
+STAFFID                                                                         
+------------                                                                    
+ST0001                                                                          
+ST0002                                                                          
+ST0003                                                                          
+ST0004                                                                          
+ST0005                                                                          
+
+SQL> SELECT COUNT(*) AS total_jobs,
+  2                 SUM(bm.actualCost + bm.additionalCost) AS total_cost,
+  3                 SUM(CASE WHEN bm.maintenanceDoneDate >= ADD_MONTHS(TRUNC(SYSDATE), -12)
+  4                          THEN 1 ELSE 0 END) AS jobs_past_year
+  5          FROM BusMaintenance bm
+  6          JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
+  7          WHERE msa.staffID = 'ST0001';
+
+TOTAL_JOBS TOTAL_COST JOBS_PAST_YEAR                                            
+---------- ---------- --------------                                            
+         0                                                                      
+
+SQL> SELECT s.staffId, s.firstName, s.lastName, s.hireDate
+  2          FROM staff s
+  3          WHERE EXISTS (
+  4              SELECT 1
+  5              FROM StaffRole r
+  6              WHERE r.roleId = s.roleId
+  7              AND UPPER(r.roleName) = 'MAINTENANCE TECHNICIAN'
+  8          );
+
+STAFFID      FIRSTNAME                                                          
+------------ --------------------------------------------------                 
+LASTNAME                                           HIREDATE                     
+-------------------------------------------------- ---------                    
+ST0129       Jennifer                                                           
+Palmer                                             28-NOV-16                    
+                                                                                
+ST0157       Timothy                                                            
+Price                                              27-MAY-17                    
+                                                                                
+ST0160       Jennifer                                                           
+Lawrence                                           11-JUL-23                    
+                                                                                
+
+STAFFID      FIRSTNAME                                                          
+------------ --------------------------------------------------                 
+LASTNAME                                           HIREDATE                     
+-------------------------------------------------- ---------                    
+ST0180       Brian                                                              
+Daniel                                             15-JAN-23                    
+                                                                                
+ST0215       Kelly                                                              
+Collins                                            16-APR-20                    
+                                                                                
+ST0260       William                                                            
+Rose                                               01-JUL-20                    
+                                                                                
+
+STAFFID      FIRSTNAME                                                          
+------------ --------------------------------------------------                 
+LASTNAME                                           HIREDATE                     
+-------------------------------------------------- ---------                    
+ST0002       Kyle                                                               
+Choi                                               20-SEP-23                    
+                                                                                
+ST0009       Richard                                                            
+Holland                                            15-APR-18                    
+                                                                                
+ST0034       Scott                                                              
+Estrada                                            02-MAY-24                    
+                                                                                
+
+STAFFID      FIRSTNAME                                                          
+------------ --------------------------------------------------                 
+LASTNAME                                           HIREDATE                     
+-------------------------------------------------- ---------                    
+ST0055       Brianna                                                            
+Harvey                                             16-AUG-21                    
+                                                                                
+ST0096       Julia                                                              
+Hicks                                              06-SEP-19                    
+                                                                                
+ST0097       Derek                                                              
+Phillips                                           02-DEC-22                    
+                                                                                
+
+STAFFID      FIRSTNAME                                                          
+------------ --------------------------------------------------                 
+LASTNAME                                           HIREDATE                     
+-------------------------------------------------- ---------                    
+ST0099       Eric                                                               
+Jones                                              02-NOV-24                    
+                                                                                
+ST0108       Christopher                                                        
+Miller                                             08-MAR-19                    
+                                                                                
+ST0304       Marissa                                                            
+Black                                              14-JUL-20                    
+                                                                                
+
+STAFFID      FIRSTNAME                                                          
+------------ --------------------------------------------------                 
+LASTNAME                                           HIREDATE                     
+-------------------------------------------------- ---------                    
+ST0306       Michael                                                            
+Oliver                                             21-AUG-22                    
+                                                                                
+ST0365       Susan                                                              
+Tran                                               01-SEP-20                    
+                                                                                
+ST0375       Bryan                                                              
+Evans                                              16-JUN-18                    
+                                                                                
+
+STAFFID      FIRSTNAME                                                          
+------------ --------------------------------------------------                 
+LASTNAME                                           HIREDATE                     
+-------------------------------------------------- ---------                    
+ST0377       Arthur                                                             
+Hill                                               07-DEC-18                    
+                                                                                
+ST0390       Richard                                                            
+Bennett                                            02-JAN-24                    
+                                                                                
+ST0399       Larry                                                              
+Collins                                            23-AUG-19                    
+                                                                                
+
+STAFFID      FIRSTNAME                                                          
+------------ --------------------------------------------------                 
+LASTNAME                                           HIREDATE                     
+-------------------------------------------------- ---------                    
+ST0407       Jeffery                                                            
+Bryant                                             06-JUN-20                    
+                                                                                
+ST0427       Zachary                                                            
+Yoder                                              10-SEP-21                    
+                                                                                
+ST0480       Guy                                                                
+Holland                                            09-JUN-20                    
+                                                                                
+
+24 rows selected.
+
+SQL> SELECT COUNT(*) AS total_jobs,
+  2                 SUM(bm.actualCost + bm.additionalCost) AS total_cost,
+  3                 SUM(CASE WHEN bm.maintenanceDoneDate >= ADD_MONTHS(TRUNC(SYSDATE), -12)
+  4                          THEN 1 ELSE 0 END) AS jobs_past_year
+  5          FROM BusMaintenance bm
+  6          JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
+  7          WHERE msa.staffID = 'ST0375';
+
+TOTAL_JOBS TOTAL_COST JOBS_PAST_YEAR                                            
+---------- ---------- --------------                                            
+         0                                                                      
+
+SQL> select bm.* from busmaintenance bm join maintenancestaffassignment msa using(maintenanceid) join staff s using (staffid) join staffrole sr using(roleid) where UPPER(sr.rolename) = 'MAINTENANCE TECHNICIAN';
+select bm.* from busmaintenance bm join maintenancestaffassignment msa using(maintenanceid) join staff s using (staffid) join staffrole sr using(roleid) where UPPER(sr.rolename) = 'MAINTENANCE TECHNICIAN'
+          *
+ERROR at line 1:
+ORA-25154: column part of USING clause cannot have qualifier 
+
+
+SQL> select bm.* from busmaintenance bm join maintenancestaffassignment msa using(maintenanceid) join staff s using(staffid) join staffrole sr using(roleid) where UPPER(sr.rolename) = 'MAINTENANCE TECHNICIAN';
+select bm.* from busmaintenance bm join maintenancestaffassignment msa using(maintenanceid) join staff s using(staffid) join staffrole sr using(roleid) where UPPER(sr.rolename) = 'MAINTENANCE TECHNICIAN'
+          *
+ERROR at line 1:
+ORA-25154: column part of USING clause cannot have qualifier 
+
+
+SQL> 
