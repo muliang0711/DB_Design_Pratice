@@ -1,0 +1,14 @@
+CREATE OR REPLACE VIEW v_bus_schedule_summary AS
+SELECT 
+    bs.busScheduleId,
+    r.routeName,
+    bs.plannedDepartureTime,
+    bs.plannedArrivalTime,
+    bs.status,
+    rda.frequency,
+    rda.weekdays
+FROM busSchedule bs
+JOIN routeDriverAssignmentList rda 
+    ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+JOIN route r 
+    ON rda.routeId = r.routeId;
