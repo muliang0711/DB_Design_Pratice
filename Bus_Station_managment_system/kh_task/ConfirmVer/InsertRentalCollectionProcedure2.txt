@@ -15,7 +15,7 @@ BEGIN
     WHERE shopID = v_shopID
       AND (
             TRUNC(rentalMonth, 'MM') = TRUNC(SYSDATE, 'MM')
-            OR TRUNC(rentalMonth, 'YYYY') = TRUNC(SYSDATE, 'YYYY')
+            AND TRUNC(rentalMonth, 'YYYY') = TRUNC(SYSDATE, 'YYYY')
           );
 
     IF v_exists = 0 THEN
@@ -37,3 +37,4 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
+
