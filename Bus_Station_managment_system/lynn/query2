@@ -31,8 +31,8 @@ JOIN busCompany bc ON b.companyId = bc.companyId
 LEFT JOIN paymentRecord pr ON t.ticketId = pr.ticketId
 LEFT JOIN pointTransaction pt ON pr.paymentId = pt.paymentId
 WHERE 
-    pr.status = 'Completed'
-    AND t.status IN ('booked_extended','been_bought','on_selling')
+    pr.status = 'completed'
+    AND t.status IN ('booked_extended','been_bought')
 GROUP BY c.customerId, c.firstName, c.lastName, c.membershipStatus, bc.companyName, r.routeName;
 
 -- NVL use for process the null value

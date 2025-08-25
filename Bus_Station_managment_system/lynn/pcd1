@@ -38,7 +38,7 @@ BEGIN
     v_daysBeforeDeparture := TRUNC(v_originalDepartureTime)- TRUNC(SYSDATE);
 
     -- check the status
-    IF v_currentStatus != 'booked' THEN
+    IF v_currentStatus != 'been_bought' THEN
         v_result := 'Error: Only booked tickets can be extended';
         RETURN;
     END IF;

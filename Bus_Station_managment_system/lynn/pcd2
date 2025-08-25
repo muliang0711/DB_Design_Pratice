@@ -136,23 +136,5 @@ END ProcessTicketRefund;
 
 
 
-EXEC ProcessTicketRefund('T00000281318', 'partial', 'A123');
+EXEC ProcessTicketRefund('T00000281318', 'full', 'A123');
 
-
--- v_result     OUT VARCHAR2 : output the parameters
---user need to input the data of p_??? 
--- as is use to store the data 
--- when other : for example table is not found ,duplicate insertion or any compilation error
--- SQLERRM : return error message
-
-UPDATE 
-
-Test Case : EXEC ProcessTicketRefund('T00000281318', 'partial', 'A123');
-REsult : Success on changing ticket status from been bought to pending 
-Result : but failed on inserting into payment record 
-
-SELECT *
-  FROM paymentrecord
-  WHERE type = 'Refund';
-
-no rows selected

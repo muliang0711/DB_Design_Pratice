@@ -29,7 +29,7 @@ JOIN Route r
 JOIN Customer c 
     ON pr.customerID = c.customerID
 WHERE 
-    pr.status = 'Completed'
+    pr.status = 'completed'
     AND t.status IN ('booked_extended','been_bought','on_selling')
 GROUP BY 
     r.routeID, r.routeName, r.startPoint, r.endPoint, c.membershipStatus, 
