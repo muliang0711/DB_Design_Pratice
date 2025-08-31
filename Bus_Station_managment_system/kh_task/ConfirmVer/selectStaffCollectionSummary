@@ -1,14 +1,12 @@
 COLUMN staffId FORMAT A10 HEADING 'Staff ID'
-COLUMN staffName FORMAT A25 HEADING 'Staff Name'
+COLUMN firstName FORMAT A20 HEADING 'First Name'
+COLUMN lastName FORMAT A25 HEADING 'Last Name'
 COLUMN totalCollections FORMAT 9999 HEADING 'Collections'
 COLUMN totalAmountCollected FORMAT 999,999.99 HEADING 'Total Collected (RM)'
 
-SELECT 
-    rc.staffId,
-    COUNT(*) AS totalCollections,
-    SUM(rc.rentalAmount) AS totalAmountCollected
+SELECT rc.staffId, st.firstName, st.lastName, COUNT(*) AS totalCollections, SUM(rc.rentalAmount) AS totalAmountCollected
 FROM rentalCollection rc
 JOIN staff st ON rc.staffId = st.staffId
-GROUP BY rc.staffId, st.staffId
+GROUP BY rc.staffId, st.staffId, st.firstName, st.lastName
 ORDER BY totalCollections DESC;
 
