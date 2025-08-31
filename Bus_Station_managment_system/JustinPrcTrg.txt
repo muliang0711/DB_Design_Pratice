@@ -68,6 +68,27 @@ END sp_deactivate_platform;
 
 
 
+------------------------------------------------------------------------------------------------
+INSERT INTO busSchedule
+  (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime,
+   status, remarks, expectedProfit, createdAt, updatedAt)
+VALUES
+  ('S_TEST_BP001', 'RD186',
+   SYSTIMESTAMP + INTERVAL '2' DAY,
+   SYSTIMESTAMP + INTERVAL '2' DAY + INTERVAL '5' HOUR,
+   'planned', 'adhoc test - BP001', 350, SYSTIMESTAMP, SYSTIMESTAMP);
+
+
+EXEC sp_deactivate_platform('BP001', 'testing maintenance window');
+
+-- (Optional) Verify the one we inserted got cancelled
+SELECT busScheduleId, status, remarks
+FROM busSchedule
+WHERE busScheduleId = 'S_TEST_BP001';
+
+
+----------------------------------------------------------------------------------------------------
+
 
 
 
@@ -146,6 +167,29 @@ END;
 ----------------------------------------------------------------------------------------------------
 
 
+
+SELECT bs.busScheduleId,
+       rda.routeDriverAssignmentId AS rda_id,
+       rda.routeId,
+       bs.plannedDepartureTime AS dep,
+       bs.plannedArrivalTime   AS arr,
+       bs.status,
+       bs.remarks
+FROM   busSchedule bs
+JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+JOIN   routeStation rs              ON rs.routeId = rda.routeId
+JOIN   busPlatform bp               ON bp.platformId = rs.platformId
+WHERE  bp.stationId = 'S001'
+  AND  bs.plannedDepartureTime BETWEEN TIMESTAMP '2025-03-01 00:00:00' AND TIMESTAMP '2025-04-30 23:59:59'
+  AND  LOWER(bs.status) = 'planned'
+ORDER  BY dep;
+
+
+
+
+ALTER TRIGGER TRG_BS_TWO_DRIVERS DISABLE;
+EXEC sp_delay_schedules_at_station('S001', 45, TIMESTAMP '2025-03-01 00:00:00', TIMESTAMP '2025-04-30 23:59:59', 'test delay');
+----------------------------------------------------------------------------------------------------
 
 
 
@@ -333,6 +377,7 @@ VALUES
    SYSTIMESTAMP + 1,
    SYSTIMESTAMP + 1 + INTERVAL '9' HOUR,
    'planned', SYSTIMESTAMP, SYSTIMESTAMP);
+
 
 
 
