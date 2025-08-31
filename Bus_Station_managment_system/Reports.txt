@@ -434,6 +434,13 @@ EXEC sp_report_platform('BP301');
 
 
 
+-----------------------------------------
+EXEC sp_report_driver('D0472', TIMESTAMP '2025-03-25 00:00:00', 14, 20);
+
+
+
+
+EXEC sp_report_platform('BP004', TO_TIMESTAMP('2025-03-01 00:00:00','YYYY-MM-DD HH24:MI:SS'), 10);
 
 
 
