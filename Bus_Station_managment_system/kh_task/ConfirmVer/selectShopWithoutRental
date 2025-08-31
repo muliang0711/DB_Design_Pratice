@@ -5,6 +5,11 @@ COLUMN stationId     FORMAT A10  HEADING 'Station'
 COLUMN shopType      FORMAT A12  HEADING 'Shop Type'
 COLUMN status        FORMAT A10  HEADING 'Shop Status'
 
+/*
+DELETE FROM rentalCollection
+WHERE shopId IN ('SH0117', 'SH0118', 'SH0119');
+*/
+
 SELECT 
     s.shopId,s.shopNo,s.shopTenantName,s.stationId,s.shopType,s.status
 FROM shop s
@@ -13,7 +18,4 @@ ON s.shopId = rc.shopId
 WHERE rc.shopId IS NULL
 ORDER BY s.stationId, s.shopNo;
 
-/*
-DELETE FROM rentalCollection
-WHERE shopId IN ('SH0117', 'SH0118', 'SH0119');
-*/
+
