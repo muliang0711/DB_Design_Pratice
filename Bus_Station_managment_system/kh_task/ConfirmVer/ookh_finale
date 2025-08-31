@@ -40,10 +40,12 @@ EXCEPTION
 END;
 /
 
+/*
 UPDATE rentalCollection
 SET status = 'paid', staffId = 'ST0012'
 WHERE shopId = 'SH0159'
   AND TRUNC(rentalMonth, 'MM') = TO_DATE('08/2025', 'MM/YYYY');
+*/
 
 -- Sequence for shop
 
