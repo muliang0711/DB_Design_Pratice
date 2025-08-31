@@ -1,81 +1,5 @@
---Procedure 1: Deactivate an Entire Station
-SET SERVEROUTPUT ON;
 
-CREATE OR REPLACE PROCEDURE sp_deactivate_station (
-    p_station_id IN busStation.stationId%TYPE,
-    p_reason     IN VARCHAR2
-) AS
-  v_station_status        busStation.status%TYPE;
-  v_cancelled_schedules   NUMBER := 0;
-  v_deactivated_platforms NUMBER := 0;
-BEGIN
-  -- Validate station
-  BEGIN
-    SELECT status INTO v_station_status
-    FROM busStation
-    WHERE stationId = p_station_id;
-
-    IF UPPER(v_station_status) = 'INACTIVE' THEN
-      DBMS_OUTPUT.PUT_LINE('INFO: Station ' || p_station_id || ' is already INACTIVE.');
-      RETURN;
-    END IF;
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      RAISE_APPLICATION_ERROR(-20001, 'Station ID ' || p_station_id || ' does not exist.');
-  END;
-
-  DBMS_OUTPUT.PUT_LINE('Starting deactivation for Station ID: ' || p_station_id || ' ...');
-
-  -- Cancel future PLANNED schedules that pass through any platform at this station
-  UPDATE busSchedule bs
-     SET status  = 'cancelled',
-         remarks = SUBSTR('Cancelled due to station closure: ' || p_reason, 1, 200)
-   WHERE LOWER(bs.status) = 'planned'
-     AND bs.plannedDepartureTime > SYSTIMESTAMP
-     AND EXISTS (
-           SELECT 1
-             FROM routeDriverAssignmentList rda
-             JOIN routeStation rs ON rs.routeId = rda.routeId
-             JOIN busPlatform  bp ON bp.platformId = rs.platformId
-            WHERE rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-              AND bp.stationId = p_station_id
-         );
-
-  v_cancelled_schedules := SQL%ROWCOUNT;
-  DBMS_OUTPUT.PUT_LINE('> Cancelled ' || v_cancelled_schedules || ' future schedule(s).');
-
-  -- Deactivate all platforms at this station
-  UPDATE busPlatform
-     SET status = 'inactive'
-   WHERE stationId = p_station_id
-     AND UPPER(status) = 'ACTIVE';
-
-  v_deactivated_platforms := SQL%ROWCOUNT;
-  DBMS_OUTPUT.PUT_LINE('> Deactivated ' || v_deactivated_platforms || ' platform(s).');
-
-  -- Deactivate the station
-  UPDATE busStation
-     SET status = 'inactive'
-   WHERE stationId = p_station_id;
-
-  COMMIT;
-  DBMS_OUTPUT.PUT_LINE('SUCCESS: Station ' || p_station_id || ' and related entities deactivated.');
-EXCEPTION
-  WHEN OTHERS THEN
-    ROLLBACK;
-    DBMS_OUTPUT.PUT_LINE('ERROR: Deactivation failed. Rolled back.');
-    RAISE;
-END sp_deactivate_station;
-/
-
-
-
-
-
-
-
-
---Procedure 2: Deactivate a Single Platform
+--Procedure 1: Deactivate a Single Platform
 
 CREATE OR REPLACE PROCEDURE sp_deactivate_platform (
     p_platform_id IN busPlatform.platformId%TYPE,
@@ -135,7 +59,14 @@ END sp_deactivate_platform;
 
 
 
--- delay procedure
+
+
+
+
+
+
+
+-- Procedure 2: delay procedure
 CREATE OR REPLACE PROCEDURE sp_delay_schedules_at_station (
   p_station_id    IN busStation.stationId%TYPE,
   p_delay_minutes IN NUMBER,                       -- can be negative
@@ -239,34 +170,58 @@ END;
 
 
 
---Trigger 2: Protect Platform from Unsafe Manual Updates
---This trigger prevents a user from directly running UPDATE BusPlatform SET status = 'inactive' ... if that
---platform still has active, future schedules. It forces them to use the sp_deactivate_platform procedure.
-
-CREATE OR REPLACE TRIGGER trg_bp_upd_protect
-BEFORE UPDATE OF status ON busPlatform
+--Trigger 2: enforces the 2-driver rule for long trips
+-- Enforce two drivers (MAIN + SUPPORT) for long trips (>= 8 hours).
+-- Fires on create/update of schedules.
+CREATE OR REPLACE TRIGGER trg_bs_two_drivers
+BEFORE INSERT OR UPDATE OF routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime
+ON busSchedule
 FOR EACH ROW
 DECLARE
-  v_future_schedules NUMBER;
+  v_est_dur_min    NUMBER;  -- estimated duration in minutes
+  v_main           driverListAssignment.mainDriverId%TYPE;
+  v_sup            driverListAssignment.supportDriverId%TYPE;
 BEGIN
-  IF UPPER(:OLD.status) = 'ACTIVE' AND UPPER(:NEW.status) = 'INACTIVE' THEN
-    SELECT COUNT(*)
-      INTO v_future_schedules
-      FROM busSchedule bs
-      JOIN routeDriverAssignmentList rda
-        ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-      JOIN routeStation rs
-        ON rs.routeId = rda.routeId
-     WHERE rs.platformId = :NEW.platformId
-       AND LOWER(bs.status) = 'planned'
-       AND bs.plannedDepartureTime > SYSTIMESTAMP;
+  -- 1) Get route estimatedDuration (minutes) via RDA
+  BEGIN
+    SELECT r.estimatedDuration
+      INTO v_est_dur_min
+    FROM   routeDriverAssignmentList rda
+    JOIN   route r ON r.routeId = rda.routeId
+    WHERE  rda.routeDriverAssignmentId = :NEW.routeDriverAssignmentId;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20041,
+        'Invalid routeDriverAssignmentId: '||:NEW.routeDriverAssignmentId);
+  END;
 
-    IF v_future_schedules > 0 THEN
-      RAISE_APPLICATION_ERROR(-20003,
-        'Cannot deactivate platform ' || :NEW.platformId ||
-        ' — ' || v_future_schedules || ' planned future schedule(s) exist. Use sp_deactivate_platform.');
+  -- 2) If route has no estimate, derive from schedule times (if both present)
+  IF v_est_dur_min IS NULL THEN
+    IF :NEW.plannedDepartureTime IS NOT NULL
+       AND :NEW.plannedArrivalTime   IS NOT NULL
+    THEN
+      v_est_dur_min :=
+        (CAST(:NEW.plannedArrivalTime   AS DATE)
+       - CAST(:NEW.plannedDepartureTime AS DATE)) * 24 * 60;
+    ELSE
+      v_est_dur_min := 0;
+    END IF;
+  END IF;
+
+  -- 3) If >= 8 hours, both drivers must be set on the assignment
+  IF v_est_dur_min >= 480 THEN
+    SELECT a.mainDriverId, a.supportDriverId
+      INTO v_main, v_sup
+    FROM   routeDriverAssignmentList rda
+    JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+    WHERE  rda.routeDriverAssignmentId = :NEW.routeDriverAssignmentId;
+
+    IF v_main IS NULL OR v_sup IS NULL THEN
+      RAISE_APPLICATION_ERROR(
+        -20042,
+        'Long trips (>=8h) require MAIN and SUPPORT drivers for RDA '||:NEW.routeDriverAssignmentId
+      );
     END IF;
   END IF;
 END;
 /
-
