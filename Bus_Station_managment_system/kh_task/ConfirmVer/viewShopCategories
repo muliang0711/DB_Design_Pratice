@@ -4,8 +4,8 @@ COLUMN shopNumbers FORMAT A50 HEADING 'Shop Numbers'
 
 CREATE OR REPLACE VIEW vw_ShopCategories AS
 SELECT 
-    shopType,
-    COUNT(*) AS totalShops,
+    RPAD(NVL(shopType, 'Unknown'), 15) AS shopType,
+    RPAD(COUNT(*), 3) AS totalShops,
     LISTAGG(shopNo, ', ') WITHIN GROUP (ORDER BY shopNo) AS shopNumbers
 FROM shop
 GROUP BY shopType;
