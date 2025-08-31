@@ -86,8 +86,8 @@ EXCEPTION
 END ExtendTicket;
 /
 
--- valid 
-EXEC ExtendTicket('T00000000473', 'T00000000480');
+    -- valid 
+    EXEC ExtendTicket('T00000000473', 'T00000000480');
 
     -- check the ticket 
     SET linesize 300

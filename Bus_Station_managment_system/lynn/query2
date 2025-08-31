@@ -1,78 +1,21 @@
--- categories the customer spending to find the loyality customer
-SET linesize 120
-SET pagesize 100
-
-CREATE OR REPLACE VIEW StrategicCustomerValue AS
-SELECT
-    c.customerId,
-    c.firstName || ' ' || c.lastName AS customerName,
-    c.membershipStatus,
-    bc.companyName,
-    r.routeName,
-    SUM(pr.totalAmount) AS totalSpending,
-    NVL(SUM(pt.pointChange),0) AS totalPointsEarned,
-    COUNT(DISTINCT t.ticketId) AS totalTickets,
-    COUNT(DISTINCT bs.busScheduleId) AS schedulesUsed,
-    ROUND(AVG(pr.totalAmount),2) AS avgSpendPerTrip,
-    CASE 
-      WHEN SUM(pr.totalAmount) > 1000 THEN 'High Value'
-      WHEN SUM(pr.totalAmount) BETWEEN 500 AND 1000 THEN 'Medium Value'
-      ELSE 'Low Value'
-    END AS customerCategory
-FROM customer c
-JOIN ticket t ON c.customerId = t.customerId
-JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
-JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
-JOIN route r ON rda.routeId = r.routeId
-JOIN bus b ON rda.assignmentId IN (
-    SELECT assignmentId FROM driverListAssignment WHERE busId = b.busId
-)
-JOIN busCompany bc ON b.companyId = bc.companyId
-LEFT JOIN paymentRecord pr ON t.ticketId = pr.ticketId
-LEFT JOIN pointTransaction pt ON pr.paymentId = pt.paymentId
-WHERE 
-    pr.status = 'completed'
-    AND t.status IN ('booked_extended','been_bought')
-GROUP BY c.customerId, c.firstName, c.lastName, c.membershipStatus, bc.companyName, r.routeName;
-
--- NVL use for process the null value
--- distinct use to remove dulpicate rows
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 -- categories the customer spending to find the loyalty customer
-SET linesize 200
+SET linesize 220
 SET pagesize 100
 
--- 设置列标题和格式
 COLUMN customerName       HEADING "Customer Name"        FORMAT A25
 COLUMN membershipStatus   HEADING "Member Status"        FORMAT A15
 COLUMN companyName        HEADING "Company Name"         FORMAT A20
-COLUMN routeName          HEADING "Route Name"           FORMAT A20
+COLUMN routeName          HEADING "Route Name"           FORMAT A25   
 COLUMN totalSpending      HEADING "Total Spending"       FORMAT 999,999,990.00
 COLUMN totalPointsEarned  HEADING "Points Earned"        FORMAT 999,999,990
 COLUMN totalTickets       HEADING "Tickets Bought"       FORMAT 999,990
 COLUMN schedulesUsed      HEADING "Schedules Used"       FORMAT 999,990
 COLUMN avgSpendPerTrip    HEADING "Avg Spend/Trip"       FORMAT 999,990.00
-COLUMN customerCategory   HEADING "Customer Category"    FORMAT A15
+COLUMN customerCategory   HEADING "Customer Category"    FORMAT A18
 
--- 报表分组：每位顾客单独显示，按公司和路线分层
-BREAK ON customerName SKIP 1 ON companyName SKIP 1
+-- grouping
+BREAK ON customerId SKIP 1 ON customerName ON membershipStatus ON companyName 
 
--- 视图定义
 CREATE OR REPLACE VIEW StrategicCustomerValue AS
 SELECT
     c.customerId,
@@ -118,6 +61,7 @@ GROUP BY
     c.customerId, c.firstName, c.lastName, c.membershipStatus, 
     bc.companyName, r.routeName;
 
--- NVL 用来处理空值
--- DISTINCT 用来去重，避免重复统计
 SELECT * FROM StrategicCustomerValue;
+CLEAR COLUMN
+CLEAR BREAKS
+-- NVL use for process the null value

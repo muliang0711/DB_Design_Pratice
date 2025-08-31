@@ -1,15 +1,14 @@
--- use to view the income of different route and month according to memberstatus category, and analysis the ticket sold, avarage ticket money, the uses of the point
+-- use to view the income of different route and analysis the ticket sold, avarage ticket money, the uses of the point
 -- use for straegy: which route earn the most, the average ticket price is reasonable or not, and the point system bring how much discount
 
 SET linesize 200
 SET pagesize 100
 ALTER SESSION SET nls_date_format='dd-mm-yyyy';
 
--- set the title and column
-COLUMN routeName           HEADING "Route Name"             FORMAT A30
+-- Set the title and column
+COLUMN routeName           HEADING "Route Name"             FORMAT A25
 COLUMN departureCity       HEADING "Departure"              FORMAT A15
 COLUMN arrivalCity         HEADING "Arrival"                FORMAT A15
-COLUMN membershipStatus    HEADING "Member Status"          FORMAT A15
 COLUMN month               HEADING "Month"                  FORMAT A10
 COLUMN totalRevenue        HEADING "Total Revenue"          FORMAT 999,999,990.00
 COLUMN ticketsSold         HEADING "Tickets Sold"           FORMAT 999,990
@@ -23,12 +22,11 @@ SELECT
     r.routeName,
     r.startPoint AS departureCity,
     r.endPoint AS arrivalCity,
-    c.membershipStatus,
     TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM') AS month,
     SUM(pr.totalAmount) AS totalRevenue,
     COUNT(DISTINCT t.ticketID) AS ticketsSold,
     ROUND(AVG(pr.totalAmount), 2) AS averageTicketPrice,
-    SUM(pr.pointsApplied * pr.pointValue) AS pointsRedeemedValue
+    SUM(pr.pointValue) AS pointsRedeemedValue
 FROM 
     PaymentRecord pr
 JOIN Ticket t 
@@ -43,14 +41,13 @@ JOIN Customer c
     ON pr.customerID = c.customerID
 WHERE 
     pr.status = 'completed'
-    AND t.status IN ('booked_extended','been_bought','on_selling')
+    AND t.status IN ('booked_extended','been_bought')
 GROUP BY 
-    r.routeID, r.routeName, r.startPoint, r.endPoint, c.membershipStatus, 
-    TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM')
+    r.routeID, r.routeName, r.startPoint, r.endPoint, TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM')
 ORDER BY 
-    TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM'),
+     TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM'),
+    r.routeID,
     totalRevenue DESC;
--- clear setting
-CLEAR COLUMN
 
 SELECT * FROM RevenueAnalysis;
+CLEAR COLUMN
