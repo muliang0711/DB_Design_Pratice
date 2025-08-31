@@ -1,0 +1,19 @@
+COLUMN rentalMonth    FORMAT A12 HEADING 'Month'
+COLUMN totalCollections FORMAT 999 HEADING 'Total|Collections'
+COLUMN totalAmount    FORMAT 999,999.99 HEADING 'Total|Amount'
+COLUMN totalPaid      FORMAT 999,999.99 HEADING 'Total|Paid'
+COLUMN totalUnpaid    FORMAT 999,999.99 HEADING 'Total|Unpaid'
+
+CREATE OR REPLACE VIEW vw_RentalSummary AS
+SELECT 
+    EXTRACT(YEAR FROM rentalMonth) AS rentalYear,
+    EXTRACT(MONTH FROM rentalMonth) AS rentalMonth,
+    COUNT(*) AS totalCollections,
+    SUM(rentalAmount) AS totalAmount,
+    SUM(CASE WHEN status = 'paid' THEN rentalAmount ELSE 0 END) AS totalPaid,
+    SUM(CASE WHEN status <> 'paid' THEN rentalAmount ELSE 0 END) AS totalUnpaid
+FROM rentalCollection
+GROUP BY EXTRACT(YEAR FROM rentalMonth), EXTRACT(MONTH FROM rentalMonth)
+ORDER BY rentalYear, rentalMonth;
+
+SELECT * FROM vw_RentalSummary;
