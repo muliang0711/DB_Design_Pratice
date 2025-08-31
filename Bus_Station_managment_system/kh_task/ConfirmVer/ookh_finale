@@ -361,8 +361,7 @@ BEGIN
   SELECT COUNT(*)
   INTO v_current_shop_count
   FROM shop
-  WHERE stationId = :NEW.stationId
-    AND status = 'active';  
+  WHERE stationId = :NEW.stationId;  
 
   IF v_current_shop_count >= v_max_capacity THEN
     RAISE_APPLICATION_ERROR(-20001, 
