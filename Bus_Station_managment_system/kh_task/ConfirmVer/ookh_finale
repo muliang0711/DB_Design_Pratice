@@ -1,3 +1,5 @@
+SET SERVEROUTPUT ON;
+
 CREATE OR REPLACE PROCEDURE prcAddRentalCollection IS
   CURSOR shop_cursor IS
     SELECT shopID
@@ -15,7 +17,7 @@ BEGIN
     WHERE shopID = v_shopID
       AND (
             TRUNC(rentalMonth, 'MM') = TRUNC(SYSDATE, 'MM')
-            OR TRUNC(rentalMonth, 'YYYY') = TRUNC(SYSDATE, 'YYYY')
+            AND TRUNC(rentalMonth, 'YYYY') = TRUNC(SYSDATE, 'YYYY')
           );
 
     IF v_exists = 0 THEN
@@ -37,6 +39,10 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
+
+UPDATE rentalCollection 
+SET status = 'paid', staffId = 'ST0012'
+WHERE shopId = 'SH0159' AND rentalMonth = '25/08/2025';
 
 -- Sequence for shop
 
@@ -79,7 +85,6 @@ BEGIN
 END;
 /
 
-
 CREATE OR REPLACE PROCEDURE prcAddShop(
   v_stationId     IN shop.stationId%TYPE,
   v_shopNo        IN shop.shopNo%TYPE,
@@ -92,13 +97,14 @@ CREATE OR REPLACE PROCEDURE prcAddShop(
   v_actualSize shop.shopSize%TYPE;
   v_newShopId shop.shopId%TYPE;
 
-  ex_invalid_size      EXCEPTION;  
-  ex_invalid_phone     EXCEPTION;  
-  ex_missing_tenant    EXCEPTION;  
-  ex_invalid_stationId EXCEPTION;  
-   
-  BEGIN
-  v_newShopId := 'SH' || TO_CHAR(shopId_seq.NEXTVAL, 'FM0000');
+  ex_invalid_size        EXCEPTION;  
+  ex_invalid_phone       EXCEPTION;  
+  ex_missing_tenant      EXCEPTION;  
+  ex_invalid_stationId   EXCEPTION;  
+  ex_missing_shopNo      EXCEPTION;
+  ex_duplicate_shopNo    EXCEPTION;
+
+BEGIN
   BEGIN
     v_actualSize := TO_NUMBER(v_shopSize);
   EXCEPTION
@@ -127,6 +133,26 @@ CREATE OR REPLACE PROCEDURE prcAddShop(
     END IF;
   END;
 
+  IF v_shopNo IS NULL OR TRIM(v_shopNo) = '' THEN
+    RAISE ex_missing_shopNo;
+  END IF;
+
+  DECLARE
+    v_count NUMBER;
+  BEGIN
+    SELECT COUNT(*)
+    INTO v_count
+    FROM shop
+    WHERE stationId = v_stationId
+      AND shopNo = v_shopNo;
+
+    IF v_count > 0 THEN
+      RAISE ex_duplicate_shopNo;
+    END IF;
+  END;
+
+v_newShopId := 'SH' || TO_CHAR(shopId_seq.NEXTVAL, 'FM0000');
+
   INSERT INTO shop (
     shopId, stationId, shopNo, shopTenantName, phoneNumber, shopType, shopSize, status, createdAt, updatedAt
   ) VALUES (
@@ -142,7 +168,7 @@ CREATE OR REPLACE PROCEDURE prcAddShop(
     SYSDATE
   );
 
-  DBMS_OUTPUT.PUT_LINE('Shop ' || v_shopNo || ' added successfully!');
+  DBMS_OUTPUT.PUT_LINE('Shop ' || v_shopNo || ' at Station ' || v_stationId || ' added successfully!');
 
 EXCEPTION
   WHEN ex_invalid_size THEN
@@ -153,17 +179,14 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Error: Tenant name cannot be empty.');
   WHEN ex_invalid_stationId THEN
     DBMS_OUTPUT.PUT_LINE('Error: Station ID does not exist.');
+  WHEN ex_missing_shopNo THEN
+    DBMS_OUTPUT.PUT_LINE('Error: ShopNo cannot be empty.');
+  WHEN ex_duplicate_shopNo THEN
+    DBMS_OUTPUT.PUT_LINE('Error: ShopNo ' || v_shopNo || ' already exists in station ' || v_stationId || '.');
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
-
-exec prcAddShop('S001','KA10', 'KAI', '60123456789', 'Food', 223.1);
-exec prcAddShop('S100','KA10', 'KAI', '60123456789', 'Food', 223.1);
-exec prcAddShop('S001','KA10', '', '60123456789', 'Food', 223.1);
-exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 223.1);
-exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 100.1);
-exec prcAddShop('');
 
 CREATE OR REPLACE PROCEDURE prcShowRentals IS
   v_shopID  Shop.shopID%TYPE;
@@ -248,8 +271,6 @@ EXCEPTION
 END;
 /
 
-
-
 CREATE OR REPLACE PROCEDURE prcShowUnpaidRentals IS
   CURSOR unpaidCursor IS
     SELECT s.shopID, r.rentalMonth, r.rentalAmount, s.shopTenantName, s.phoneNumber
@@ -326,3 +347,50 @@ BEGIN
   );
 END;
 /
+
+COLUMN Year HEADING 'Year'
+COLUMN rentalMonth     HEADING 'Month'
+COLUMN totalCollections FORMAT 999 HEADING 'Total|Collections'
+COLUMN totalAmount    FORMAT 999,999.99 HEADING 'Total|Amount'
+COLUMN totalPaid      FORMAT 999,999.99 HEADING 'Total|Paid'
+COLUMN totalUnpaid    FORMAT 999,999.99 HEADING 'Total|Unpaid'
+
+CREATE OR REPLACE VIEW vw_RentalSummary AS
+SELECT 
+    TO_CHAR(rentalMonth, 'YYYY') AS Year,
+    TO_CHAR(rentalMonth, 'MON')  AS rentalMonth,  -- 3-letter month (JAN, FEB, etc.)
+    COUNT(*) AS totalCollections,
+    SUM(rentalAmount) AS totalAmount,
+    SUM(CASE WHEN status = 'paid' THEN rentalAmount ELSE 0 END) AS totalPaid,
+    SUM(CASE WHEN status <> 'paid' THEN rentalAmount ELSE 0 END) AS totalUnpaid
+FROM rentalCollection
+GROUP BY TO_CHAR(rentalMonth, 'YYYY'), TO_CHAR(rentalMonth, 'MON')
+ORDER BY Year, rentalMonth;
+
+COLUMN shopType FORMAT A15 HEADING 'Shop Type'
+COLUMN totalShops FORMAT 999 HEADING 'Total'
+COLUMN shopNumbers FORMAT A50 HEADING 'Shop Numbers'
+
+CREATE OR REPLACE VIEW vw_ShopCategories AS
+SELECT 
+    RPAD(NVL(shopType, 'Unknown'), 15) AS shopType,
+    RPAD(COUNT(*), 3) AS totalShops,
+    LISTAGG(shopNo, ', ') WITHIN GROUP (ORDER BY shopNo) AS shopNumbers
+FROM shop
+GROUP BY shopType;
+
+-- SELECT * FROM vw_ShopCategories;
+-- SELECT * FROM vw_RentalSummary;
+
+-- exec prcAddRentalCollection
+
+--exec prcAddShop('S001','KA10', 'KAI', '60123456789', 'Food', 223.1);
+--exec prcAddShop('S100','KA10', 'KAI', '60123456789', 'Food', 223.1);
+--exec prcAddShop('S001','KA10', '', '60123456789', 'Food', 223.1);
+--exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 223.1);
+--exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 100.1);
+--exec prcAddShop('');
+
+-- exec prcShowRentals
+
+-- exec prcShowUnpaidRentals
