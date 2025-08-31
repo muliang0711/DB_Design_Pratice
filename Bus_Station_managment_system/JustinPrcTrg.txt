@@ -356,12 +356,7 @@ UPDATE route
 
 
 
-INSERT INTO routeDriverAssignmentList
-  (routeDriverAssignmentId, routeId, assignmentId,
-   frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks)
-VALUES
-  ('RDA170A1', 'R170', 'A004952',
-   'daily', '1,2,3,4,5,6,7', DATE '2025-08-31', NULL, 'active', NULL, 'trigger test');
+
 
 
 UPDATE driverListAssignment
@@ -377,6 +372,7 @@ VALUES
    SYSTIMESTAMP + 1,
    SYSTIMESTAMP + 1 + INTERVAL '9' HOUR,
    'planned', SYSTIMESTAMP, SYSTIMESTAMP);
+
 
 
 
