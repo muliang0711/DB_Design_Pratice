@@ -197,6 +197,23 @@ END;
 
 -- ALTER TRIGGER RDA_AI_GEN_BS DISABLE;
 
+--------------------------------------------------------------------------------------------
+INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status)
+VALUES ('D9001', NULL, 'LIC-D9001', DATE '2027-12-31', 'Lee', 'Ming', '012-9001', 'active');
+
+INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status)
+VALUES ('D9002', NULL, 'LIC-D9002', DATE '2027-12-31', 'Tan', 'Hui', '012-9002', 'active');
+
+
+INSERT INTO driverListAssignment
+  (assignmentId, mainDriverId, supportDriverId, busId, assignedFrom, assignedTo, status, remarks)
+VALUES
+  ('A004952', 'D9001', 'D9002', 'B0001',
+   TIMESTAMP '2025-08-31 08:00:00', NULL, 'active', 'manual test');
+
+
+---------------------------------------------------------------------------------------------
+
 UPDATE route SET status = 'inactive' WHERE routeId = 'R170';
 
 INSERT INTO routeDriverAssignmentList
@@ -316,5 +333,6 @@ VALUES
    SYSTIMESTAMP + 1,
    SYSTIMESTAMP + 1 + INTERVAL '9' HOUR,
    'planned', SYSTIMESTAMP, SYSTIMESTAMP);
+
 
 
