@@ -1,0 +1,12 @@
+These are the types of errors that have occured after LH ran script.txt at 6:20pm, 31/8/2025.
+Error output can be found in lhspool8-31.txt
+The line numbers are for lhspool8-31.txt
+
+Shop: UK_SHOP_STATION_NO - unique constraint violated 
+Line number: 5392-5752 (33 violations)
+
+TripStopLog: FK_TSL_PLATFORM - parent key not found 
+Line number: 17233-18779 (95 violations)
+
+RentalCollection: FK_RC_SHOP - parent key not found
+Line number: 21918-23030 (66 violations)
