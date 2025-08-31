@@ -59,16 +59,10 @@ SELECT * FROM (SELECT * FROM viewRoute ORDER BY routeId) WHERE ROWNUM <= 10;
 
 
 
-CREATE OR REPLACE VIEW vwStationOps AS
-/* ---------- base ---------- */
-WITH st AS (
-  SELECT stationId, stationName, status FROM busStation
-),
+CREATE OR REPLACE VIEW vwStationOpsCompact AS
+WITH mx AS (SELECT MAX(plannedDepartureTime) mx_ts FROM busSchedule),
 platform_counts AS (
-  SELECT stationId,
-         COUNT(*) AS platformsTotal,
-         SUM(CASE WHEN LOWER(status)='active'   THEN 1 ELSE 0 END) AS platformsActive,
-         SUM(CASE WHEN LOWER(status)='inactive' THEN 1 ELSE 0 END) AS platformsInactive
+  SELECT stationId, COUNT(*) AS platformsTotal
   FROM   busPlatform
   GROUP  BY stationId
 ),
@@ -78,43 +72,39 @@ routes_by_station AS (
   JOIN   busPlatform bp ON bp.platformId = rs.platformId
   GROUP  BY bp.stationId
 ),
-last30_sched AS (
-  SELECT DISTINCT bp.stationId,
-         bs.busScheduleId,
-         LOWER(bs.status) AS schedStatus
+recent_sched AS (
+  SELECT DISTINCT bp.stationId, bs.busScheduleId, LOWER(bs.status) AS schedStatus
   FROM   busSchedule bs
   JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
   JOIN   routeStation rs              ON rs.routeId = rda.routeId
   JOIN   busPlatform bp               ON bp.platformId = rs.platformId
-  WHERE  bs.plannedDepartureTime BETWEEN (SYSTIMESTAMP - NUMTODSINTERVAL(30,'DAY')) AND SYSTIMESTAMP
+  CROSS  JOIN mx
+  WHERE  bs.plannedDepartureTime BETWEEN (mx.mx_ts - NUMTODSINTERVAL(30,'DAY')) AND mx.mx_ts
 ),
-last30_rollup AS (
+recent_rollup AS (
   SELECT stationId,
-         SUM(CASE WHEN schedStatus='completed' THEN 1 ELSE 0 END) AS last30Completed,
-         SUM(CASE WHEN schedStatus='cancelled' THEN 1 ELSE 0 END) AS last30Cancelled
-  FROM   last30_sched
+         SUM(CASE WHEN schedStatus='completed' THEN 1 ELSE 0 END) AS recentCompleted,
+         SUM(CASE WHEN schedStatus='cancelled' THEN 1 ELSE 0 END) AS recentCancelled
+  FROM   recent_sched
   GROUP  BY stationId
 )
 SELECT
   s.stationId,
   s.stationName,
-  s.status                         AS stationStatus,
-  NVL(pc.platformsTotal,0)         AS platformsTotal,
-  NVL(pc.platformsActive,0)        AS platformsActive,
-  NVL(pc.platformsInactive,0)      AS platformsInactive,
-  NVL(r.routesCount,0)             AS routesCount,
-  NVL(l30.last30Completed,0)       AS last30Completed,
-  NVL(l30.last30Cancelled,0)       AS last30Cancelled,
+  s.status AS stationStatus,
+  NVL(pc.platformsTotal,0)   AS platformsTotal,
+  NVL(r.routesCount,0)       AS routesCount,
+  NVL(l.recentCompleted,0)   AS recentCompleted,
+  NVL(l.recentCancelled,0)   AS recentCancelled,
   CASE
-    WHEN NVL(l30.last30Completed,0)+NVL(l30.last30Cancelled,0)=0 THEN 0
-    ELSE ROUND(100 * NVL(l30.last30Cancelled,0) /
-               (NVL(l30.last30Completed,0)+NVL(l30.last30Cancelled,0)), 2)
-  END AS last30CancelRatePct
-FROM st s
-LEFT JOIN platform_counts    pc ON pc.stationId = s.stationId
-LEFT JOIN routes_by_station  r  ON r.stationId  = s.stationId
-LEFT JOIN last30_rollup      l30 ON l30.stationId = s.stationId;
-
+    WHEN NVL(l.recentCompleted,0)+NVL(l.recentCancelled,0)=0 THEN 0
+    ELSE ROUND(100 * NVL(l.recentCancelled,0) /
+               (NVL(l.recentCompleted,0)+NVL(l.recentCancelled,0)), 2)
+  END AS recentCancelRatePct
+FROM busStation s
+LEFT JOIN platform_counts   pc ON pc.stationId = s.stationId
+LEFT JOIN routes_by_station r  ON r.stationId  = s.stationId
+LEFT JOIN recent_rollup     l  ON l.stationId  = s.stationId;
 
 SELECT * FROM (SELECT * FROM vwStationOps ORDER BY stationId) WHERE ROWNUM <= 10;
 
@@ -182,3 +172,4 @@ COLUMN last30Cancelled        FORMAT 9,999   HEADING 'Last 30d|Cancelled'
 COLUMN last30CancelRatePct    FORMAT 990.99  HEADING 'Last 30d|Cancel %'
 
 COLUMN upcomingAvgSeatUtilPct FORMAT 990.99  HEADING 'Next 7d|Seat Util %'
+
