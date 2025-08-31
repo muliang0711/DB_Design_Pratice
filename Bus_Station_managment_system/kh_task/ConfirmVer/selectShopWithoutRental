@@ -3,7 +3,7 @@ COLUMN shopNo        FORMAT A8   HEADING 'Shop No'
 COLUMN shopTenantName FORMAT A25 HEADING 'Tenant Name'
 COLUMN stationId     FORMAT A10  HEADING 'Station'
 COLUMN shopType      FORMAT A12  HEADING 'Shop Type'
-COLUMN status        FORMAT A10  HEADING 'Status'
+COLUMN status        FORMAT A20  HEADING 'Shop Status'
 
 /*
 DELETE FROM rentalCollection
@@ -12,7 +12,7 @@ WHERE shopId IN ( 'SH0117','SH0118','SH0120','SH0121','SH0122',
 */
 
 SELECT 
-    s.shopId,s.shopNo,s.shopTenantName,s.stationId,s.shopType,s.status
+s.shopId,s.shopNo,s.shopTenantName,s.stationId,s.shopType,s.status
 FROM shop s
 LEFT JOIN rentalCollection rc 
 ON s.shopId = rc.shopId
