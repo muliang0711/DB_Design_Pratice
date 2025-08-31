@@ -5,11 +5,10 @@ COLUMN totalAmountCollected FORMAT 999,999.99 HEADING 'Total Collected (RM)'
 
 SELECT 
     rc.staffId,
-    st.staffName,
     COUNT(*) AS totalCollections,
     SUM(rc.rentalAmount) AS totalAmountCollected
 FROM rentalCollection rc
 JOIN staff st ON rc.staffId = st.staffId
-GROUP BY rc.staffId, st.staffName
+GROUP BY rc.staffId, st.staffId
 ORDER BY totalCollections DESC;
 
