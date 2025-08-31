@@ -172,7 +172,7 @@ END;
 
 -- ALTER TRIGGER RDA_AI_GEN_BS DISABLE;
 
-
+UPDATE route SET status = 'inactive' WHERE routeId = 'R170';
 
 INSERT INTO routeDriverAssignmentList
   (routeDriverAssignmentId, routeId, assignmentId,
@@ -291,3 +291,4 @@ VALUES
    SYSTIMESTAMP + 1,
    SYSTIMESTAMP + 1 + INTERVAL '9' HOUR,
    'planned', SYSTIMESTAMP, SYSTIMESTAMP);
+
