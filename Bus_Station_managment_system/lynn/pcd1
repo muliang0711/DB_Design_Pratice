@@ -85,29 +85,32 @@ EXCEPTION
         ROLLBACK;
 END ExtendTicket;
 /
+
+-- valid 
 EXEC ExtendTicket('T00000000473', 'T00000000480');
 
+    -- check the ticket 
+    SET linesize 300
+    SET pagesize 300
+
+    SELECT t.ticketId, t.customerId, t.type, t.status, t.extendedFromID, t.extensionDate, t.updatedAt, p.paymentId
+    FROM Ticket t
+    LEFT JOIN paymentRecord p ON t.ticketId = p.ticketId
+    WHERE t.ticketId = 'T00000000473';
 
 
--- check the ticket 
-SET linesize 300
-SET pagesize 300
+    SELECT t.ticketId, t.customerId, t.type, t.status, t.extendedFromID, t.extensionDate, t.updatedAt, p.paymentId
+    FROM Ticket t
+    LEFT JOIN paymentRecord p ON t.ticketId = p.ticketId
+    WHERE t.ticketId = 'T00000000480';
 
-SELECT t.ticketId, t.customerId, t.type, t.status, t.extendedFromID, t.extensionDate, t.updatedAt, p.paymentId
-FROM Ticket t
-LEFT JOIN paymentRecord p ON t.ticketId = p.ticketId
-WHERE t.ticketId = 'T00000000473';
-
-
-SELECT t.ticketId, t.customerId, t.type, t.status, t.extendedFromID, t.extensionDate, t.updatedAt, p.paymentId
-FROM Ticket t
-LEFT JOIN paymentRecord p ON t.ticketId = p.ticketId
-WHERE t.ticketId = 'T00000000480';
+-- invalid 
+    -- change to the ticket is not on selling
+    EXEC ExtendTicket('T00000000399', 'T00000000480'); 
+    --change to other route
+    EXEC ExtendTicket('T00000000399', 'T00000000437');
 
 
---set size 
-SET linesize 1000
-SET pagesize 1000
 
 -- each route valid 
 SELECT 
@@ -124,6 +127,7 @@ JOIN ticket t
 GROUP BY r.routeId;
 
 -- Find the ticket which is been bought
+SELECT * FROM   ticket WHERE status = 'been_bought';
 -- Find the route of the ticket that need to extends
 SELECT 
     t.ticketId,
