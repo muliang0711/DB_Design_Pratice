@@ -351,17 +351,25 @@ EXCEPTION
 END;
 /
 
-CREATE OR REPLACE TRIGGER trgAutoAssignRentalCollection
-AFTER INSERT ON shop
-FOR EACH ROW
+CREATE OR REPLACE TRIGGER trg_check_shop_capacity
+  BEFORE INSERT ON shop
+  FOR EACH ROW
 DECLARE
-  v_day NUMBER;
+  v_current_shop_count NUMBER;
+  v_max_capacity CONSTANT NUMBER := 20;
 BEGIN
-  INSERT INTO rentalCollection (
-    rentalMonth, shopId, staffId, rentalAmount, status, collectionDate
-  ) VALUES (
-    SYSDATE, :NEW.shopId, NULL, 400, 'unpaid', NULL
-  );
+  SELECT COUNT(*)
+  INTO v_current_shop_count
+  FROM shop
+  WHERE stationId = :NEW.stationId
+    AND status = 'active';  
+
+  IF v_current_shop_count >= v_max_capacity THEN
+    RAISE_APPLICATION_ERROR(-20001, 
+      'Station ' || :NEW.stationId || 
+      ' has reached maximum capacity of ' || v_max_capacity || ' shops. ' ||
+      'Current count: ' || v_current_shop_count);
+  END IF;
 END;
 /
 
