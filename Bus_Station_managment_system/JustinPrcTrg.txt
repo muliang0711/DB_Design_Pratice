@@ -1,3 +1,12 @@
+SET SERVEROUTPUT ON
+ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD-MON-YYYY HH24:MI:SS';
+
+
+
+
+
+
+
 
 --Procedure 1: Deactivate a Single Platform
 
@@ -133,8 +142,24 @@ END;
 /
 
 
+--Testing 
+----------------------------------------------------------------------------------------------------
 
 
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+INSERT INTO route
+  (routeId, routeName, startPoint, endPoint, distanceKm, estimatedDuration, status)
+VALUES
+  ('R170', 'Kuching to Miri', 'S1560', 'S3903', 700, 600, 'active');
+COMMIT;
 
 -----------------------------------------------------------------------------------------------
 
@@ -291,4 +316,5 @@ VALUES
    SYSTIMESTAMP + 1,
    SYSTIMESTAMP + 1 + INTERVAL '9' HOUR,
    'planned', SYSTIMESTAMP, SYSTIMESTAMP);
+
 
