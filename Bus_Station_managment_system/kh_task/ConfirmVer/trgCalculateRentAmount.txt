@@ -1,4 +1,4 @@
-CREATE OR REPLACE TRIGGER trg_set_timeStamp
+CREATE OR REPLACE TRIGGER trgCalculateRentAmount
 BEFORE INSERT OR UPDATE ON RentalCollection
 FOR EACH ROW
 DECLARE
@@ -30,6 +30,7 @@ BEGIN
   END IF;
 END;
 /
+
 
 
 
