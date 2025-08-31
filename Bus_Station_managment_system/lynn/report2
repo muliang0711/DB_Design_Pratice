@@ -1,13 +1,13 @@
+-- Report : Customer Point Transaction Summary with Payment Details
 
 SET serveroutput on
 SET linesize 120
 SET pagesize 100
--- Report : Customer Point Transaction Summary with Payment Details
+
 CREATE OR REPLACE PROCEDURE customer_point_summary(
     p_startDate IN TIMESTAMP,
     p_endDate   IN TIMESTAMP
 ) IS
-    v_totalPointsEarned NUMBER := 0;
     v_totalPointsRedeemed NUMBER := 0;
     v_totalCustomers NUMBER := 0;
     v_grandTotalAmount NUMBER := 0;
@@ -43,10 +43,10 @@ CREATE OR REPLACE PROCEDURE customer_point_summary(
     point_txn_rec point_txn_cursor%ROWTYPE;
 
 BEGIN
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
     DBMS_OUTPUT.PUT_LINE('CUSTOMER POINT TRANSACTION SUMMARY REPORT');
     DBMS_OUTPUT.PUT_LINE('Period: ' || TO_CHAR(p_startDate, 'DD-MON-YYYY') || ' to ' || TO_CHAR(p_endDate, 'DD-MON-YYYY'));
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
     DBMS_OUTPUT.PUT_LINE(CHR(10));
 
     OPEN customer_cursor;
@@ -55,12 +55,12 @@ BEGIN
         EXIT WHEN customer_cursor%NOTFOUND;
 
         v_totalCustomers := v_totalCustomers + 1;
-        
+         DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
         DBMS_OUTPUT.PUT_LINE('Customer ID: ' || customer_rec.customerId);
         DBMS_OUTPUT.PUT_LINE('Name: ' || customer_rec.customerName);
         DBMS_OUTPUT.PUT_LINE('Membership: ' || customer_rec.membershipStatus);
         DBMS_OUTPUT.PUT_LINE('Current Points: ' || customer_rec.pointBalance);
-        DBMS_OUTPUT.PUT_LINE(LPAD('-', 180, '-'));
+        DBMS_OUTPUT.PUT_LINE(LPAD('-', 120, '-'));
 
         -- Point transaction details
         DBMS_OUTPUT.PUT_LINE(
@@ -73,7 +73,7 @@ BEGIN
             RPAD('Route', 25) || 
             RPAD('Ticket ID', 15)
         );
-        DBMS_OUTPUT.PUT_LINE(LPAD('-', 180, '-'));
+        DBMS_OUTPUT.PUT_LINE(LPAD('-', 120, '-'));
 
         OPEN point_txn_cursor(customer_rec.customerId);
         LOOP
@@ -81,8 +81,6 @@ BEGIN
             EXIT WHEN point_txn_cursor%NOTFOUND;
 
             IF point_txn_rec.pointChange > 0 THEN
-                v_totalPointsEarned := v_totalPointsEarned + point_txn_rec.pointChange;
-            ELSE
                 v_totalPointsRedeemed := v_totalPointsRedeemed + ABS(point_txn_rec.pointChange);
             END IF;
 
@@ -100,7 +98,7 @@ BEGIN
             );
         END LOOP;
         CLOSE point_txn_cursor;
-
+        
         DBMS_OUTPUT.PUT_LINE(CHR(10));
     END LOOP;
     CLOSE customer_cursor;
@@ -109,9 +107,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
     DBMS_OUTPUT.PUT_LINE('SUMMARY REPORT');
     DBMS_OUTPUT.PUT_LINE('Total Customers: ' || v_totalCustomers);
-    DBMS_OUTPUT.PUT_LINE('Total Points Earned: ' || v_totalPointsEarned);
     DBMS_OUTPUT.PUT_LINE('Total Points Redeemed: ' || v_totalPointsRedeemed);
-    DBMS_OUTPUT.PUT_LINE('Net Points Change: ' || (v_totalPointsEarned - v_totalPointsRedeemed));
     DBMS_OUTPUT.PUT_LINE('Total Transaction Amount: RM' || TO_CHAR(v_grandTotalAmount, '999,999,999.99'));
     DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
 
@@ -121,4 +117,4 @@ EXCEPTION
 END;
 /
 
-EXEC customer_point_summary(TO_TIMESTAMP('01-07-2025 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-12-2025 23:59','DD-MM-YYYY HH24:MI'));
+EXEC customer_point_summary(TO_TIMESTAMP('01-07-2020 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-12-2025 23:59','DD-MM-YYYY HH24:MI'));
