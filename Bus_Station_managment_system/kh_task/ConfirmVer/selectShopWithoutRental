@@ -7,7 +7,8 @@ COLUMN status        FORMAT A10  HEADING 'Status'
 
 /*
 DELETE FROM rentalCollection
-WHERE shopId IN ('SH0117', 'SH0118', 'SH0119');
+WHERE shopId IN ( 'SH0117','SH0118','SH0120','SH0121','SH0122',
+    'SH0123','SH0124','SH0125','SH0126','SH0127');
 */
 
 SELECT 
