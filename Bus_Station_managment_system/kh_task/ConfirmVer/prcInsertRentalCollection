@@ -30,14 +30,12 @@ BEGIN
     END IF;
   END LOOP;
 
--- DELETE FROM rentalCollection WHERE TRUNC(rentalMonth, 'MM') = TO_DATE('08/2025', 'MM/YYYY');
-  COMMIT;
-
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
+
 
 /*
 UPDATE rentalCollection
@@ -56,7 +54,11 @@ JOIN staffRole sr
 WHERE LOWER(sr.roleName) = 'accountant'
 ORDER BY st.staffId;
 */
+
+-- DELETE FROM rentalCollection WHERE TRUNC(rentalMonth, 'MM') = TO_DATE('08/2025', 'MM/YYYY');
+  COMMIT;
 -- exec prcAddRentalCollection
+
 
 
 
