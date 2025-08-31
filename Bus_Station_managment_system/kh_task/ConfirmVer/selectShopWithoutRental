@@ -3,7 +3,7 @@ COLUMN shopNo        FORMAT A8   HEADING 'Shop No'
 COLUMN shopTenantName FORMAT A25 HEADING 'Tenant Name'
 COLUMN stationId     FORMAT A10  HEADING 'Station'
 COLUMN shopType      FORMAT A12  HEADING 'Shop Type'
-COLUMN status        FORMAT A10  HEADING 'Shop Status'
+COLUMN status        FORMAT A10  HEADING 'Status'
 
 /*
 DELETE FROM rentalCollection
