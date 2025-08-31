@@ -52,11 +52,32 @@ BEGIN
 END;
 /
 
+-- valid
+INSERT INTO ticket (ticketId, busScheduleId, customerId, seatNo, price, type, status, cancellationDate, extensionDate, extendedFromId) 
+VALUES ('T000000200', 'S000005', 'CU0001', 'D15', 135.50, 'booking', 'been_bought', NULL, NULL, NULL);
 
-INSERT INTO ticket (ticketId, busScheduleId, customerId, seatNo, price, type, status, cancellationDate, extensionDate, extendedToId) 
-VALUES ('T000000200', 'BS000001', 'CU0001', 'D15', 135.50, 'booking', 'Paid', NULL, NULL, NULL);
+-- invalid 
+INSERT INTO ticket (ticketId, busScheduleId, customerId, seatNo, price, type, status, cancellationDate, extensionDate, extendedFromId) 
+VALUES ('T000000201', 'S000006', 'CU0001', 'D15', 135.50, 'booking', 'been_bought', NULL, NULL, NULL);
+
+INSERT INTO ticket (ticketId, busScheduleId, customerId, seatNo, price, type, status, cancellationDate, extensionDate, extendedFromId) 
+VALUES ('T000000201', 'S000001', 'CU0001', 'D15', 135.50, 'booking', 'been_bought', NULL, NULL, NULL);
+
+INSERT INTO ticket (ticketId, busScheduleId, customerId, seatNo, price, type, status, cancellationDate, extensionDate, extendedFromId) 
+VALUES ('T000000201', 'S000177', 'CU0001', 'D15', 135.50, 'booking', 'been_bought', NULL, NULL, NULL);
 
 
---AND ROWNUM = 1 = only select 1 row so that wont have the priblem like
+
+ SELECT * FROM ticket WHERE ticketid = 'T000000200';
+--AND ROWNUM = 1 = only select 1 row so that wont have the problem like
 -- B01     active
 -- B02     inactive
+
+-- select statement
+ SELECT busScheduleid
+    FROM busDriver d
+    JOIN driverListAssignment dla ON dla.mainDriverId = d.driverId
+    JOIN routeDriverAssignmentList rda ON rda.assignmentId = dla.assignmentId
+    JOIN busSchedule bs ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    JOIN bus b ON b.busId = dla.busID
+    WHERE bs.status = 'cancelled' AND d.status = 'active' AND b.status = 'active';

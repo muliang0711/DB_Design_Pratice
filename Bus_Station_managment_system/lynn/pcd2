@@ -1,5 +1,5 @@
 DROP SEQUENCE PaymentID_seq;
-DROP SEQUENCE PaymentID_seq;
+DROP SEQUENCE PointTxnID_seq;
 
 CREATE SEQUENCE PaymentID_seq
 MAXVALUE 999999999
@@ -44,7 +44,7 @@ BEGIN
         pr.totalAmount,
         pr.pointsApplied,
         pr.pointValue,
-        t.customerID,
+        pr.customerID,
         bs.plannedDepartureTime
     INTO v_ticketStatus,
         v_paymentID,
@@ -64,6 +64,8 @@ BEGIN
     -- Check if ticket can be refunded
     IF LOWER(v_ticketStatus) NOT IN ('cancelled_by_user', 'cancelled_by_company') THEN
         v_result := 'Error: Ticket is not cancelled';
+        DBMS_OUTPUT.PUT_LINE(v_result);
+
         RETURN;
     END IF;
 
@@ -98,8 +100,8 @@ BEGIN
         pointsApplied, pointValue, status, paymentTime,
         receiptNo, remarks, paymentMethod, type
     ) VALUES (
-        v_newPaymentID, v_customerID, p_ticketID, v_refundAmount, v_refundAmount,
-        0, 0, 'completed', SYSDATE,
+        v_newPaymentID, v_customerID, p_ticketID, v_refundAmount, 0,
+         v_pointsApplied, v_pointValue, 'completed', SYSDATE,
         'REF-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || p_ticketID,
         'Refund for ticket ' || p_ticketID ,
         'Bank Transfer', 'Refund'
@@ -134,12 +136,49 @@ EXCEPTION
 END ProcessTicketRefund;
 /
 
+-- valid execution
+EXEC ProcessTicketRefund('T00000000020', 'full');
+-- invalid execution
+    -- been_bought
+    EXEC ProcessTicketRefund('T00000000085', 'full');
 
-UPDATE ticket SET customerId = 'CU0415' , status = 'cancelled_by_company' WHERE ticketId = 'T00000147327';
-EXEC ProcessTicketRefund('T00000147327', 'full');
+
+
+
+
+-- to see the result
+SET linesize 250
+SET pagesize 100
+SELECT customerID, pointBalance, updatedAt FROM Customer WHERE customerID = 'CU0054';
+
+SELECT p.customerID, p.ticketID, p.paymentID, p.totalAmount, pt.pointTxnID, p.pointsApplied, p.paymentTime, p.remarks    
+FROM PaymentRecord p
+JOIN PointTransaction pt ON pt.paymentID = p.paymentID
+JOIN customer c ON c.customerID = p.customerID
+WHERE p.ticketID = 'T00000000020'
+ORDER BY p.paymentTime DESC;
+
+-- find test data
+SELECT 
+    p.customerID,
+    c.pointBalance,
+    p.ticketID, 
+    p.paymentID, 
+    pt.pointTxnID, 
+    p.paymentTime,
+    p.pointsApplied
+FROM PaymentRecord p
+JOIN PointTransaction pt ON pt.paymentID = p.paymentID
+JOIN customer c ON c.customerID = p.customerID
+JOIN Ticket t ON t.ticketID = p.ticketID
+WHERE c.pointBalance > 100 
+AND p.pointsApplied >1 
+AND t.status = 'cancelled_by_company'
+ORDER BY p.paymentTime DESC;
+
 SELECT *
 FROM PaymentRecord
-WHERE ticketID = 'T00000147327'
+WHERE ticketID = 'T00000000020'
 ORDER BY paymentTime DESC;
 
 SELECT *
@@ -152,7 +191,4 @@ FROM Customer
 WHERE customerID = 'CU0415';
 
 --fail
-UPDATE ticket SET customerId = 'CU0111' , price    = 20.50, type= 'regular',status= 'been_bought' WHERE ticketId = 'T00000147023';
-EXEC ProcessTicketRefund('T00000147327', 'full');
-
-select * from ticket where ticketid= 'T00000147023';
+EXEC ProcessTicketRefund('T00000000046', 'full');
