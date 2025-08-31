@@ -3,7 +3,7 @@ SET serveroutput on
 SET linesize 120
 SET pagesize 100
 -- Report : Customer Point Transaction Summary with Payment Details
-CREATE OR REPLACE PROCEDURE prc_customer_point_summary(
+CREATE OR REPLACE PROCEDURE customer_point_summary(
     p_startDate IN TIMESTAMP,
     p_endDate   IN TIMESTAMP
 ) IS
@@ -106,22 +106,19 @@ BEGIN
     CLOSE customer_cursor;
 
     -- Summary
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
     DBMS_OUTPUT.PUT_LINE('SUMMARY REPORT');
     DBMS_OUTPUT.PUT_LINE('Total Customers: ' || v_totalCustomers);
     DBMS_OUTPUT.PUT_LINE('Total Points Earned: ' || v_totalPointsEarned);
     DBMS_OUTPUT.PUT_LINE('Total Points Redeemed: ' || v_totalPointsRedeemed);
     DBMS_OUTPUT.PUT_LINE('Net Points Change: ' || (v_totalPointsEarned - v_totalPointsRedeemed));
     DBMS_OUTPUT.PUT_LINE('Total Transaction Amount: RM' || TO_CHAR(v_grandTotalAmount, '999,999,999.99'));
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 180, '='));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
 
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
 END;
 /
-EXEC prc_customer_point_summary(
-    TO_TIMESTAMP('01-07-2025 00:00','DD-MM-YYYY HH24:MI'),
-    TO_TIMESTAMP('31-07-2025 23:59','DD-MM-YYYY HH24:MI')
-);
-EXEC prc_bus_schedule_occupancy(TO_TIMESTAMP('01-08-2025 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-08-2025 23:59','DD-MM-YYYY HH24:MI'));
+
+EXEC customer_point_summary(TO_TIMESTAMP('01-07-2025 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-12-2025 23:59','DD-MM-YYYY HH24:MI'));

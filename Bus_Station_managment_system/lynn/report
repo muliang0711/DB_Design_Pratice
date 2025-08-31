@@ -1,22 +1,23 @@
-
+-- REPORT : Bus Schedule Occupancy Report 
 SET serveroutput on
 SET linesize 120
 SET pagesize 100
--- REPORT : Bus Schedule Occupancy Report 
 
-CREATE OR REPLACE PROCEDURE prc_bus_schedule_occupancy(
+CREATE OR REPLACE PROCEDURE bus_schedule_occupancy(
     p_startDate IN DATE,
     p_endDate   IN DATE
 )
 IS
     CURSOR scheduleCur IS
-        SELECT BS.busScheduleId, R.routeName, BS.plannedDepartureTime, BS.plannedArrivalTime, B.plateNo, B.model
+        SELECT BS.busScheduleId, R.routeName, BS.plannedDepartureTime, BS.plannedArrivalTime, 
+               B.plateNo, B.model
         FROM busSchedule BS
         JOIN routeDriverAssignmentList RDA ON BS.routeDriverAssignmentId = RDA.routeDriverAssignmentId
         JOIN route R ON RDA.routeId = R.routeId
         JOIN driverListAssignment DLA ON RDA.assignmentId = DLA.assignmentId
         JOIN bus B ON DLA.busId = B.busId
         WHERE BS.plannedDepartureTime BETWEEN p_startDate AND p_endDate
+          AND EXISTS (SELECT 1 FROM ticket T WHERE T.busScheduleId = BS.busScheduleId)  -- 只选有票
         ORDER BY BS.plannedDepartureTime;
 
     schedRec scheduleCur%ROWTYPE;
@@ -28,11 +29,16 @@ IS
 
     ticketRec ticketCur%ROWTYPE;
 
-    v_totalSeats NUMBER := 0;
-    v_totalRevenue NUMBER := 0;
+    v_totalSeats    NUMBER := 0;
+    v_totalRevenue  NUMBER := 0;
+    v_schedSeats    NUMBER := 0;
+    v_schedRevenue  NUMBER := 0;
 BEGIN
     DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
-    DBMS_OUTPUT.PUT_LINE('BUS SCHEDULE OCCUPANCY REPORT FROM ' || TO_CHAR(p_startDate,'DD-MON-YYYY HH24:MI') || ' TO ' || TO_CHAR(p_endDate,'DD-MON-YYYY HH24:MI'));
+    DBMS_OUTPUT.PUT_LINE('BUS SCHEDULE OCCUPANCY REPORT FROM ' 
+        || TO_CHAR(p_startDate,'DD-MON-YYYY HH24:MI') 
+        || ' TO ' 
+        || TO_CHAR(p_endDate,'DD-MON-YYYY HH24:MI'));
     DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
 
     OPEN scheduleCur;
@@ -40,8 +46,15 @@ BEGIN
         FETCH scheduleCur INTO schedRec;
         EXIT WHEN scheduleCur%NOTFOUND;
 
-        DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Bus Schedule: ' || schedRec.busScheduleId || ', Route: ' || schedRec.routeName || ', Bus: ' || schedRec.plateNo || ' (' || schedRec.model || ')');
-        DBMS_OUTPUT.PUT_LINE('Departure: ' || TO_CHAR(schedRec.plannedDepartureTime,'DD-MON HH24:MI') || ', Arrival: ' || TO_CHAR(schedRec.plannedArrivalTime,'DD-MON HH24:MI'));
+        -- reset per-schedule counters
+        v_schedSeats := 0;
+        v_schedRevenue := 0;
+
+        DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Bus Schedule: ' || schedRec.busScheduleId 
+            || ', Route: ' || schedRec.routeName 
+            || ', Bus: ' || schedRec.plateNo || ' (' || schedRec.model || ')');
+        DBMS_OUTPUT.PUT_LINE('Departure: ' || TO_CHAR(schedRec.plannedDepartureTime,'DD-MON HH24:MI') 
+            || ', Arrival: ' || TO_CHAR(schedRec.plannedArrivalTime,'DD-MON HH24:MI'));
         DBMS_OUTPUT.PUT_LINE(RPAD('TicketID',12) || RPAD('Seat',6) || RPAD('Price',12) || 'Status');
         DBMS_OUTPUT.PUT_LINE(RPAD('-',120,'-'));
 
@@ -51,22 +64,46 @@ BEGIN
             EXIT WHEN ticketCur%NOTFOUND;
 
             DBMS_OUTPUT.PUT_LINE(
-                RPAD(ticketRec.ticketId,12) || RPAD(ticketRec.seatNo,6) || RPAD(TO_CHAR(ticketRec.price,'999,999.99'),12) || ticketRec.status
+                RPAD(ticketRec.ticketId,12) || 
+                RPAD(ticketRec.seatNo,6) || 
+                RPAD(TO_CHAR(ticketRec.price,'999,999.99'),12) || 
+                ticketRec.status
             );
 
+            v_schedSeats := v_schedSeats + 1;
             v_totalSeats := v_totalSeats + 1;
-            v_totalRevenue := v_totalRevenue + ticketRec.price;
+
+            IF LOWER(ticketRec.status) IN ('been_bought','booked_extended') THEN
+                v_schedRevenue := v_schedRevenue + ticketRec.price;
+                v_totalRevenue := v_totalRevenue + ticketRec.price;
+            END IF;
         END LOOP;
         CLOSE ticketCur;
 
+        -- print per-schedule summary
+        DBMS_OUTPUT.PUT_LINE('Schedule Total Tickets: ' || v_schedSeats || 
+                             ', Revenue : ' || TO_CHAR(v_schedRevenue,'999,990.99'));
+        DBMS_OUTPUT.PUT_LINE(LPAD('-',120,'-'));                    
     END LOOP;
     CLOSE scheduleCur;
 
     DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
-    DBMS_OUTPUT.PUT_LINE('TOTAL TICKETS SOLD: ' || v_totalSeats || ', TOTAL REVENUE: ' || TO_CHAR(v_totalRevenue,'999,999,999.99'));
+    DBMS_OUTPUT.PUT_LINE('TOTAL TICKETS SOLD: ' || v_totalSeats 
+        || ', TOTAL REVENUE: ' || TO_CHAR(v_totalRevenue,'999,999,999.99'));
     DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
-
 END;
 /
 
-EXEC prc_bus_schedule_occupancy(TO_TIMESTAMP('01-08-2000 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-08-2025 23:59','DD-MM-YYYY HH24:MI'));
+EXEC bus_schedule_occupancy(TO_TIMESTAMP('01-08-2000 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-08-2025 23:59','DD-MM-YYYY HH24:MI'));
+
+
+
+
+
+
+
+
+
+
+
+
