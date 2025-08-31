@@ -22,7 +22,7 @@ COMPOUND TRIGGER
   BEGIN
     IF g_ids.COUNT > 0 THEN
       FOR i IN 1 .. g_ids.COUNT LOOP
-        GEN_BUS_SCHEDULES(g_ids(i));  -- 现在语句已完成，不再“变异”
+        GEN_BUS_SCHEDULES(g_ids(i));  
       END LOOP;
     END IF;
   END AFTER STATEMENT;

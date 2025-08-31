@@ -1,0 +1,21 @@
+
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R001', 'Station Manager', 'Oversees all bus station operations, manages staff, and ensures compliance with policies.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R002', 'Assistant Manager', 'Supports the station manager in daily tasks and supervises staff in their absence.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R003', 'Ticketing Officer', 'Handles ticket sales, reservations, cancellations, and customer service.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R004', 'Senior Ticketing Officer', 'Supervises ticketing staff, handles escalated passenger issues, and prepares ticket sales reports.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R005', 'Bus Dispatcher', 'Schedules bus departures, monitors arrivals, and ensures timely operations.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R006', 'Assistant Dispatcher', 'Supports the dispatcher with bus scheduling and communication with drivers.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R007', 'Event Coordinator', 'Plans and coordinates events or promotional activities at the bus station to engage passengers and improve customer experience.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R008', 'Maintenance Technician', 'Conducts repairs and preventive maintenance on buses and equipment.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R009', 'Cleaner', 'Maintains cleanliness and hygiene in the bus station.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R010', 'Security Officer', 'Maintains order and ensures safety of passengers and property.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R011', 'Chief Security Officer', 'Supervises security officers, monitors surveillance, and handles security incidents.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R012', 'Information Clerk', 'Provides passengers with travel information, schedules, and assistance.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R013', 'Customer Service Representative', 'Handles passenger complaints, lost-and-found inquiries, and general service requests.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R014', 'Accountant', 'Manages financial transactions, ticketing revenues, and expense records.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R015', 'Counter Staff', 'Selling ticket and provide redeem ticket service.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R016', 'HR Officer', 'Handles staff recruitment, payroll, attendance, and training.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R017', 'Operations Supervisor', 'Coordinates overall bus and station operations, ensuring compliance with schedules.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R018', 'IT Support Staff', 'Maintains ticketing systems, databases, and technical equipment.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R019', 'Parking Attendant', 'Manages vehicle parking within station premises and assists drivers.');
+INSERT INTO staffRole (roleId, roleName, description) VALUES ('R020', 'Luggage Handler', 'Assists passengers with baggage handling, loading, and unloading.');
