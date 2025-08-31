@@ -7,7 +7,7 @@ BEGIN
   :NEW.status    := 'been_bought';
   :NEW.updatedAt := SYSTIMESTAMP;
 
-  -- still call procedure, but procedure should NOT update ticket
+  
   GEN_PAYMENT_FOR_TICKET(:NEW.ticketId, :NEW.customerId, :NEW.price);
 END;
 /
