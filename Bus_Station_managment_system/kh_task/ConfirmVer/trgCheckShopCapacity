@@ -3,7 +3,7 @@ CREATE OR REPLACE TRIGGER trg_check_shop_capacity
   FOR EACH ROW
 DECLARE
   v_current_shop_count NUMBER;
-  v_max_capacity CONSTANT NUMBER := 100;
+  v_max_capacity CONSTANT NUMBER := 20;
 BEGIN
   SELECT COUNT(*)
   INTO v_current_shop_count
