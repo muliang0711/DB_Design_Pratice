@@ -1,0 +1,18 @@
+CREATE OR REPLACE TRIGGER trgPreventInvalidStaff
+BEFORE INSERT OR UPDATE ON rentalCollection
+FOR EACH ROW
+DECLARE
+  v_count NUMBER;
+BEGIN
+  IF :NEW.staffId IS NOT NULL THEN
+    SELECT COUNT(*) INTO v_count
+    FROM staff
+    WHERE staffId = :NEW.staffId;
+
+    IF v_count = 0 THEN
+      RAISE_APPLICATION_ERROR(-20010,
+        'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
+    END IF;
+  END IF;
+END;
+/

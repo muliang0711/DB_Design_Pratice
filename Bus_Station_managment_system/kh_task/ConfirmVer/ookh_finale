@@ -40,9 +40,12 @@ EXCEPTION
 END;
 /
 
-UPDATE rentalCollection 
+/*
+UPDATE rentalCollection
 SET status = 'paid', staffId = 'ST0012'
-WHERE shopId = 'SH0159' AND rentalMonth = '25/08/2025';
+WHERE shopId = 'SH0159'
+  AND TRUNC(rentalMonth, 'MM') = TO_DATE('08/2025', 'MM/YYYY');
+*/
 
 -- Sequence for shop
 
@@ -52,12 +55,13 @@ MAXVALUE 999
 INCREMENT BY 1
 NOCACHE;
 
-CREATE OR REPLACE TRIGGER trg_set_timeStamp
+CREATE OR REPLACE TRIGGER trgCalculateRentAmount
 BEFORE INSERT OR UPDATE ON RentalCollection
 FOR EACH ROW
 DECLARE
   v_shopSize Shop.shopSize%TYPE;
   v_count      NUMBER;
+  v_countStaff NUMBER;
 BEGIN
   IF INSERTING THEN
     SELECT shopSize INTO v_shopSize
@@ -67,6 +71,19 @@ BEGIN
     :NEW.rentalAmount := v_shopSize * 2;
 
   ELSIF UPDATING THEN
+    IF :NEW.staffId IS NOT NULL THEN
+    SELECT COUNT(*) INTO v_count
+    FROM staff st
+    JOIN staffRole sr ON st.roleId = sr.roleId
+    WHERE st.staffId = :NEW.staffId
+    AND LOWER(sr.roleName) = 'accountant';
+
+    IF v_count = 0 THEN
+      RAISE_APPLICATION_ERROR(-20011,
+        'Error: StaffId ' || :NEW.staffId || ' is not a valid Accountant in Staff table.');
+    END IF;
+    END IF;
+
     IF LOWER(:NEW.status) = 'paid'
        AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
        
