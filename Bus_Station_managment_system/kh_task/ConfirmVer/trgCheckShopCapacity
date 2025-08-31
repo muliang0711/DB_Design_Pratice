@@ -19,3 +19,26 @@ BEGIN
   END IF;
 END;
 /
+
+EXEC prcAddShop('S012','KA11', 'KAI Restaurant', '60123456789', 'Food', 223.1);
+EXEC prcAddShop('S012','KA12', 'KAI Mini Mart', '60123456790', 'Convenience', 245.7);
+EXEC prcAddShop('S012','KA13', 'KAI Coffee Shop', '60123456791', 'Beverage', 198.5);
+EXEC prcAddShop('S012','KA14', 'KAI Book Store', '60123456792', 'Retail', 312.3);
+EXEC prcAddShop('S012','KA15', 'KAI Food Court', '60123456793', 'Food', 287.6);
+EXEC prcAddShop('S012','KA16', 'KAI Pharmacy', '60123456794', 'Retail', 234.9);
+EXEC prcAddShop('S012','KA17', 'KAI Bakery', '60123456795', 'Food', 276.4);
+EXEC prcAddShop('S012','KA18', 'KAI Gift Shop', '60123456796', 'Retail', 189.2);
+EXEC prcAddShop('S012','KA19', 'KAI Juice Bar', '60123456797', 'Beverage', 205.8);
+EXEC prcAddShop('S012','KA20', 'KAI Noodle House', '60123456798', 'Food', 265.3);
+EXEC prcAddShop('S012','KA21', 'KAI Electronics', '60123456799', 'Retail', 345.6);
+EXEC prcAddShop('S012','KA22', 'KAI Tea House', '60123456800', 'Beverage', 212.7);
+EXEC prcAddShop('S012','KA23', 'KAI Fashion Boutique', '60123456801', 'Retail', 298.4);
+EXEC prcAddShop('S012','KA24', 'KAI Ice Cream', '60123456802', 'Food', 178.9);
+EXEC prcAddShop('S012','KA25', 'KAI Newsstand', '60123456803', 'Convenience', 156.3);
+EXEC prcAddShop('S012','KA26', 'KAI Chicken Rice', '60123456804', 'Food', 245.2);
+EXEC prcAddShop('S012','KA27', 'KAI Mobile Accessories', '60123456805', 'Retail', 267.8);
+EXEC prcAddShop('S012','KA28', 'KAI Smoothie Bar', '60123456806', 'Beverage', 194.6);
+EXEC prcAddShop('S012','KA29', 'KAI Donut Shop', '60123456807', 'Food', 223.5);
+EXEC prcAddShop('S012','KA30', 'KAI Souvenir Shop', '60123456808', 'Retail', 278.1);
+EXEC prcAddShop('S012','KA31', 'KAI Roti Canai', '60123456809', 'Food', 231.7);
+EXEC prcAddShop('S012','KA32', 'KAI Roti Canai', '60123456809', 'Food', 231.7);
