@@ -1,85 +1,90 @@
-CREATE OR REPLACE VIEW vwPlatformOps AS
-/* upcoming schedules by platform (future only) */
-WITH upcoming_sched AS (
-  SELECT DISTINCT rs.platformId,
-         bs.busScheduleId,
-         LOWER(bs.status) AS schedStatus,
-         bs.plannedDepartureTime
-  FROM   busSchedule bs
-  JOIN   routeDriverAssignmentList rda
-         ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-  JOIN   routeStation rs
-         ON rs.routeId = rda.routeId
-  WHERE  bs.plannedDepartureTime >= SYSTIMESTAMP
-),
-next_dep AS (
-  SELECT platformId, MIN(plannedDepartureTime) AS nextPlannedDeparture
-  FROM   upcoming_sched
-  WHERE  schedStatus = 'planned'
-  GROUP  BY platformId
-),
-upcoming_cnt AS (
-  SELECT platformId,
-         SUM(CASE WHEN schedStatus = 'planned' THEN 1 ELSE 0 END) AS upcomingPlanned
-  FROM   upcoming_sched
-  GROUP  BY platformId
-),
-/* last-30-day schedules for cancel rate */
-last30_sched AS (
-  SELECT DISTINCT rs.platformId,
-         bs.busScheduleId,
-         LOWER(bs.status) AS schedStatus
-  FROM   busSchedule bs
-  JOIN   routeDriverAssignmentList rda
-         ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-  JOIN   routeStation rs
-         ON rs.routeId = rda.routeId
-  WHERE  bs.plannedDepartureTime BETWEEN (SYSTIMESTAMP - INTERVAL '30' DAY) AND SYSTIMESTAMP
-),
-last30_rollup AS (
-  SELECT platformId,
-         SUM(CASE WHEN schedStatus = 'completed' THEN 1 ELSE 0 END) AS last30Completed,
-         SUM(CASE WHEN schedStatus = 'cancelled' THEN 1 ELSE 0 END) AS last30Cancelled
-  FROM   last30_sched
-  GROUP  BY platformId
-),
-/* last-30 actual stop usage count from tripStopLog (no dwell) */
-last30_log AS (
-  SELECT platformId,
-         COUNT(*) AS last30Stops
-  FROM   tripStopLog
-  WHERE  actualArrivalTime BETWEEN (SYSTIMESTAMP - INTERVAL '30' DAY) AND SYSTIMESTAMP
-    AND  actualDepartureTime IS NOT NULL
-    AND  actualArrivalTime   IS NOT NULL
-  GROUP  BY platformId
-),
-routes_by_platform AS (
-  SELECT platformId, COUNT(DISTINCT routeId) AS routesCount
-  FROM   routeStation
-  GROUP  BY platformId
-)
+CREATE OR REPLACE VIEW viewRoute AS
 SELECT
-  bp.platformId,
-  bp.platformName,
-  bp.stationId,
-  bp.status                  AS platformStatus,
-  NVL(rp.routesCount,0)      AS routesCount,
-  NVL(uc.upcomingPlanned,0)  AS upcomingPlanned,
-  nd.nextPlannedDeparture,
-  NVL(l30.last30Completed,0) AS last30Completed,
-  NVL(l30.last30Cancelled,0) AS last30Cancelled,
-  CASE
-    WHEN NVL(l30.last30Completed,0)+NVL(l30.last30Cancelled,0)=0 THEN 0
-    ELSE ROUND(100 * NVL(l30.last30Cancelled,0) /
-               (NVL(l30.last30Completed,0)+NVL(l30.last30Cancelled,0)), 2)
-  END                        AS last30CancelRatePct,
-  NVL(lg.last30Stops,0)      AS last30StopsLogged
-FROM   busPlatform bp
-LEFT   JOIN routes_by_platform rp ON rp.platformId = bp.platformId
-LEFT   JOIN upcoming_cnt       uc ON uc.platformId = bp.platformId
-LEFT   JOIN next_dep           nd ON nd.platformId = bp.platformId
-LEFT   JOIN last30_rollup      l30 ON l30.platformId = bp.platformId
-LEFT   JOIN last30_log         lg ON lg.platformId = bp.platformId;
+  r.routeId,
+  r.routeName,
+  r.status AS routeStatus,
+
+  /* coverage on the map */
+  (SELECT COUNT(*) FROM routeStation rs WHERE rs.routeId = r.routeId) AS platformsTotal,
+  (SELECT COUNT(*) 
+     FROM routeStation rs 
+     JOIN busPlatform bp ON bp.platformId = rs.platformId
+    WHERE rs.routeId = r.routeId AND LOWER(bp.status)='active')   AS platformsActive,
+  (SELECT COUNT(*) 
+     FROM routeStation rs 
+     JOIN busPlatform bp ON bp.platformId = rs.platformId
+    WHERE rs.routeId = r.routeId AND LOWER(bp.status)='inactive') AS platformsInactive,
+  (SELECT COUNT(DISTINCT bp.stationId)
+     FROM routeStation rs
+     JOIN busPlatform bp ON bp.platformId = rs.platformId
+    WHERE rs.routeId = r.routeId) AS stationsTotal,
+
+  /* assignments linked to the route */
+  (SELECT COUNT(*) 
+     FROM routeDriverAssignmentList rda
+    WHERE rda.routeId = r.routeId AND LOWER(rda.status)='active')   AS assignmentsActive,
+  (SELECT COUNT(*) 
+     FROM routeDriverAssignmentList rda
+    WHERE rda.routeId = r.routeId AND LOWER(rda.status)='inactive') AS assignmentsInactive,
+
+  /* upcoming plans & first departure */
+  (SELECT COUNT(*)
+     FROM busSchedule bs
+     JOIN routeDriverAssignmentList rda
+       ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+    WHERE rda.routeId = r.routeId
+      AND bs.plannedDepartureTime >= SYSTIMESTAMP
+      AND LOWER(bs.status) = 'planned') AS upcomingPlanned,
+
+  (SELECT MIN(bs.plannedDepartureTime)
+     FROM busSchedule bs
+     JOIN routeDriverAssignmentList rda
+       ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+    WHERE rda.routeId = r.routeId
+      AND bs.plannedDepartureTime >= SYSTIMESTAMP
+      AND LOWER(bs.status) = 'planned') AS nextPlannedDeparture,
+
+  /* last 30 days outcomes */
+  (SELECT COUNT(*)
+     FROM busSchedule bs
+     JOIN routeDriverAssignmentList rda
+       ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+    WHERE rda.routeId = r.routeId
+      AND bs.plannedDepartureTime BETWEEN SYSTIMESTAMP - NUMTODSINTERVAL(30,'DAY') AND SYSTIMESTAMP
+      AND LOWER(bs.status) = 'completed') AS last30Completed,
+
+  (SELECT COUNT(*)
+     FROM busSchedule bs
+     JOIN routeDriverAssignmentList rda
+       ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+    WHERE rda.routeId = r.routeId
+      AND bs.plannedDepartureTime BETWEEN SYSTIMESTAMP - NUMTODSINTERVAL(30,'DAY') AND SYSTIMESTAMP
+      AND LOWER(bs.status) = 'cancelled') AS last30Cancelled,
+
+  /* last 30d cancel rate % = cancelled / (completed + cancelled) * 100 */
+  ROUND(
+    100 * NVL(
+      (SELECT COUNT(*)
+         FROM busSchedule bs
+         JOIN routeDriverAssignmentList rda
+           ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+        WHERE rda.routeId = r.routeId
+          AND bs.plannedDepartureTime BETWEEN SYSTIMESTAMP - NUMTODSINTERVAL(30,'DAY') AND SYSTIMESTAMP
+          AND LOWER(bs.status) = 'cancelled')
+      / NULLIF(
+          (SELECT COUNT(*)
+             FROM busSchedule bs
+             JOIN routeDriverAssignmentList rda
+               ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+            WHERE rda.routeId = r.routeId
+              AND bs.plannedDepartureTime BETWEEN SYSTIMESTAMP - NUMTODSINTERVAL(30,'DAY') AND SYSTIMESTAMP
+              AND LOWER(bs.status) IN ('completed','cancelled')
+          ), 0),
+      0
+    ), 2
+  ) AS last30CancelRatePct
+
+FROM route r;
 
 
 
@@ -266,4 +271,5 @@ COLUMN nextPlannedDeparture  FORMAT A19
 COLUMN last30Completed       FORMAT 9999
 COLUMN last30Cancelled       FORMAT 9999
 COLUMN last30CancelRatePct   FORMAT 990.99
+
 COLUMN upcomingAvgSeatUtilPct FORMAT 990.99

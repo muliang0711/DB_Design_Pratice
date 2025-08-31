@@ -232,6 +232,7 @@ CREATE OR REPLACE PROCEDURE sp_report_platform (
   /* -------- printing control -------- */
   v_printed  PLS_INTEGER := 0;
   v_done     BOOLEAN := FALSE;
+  v_printed_for_route PLS_INTEGER := 0;   -- NEW: counter per route
 
   /* -------- layout widths -------- */
   c_box CONSTANT PLS_INTEGER := 110;      -- summary box width
@@ -389,12 +390,30 @@ BEGIN
 
   FOR r IN c_routes LOOP
     EXIT WHEN v_done;
+
+    -- section header per route
     DBMS_OUTPUT.PUT_LINE('| '||RPAD(r.routeId||' - '||NVL(r.routeName,'-'), c_grid - 3)||'|');
+
+    -- reset per-route counter
+    v_printed_for_route := 0;
+
+    -- print planned schedules for this route
     FOR s IN c_sched(r.routeId) LOOP
       print_grid_row(r.routeId, r.routeName, s.schedId, s.depTime, s.arrTime, s.schedStatus);
       v_printed := v_printed + 1;
-      IF v_printed >= NVL(p_show_limit,10) THEN v_done := TRUE; EXIT; END IF;
+      v_printed_for_route := v_printed_for_route + 1;
+
+      IF v_printed >= NVL(p_show_limit,10) THEN
+        v_done := TRUE;
+        EXIT;
+      END IF;
     END LOOP;
+
+
+    IF v_printed_for_route = 0 THEN
+      DBMS_OUTPUT.PUT_LINE('| '||RPAD('  (no planned schedules in window)', c_grid - 3)||'|');
+    END IF;
+
     hrule(c_grid);
   END LOOP;
 
@@ -408,8 +427,11 @@ END sp_report_platform;
 /
 
 
-EXEC sp_report_driver('D4212', SYSTIMESTAMP, 14, 12);
+
+EXEC sp_report_driver('D4210', SYSTIMESTAMP, 900, 12);
 EXEC sp_report_platform('BP301');
+
+
 
 
 

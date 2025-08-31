@@ -1,0 +1,21 @@
+COLUMN Year HEADING 'Year'
+COLUMN rentalMonth     HEADING 'Month'
+COLUMN totalCollections FORMAT 999 HEADING 'Total|Collections'
+COLUMN totalAmount    FORMAT 999,999.99 HEADING 'Total|Amount'
+COLUMN totalPaid      FORMAT 999,999.99 HEADING 'Total|Paid'
+COLUMN totalUnpaid    FORMAT 999,999.99 HEADING 'Total|Unpaid'
+
+CREATE OR REPLACE VIEW vw_RentalSummary AS
+SELECT 
+    TO_CHAR(rentalMonth, 'YYYY') AS Year,
+    TO_CHAR(rentalMonth, 'MON')  AS rentalMonth,  -- 3-letter month (JAN, FEB, etc.)
+    COUNT(*) AS totalCollections,
+    SUM(rentalAmount) AS totalAmount,
+    SUM(CASE WHEN status = 'paid' THEN rentalAmount ELSE 0 END) AS totalPaid,
+    SUM(CASE WHEN status <> 'paid' THEN rentalAmount ELSE 0 END) AS totalUnpaid
+FROM rentalCollection
+GROUP BY TO_CHAR(rentalMonth, 'YYYY'), TO_CHAR(rentalMonth, 'MON')
+ORDER BY Year, rentalMonth;
+
+
+SELECT * FROM vw_RentalSummary;
