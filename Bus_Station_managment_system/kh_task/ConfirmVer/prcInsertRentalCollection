@@ -30,6 +30,7 @@ BEGIN
     END IF;
   END LOOP;
 
+-- DELETE FROM rentalCollection WHERE TRUNC(rentalMonth, 'MM') = TO_DATE('08/2025', 'MM/YYYY');
   COMMIT;
 
 EXCEPTION
@@ -56,5 +57,6 @@ WHERE LOWER(sr.roleName) = 'accountant'
 ORDER BY st.staffId;
 */
 -- exec prcAddRentalCollection
+
 
 
