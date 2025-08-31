@@ -1,0 +1,37 @@
+-- find the ticket that is available to extend
+SET linesize 200
+SET pagesize 100
+ALTER SESSION SET nls_date_format = 'dd-mm-yyyy';
+
+COLUMN busScheduleId        FORMAT A12      HEADING 'BusSchedule ID'
+COLUMN plannedDepartureTime FORMAT A20      HEADING 'Planned Departure'
+COLUMN plannedArrivalTime   FORMAT A20      HEADING 'Planned Arrival'
+COLUMN ticketId             FORMAT A12      HEADING 'Ticket ID'
+COLUMN seatNo               FORMAT A8       HEADING 'Seat No'
+COLUMN price                FORMAT 99990.00 HEADING 'Price'
+COLUMN type                 FORMAT A12      HEADING 'Type'
+COLUMN ticketCreatedAt      FORMAT A20      HEADING 'Created At'
+COLUMN ticketUpdatedAt      FORMAT A20      HEADING 'Updated At'
+
+CREATE OR REPLACE VIEW view_OnSellingTickets AS
+SELECT 
+    bs.busScheduleId,
+    bs.plannedDepartureTime,
+    bs.plannedArrivalTime,
+    t.ticketId,
+    t.seatNo,
+    t.price,
+    t.type,
+    t.createdAt  AS ticketCreatedAt,
+    t.updatedAt  AS ticketUpdatedAt
+FROM route r
+JOIN routeDriverAssignmentList rda 
+    ON r.routeId = rda.routeId
+JOIN busSchedule bs 
+    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+JOIN ticket t 
+    ON bs.busScheduleId = t.busScheduleId
+WHERE LOWER(t.status) = 'on_selling';
+
+SELECT * FROM view_OnSellingTickets;
+CLEAR COLUMN

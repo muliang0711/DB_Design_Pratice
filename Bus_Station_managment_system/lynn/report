@@ -17,7 +17,7 @@ IS
         JOIN driverListAssignment DLA ON RDA.assignmentId = DLA.assignmentId
         JOIN bus B ON DLA.busId = B.busId
         WHERE BS.plannedDepartureTime BETWEEN p_startDate AND p_endDate
-          AND EXISTS (SELECT 1 FROM ticket T WHERE T.busScheduleId = BS.busScheduleId)  -- 只选有票
+          AND EXISTS (SELECT 1 FROM ticket T WHERE T.busScheduleId = BS.busScheduleId)  
         ORDER BY BS.plannedDepartureTime;
 
     schedRec scheduleCur%ROWTYPE;

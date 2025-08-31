@@ -1,0 +1,50 @@
+Failed : maybe issue prc logic not good 
+
+-- 1) 选一张目标票（你的是 T00000281318，就直接用它）
+SELECT ticketId, customerId, status
+FROM   ticket
+WHERE  ticketId = 'T00000281318';
+
+-- 3) 用 UPDATE 触发“从 NULL 到 非 NULL”
+UPDATE ticket
+SET    customerId = 'CU0100'
+WHERE  ticketId = 'T00000281318'
+AND    customerId IS NULL;
+
+-- 4) 验证：应当变成 been_bought，并生成一条 payment(pending)
+SELECT ticketId, customerId, status, updatedAt
+FROM   ticket
+WHERE  ticketId = 'T00000281318';
+
+SELECT paymentId, ticketId, customerId, totalAmount, status, paymentTime
+FROM   paymentRecord
+WHERE  ticketId = 'T00000281318'
+ORDER  BY paymentTime DESC;
+
+-- 1) 看看原班次、路由、出发日
+SELECT t.ticketId, t.busScheduleId AS orig_bs,
+       TRUNC(bs.plannedDepartureTime) AS orig_dep_day,
+       r.routeId AS orig_route, t.status
+FROM   ticket t
+JOIN   busSchedule bs ON bs.busScheduleId = t.busScheduleId
+JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+JOIN   route r ON r.routeId = rda.routeId
+WHERE  t.ticketId = 'T00000281318';
+
+-- 2) 选一个同一路由的目标班次（示例用 S2PP4VEFOV0L，确保真的存在且不同于原班次）
+SELECT bs.busScheduleId AS new_bs,
+       TRUNC(bs.plannedDepartureTime) AS new_dep_day,
+       r.routeId AS new_route
+FROM   busSchedule bs
+JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+JOIN   route r ON r.routeId = rda.routeId
+WHERE  bs.busScheduleId = 'S2PP4VEFOV0L';
+
+-- 3) 执行延签（注意不要带空格）
+SET SERVEROUTPUT ON
+EXEC ExtendTicket('T00000281318', 'S2PP4VEFOV0L');
+
+-- 4) 验证延签结果
+SELECT ticketId, status, extendedToId, extensionDate, updatedAt
+FROM   ticket
+WHERE  ticketId = 'T00000281318';
