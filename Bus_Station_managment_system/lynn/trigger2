@@ -1,4 +1,4 @@
-CREATE OR REPLACE TRIGGER ManagePointsAndPayment
+CREATE OR REPLACE TRIGGER ManagePointTransaction
 BEFORE INSERT OR UPDATE ON PointTransaction
 FOR EACH ROW
 DECLARE
@@ -7,7 +7,7 @@ DECLARE
     v_paymentAmount NUMBER(8,2);
     v_pointsUsed NUMBER(5);
 BEGIN
-    -- For point redemption (negative pointChange: reedeem,consumption deduction)
+    -- For point redemption (negative pointChange: redeem,consumption deduction)
     IF :NEW.pointChange < 0 THEN
         -- Get current balance
         SELECT pointBalance 
@@ -49,13 +49,18 @@ END;
 
 
 -- use
-INSERT INTO PaymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, 
-                           pointsApplied, pointValue, status, paymentTime, receiptNo, paymentMethod, type)
+INSERT INTO PaymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, paymentMethod, type)
 VALUES ('P001', 'CU0003', 'T000000200', 200, 170, 30, 30, 'Completed', SYSTIMESTAMP, 'R001', 'Cash', 'Ticket');
+
 INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
 VALUES ('PT001', 'CU0003', 'P001', -30, 'Payment Redeem', 'Used points for ticket payment');
 
 --invalid  example
+INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
+VALUES ('PT001', 'CU0003', 'P001', -1140, 'Payment Redeem', 'Used points for ticket payment');
+
+INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
+VALUES ('PT001', 'CU0003', 'P001', -40, 'Payment Redeem', 'Used points for ticket payment');
 
 INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
 VALUES ('PT002', 'CU0002', 'P001', -50, 'Payment Redeem', 'Trying to use more points');
