@@ -5763,6 +5763,7 @@ INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmo
 INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type) VALUES ('P000398', 'CU0086', 'T00000000398', 25.00, 5.00, 200, 20.00, 'completed', TO_TIMESTAMP('2025-04-17 19:00', 'YYYY-MM-DD HH24:MI'), 'RCPT-00398', 'Payment for T00000000398', 'Credit Card', 'ticket');
 INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type) VALUES ('P000399', 'CU0022', 'T00000000399', 30.00, 20.00, 100, 10.00, 'completed', TO_TIMESTAMP('2025-04-15 19:45', 'YYYY-MM-DD HH24:MI'), 'RCPT-00399', 'Payment for T00000000399', 'Credit Card', 'ticket');
 INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type) VALUES ('P000400', 'CU0097', 'T00000000400', 40.00, 35.00, 50, 5.00, 'completed', TO_TIMESTAMP('2025-05-28 15:30', 'YYYY-MM-DD HH24:MI'), 'RCPT-00400', 'Payment for T00000000400', 'E-Wallet', 'ticket');
+INSERT INTO paymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount,pointsApplied, pointValue, status, paymentTime, receiptNo, remarks, paymentMethod, type) VALUES ('P000401', 'CU0092', 'T00000000473', 25.00, 25.00, 0, 0.00, 'completed', SYSTIMESTAMP, 'RCPT0001', 'Bus ticket purchase', 'Cash', 'purchase');
 
 INSERT INTO pointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks, createdAt) VALUES ('PT000001', 'CU0050', 'P000001', 100, 'ticket_payment', 'Points transaction for P000001', SYSTIMESTAMP);
 INSERT INTO pointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks, createdAt) VALUES ('PT000003', 'CU0001', 'P000003', 200, 'ticket_payment', 'Points transaction for P000003', SYSTIMESTAMP);
@@ -6113,6 +6114,7 @@ INSERT INTO pointTransaction (pointTxnId, customerId, paymentId, pointChange, so
 INSERT INTO pointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks, createdAt) VALUES ('PT000398', 'CU0086', 'P000398', 100, 'ticket_payment', 'Points transaction for P000398', SYSTIMESTAMP);
 INSERT INTO pointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks, createdAt) VALUES ('PT000399', 'CU0022', 'P000399', 50, 'ticket_payment', 'Points transaction for P000399', SYSTIMESTAMP);
 INSERT INTO pointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks, createdAt) VALUES ('PT000400', 'CU0097', 'P000400', 200, 'ticket_payment', 'Points transaction for P000400', SYSTIMESTAMP);
+INSERT INTO pointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks) VALUES ('PT000401', 'CU0092', 'P000401', 1, 'purchase', 'Earned 1 point for buying ticket');
 
 INSERT INTO tripStopLog (tripStopId, busScheduleId, platformId, actualArrivalTime, actualDepartureTime, status, remarks) VALUES ('TS000001', 'S000010', 'BP221', TO_TIMESTAMP('2025-03-13 06:00', 'YYYY-MM-DD HH24:MI'), TO_TIMESTAMP('2025-03-13 06:49', 'YYYY-MM-DD HH24:MI'), 'cancelled', 'Trip cancelled due to low demand');
 INSERT INTO tripStopLog (tripStopId, busScheduleId, platformId, actualArrivalTime, actualDepartureTime, status, remarks) VALUES ('TS000002', 'S000098', 'BP204', TO_TIMESTAMP('2025-03-25 07:00', 'YYYY-MM-DD HH24:MI'), TO_TIMESTAMP('2025-03-25 07:19', 'YYYY-MM-DD HH24:MI'), 'arrived', 'Reached as scheduled');
@@ -8317,3 +8319,6 @@ UPDATE ticket SET customerId = 'CU0013', status = 'been_bought', updatedAt = SYS
 UPDATE ticket SET customerId = 'CU0078', status = 'been_bought', updatedAt = SYSTIMESTAMP WHERE ticketId = 'T00000000398';
 UPDATE ticket SET customerId = 'CU0014', status = 'been_bought', updatedAt = SYSTIMESTAMP WHERE ticketId = 'T00000000399';
 UPDATE ticket SET customerId = 'CU0092', status = 'been_bought', updatedAt = SYSTIMESTAMP WHERE ticketId = 'T00000000400';
+UPDATE ticket SET customerId = 'CU0092', status = 'been_bought', updatedAt = SYSTIMESTAMP WHERE ticketId = 'T00000000473';
+
+
