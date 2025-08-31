@@ -1,0 +1,19 @@
+CREATE SEQUENCE seq_ticket_id
+  START WITH 1       
+  INCREMENT BY 1     
+  NOCACHE            
+  NOCYCLE;           
+
+CREATE OR REPLACE FUNCTION FN_NEXT_TICKET_ID
+RETURN VARCHAR2 IS
+  v_seq NUMBER;
+BEGIN
+
+  SELECT seq_ticket_id.NEXTVAL INTO v_seq FROM dual;
+  
+  RETURN 'T' || LPAD(v_seq, 11, '0');
+END;
+/
+SHOW ERRORS FUNCTION FN_NEXT_TICKET_ID;
+
+CREATE INDEX idx_ticket_status_schedule ON ticket(status, busScheduleId);

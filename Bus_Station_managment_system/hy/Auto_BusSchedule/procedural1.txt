@@ -1,218 +1,244 @@
 CREATE OR REPLACE PROCEDURE GEN_BUS_SCHEDULES (
-  p_rda_id   IN routeDriverAssignmentList.routeDriverAssignmentId%TYPE,
-  p_max_days IN NUMBER DEFAULT 90
+  p_assignment_id   IN routeDriverAssignmentList.routeDriverAssignmentId%TYPE,
+  p_max_days        IN NUMBER DEFAULT 1
 ) IS
 
-  v_route_id      route.routeId%TYPE;
-  v_assignment_id routeDriverAssignmentList.assignmentId%TYPE;
-  v_freq          routeDriverAssignmentList.frequency%TYPE;
-  v_weekdays      routeDriverAssignmentList.weekdays%TYPE;
-  v_eff_from      DATE;
-  v_eff_to        DATE;
-  v_status        routeDriverAssignmentList.status%TYPE;
+  route_id                route.routeId%TYPE;
+  assignment_reference_id routeDriverAssignmentList.assignmentId%TYPE;
+  frequency_type          routeDriverAssignmentList.frequency%TYPE;
+  weekdays_string         routeDriverAssignmentList.weekdays%TYPE;
+  effective_from_date     DATE;
+  effective_to_date       DATE;
+  assignment_status       routeDriverAssignmentList.status%TYPE;
 
-  v_dep_hhmm     route.plannedDepartureTime%TYPE;
-  v_arr_hhmm     route.plannedArrivalTime%TYPE;
-  v_est_min      route.estimatedDuration%TYPE;
-  v_distance_km  route.distanceKm%TYPE;
+  planned_departure_hhmm  route.plannedDepartureTime%TYPE;
+  planned_arrival_hhmm    route.plannedArrivalTime%TYPE;
+  estimated_duration_min  route.estimatedDuration%TYPE;
+  route_distance_km       route.distanceKm%TYPE;
 
-  v_start_date   DATE;
-  v_end_date     DATE;
-  v_dep_ts       TIMESTAMP;
-  v_arr_ts       TIMESTAMP;
+  schedule_start_date     DATE;
+  schedule_end_date       DATE;
+  departure_timestamp     TIMESTAMP;
+  arrival_timestamp       TIMESTAMP;
 
-  TYPE t_numset IS TABLE OF PLS_INTEGER INDEX BY PLS_INTEGER;
+  -- custom exceptions
+  ex_assignment_not_found   EXCEPTION;
+  ex_inactive_assignment    EXCEPTION;
+  ex_route_not_found        EXCEPTION;
+  ex_invalid_frequency      EXCEPTION;
 
-  -- Monday=1 .. Sunday=7
-  FUNCTION weekday_mon1(p_date DATE) RETURN PLS_INTEGER IS
+  PRAGMA EXCEPTION_INIT(ex_assignment_not_found, -20001);
+  PRAGMA EXCEPTION_INIT(ex_inactive_assignment, -20002);
+  PRAGMA EXCEPTION_INIT(ex_route_not_found, -20003);
+  PRAGMA EXCEPTION_INIT(ex_invalid_frequency, -20004);
+
+  TYPE weekday_set IS TABLE OF PLS_INTEGER INDEX BY PLS_INTEGER;
+
+  -------------------------------------------------------------------
+  -- Utility functions (unchanged, except shortened for clarity)
+  -------------------------------------------------------------------
+  FUNCTION get_weekday_mon1(p_date DATE) RETURN PLS_INTEGER IS
   BEGIN
     RETURN MOD(TRUNC(p_date) - DATE '1900-01-01', 7) + 1;
   END;
 
-  -- Parse '1,3,5' into a set-like table
-  FUNCTION parse_weekdays(p VARCHAR2) RETURN t_numset IS
-    v_set t_numset;
-    v_s   VARCHAR2(2000) := NVL(TRIM(p), '');
-    v_tok VARCHAR2(10);
-    v_pos PLS_INTEGER := 1;
+  FUNCTION parse_weekdays(p VARCHAR2) RETURN weekday_set IS
+    weekday_numbers weekday_set;
+    weekdays_input  VARCHAR2(2000) := NVL(TRIM(p), '');
+    weekday_token   VARCHAR2(10);
+    position_index  PLS_INTEGER := 1;
   BEGIN
-    IF v_s IS NULL OR v_s = '' THEN
-      RETURN v_set;
-    END IF;
     LOOP
-      v_tok := REGEXP_SUBSTR(v_s, '([^,]+)', 1, v_pos);
-      EXIT WHEN v_tok IS NULL;
-      v_set(TO_NUMBER(TRIM(v_tok))) := 1;
-      v_pos := v_pos + 1;
+      weekday_token := REGEXP_SUBSTR(weekdays_input, '([^,]+)', 1, position_index);
+      EXIT WHEN weekday_token IS NULL;
+      weekday_numbers(TO_NUMBER(TRIM(weekday_token))) := 1;
+      position_index := position_index + 1;
     END LOOP;
-    RETURN v_set;
+    RETURN weekday_numbers;
   END;
 
-  -- Combine a date with 'HH24:MI'
-  FUNCTION at_time(p_date DATE, p_hhmi VARCHAR2) RETURN TIMESTAMP IS
+  FUNCTION to_timestamp_with_time(p_date DATE, p_hhmi VARCHAR2) RETURN TIMESTAMP IS
   BEGIN
     RETURN TO_TIMESTAMP(TO_CHAR(p_date, 'YYYY-MM-DD')||' '||p_hhmi, 'YYYY-MM-DD HH24:MI');
   END;
 
-  -- Compute arrival
-  FUNCTION calc_arrival(p_dep_ts TIMESTAMP,
-                        p_est_min NUMBER,
-                        p_arr_hhmi VARCHAR2) RETURN TIMESTAMP IS
-    v_dep_date DATE := CAST(p_dep_ts AS DATE);
-    v_dep_hm   VARCHAR2(5) := TO_CHAR(p_dep_ts, 'HH24:MI');
-    v_arr_ts   TIMESTAMP;
+  FUNCTION calculate_arrival_time(
+                        departure_ts TIMESTAMP,
+                        estimated_minutes NUMBER,
+                        arrival_hhmi VARCHAR2) RETURN TIMESTAMP IS
+    dep_date   DATE := CAST(departure_ts AS DATE);
+    dep_hhmi   VARCHAR2(5) := TO_CHAR(departure_ts, 'HH24:MI');
+    calc_arrival_ts TIMESTAMP;
   BEGIN
-    IF p_est_min IS NOT NULL THEN
-      RETURN p_dep_ts + NUMTODSINTERVAL(p_est_min, 'MINUTE');
-    ELSIF p_arr_hhmi IS NOT NULL THEN
-      v_arr_ts := at_time(v_dep_date, p_arr_hhmi);
-      IF TO_CHAR(v_arr_ts, 'HH24:MI') < v_dep_hm THEN
-        v_arr_ts := v_arr_ts + NUMTODSINTERVAL(1, 'DAY'); -- overnight
+    IF estimated_minutes IS NOT NULL THEN
+      RETURN departure_ts + NUMTODSINTERVAL(estimated_minutes, 'MINUTE');
+    ELSIF arrival_hhmi IS NOT NULL THEN
+      calc_arrival_ts := to_timestamp_with_time(dep_date, arrival_hhmi);
+      IF TO_CHAR(calc_arrival_ts, 'HH24:MI') < dep_hhmi THEN
+        calc_arrival_ts := calc_arrival_ts + NUMTODSINTERVAL(1, 'DAY');
       END IF;
-      RETURN v_arr_ts;
+      RETURN calc_arrival_ts;
     ELSE
-      RETURN p_dep_ts + NUMTODSINTERVAL(120, 'MINUTE'); -- default 2h
+      RETURN departure_ts + NUMTODSINTERVAL(120, 'MINUTE'); -- fallback 2h
     END IF;
   END;
 
-  FUNCTION to_base36(n IN NUMBER, width IN PLS_INTEGER) RETURN VARCHAR2 IS
-    chars CONSTANT VARCHAR2(36) := '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    v     NUMBER := FLOOR(ABS(NVL(n,0)));
-    out   VARCHAR2(64) := '';
+  FUNCTION generate_bus_schedule_id RETURN VARCHAR2 IS
+    generated_id VARCHAR2(20);
   BEGIN
-    IF v = 0 THEN out := '0'; END IF;
-    WHILE v > 0 LOOP
-      out := SUBSTR(chars, MOD(v, 36) + 1, 1) || out;
-      v := FLOOR(v / 36);
-    END LOOP;
-    IF LENGTH(out) < width THEN
-      out := LPAD(out, width, '0');
-    ELSIF LENGTH(out) > width THEN
-      out := SUBSTR(out, LENGTH(out) - width + 1);
-    END IF;
-    RETURN out;
+    SELECT 'S' || LPAD(bus_schedule_seq.NEXTVAL, 6, '0')
+      INTO generated_id
+      FROM dual;
+    RETURN generated_id;
   END;
 
-  FUNCTION make_bs_id(p_dep_ts TIMESTAMP, p_rda_id VARCHAR2) RETURN VARCHAR2 IS
-    j         NUMBER := TO_NUMBER(TO_CHAR(CAST(p_dep_ts AS DATE), 'J'));
-    s         NUMBER := TO_NUMBER(TO_CHAR(CAST(p_dep_ts AS DATE), 'SSSSS'));
-    epoch_sec NUMBER := j*86400 + s;
-    ts36      VARCHAR2(8) := to_base36(epoch_sec, 8);
-    h         NUMBER := DBMS_UTILITY.get_hash_value(UPPER(NVL(p_rda_id,'X')), 0, 36*36*36 - 1);
-    h36       VARCHAR2(3) := to_base36(h, 3);
+  FUNCTION calculate_expected_profit(distance_km NUMBER) RETURN NUMBER IS
   BEGIN
-    RETURN 'S' || ts36 || h36;  -- 长度恒为 12
+    RETURN ROUND(NVL(distance_km, 100) * 0.6 + DBMS_RANDOM.VALUE(50, 150), 2);
   END;
 
-  -- profit
-  FUNCTION calc_profit(p_distance NUMBER) RETURN NUMBER IS
-  BEGIN
-    RETURN ROUND(NVL(p_distance, 100) * 0.6 + DBMS_RANDOM.VALUE(50, 150), 2);
-  END;
-
-  -- upsert-ish
-  PROCEDURE insert_if_absent(p_rda_id VARCHAR2, p_dep_ts TIMESTAMP, p_arr_ts TIMESTAMP, p_profit NUMBER) IS
-    v_exists NUMBER;
-    v_id     VARCHAR2(12);
+  PROCEDURE insert_schedule_if_not_exists(
+    assignment_id_input VARCHAR2,
+    departure_ts        TIMESTAMP,
+    arrival_ts          TIMESTAMP,
+    profit_value        NUMBER
+  ) IS
+    existing_count NUMBER;
+    new_schedule_id VARCHAR2(12);
   BEGIN
     SELECT COUNT(*)
-      INTO v_exists
+      INTO existing_count
       FROM busSchedule
-     WHERE routeDriverAssignmentId = p_rda_id
-       AND plannedDepartureTime    = p_dep_ts;
+     WHERE routeDriverAssignmentId = assignment_id_input
+       AND plannedDepartureTime    = departure_ts;
 
-    IF v_exists = 0 THEN
-      v_id := make_bs_id(p_dep_ts, p_rda_id);
+    IF existing_count = 0 THEN
+      new_schedule_id := generate_bus_schedule_id;
       INSERT INTO busSchedule(
         busScheduleId, routeDriverAssignmentId,
         plannedDepartureTime, plannedArrivalTime,
         status, expectedProfit, remarks
       ) VALUES (
-        v_id, p_rda_id,
-        p_dep_ts, p_arr_ts,
-        'Planned', p_profit, 'auto-generated'
+        new_schedule_id, assignment_id_input,
+        departure_ts, arrival_ts,
+        'Planned', profit_value, 'auto-generated'
       );
     END IF;
   END;
 
 BEGIN
+  -- 1. Load assignment
+  BEGIN
+    SELECT routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status
+      INTO route_id, assignment_reference_id, frequency_type, weekdays_string,
+           effective_from_date, effective_to_date, assignment_status
+    FROM routeDriverAssignmentList
+    WHERE routeDriverAssignmentId = p_assignment_id;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20001, 'Assignment ID '||p_assignment_id||' not found.');
+  END;
 
-  SELECT routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status
-    INTO v_route_id, v_assignment_id, v_freq, v_weekdays, v_eff_from, v_eff_to, v_status
-  FROM routeDriverAssignmentList
-  WHERE routeDriverAssignmentId = p_rda_id;
-
-  IF LOWER(v_status) <> 'active' THEN
-    RETURN;
+  -- 2. Check assignment active
+  IF LOWER(assignment_status) <> 'active' THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Assignment '||p_assignment_id||' is not active.');
   END IF;
 
-  SELECT plannedDepartureTime, plannedArrivalTime, estimatedDuration, distanceKm
-    INTO v_dep_hhmm, v_arr_hhmm, v_est_min, v_distance_km
-  FROM route
-  WHERE routeId = v_route_id;
+  -- 3. Load route
+  BEGIN
+    SELECT plannedDepartureTime, plannedArrivalTime, estimatedDuration, distanceKm
+      INTO planned_departure_hhmm, planned_arrival_hhmm, estimated_duration_min, route_distance_km
+    FROM route
+    WHERE routeId = route_id;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20003, 'Route '||route_id||' not found for assignment '||p_assignment_id);
+  END;
 
-  v_start_date := TRUNC(v_eff_from);
-  v_end_date   := CASE
-                    WHEN v_eff_to IS NOT NULL THEN TRUNC(v_eff_to)
-                    ELSE TRUNC(v_eff_from) + p_max_days
+  -- 4. Calculate date range
+  schedule_start_date := TRUNC(effective_from_date);
+  schedule_end_date   := CASE
+                    WHEN effective_to_date IS NOT NULL THEN TRUNC(effective_to_date)
+                    ELSE TRUNC(effective_from_date) + p_max_days
                   END;
 
-
-  IF LOWER(v_freq) = 'daily' THEN
-
-    FOR d IN 0 .. (v_end_date - v_start_date) LOOP
-      v_dep_ts := at_time(v_start_date + d, v_dep_hhmm);
-      v_arr_ts := calc_arrival(v_dep_ts, v_est_min, v_arr_hhmm);
-      insert_if_absent(p_rda_id, v_dep_ts, v_arr_ts, calc_profit(v_distance_km));
+  -- 5. Frequency logic
+  IF LOWER(frequency_type) = 'daily' THEN
+    FOR day_offset IN 0 .. (schedule_end_date - schedule_start_date) LOOP
+      departure_timestamp := to_timestamp_with_time(schedule_start_date + day_offset, planned_departure_hhmm);
+      arrival_timestamp   := calculate_arrival_time(departure_timestamp, estimated_duration_min, planned_arrival_hhmm);
+      insert_schedule_if_not_exists(p_assignment_id, departure_timestamp, arrival_timestamp, calculate_expected_profit(route_distance_km));
     END LOOP;
 
-  ELSIF LOWER(v_freq) = 'weekly' THEN
+  ELSIF LOWER(frequency_type) = 'weekly' THEN
     DECLARE
-      v_set t_numset := parse_weekdays(v_weekdays); -- 1..7 = Mon..Sun
-      v_d   DATE := v_start_date;
-      v_w   PLS_INTEGER;
+      active_weekdays weekday_set := parse_weekdays(weekdays_string);
+      current_date DATE := schedule_start_date;
+      weekday_number PLS_INTEGER;
     BEGIN
-      WHILE v_d <= v_end_date LOOP
-        v_w := weekday_mon1(v_d);
-        IF v_set.EXISTS(v_w) THEN
-          v_dep_ts := at_time(v_d, v_dep_hhmm);
-          v_arr_ts := calc_arrival(v_dep_ts, v_est_min, v_arr_hhmm);
-          insert_if_absent(p_rda_id, v_dep_ts, v_arr_ts, calc_profit(v_distance_km));
+      WHILE current_date <= schedule_end_date LOOP
+        weekday_number := get_weekday_mon1(current_date);
+        IF active_weekdays.EXISTS(weekday_number) THEN
+          departure_timestamp := to_timestamp_with_time(current_date, planned_departure_hhmm);
+          arrival_timestamp   := calculate_arrival_time(departure_timestamp, estimated_duration_min, planned_arrival_hhmm);
+          insert_schedule_if_not_exists(p_assignment_id, departure_timestamp, arrival_timestamp, calculate_expected_profit(route_distance_km));
         END IF;
-        v_d := v_d + 1;
+        current_date := current_date + 1;
       END LOOP;
     END;
 
-  ELSIF LOWER(v_freq) = 'monthly' THEN
+  ELSIF LOWER(frequency_type) = 'monthly' THEN
     DECLARE
-      v_day  PLS_INTEGER := TO_NUMBER(TO_CHAR(v_start_date, 'DD'));
-      v_cur  DATE := v_start_date;
-      v_m    DATE;
-      v_try  DATE;
-      v_eom  DATE;
+      assignment_day_number PLS_INTEGER := TO_NUMBER(TO_CHAR(schedule_start_date, 'DD'));
+      current_month_start   DATE := schedule_start_date;
+      month_start           DATE;
+      try_date              DATE;
+      end_of_month          DATE;
     BEGIN
-      WHILE v_cur <= v_end_date LOOP
-        v_m   := TRUNC(v_cur, 'MM');
-        v_eom := TRUNC(ADD_MONTHS(v_m, 1) - 1);
-        v_try := v_m + (v_day - 1);
-        IF v_try > v_eom THEN
-          v_try := v_eom;
+      WHILE current_month_start <= schedule_end_date LOOP
+        month_start   := TRUNC(current_month_start, 'MM');
+        end_of_month  := TRUNC(ADD_MONTHS(month_start, 1) - 1);
+        try_date      := month_start + (assignment_day_number - 1);
+        IF try_date > end_of_month THEN
+          try_date := end_of_month;
         END IF;
 
-        IF v_try BETWEEN v_start_date AND v_end_date THEN
-          v_dep_ts := at_time(v_try, v_dep_hhmm);
-          v_arr_ts := calc_arrival(v_dep_ts, v_est_min, v_arr_hhmm);
-          insert_if_absent(p_rda_id, v_dep_ts, v_arr_ts, calc_profit(v_distance_km));
+        IF try_date BETWEEN schedule_start_date AND schedule_end_date THEN
+          departure_timestamp := to_timestamp_with_time(try_date, planned_departure_hhmm);
+          arrival_timestamp   := calculate_arrival_time(departure_timestamp, estimated_duration_min, planned_arrival_hhmm);
+          insert_schedule_if_not_exists(p_assignment_id, departure_timestamp, arrival_timestamp, calculate_expected_profit(route_distance_km));
         END IF;
 
-        v_cur := ADD_MONTHS(v_cur, 1);
+        current_month_start := ADD_MONTHS(current_month_start, 1);
       END LOOP;
     END;
 
   ELSE
-    NULL; -- unknown frequency
+    RAISE_APPLICATION_ERROR(-20004, 'Invalid frequency "'||frequency_type||'" for assignment '||p_assignment_id);
   END IF;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    -- fallback: catch any unhandled error
+    RAISE_APPLICATION_ERROR(-20999, 'Unexpected error in GEN_BUS_SCHEDULES: '||SQLERRM);
 END;
 /
 
+
 SHOW ERRORS PROCEDURE GEN_BUS_SCHEDULES;
+
+
+EXEC GEN_BUS_SCHEDULES('RD407');
+
+SELECT * 
+FROM busSchedule 
+WHERE routeDriverAssignmentId = 'RD407'
+ORDER BY plannedDepartureTime;
+
+INSERT INTO routeDriverAssignmentList (routeDriverAssignmentId, routeId, assignmentId, frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks) VALUES 
+('RD407', 'R091', 'A000187', 'daily', '1,7', TO_DATE('2025-02-27', 'YYYY-MM-DD'), TO_DATE('2026-02-16', 'YYYY-MM-DD'), 'active', 4318.65, 'Auto-generated assignment 399');
+
+SELECT * 
+FROM busSchedule 
+WHERE routeDriverAssignmentId = 'RD407'
+ORDER BY plannedDepartureTime;
