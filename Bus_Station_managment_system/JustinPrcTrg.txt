@@ -136,6 +136,8 @@ END;
 
 
 
+-----------------------------------------------------------------------------------------------
+
 --Trigger 1: Prevent Scheduling on Inactive Routes
 --This trigger acts as a safety net to stop anyone from creating a new BusSchedule for a Route that has been
 --marked as inactive.
@@ -165,11 +167,38 @@ END;
 
 
 
+-- Testing: 
+--------------------------------------------------------------------------------------
+
+-- ALTER TRIGGER RDA_AI_GEN_BS DISABLE;
+
+
+
+INSERT INTO routeDriverAssignmentList
+  (routeDriverAssignmentId, routeId, assignmentId,
+   frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks)
+VALUES
+  ('RDA170A1', 'R170', 'A004952',
+   'daily', '1,2,3,4,5,6,7', DATE '2025-08-31', NULL, 'active', NULL, 'trigger test');
+
+INSERT INTO busSchedule
+  (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime, status, createdAt, updatedAt)
+VALUES
+  ('SCH_T01', 'RDA170A1', SYSTIMESTAMP + 1, SYSTIMESTAMP + 1 + INTERVAL '8' HOUR,
+   'Planned', SYSTIMESTAMP, SYSTIMESTAMP);
+
+
+
+--------------------------------------------------------------------------------------------
 
 
 
 
 
+
+
+
+----------------------------------------------------------------------------------------------
 --Trigger 2: enforces the 2-driver rule for long trips
 -- Enforce two drivers (MAIN + SUPPORT) for long trips (>= 8 hours).
 -- Fires on create/update of schedules.
@@ -225,3 +254,40 @@ BEGIN
   END IF;
 END;
 /
+
+
+
+
+Testing: 
+-----------------------------------------------------------------------------
+DELETE FROM routeDriverAssignmentList
+WHERE routeId = 'R170';
+
+
+UPDATE route
+   SET status = 'active', estimatedDuration = 600
+ WHERE routeId = 'R170';
+
+
+
+INSERT INTO routeDriverAssignmentList
+  (routeDriverAssignmentId, routeId, assignmentId,
+   frequency, weekdays, effectiveFrom, effectiveTo, status, expectedProfit, remarks)
+VALUES
+  ('RDA170A1', 'R170', 'A004952',
+   'daily', '1,2,3,4,5,6,7', DATE '2025-08-31', NULL, 'active', NULL, 'trigger test');
+
+
+UPDATE driverListAssignment
+   SET supportDriverId = NULL
+ WHERE assignmentId = 'A004952';
+
+
+INSERT INTO busSchedule
+  (busScheduleId, routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime,
+   status, createdAt, updatedAt)
+VALUES
+  ('SCH_DRV1', 'RDA170A1',
+   SYSTIMESTAMP + 1,
+   SYSTIMESTAMP + 1 + INTERVAL '9' HOUR,
+   'planned', SYSTIMESTAMP, SYSTIMESTAMP);
