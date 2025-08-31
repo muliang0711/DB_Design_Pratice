@@ -12,3 +12,8 @@ LEFT JOIN rentalCollection rc
 ON s.shopId = rc.shopId
 WHERE rc.shopId IS NULL
 ORDER BY s.stationId, s.shopNo;
+
+/*
+DELETE FROM rentalCollection
+WHERE shopId IN ('SH0117', 'SH0118', 'SH0119');
+*/
