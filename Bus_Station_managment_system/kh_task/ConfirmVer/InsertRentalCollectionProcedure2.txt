@@ -41,3 +41,5 @@ END;
 UPDATE rentalCollection 
 SET status = 'paid', staffId = 'ST0012'
 WHERE shopId = 'SH0159' AND rentalMonth = '25/08/2025';
+
+-- exec prcAddRentalCollection
