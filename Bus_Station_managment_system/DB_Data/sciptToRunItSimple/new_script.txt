@@ -148,7 +148,7 @@ CREATE TABLE shop (
   CONSTRAINT UK_SHOP_STATION_NO UNIQUE (stationId, shopNo)
 );
 
-CREATE INDEX idx_shopType ON shop(shopType);
+CREATE INDEX idx_status ON shop(status);
 
 CREATE TABLE busPlatform (
   platformId   VARCHAR2(12)  PRIMARY KEY,
