@@ -292,7 +292,7 @@ CREATE OR REPLACE PROCEDURE prcShowUnpaidRentals IS
     SELECT s.shopID, r.rentalMonth, r.rentalAmount, s.shopTenantName, s.phoneNumber
     FROM Shop s
     JOIN RentalCollection r ON s.shopID = r.shopID
-    WHERE LOWER(r.status) = 'unpaid'
+    WHERE LOWER(r.status) = 'pending'
     ORDER BY r.rentalMonth, s.shopID;
 
   v_lastMonth DATE := NULL;
