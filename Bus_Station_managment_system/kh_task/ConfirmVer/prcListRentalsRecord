@@ -82,8 +82,7 @@ END;
 
 -- exec prcShowRentals
 
-update rentalcollection
-set status = 'pending'
-where status = 'overdue';
+
+
 
 
