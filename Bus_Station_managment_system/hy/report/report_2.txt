@@ -1,0 +1,109 @@
+CREATE OR REPLACE PROCEDURE ReportRoutePerformanceNested (
+    p_route_id IN route.routeId%TYPE
+)
+IS
+    v_routeName route.routeName%TYPE;
+    v_total     NUMBER;
+    v_delayed   NUMBER;
+
+    CURSOR c_assign IS
+        SELECT DISTINCT rda.routeDriverAssignmentId
+        FROM routeDriverAssignmentList rda
+        WHERE rda.routeId = p_route_id
+        ORDER BY rda.routeDriverAssignmentId;
+
+    CURSOR c_schedules(p_rda_id routeDriverAssignmentList.routeDriverAssignmentId%TYPE) IS
+        SELECT bs.busScheduleId,
+               TO_CHAR(bs.plannedDepartureTime,'YYYY-MM-DD HH24:MI') dep,
+               TO_CHAR(bs.plannedArrivalTime,'YYYY-MM-DD HH24:MI') arr,
+               bs.status,
+               bs.expectedProfit
+        FROM busSchedule bs
+        WHERE bs.routeDriverAssignmentId = p_rda_id
+        ORDER BY bs.busScheduleId;
+
+    CURSOR c_delay(p_schedule_id VARCHAR2) IS
+        SELECT tsl.tripStopId,
+               tsl.platformId,
+               TO_CHAR(tsl.actualArrivalTime,'YYYY-MM-DD HH24:MI') arr,
+               TO_CHAR(tsl.actualDepartureTime,'YYYY-MM-DD HH24:MI') dep,
+               tsl.remarks
+        FROM tripStopLog tsl
+        WHERE tsl.status = 'delayed'
+          AND tsl.busScheduleId = p_schedule_id;
+BEGIN
+    -- 驗證 route 是否存在
+    BEGIN
+        SELECT routeName
+        INTO v_routeName
+        FROM route
+        WHERE routeId = p_route_id;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Route ID ' || p_route_id || ' not found.');
+    END;
+
+    DBMS_OUTPUT.PUT_LINE('========================================');
+    DBMS_OUTPUT.PUT_LINE('     Route Performance Report (Nested)');
+    DBMS_OUTPUT.PUT_LINE('========================================');
+    DBMS_OUTPUT.PUT_LINE('Route ID   : ' || p_route_id);
+    DBMS_OUTPUT.PUT_LINE('Route Name : ' || v_routeName);
+
+    DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Assignments under Route ' || p_route_id);
+    DBMS_OUTPUT.PUT_LINE('----------------------------------------');
+
+    FOR rec_assign IN c_assign LOOP
+        DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Assignment ' || rec_assign.routeDriverAssignmentId);
+
+        FOR rec_schedule IN c_schedules(rec_assign.routeDriverAssignmentId) LOOP
+            DBMS_OUTPUT.PUT_LINE(
+                '   Schedule ' || rec_schedule.busScheduleId || ' | ' ||
+                rec_schedule.dep || ' | ' ||
+                rec_schedule.arr || ' | ' ||
+                rec_schedule.status || ' | ' ||
+                NVL(TO_CHAR(rec_schedule.expectedProfit),'N/A')
+            );
+
+            -- 內層：loop delays
+            FOR rec_delay IN c_delay(rec_schedule.busScheduleId) LOOP
+                DBMS_OUTPUT.PUT_LINE(
+                    '      -> Delay: ' ||
+                    rec_delay.tripStopId || ' | ' ||
+                    rec_delay.platformId || ' | ' ||
+                    rec_delay.arr || ' | ' ||
+                    rec_delay.dep || ' | ' ||
+                    rec_delay.remarks
+                );
+            END LOOP;
+        END LOOP;
+    END LOOP;
+
+    SELECT COUNT(*)
+    INTO v_total
+    FROM busSchedule bs
+    JOIN routeDriverAssignmentList rda
+      ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    WHERE rda.routeId = p_route_id;
+
+    SELECT COUNT(DISTINCT bs.busScheduleId)
+    INTO v_delayed
+    FROM tripStopLog tsl
+    JOIN busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
+    JOIN routeDriverAssignmentList rda
+      ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    WHERE tsl.status = 'delayed'
+      AND rda.routeId = p_route_id;
+
+    DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Summary:');
+    DBMS_OUTPUT.PUT_LINE('Total schedules   : ' || v_total);
+    DBMS_OUTPUT.PUT_LINE('Delayed schedules : ' || v_delayed);
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20099,
+            'Unexpected error in ReportRoutePerformanceNested: ' || SQLERRM);
+END;
+/
+
+EXEC ReportRoutePerformanceNested('R001');
+

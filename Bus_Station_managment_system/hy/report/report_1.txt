@@ -8,7 +8,11 @@ CREATE OR REPLACE PROCEDURE Report_Route_Profit (
   v_total_revenue  NUMBER := 0;
   v_total_tickets  NUMBER := 0;
 
-  -- cursor for assignments
+  -- subtotals
+  v_sub_revenue  NUMBER := 0;
+  v_sub_tickets  NUMBER := 0;
+
+  -- cursor for assignments summary
   CURSOR c_assign IS
     SELECT rda.routeDriverAssignmentId,
            COUNT(DISTINCT bs.busScheduleId) * b.capacity * r.distanceKm * v_rate_per_km AS expectedProfit,
@@ -24,30 +28,18 @@ CREATE OR REPLACE PROCEDURE Report_Route_Profit (
     GROUP BY rda.routeDriverAssignmentId, b.capacity, r.distanceKm
     ORDER BY rda.routeDriverAssignmentId;
 
-  -- nested cursor for schedules (parameterized)
-  CURSOR c_sched (p_rda_id routeDriverAssignmentList.routeDriverAssignmentId%TYPE) IS
-    SELECT bs.busScheduleId,
-           COUNT(CASE WHEN t.status = 'been_bought' THEN 1 END) AS ticketsSold,
-           NVL(SUM(CASE WHEN t.status = 'been_bought' THEN t.price END),0) AS revenue,
-           CASE WHEN NVL(SUM(CASE WHEN t.status='been_bought' THEN t.price END),0) >= NVL(bs.expectedProfit,0)
-                THEN 'PROFIT' ELSE 'LOSS' END AS result
-    FROM   busSchedule bs
-           LEFT JOIN ticket t ON bs.busScheduleId = t.busScheduleId
-    WHERE  bs.routeDriverAssignmentId = p_rda_id
-    GROUP BY bs.busScheduleId, bs.expectedProfit
-    ORDER BY bs.busScheduleId;
 BEGIN
   DBMS_OUTPUT.PUT_LINE('================= REPORT FOR ROUTE ' || p_route_id || ' =================');
 
-  -- Table 1: Assignments
+  -- Table 1: Assignments summary
   DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> ROUTE DRIVER ASSIGNMENTS');
   DBMS_OUTPUT.PUT_LINE(RPAD('AssignmentID',15) || RPAD('Expected',12) ||
                        RPAD('Revenue',12) || RPAD('Tickets',10) || RPAD('Result',8));
 
   FOR a_rec IN c_assign LOOP
     DBMS_OUTPUT.PUT_LINE(
-      RPAD(a_rec.routeDriverAssignmentId,11) ||
-      RPAD(TO_CHAR(a_rec.expectedProfit,'9999990.00'),16) ||
+      RPAD(a_rec.routeDriverAssignmentId,15) ||
+      RPAD(TO_CHAR(a_rec.expectedProfit,'9999990.00'),12) ||
       RPAD(a_rec.revenue,12) ||
       RPAD(a_rec.ticketsSold,10) ||
       RPAD(CASE WHEN a_rec.revenue >= a_rec.expectedProfit THEN 'PROFIT' ELSE 'LOSS' END,8)
@@ -59,28 +51,54 @@ BEGIN
     v_total_tickets  := v_total_tickets + a_rec.ticketsSold;
   END LOOP;
 
+  -- Table 2: Schedules grouped by assignment
   DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> BUS SCHEDULES');
-  DBMS_OUTPUT.PUT_LINE(RPAD('AssignmentID',15) || RPAD('ScheduleID',12) ||
-                       RPAD('Tickets',10) || RPAD('Revenue',12) || RPAD('Result',8));
 
-  FOR a_rec IN c_assign LOOP
-    -- for each assignment, fetch its schedules
-    FOR s_rec IN c_sched(a_rec.routeDriverAssignmentId) LOOP
+  FOR a_rec IN (SELECT DISTINCT rda.routeDriverAssignmentId
+                FROM routeDriverAssignmentList rda
+                WHERE rda.routeId = p_route_id
+                ORDER BY rda.routeDriverAssignmentId) LOOP
+
+    DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Assignment ' || a_rec.routeDriverAssignmentId);
+    DBMS_OUTPUT.PUT_LINE(RPAD('ScheduleID',12) || RPAD('Tickets',10) ||
+                         RPAD('Revenue',12) || RPAD('Result',8));
+
+    v_sub_tickets := 0;
+    v_sub_revenue := 0;
+
+    FOR s_rec IN (
+      SELECT bs.busScheduleId,
+             COUNT(CASE WHEN t.status = 'been_bought' THEN 1 END) AS ticketsSold,
+             NVL(SUM(CASE WHEN t.status = 'been_bought' THEN t.price END),0) AS revenue,
+             CASE WHEN NVL(SUM(CASE WHEN t.status='been_bought' THEN t.price END),0) >= NVL(bs.expectedProfit,0)
+                  THEN 'PROFIT' ELSE 'LOSS' END AS result
+      FROM   busSchedule bs
+             LEFT JOIN ticket t ON bs.busScheduleId = t.busScheduleId
+      WHERE  bs.routeDriverAssignmentId = a_rec.routeDriverAssignmentId
+      GROUP BY bs.busScheduleId, bs.expectedProfit
+      ORDER BY bs.busScheduleId
+    ) LOOP
       DBMS_OUTPUT.PUT_LINE(
-        RPAD(a_rec.routeDriverAssignmentId,15) ||
         RPAD(s_rec.busScheduleId,12) ||
         RPAD(s_rec.ticketsSold,10) ||
         RPAD(s_rec.revenue,12) ||
         RPAD(s_rec.result,8)
       );
+
+      v_sub_tickets := v_sub_tickets + s_rec.ticketsSold;
+      v_sub_revenue := v_sub_revenue + s_rec.revenue;
     END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('--------------------------------------------');
+    DBMS_OUTPUT.PUT_LINE('total Ticket : ' || v_sub_tickets || ' tickets, ' || v_sub_revenue || ' revenue');
   END LOOP;
 
+  -- Summary
   DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> OVERALL SUMMARY');
   DBMS_OUTPUT.PUT_LINE(RPAD('TotalExpected',15) || RPAD('TotalRevenue',15) ||
                        RPAD('TotalTickets',15) || RPAD('Result',8));
   DBMS_OUTPUT.PUT_LINE(
-    RPAD(TO_CHAR(v_total_expected,'9999990.00'),18) ||
+    RPAD(TO_CHAR(v_total_expected,'9999990.00'),15) ||
     RPAD(v_total_revenue,15) ||
     RPAD(v_total_tickets,15) ||
     RPAD(CASE WHEN v_total_revenue >= v_total_expected THEN 'PROFIT' ELSE 'LOSS' END,8)
@@ -90,4 +108,5 @@ BEGIN
 END;
 /
 
-EXEC Report_Route_Profit('R193');
+
+EXEC Report_Route_Profit('R001');
