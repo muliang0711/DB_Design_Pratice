@@ -11,7 +11,6 @@ CREATE OR REPLACE PROCEDURE prcShowRentals IS
   CURSOR shopCursor IS
     SELECT shopID
     FROM Shop
-    WHERE status = 'active'
     ORDER BY shopID;
 
   CURSOR rentCursor(p_shopID Shop.shopID%TYPE) IS
@@ -83,5 +82,8 @@ END;
 
 -- exec prcShowRentals
 
+update rentalcollection
+set status = 'pending'
+where status = 'overdue';
 
 
