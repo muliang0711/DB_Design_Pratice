@@ -2,7 +2,6 @@ CREATE OR REPLACE TYPE t_staffList AS VARRAY(10) OF VARCHAR2(12);
 /
 
 
-
 CREATE OR REPLACE PROCEDURE prc_create_bus_maintenance(
     in_busID IN Bus.busID%TYPE,
     in_serviceID IN MaintenanceService.serviceID%TYPE,

@@ -69,9 +69,9 @@ BEGIN
     -- END IF;
 
     -- Print header
-    DBMS_OUTPUT.PUT_LINE(RPAD('=', 50, '='));
-    DBMS_OUTPUT.PUT_LINE('CANCELLED BUS SCHEDULES FOR COMPANY ' || v_companyName || ' (' || v_companyID || ')');
-    DBMS_OUTPUT.PUT_LINE(RPAD('=', 50, '='));
+    DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+    DBMS_OUTPUT.PUT_LINE('   CANCELLED BUS SCHEDULES FOR COMPANY: ' || v_companyName || ' (' || v_companyID || ')');
+    DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
     DBMS_OUTPUT.PUT_LINE('');
 
     -- Open and process cursor
@@ -111,13 +111,15 @@ BEGIN
         END IF;
         
         -- Print the schedule information
-        DBMS_OUTPUT.PUT_LINE('Schedule #' || v_count || ':');
-        DBMS_OUTPUT.PUT_LINE('  Route ID: ' || v_route_id);
-        DBMS_OUTPUT.PUT_LINE('  Route: ' || v_route_points);
-        DBMS_OUTPUT.PUT_LINE('  Time: ' || v_time_range);
-        DBMS_OUTPUT.PUT_LINE('  Main Driver: ' || v_main_driver_name);
-        DBMS_OUTPUT.PUT_LINE('  Support Driver: ' || v_support_driver_name);
-        DBMS_OUTPUT.PUT_LINE('  ----------------------------------------');
+        DBMS_OUTPUT.PUT_LINE(RPAD('-', 70, '-'));
+        DBMS_OUTPUT.PUT_LINE(' Schedule #' || v_count);
+        DBMS_OUTPUT.PUT_LINE(RPAD('-', 70, '-'));
+        DBMS_OUTPUT.PUT_LINE('  Route ID       : ' || v_route_id);
+        DBMS_OUTPUT.PUT_LINE('  Route          : ' || v_route_points);
+        DBMS_OUTPUT.PUT_LINE('  Departure -> Arrival : ' || v_time_range);
+        DBMS_OUTPUT.PUT_LINE('  Main Driver    : ' || v_main_driver_name);
+        DBMS_OUTPUT.PUT_LINE('  Support Driver : ' || v_support_driver_name);
+        DBMS_OUTPUT.PUT_LINE('');
         
     END LOOP;
     
