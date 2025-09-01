@@ -218,7 +218,6 @@ CREATE OR REPLACE PROCEDURE prcShowRentals IS
   CURSOR shopCursor IS
     SELECT shopID
     FROM Shop
-    WHERE status = 'active'
     ORDER BY shopID;
 
   CURSOR rentCursor(p_shopID Shop.shopID%TYPE) IS
@@ -262,10 +261,10 @@ BEGIN
         v_count := v_count + 1;
 
         DBMS_OUTPUT.PUT_LINE(
-          (NVL(v_staffID, 'unknown')) ||
+          (NVL(v_staffID, 'unknown')) || '   ' ||
           RPAD(NVL(TO_CHAR(v_amount, '$9,999.00'), '$0.00'), 15) ||
-          RPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 15) ||
-          RPAD(v_status, 12) ||
+          RPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 13) || 
+          RPAD(v_status, 12) || 
           RPAD(NVL(TO_CHAR(v_collectionDate, 'YYYY-MM-DD'), '-'), 15)
         );
       END LOOP;

@@ -7918,8 +7918,9 @@ INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, collectionDate) VALUES (TO_DATE('2025-07', 'YYYY-MM'), 'SH0195', 'ST0344', 391.80, 'paid', TO_TIMESTAMP('2025-07-24 12:00:00', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO rentalCollection (rentalMonth, shopId, staffId, rentalAmount, status, collectionDate) VALUES (TO_DATE('2025-07', 'YYYY-MM'), 'SH0196', 'ST0360', 560.60, 'overdue', NULL);
 
-
-
+UPDATE rentalcollection
+SET status = 'pending'
+WHERE status = 'overdue';
 
 UPDATE ticket SET customerId = 'CU0031', status = 'cancelled_by_company', updatedAt = SYSTIMESTAMP WHERE ticketId = 'T00000000001';
 UPDATE ticket SET customerId = 'CU0008', status = 'cancelled_by_company', updatedAt = SYSTIMESTAMP WHERE ticketId = 'T00000000002';
