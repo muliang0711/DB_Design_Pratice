@@ -10,7 +10,9 @@ SET SERVEROUTPUT ON
 
 -- test prc_bus_start_maintenance
 -- BEGIN
---     prc_create_bus_maintenance('B0500', 'S020', t_staffList('ST0002', 'ST0009'));
+--     prc_create_bus_maintenance('B0305', 'S020', t_staffList('ST0002', 'ST0009'));
+--     prc_create_bus_maintenance('B0330', 'S015', t_staffList('ST0215', 'ST0365'));
+--     prc_create_bus_maintenance('B0372', 'S006', t_staffList('ST0377', 'ST0390'));
 -- END;
 -- /
 
