@@ -218,7 +218,6 @@ CREATE OR REPLACE PROCEDURE prcShowRentals IS
   CURSOR shopCursor IS
     SELECT shopID
     FROM Shop
-    WHERE status = 'active'
     ORDER BY shopID;
 
   CURSOR rentCursor(p_shopID Shop.shopID%TYPE) IS
