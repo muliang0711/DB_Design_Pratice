@@ -1,11 +1,11 @@
 CREATE OR REPLACE PROCEDURE prcAddRentalCollection IS
   CURSOR shop_cursor IS
     SELECT shopID
-    FROM Shop
-    WHERE LOWER(status) = 'active';
+    FROM Shop;
 
   v_shopID   Shop.shopID%TYPE;
   v_exists   NUMBER;
+
 BEGIN
   FOR shop_rec IN shop_cursor LOOP
     v_shopID := shop_rec.shopID;
@@ -22,7 +22,7 @@ BEGIN
       INSERT INTO RentalCollection (
         rentalMonth, shopId, staffId, rentalAmount, status, collectionDate
       ) VALUES (
-        SYSDATE, v_shopID, NULL, NULL, 'unpaid', NULL
+        SYSDATE, v_shopID, NULL, NULL, 'pending', NULL
       );
     ELSE
       RAISE_APPLICATION_ERROR(-20001,
@@ -58,6 +58,7 @@ ORDER BY st.staffId;
 -- DELETE FROM rentalCollection WHERE TRUNC(rentalMonth, 'MM') = TO_DATE('08/2025', 'MM/YYYY');
   COMMIT;
 -- exec prcAddRentalCollection
+
 
 
 
