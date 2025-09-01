@@ -1,0 +1,23 @@
+SET linesize 200
+SET pagesize 100
+COLUMN customerID     FORMAT A15     HEADING 'Customer ID'
+COLUMN ticketID       FORMAT A15     HEADING 'Ticket ID'
+COLUMN paymentID      FORMAT A15     HEADING 'Payment ID'
+COLUMN paymentTime    FORMAT A35     HEADING 'Payment Time'
+
+CREATE OR REPLACE VIEW vw_cancelled_ticket_points AS
+SELECT 
+    p.customerID,
+    p.ticketID, 
+    p.paymentID, 
+    p.paymentTime
+FROM PaymentRecord p
+JOIN PointTransaction pt ON pt.paymentID = p.paymentID
+JOIN Customer c ON c.customerID = p.customerID
+JOIN Ticket t ON t.ticketID = p.ticketID
+WHERE t.status = 'cancelled_by_company'
+ORDER BY p.paymentTime DESC;
+
+SELECT * 
+FROM vw_cancelled_ticket_points;
+CLEAR COLUMN

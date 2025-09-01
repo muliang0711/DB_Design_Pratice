@@ -4,7 +4,7 @@ CREATE OR REPLACE PROCEDURE sp_report_driver (
   p_horizon_days IN PLS_INTEGER DEFAULT 14,
   p_show_limit   IN PLS_INTEGER DEFAULT 12
 ) AS
-  -- summary
+
   v_fname   busDriver.firstName%TYPE;
   v_lname   busDriver.lastName%TYPE;
   v_status  busDriver.status%TYPE;
@@ -104,7 +104,6 @@ BEGIN
       RAISE_APPLICATION_ERROR(-20031, 'Driver '||p_driver_id||' does not exist.');
   END;
 
-  -- counts & metrics for the window
   SELECT COUNT(*) INTO v_plan_main
   FROM   busSchedule bs
   JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
@@ -433,6 +432,14 @@ EXEC sp_report_platform('BP301');
 
 
 
+
+-----------------------------------------
+EXEC sp_report_driver('D0472', TIMESTAMP '2025-03-25 00:00:00', 14, 20);
+
+
+
+
+EXEC sp_report_platform('BP004', TO_TIMESTAMP('2025-03-01 00:00:00','YYYY-MM-DD HH24:MI:SS'), 10);
 
 
 

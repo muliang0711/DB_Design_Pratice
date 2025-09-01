@@ -3,72 +3,169 @@ SET serveroutput on
 SET linesize 120
 SET pagesize 100
 CREATE OR REPLACE PROCEDURE ExtendTicket(
-    p_ticketID      IN Ticket.ticketID%TYPE,
-    p_newScheduleID IN BusSchedule.busScheduleID%TYPE
-    
+    p_originalTicketID IN Ticket.ticketID%TYPE,
+    p_newTicketID      IN Ticket.ticketID%TYPE
 )
 AS
-    v_originalScheduleID    Ticket.busScheduleID%TYPE;
-    v_originalRouteID       route.routeID%TYPE;
-    v_newRouteID            route.routeID%TYPE;
-    v_originalDepartureTime BusSchedule.plannedDepartureTime%TYPE;
-    v_newDepartureTime      BusSchedule.plannedDepartureTime%TYPE;
-    v_currentStatus         Ticket.status%TYPE;
-    v_daysBeforeDeparture   NUMBER;
-    v_result                VARCHAR2(100);
+    v_customerId   Ticket.customerId%TYPE;
+    v_type         Ticket.type%TYPE;
+    v_status       Ticket.status%TYPE;
+    v_newStatus    Ticket.status%TYPE;
+    v_originalScheduleId Ticket.busScheduleId%TYPE;
+    v_newScheduleId      Ticket.busScheduleId%TYPE;
+    v_originalRouteId    Route.routeId%TYPE;
+    v_newRouteId         Route.routeId%TYPE;
+    v_result       VARCHAR2(200);
 BEGIN
-    -- Original schedule information
-    SELECT t.busScheduleId, t.status,r.routeId, bs.plannedDepartureTime
-    INTO v_originalScheduleID, v_currentStatus, v_originalRouteID, v_originalDepartureTime
+    SELECT t.customerId, t.type, t.status, t.busScheduleId, r.routeId
+    INTO v_customerId, v_type, v_status, v_originalScheduleId, v_originalRouteId
     FROM ticket t
     JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
     JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
     JOIN route r ON rda.routeId = r.routeId
-    WHERE t.ticketId = p_ticketID;
+    WHERE t.ticketId = p_originalTicketID;
 
-    -- new schedule information
-    SELECT r.routeId, bs.plannedDepartureTime
-    INTO v_newRouteID, v_newDepartureTime
-    FROM busSchedule bs
+    SELECT t.status, t.busScheduleId, r.routeId
+    INTO v_newStatus, v_newScheduleId, v_newRouteId
+    FROM ticket t
+    JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
     JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
     JOIN route r ON rda.routeId = r.routeId
-    WHERE bs.busScheduleId = p_newScheduleID;
+    WHERE t.ticketId = p_newTicketID;
 
-    -- calculate departure days
-    v_daysBeforeDeparture := TRUNC(v_originalDepartureTime)- TRUNC(SYSDATE);
-
-    -- check the status
-    IF v_currentStatus != 'been_bought' THEN
-        v_result := 'Error: Only booked tickets can be extended';
+    IF v_status != 'been_bought' THEN
+        v_result := 'Error: Only been_bought tickets can be extended';
+        DBMS_OUTPUT.PUT_LINE(v_result);
         RETURN;
     END IF;
 
-    -- check the route and extention (the customer only can change the time not the route )
-    IF v_originalRouteID = v_newRouteID THEN
-        IF v_daysBeforeDeparture BETWEEN 0 AND 2 THEN
-            UPDATE ticket
-            SET status = 'booked_extended',
-                extendedToID = p_newScheduleID,
-                extensionDate = SYSTIMESTAMP,
-                updatedAt = SYSTIMESTAMP
-            WHERE ticketId = p_ticketID;
-
-            v_result := 'Success: Ticket extended to new schedule';
-        ELSE
-            v_result := 'Error: Extension only allowed within 2 days before departure';
-        END IF;
-    ELSE
-        v_result := 'Error: New schedule must be on the same route';
+    IF LOWER(v_newStatus) != 'on_selling' THEN
+        v_result := 'Error: New ticket is not available for sale';
+        DBMS_OUTPUT.PUT_LINE(v_result);
+        RETURN;
     END IF;
 
+    IF v_originalRouteId != v_newRouteId THEN
+        v_result := 'Error: Ticket exchange must be within the same route';
+        DBMS_OUTPUT.PUT_LINE(v_result);
+        RETURN;
+    END IF;
+
+    UPDATE ticket
+    SET customerId = NULL,
+        status     = 'on_selling',
+        updatedAt  = SYSTIMESTAMP
+    WHERE ticketId = p_originalTicketID;
+
+    UPDATE ticket
+    SET customerId     = v_customerId,
+        type           = v_type,
+        status         = 'booked_extended',
+        extendedFromId = v_originalScheduleId,
+        updatedAt      = SYSTIMESTAMP,
+        extensionDate  = SYSTIMESTAMP
+    WHERE ticketId = p_newTicketID;
+
+    UPDATE paymentRecord
+    SET ticketId = p_newTicketID
+    WHERE ticketId = p_originalTicketID;
+
     COMMIT;
+    v_result := 'Success: Ticket ' || p_originalTicketID || ' extended to ticket ' || p_newTicketID;
     DBMS_OUTPUT.PUT_LINE(v_result);
 
 EXCEPTION
-    WHEN OTHERS THEN
+    WHEN NO_DATA_FOUND THEN
+        v_result := 'Error: Ticket not found';
+        DBMS_OUTPUT.PUT_LINE(v_result);
         ROLLBACK;
+    WHEN OTHERS THEN
         v_result := 'Error: ' || SQLERRM;
         DBMS_OUTPUT.PUT_LINE(v_result);
+        ROLLBACK;
 END ExtendTicket;
 /
-EXEC ExtendTicket('T00000281318', 'S2PP4VEFOV0L');
+
+    -- valid 
+    EXEC ExtendTicket('T00000000473', 'T00000000480');
+
+    -- check the ticket 
+    SET linesize 300
+    SET pagesize 300
+
+    SELECT t.ticketId, t.customerId, t.type, t.status, t.extendedFromID, t.extensionDate, t.updatedAt, p.paymentId
+    FROM Ticket t
+    LEFT JOIN paymentRecord p ON t.ticketId = p.ticketId
+    WHERE t.ticketId = 'T00000000473';
+
+
+    SELECT t.ticketId, t.customerId, t.type, t.status, t.extendedFromID, t.extensionDate, t.updatedAt, p.paymentId
+    FROM Ticket t
+    LEFT JOIN paymentRecord p ON t.ticketId = p.ticketId
+    WHERE t.ticketId = 'T00000000480';
+
+-- invalid 
+    -- change to the ticket is not on selling
+    EXEC ExtendTicket('T00000000399', 'T00000000480'); 
+    --change to other route
+    EXEC ExtendTicket('T00000000399', 'T00000000437');
+
+
+
+-- each route valid 
+SELECT 
+    r.routeId,
+    SUM(CASE WHEN LOWER(t.status) = 'been_bought' THEN 1 ELSE 0 END) AS boughtCount,
+    SUM(CASE WHEN LOWER(t.status) = 'on_selling' THEN 1 ELSE 0 END) AS sellingCount
+FROM route r
+JOIN routeDriverAssignmentList rda 
+    ON r.routeId = rda.routeId
+JOIN busSchedule bs 
+    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+JOIN ticket t 
+    ON bs.busScheduleId = t.busScheduleId
+GROUP BY r.routeId;
+
+-- Find the ticket which is been bought
+SELECT * FROM   ticket WHERE status = 'been_bought';
+-- Find the route of the ticket that need to extends
+SELECT 
+    t.ticketId,
+    r.routeId,
+    r.routeName,
+    r.startPoint,
+    r.endPoint
+FROM ticket t
+JOIN busSchedule bs 
+    ON t.busScheduleId = bs.busScheduleId
+JOIN routeDriverAssignmentList rda 
+    ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+JOIN route r 
+    ON rda.routeId = r.routeId
+WHERE t.ticketId = 'T00000000473';
+
+
+-- find the ticket that is available to extend
+SELECT 
+    bs.busScheduleId,
+    bs.plannedDepartureTime,
+    bs.plannedArrivalTime,
+    bs.status    AS scheduleStatus,
+    bs.remarks   AS scheduleRemarks,
+    t.ticketId,
+    t.customerId,
+    t.seatNo,
+    t.price,
+    t.type,
+    t.status     AS ticketStatus,
+    t.createdAt  AS ticketCreatedAt,
+    t.updatedAt  AS ticketUpdatedAt
+FROM route r
+JOIN routeDriverAssignmentList rda 
+    ON r.routeId = rda.routeId
+JOIN busSchedule bs 
+    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+JOIN ticket t 
+    ON bs.busScheduleId = t.busScheduleId
+WHERE r.routeId = 'R103'
+  AND LOWER(t.status) = 'on_selling';

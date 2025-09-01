@@ -1,3 +1,0 @@
-pcd 1
-UPDATE ticket SET customerId = 'CU0126' , price    = 20.50, type= 'regular',status= 'been_bought' WHERE ticketId = 'T00000147038';
-EXEC ExtendTicket('T00000147038', 'S2PP4TC30G9O');

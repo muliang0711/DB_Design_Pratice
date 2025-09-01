@@ -30,18 +30,35 @@ BEGIN
     END IF;
   END LOOP;
 
-  COMMIT;
-
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
 
+
+/*
 UPDATE rentalCollection
-SET status = 'paid', staffId = 'ST0012'
+SET status = 'paid', staffId = 'ST0016'
 WHERE shopId = 'SH0159'
   AND TRUNC(rentalMonth, 'MM') = TO_DATE('08/2025', 'MM/YYYY');
 
+SELECT 
+    st.staffId,
+    st.firstName,
+    st.lastName,
+    sr.roleName
+FROM staff st
+JOIN staffRole sr 
+    ON st.roleId = sr.roleId
+WHERE LOWER(sr.roleName) = 'accountant'
+ORDER BY st.staffId;
+*/
+
+-- DELETE FROM rentalCollection WHERE TRUNC(rentalMonth, 'MM') = TO_DATE('08/2025', 'MM/YYYY');
+  COMMIT;
 -- exec prcAddRentalCollection
+
+
+
 
