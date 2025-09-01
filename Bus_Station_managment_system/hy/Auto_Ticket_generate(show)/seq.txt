@@ -15,5 +15,3 @@ BEGIN
 END;
 /
 SHOW ERRORS FUNCTION FN_NEXT_TICKET_ID;
-
-CREATE INDEX idx_ticket_status_schedule ON ticket(status, busScheduleId);

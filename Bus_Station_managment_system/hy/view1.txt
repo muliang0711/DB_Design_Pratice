@@ -3,10 +3,10 @@ SELECT
     bs.busScheduleId,
     r.routeName,
     bs.plannedDepartureTime,
-    bs.plannedArrivalTime,
     bs.status,
-    rda.frequency,
-    rda.weekdays
+    (SELECT MIN(t.price) 
+       FROM ticket t 
+      WHERE t.busScheduleId = bs.busScheduleId) AS price
 FROM busSchedule bs
 JOIN routeDriverAssignmentList rda 
     ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId

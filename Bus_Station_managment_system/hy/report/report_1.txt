@@ -1,299 +1,93 @@
-CREATE OR REPLACE PROCEDURE Report1 (
-  p_max_rows IN NUMBER DEFAULT 20,
-  p_route_id IN route.routeId%TYPE DEFAULT NULL
+CREATE OR REPLACE PROCEDURE Report_Route_Profit (
+    p_route_id IN route.routeId%TYPE
 ) IS
-  -- column widths
-  c_w_route_id      CONSTANT PLS_INTEGER := 10;
-  c_w_route_name    CONSTANT PLS_INTEGER := 20;
-  c_w_route_profit  CONSTANT PLS_INTEGER := 14;
-  c_w_sched_id      CONSTANT PLS_INTEGER := 14;
-  c_w_sched_profit  CONSTANT PLS_INTEGER := 14;
-  c_w_cost          CONSTANT PLS_INTEGER := 10;
-  c_w_revenue       CONSTANT PLS_INTEGER := 14;
-  c_w_profit        CONSTANT PLS_INTEGER := 12;
-  c_w_result        CONSTANT PLS_INTEGER := 15;
+  v_rate_per_km NUMBER := 0.25;
 
-  c_space CONSTANT VARCHAR2(1) := ' ';
+  -- totals
+  v_total_expected NUMBER := 0;
+  v_total_revenue  NUMBER := 0;
+  v_total_tickets  NUMBER := 0;
 
-  -- total table width (sum of columns)
-  c_total_width CONSTANT PLS_INTEGER :=
-       c_w_route_id + c_w_route_name + c_w_route_profit
-     + c_w_sched_id + c_w_sched_profit + c_w_cost
-     + c_w_revenue + c_w_profit + c_w_result;
+  -- cursor for assignments
+  CURSOR c_assign IS
+    SELECT rda.routeDriverAssignmentId,
+           COUNT(DISTINCT bs.busScheduleId) * b.capacity * r.distanceKm * v_rate_per_km AS expectedProfit,
+           NVL(SUM(CASE WHEN t.status='been_bought' THEN t.price END),0) AS revenue,
+           COUNT(CASE WHEN t.status='been_bought' THEN 1 END) AS ticketsSold
+    FROM   routeDriverAssignmentList rda
+           JOIN driverListAssignment dla ON rda.assignmentId = dla.assignmentId
+           JOIN bus b ON dla.busId = b.busId
+           JOIN route r ON rda.routeId = r.routeId
+           LEFT JOIN busSchedule bs ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+           LEFT JOIN ticket t ON bs.busScheduleId = t.busScheduleId
+    WHERE  rda.routeId = p_route_id
+    GROUP BY rda.routeDriverAssignmentId, b.capacity, r.distanceKm
+    ORDER BY rda.routeDriverAssignmentId;
 
-  -- number formats
-  c_nf_money CONSTANT VARCHAR2(50) := 'FM999G999G990D00';
-
-  CURSOR c_routes IS
-    SELECT routeId, routeName
-    FROM   route
-    WHERE  p_route_id IS NULL OR routeId = p_route_id
-    ORDER  BY routeId;
-
-  CURSOR c_schedules(p_routeID route.routeId%TYPE) IS
-    SELECT 
-      bs.busScheduleId,
-      rdal.expectedProfit AS routeExpectedProfit,
-      bs.expectedProfit   AS scheduleExpectedProfit,
-      COALESCE(SUM(CASE 
-        WHEN LOWER(t.status) = 'been_bought' AND t.customerId IS NOT NULL
-        THEN t.price ELSE 0 END), 0) AS actualRevenue
-    FROM routeDriverAssignmentList rdal
-    JOIN busSchedule bs
-      ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
-    LEFT JOIN ticket t
-      ON t.busScheduleId = bs.busScheduleId
-    WHERE rdal.routeId = p_routeID
-    GROUP BY bs.busScheduleId, rdal.expectedProfit, bs.expectedProfit
-    ORDER BY bs.busScheduleId;
-
-  v_lastRouteID route.routeId%TYPE := NULL;
-  v_count       NUMBER := 0;
-  v_cost        CONSTANT NUMBER := 150;
-
-  PROCEDURE print_sep IS
-  BEGIN
-    DBMS_OUTPUT.PUT_LINE(RPAD('-', c_total_width, '-'));
-  END;
-
-  PROCEDURE print_header IS
-    v_title VARCHAR2(200);
-  BEGIN
-    v_title := 'Route Profitability Report  |  As of ' ||
-               TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS TZH:TZM');
-    DBMS_OUTPUT.PUT_LINE(v_title);
-    print_sep;
-    DBMS_OUTPUT.PUT_LINE(
-      RPAD('RouteID',     c_w_route_id)   ||
-      RPAD('RouteName',   c_w_route_name) ||
-      LPAD('RouteProfit', c_w_route_profit) ||
-      RPAD('ScheduleID',  c_w_sched_id)   ||
-      LPAD('SchedProfit', c_w_sched_profit) ||
-      LPAD('Cost',        c_w_cost)       ||
-      LPAD('Revenue',     c_w_revenue)    ||
-      LPAD('Profit',      c_w_profit)     ||
-      RPAD('Result',      c_w_result)
-    );
-    print_sep;
-  END;
-
-  PROCEDURE print_route_line(p_route_id route.routeId%TYPE,
-                             p_route_name route.routeName%TYPE,
-                             p_route_profit NUMBER) IS
-  BEGIN
-    DBMS_OUTPUT.PUT_LINE(
-      RPAD(NVL(p_route_id,'-'),  c_w_route_id)   ||
-      RPAD(NVL(p_route_name,'-'),c_w_route_name) ||
-      LPAD(TO_CHAR(NVL(p_route_profit,0), c_nf_money), c_w_route_profit) ||
-      RPAD('', c_w_sched_id) ||
-      LPAD('', c_w_sched_profit) ||
-      LPAD('', c_w_cost) ||
-      LPAD('', c_w_revenue) ||
-      LPAD('', c_w_profit) ||
-      RPAD('', c_w_result)
-    );
-  END;
-
-  PROCEDURE print_schedule_line(p_sched_id busSchedule.busScheduleId%TYPE,
-                                p_sched_profit NUMBER,
-                                p_cost NUMBER,
-                                p_revenue NUMBER,
-                                p_profit NUMBER,
-                                p_result VARCHAR2) IS
-  BEGIN
-    DBMS_OUTPUT.PUT_LINE(
-      RPAD('', c_w_route_id + c_w_route_name + c_w_route_profit) ||
-      RPAD(NVL(p_sched_id,'-'), c_w_sched_id) ||
-      LPAD(TO_CHAR(NVL(p_sched_profit,0), c_nf_money), c_w_sched_profit) ||
-      LPAD(TO_CHAR(NVL(p_cost,0),         c_nf_money), c_w_cost) ||
-      LPAD(TO_CHAR(NVL(p_revenue,0),      c_nf_money), c_w_revenue) ||
-      LPAD(TO_CHAR(NVL(p_profit,0),       c_nf_money), c_w_profit) ||
-      RPAD(NVL(p_result,'-'), c_w_result)
-    );
-  END;
-
-BEGIN
-  print_header;
-
-  FOR route_rec IN c_routes LOOP
-    FOR sched_rec IN c_schedules(route_rec.routeId) LOOP
-      EXIT WHEN v_count >= p_max_rows;
-
-      DECLARE
-        v_profit NUMBER := NVL(sched_rec.actualRevenue,0) - v_cost;
-        v_target NUMBER := NVL(sched_rec.scheduleExpectedProfit,0);
-        v_result VARCHAR2(20) := CASE WHEN v_profit >= v_target THEN 'Profitable' ELSE 'Underperformed' END;
-      BEGIN
-        IF v_lastRouteID IS NULL OR v_lastRouteID <> route_rec.routeId THEN
-          print_route_line(route_rec.routeId,
-                           route_rec.routeName,
-                           NVL(sched_rec.routeExpectedProfit,0));
-          v_lastRouteID := route_rec.routeId;
-        END IF;
-
-        print_schedule_line(
-          p_sched_id     => sched_rec.busScheduleId,
-          p_sched_profit => NVL(sched_rec.scheduleExpectedProfit,0),
-          p_cost         => v_cost,
-          p_revenue      => NVL(sched_rec.actualRevenue,0),
-          p_profit       => v_profit,
-          p_result       => v_result
-        );
-
-        v_count := v_count + 1;
-      END;
-    END LOOP;
-
-    EXIT WHEN v_count >= p_max_rows;
-  END LOOP;
-
-  print_sep;
-  DBMS_OUTPUT.PUT_LINE('Rows shown: ' || v_count || '   (limit ' || p_max_rows || ')');
-END;
-/
-
-
-
-CREATE OR REPLACE PROCEDURE Report2(
-  p_routeID IN VARCHAR2
-) IS
-  CURSOR c_route IS
-    SELECT routeId, routeName FROM route WHERE routeId = p_routeID;
-
-  CURSOR c_schedule(p_routeID VARCHAR2) IS
-    SELECT bs.busScheduleId, TRUNC(bs.plannedDepartureTime) AS schedDate
+  -- nested cursor for schedules (parameterized)
+  CURSOR c_sched (p_rda_id routeDriverAssignmentList.routeDriverAssignmentId%TYPE) IS
+    SELECT bs.busScheduleId,
+           COUNT(CASE WHEN t.status = 'been_bought' THEN 1 END) AS ticketsSold,
+           NVL(SUM(CASE WHEN t.status = 'been_bought' THEN t.price END),0) AS revenue,
+           CASE WHEN NVL(SUM(CASE WHEN t.status='been_bought' THEN t.price END),0) >= NVL(bs.expectedProfit,0)
+                THEN 'PROFIT' ELSE 'LOSS' END AS result
     FROM   busSchedule bs
-    JOIN   routeDriverAssignmentList rdal
-           ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
-    WHERE  rdal.routeId = p_routeID;
-
-  CURSOR c_tripLog(p_scheduleID VARCHAR2) IS
-    SELECT status,
-           remarks,
-           ROUND((
-             NVL(CAST(actualDepartureTime AS DATE), CAST(actualArrivalTime AS DATE))
-             - CAST(actualArrivalTime AS DATE)
-           ) * 1440) AS duration_minutes
-    FROM   tripStopLog
-    WHERE  busScheduleId = p_scheduleID;
-
-  v_routeID   route.routeId%TYPE;
-  v_routeName route.routeName%TYPE;
-  v_schedID   busSchedule.busScheduleId%TYPE;
-  v_schedDate DATE;
-
-  v_delayCount  NUMBER;
-  v_skipCount   NUMBER;
-  v_delayMins   NUMBER;
-  v_delayReasons CLOB;
-  v_skipReasons  CLOB;
-  v_index NUMBER := 0;
-
-  v_totalSchedules        NUMBER := 0;
-  v_totalDelayedSchedules NUMBER := 0;
-  v_totalSkippedStops     NUMBER := 0;
-  v_topDelayReason VARCHAR2(200);
-  v_topSkipReason  VARCHAR2(200);
+           LEFT JOIN ticket t ON bs.busScheduleId = t.busScheduleId
+    WHERE  bs.routeDriverAssignmentId = p_rda_id
+    GROUP BY bs.busScheduleId, bs.expectedProfit
+    ORDER BY bs.busScheduleId;
 BEGIN
-  OPEN c_route; FETCH c_route INTO v_routeID, v_routeName;
-  IF c_route%NOTFOUND THEN
-    DBMS_OUTPUT.PUT_LINE('Error: Invalid route ID: ' || p_routeID);
-    CLOSE c_route; RETURN;
-  END IF; CLOSE c_route;
+  DBMS_OUTPUT.PUT_LINE('================= REPORT FOR ROUTE ' || p_route_id || ' =================');
 
-  SELECT COUNT(*) INTO v_totalSchedules
-  FROM   busSchedule bs
-  JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
-  WHERE  rdal.routeId = p_routeID;
+  -- Table 1: Assignments
+  DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> ROUTE DRIVER ASSIGNMENTS');
+  DBMS_OUTPUT.PUT_LINE(RPAD('AssignmentID',15) || RPAD('Expected',12) ||
+                       RPAD('Revenue',12) || RPAD('Tickets',10) || RPAD('Result',8));
 
-  SELECT COUNT(DISTINCT tsl.busScheduleId)
-  INTO   v_totalDelayedSchedules
-  FROM   tripStopLog tsl
-  JOIN   busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
-  JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
-  WHERE  rdal.routeId = p_routeID AND UPPER(tsl.status) = 'DELAYED';
+  FOR a_rec IN c_assign LOOP
+    DBMS_OUTPUT.PUT_LINE(
+      RPAD(a_rec.routeDriverAssignmentId,11) ||
+      RPAD(TO_CHAR(a_rec.expectedProfit,'9999990.00'),16) ||
+      RPAD(a_rec.revenue,12) ||
+      RPAD(a_rec.ticketsSold,10) ||
+      RPAD(CASE WHEN a_rec.revenue >= a_rec.expectedProfit THEN 'PROFIT' ELSE 'LOSS' END,8)
+    );
 
-  SELECT COUNT(*)
-  INTO   v_totalSkippedStops
-  FROM   tripStopLog tsl
-  JOIN   busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
-  JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
-  WHERE  rdal.routeId = p_routeID AND UPPER(tsl.status) = 'SKIPPED';
-
-  BEGIN
-    SELECT remarks INTO v_topDelayReason FROM (
-      SELECT tsl.remarks
-      FROM   tripStopLog tsl
-      JOIN   busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
-      JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
-      WHERE  rdal.routeId = p_routeID AND UPPER(tsl.status) = 'DELAYED' AND tsl.remarks IS NOT NULL
-      GROUP  BY tsl.remarks
-      ORDER  BY COUNT(*) DESC
-    ) WHERE ROWNUM = 1;
-  EXCEPTION WHEN NO_DATA_FOUND THEN v_topDelayReason := 'N/A';
-  END;
-
-  BEGIN
-    SELECT remarks INTO v_topSkipReason FROM (
-      SELECT tsl.remarks
-      FROM   tripStopLog tsl
-      JOIN   busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
-      JOIN   routeDriverAssignmentList rdal ON bs.routeDriverAssignmentId = rdal.routeDriverAssignmentId
-      WHERE  rdal.routeId = p_routeID AND UPPER(tsl.status) = 'SKIPPED' AND tsl.remarks IS NOT NULL
-      GROUP  BY tsl.remarks
-      ORDER  BY COUNT(*) DESC
-    ) WHERE ROWNUM = 1;
-  EXCEPTION WHEN NO_DATA_FOUND THEN v_topSkipReason := 'N/A';
-  END;
-
-  DBMS_OUTPUT.PUT_LINE('Route Summary');
-  DBMS_OUTPUT.PUT_LINE('-------------');
-  DBMS_OUTPUT.PUT_LINE('Route ID           : ' || v_routeID);
-  DBMS_OUTPUT.PUT_LINE('Route Name         : ' || v_routeName);
-  DBMS_OUTPUT.PUT_LINE('Total Schedules    : ' || v_totalSchedules);
-  DBMS_OUTPUT.PUT_LINE('Delayed Schedules  : ' || v_totalDelayedSchedules);
-  DBMS_OUTPUT.PUT_LINE('Skipped Stops      : ' || v_totalSkippedStops);
-  DBMS_OUTPUT.PUT_LINE('Top Delay Reason   : ' || v_topDelayReason);
-  DBMS_OUTPUT.PUT_LINE('Top Skip  Reason   : ' || v_topSkipReason);
-  DBMS_OUTPUT.PUT_LINE('');
-
-  DBMS_OUTPUT.PUT_LINE('Top 5 Problematic BusSchedules');
-  DBMS_OUTPUT.PUT_LINE('-------------------------------');
-
-  OPEN c_schedule(p_routeID);
-  LOOP
-    FETCH c_schedule INTO v_schedID, v_schedDate;
-    EXIT WHEN c_schedule%NOTFOUND;
-
-    v_delayCount := 0; 
-    v_skipCount  := 0; 
-    v_delayMins  := 0; 
-    v_delayReasons := NULL; 
-    v_skipReasons  := NULL;
-
-    FOR tr IN c_tripLog(v_schedID) LOOP
-      IF UPPER(tr.status) = 'DELAYED' THEN
-        v_delayCount := v_delayCount + 1;
-        v_delayMins  := v_delayMins + NVL(tr.duration_minutes, 0);
-        v_delayReasons := v_delayReasons || TO_CLOB(NVL(tr.remarks, '')) || TO_CLOB('; ');
-      ELSIF UPPER(tr.status) = 'SKIPPED' THEN
-        v_skipCount := v_skipCount + 1;
-        v_skipReasons := v_skipReasons || TO_CLOB(NVL(tr.remarks, '')) || TO_CLOB('; ');
-      END IF;
-    END LOOP;
-
-    IF v_delayCount + v_skipCount > 0 AND v_index < 5 THEN
-      v_index := v_index + 1;
-      DBMS_OUTPUT.PUT_LINE('Schedule ID     : ' || v_schedID);
-      DBMS_OUTPUT.PUT_LINE('Departure Date  : ' || TO_CHAR(v_schedDate, 'YYYY-MM-DD'));
-      DBMS_OUTPUT.PUT_LINE('Delay Count     : ' || v_delayCount);
-      DBMS_OUTPUT.PUT_LINE('Skip  Count     : ' || v_skipCount);
-      DBMS_OUTPUT.PUT_LINE('Delay Minutes   : ' || v_delayMins);
-      DBMS_OUTPUT.PUT_LINE('Delay Reasons   : ' || NVL(TO_CHAR(v_delayReasons), ''));
-      DBMS_OUTPUT.PUT_LINE('Skip  Reasons   : ' || NVL(TO_CHAR(v_skipReasons), ''));
-      DBMS_OUTPUT.PUT_LINE('---------------------------------------------');
-    END IF;
+    -- accumulate totals
+    v_total_expected := v_total_expected + a_rec.expectedProfit;
+    v_total_revenue  := v_total_revenue + a_rec.revenue;
+    v_total_tickets  := v_total_tickets + a_rec.ticketsSold;
   END LOOP;
-  CLOSE c_schedule;
+
+  DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> BUS SCHEDULES');
+  DBMS_OUTPUT.PUT_LINE(RPAD('AssignmentID',15) || RPAD('ScheduleID',12) ||
+                       RPAD('Tickets',10) || RPAD('Revenue',12) || RPAD('Result',8));
+
+  FOR a_rec IN c_assign LOOP
+    -- for each assignment, fetch its schedules
+    FOR s_rec IN c_sched(a_rec.routeDriverAssignmentId) LOOP
+      DBMS_OUTPUT.PUT_LINE(
+        RPAD(a_rec.routeDriverAssignmentId,15) ||
+        RPAD(s_rec.busScheduleId,12) ||
+        RPAD(s_rec.ticketsSold,10) ||
+        RPAD(s_rec.revenue,12) ||
+        RPAD(s_rec.result,8)
+      );
+    END LOOP;
+  END LOOP;
+
+  DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> OVERALL SUMMARY');
+  DBMS_OUTPUT.PUT_LINE(RPAD('TotalExpected',15) || RPAD('TotalRevenue',15) ||
+                       RPAD('TotalTickets',15) || RPAD('Result',8));
+  DBMS_OUTPUT.PUT_LINE(
+    RPAD(TO_CHAR(v_total_expected,'9999990.00'),18) ||
+    RPAD(v_total_revenue,15) ||
+    RPAD(v_total_tickets,15) ||
+    RPAD(CASE WHEN v_total_revenue >= v_total_expected THEN 'PROFIT' ELSE 'LOSS' END,8)
+  );
+
+  DBMS_OUTPUT.PUT_LINE('=====================================================');
 END;
 /
+
+EXEC Report_Route_Profit('R193');

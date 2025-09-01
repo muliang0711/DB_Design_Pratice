@@ -5,3 +5,6 @@ CREATE SEQUENCE SEQ_PAYMENT_ID
   MAXVALUE 999999999
   NOCYCLE
   NOCACHE;
+
+
+CREATE INDEX idx_payment_record ON paymentRecord(status,type);
