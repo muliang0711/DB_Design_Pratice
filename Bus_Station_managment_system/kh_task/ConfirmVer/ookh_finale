@@ -261,7 +261,7 @@ BEGIN
         v_count := v_count + 1;
 
         DBMS_OUTPUT.PUT_LINE(
-          (NVL(v_staffID, '-----')) || '   ' ||
+          (NVL(v_staffID, '------')) || '   ' ||
           RPAD(NVL(TO_CHAR(v_amount, '$9,999.00'), '$0.00'), 15) ||
           RPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 13) || 
           RPAD(v_status, 12) || 
