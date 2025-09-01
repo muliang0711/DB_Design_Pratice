@@ -1,5 +1,5 @@
 CREATE OR REPLACE PROCEDURE prc_list_cancelled_schedules(
-    v_companyID IN NUMBER
+    v_companyID IN BusCompany.companyID%TYPE
 )
 IS
     -- Cursor to fetch cancelled bus schedules for the specified company
@@ -31,17 +31,19 @@ IS
         ORDER BY bs.plannedDepartureTime;
 
     -- Variables to hold cursor data
-    v_bus_schedule_id NUMBER(10);
-    v_route_driver_assignment_id NUMBER(10);
-    v_planned_departure TIMESTAMP;
-    v_planned_arrival TIMESTAMP;
-    v_route_id NUMBER(10);
-    v_start_point VARCHAR2(100);
-    v_end_point VARCHAR2(100);
-    v_main_first_name VARCHAR2(50);
-    v_main_last_name VARCHAR2(50);
-    v_support_first_name VARCHAR2(50);
-    v_support_last_name VARCHAR2(50);
+    v_bus_schedule_id            busSchedule.busScheduleId%TYPE;
+    v_route_driver_assignment_id busSchedule.routeDriverAssignmentId%TYPE;
+    v_planned_departure          busSchedule.plannedDepartureTime%TYPE;
+    v_planned_arrival            busSchedule.plannedArrivalTime%TYPE;
+    v_route_id                   route.routeId%TYPE;
+    v_start_point                busStation.stationName%TYPE;
+    v_end_point                  busStation.stationName%TYPE;
+    v_main_first_name            busDriver.firstName%TYPE;
+    v_main_last_name             busDriver.lastName%TYPE;
+    v_support_first_name         busDriver.firstName%TYPE;
+    v_support_last_name          busDriver.lastName%TYPE;
+
+    v_companyName                BusCompany.companyName%TYPE;
     
     -- Formatted output variables
     v_route_points VARCHAR2(250);
@@ -57,19 +59,19 @@ IS
 
 BEGIN
     -- Check if v_companyID exists,
-    -- raise error if not!!
-    SELECT COUNT(*) INTO v_companyExists 
+    -- NO_DATA_FOUND error will be raised by SELECT...INTO if not!!
+    SELECT companyName INTO v_companyName 
     FROM BusCompany 
     WHERE companyID = v_companyID;
 
-    IF v_companyExists = 0 THEN 
-        RAISE_APPLICATION_ERROR(-20001, 'Provided company ID does not exist!');
-    END IF;
+    -- IF v_companyExists = 0 THEN 
+    --     RAISE_APPLICATION_ERROR(-20001, 'Provided company ID does not exist!');
+    -- END IF;
 
     -- Print header
-    DBMS_OUTPUT.PUT_LINE('=======================================================');
-    DBMS_OUTPUT.PUT_LINE('CANCELLED BUS SCHEDULES FOR COMPANY ID: ' || v_companyID);
-    DBMS_OUTPUT.PUT_LINE('=======================================================');
+    DBMS_OUTPUT.PUT_LINE(RPAD('=', 50, '='));
+    DBMS_OUTPUT.PUT_LINE('CANCELLED BUS SCHEDULES FOR COMPANY ' || v_companyName || ' (' || v_companyID || ')');
+    DBMS_OUTPUT.PUT_LINE(RPAD('=', 50, '='));
     DBMS_OUTPUT.PUT_LINE('');
 
     -- Open and process cursor
@@ -133,6 +135,9 @@ BEGIN
     END IF;
     
 EXCEPTION
+    WHEN NO_DATA_FOUND THEN 
+        DBMS_OUTPUT.PUT_LINE('Provided company ID does not exist!');
+
     WHEN OTHERS THEN
         -- Ensure cursor is closed in case of error
         IF cancelled_schedules_cur%ISOPEN THEN

@@ -14,5 +14,5 @@ SET SERVEROUTPUT ON
 -- END;
 -- /
 
-EXEC prc_list_cancelled_schedules(1);
+EXEC prc_list_cancelled_schedules('C010');
 
