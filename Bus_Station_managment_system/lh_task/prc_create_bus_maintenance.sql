@@ -102,6 +102,3 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('ERROR: ' || SQLERRM);
 END;
 /
-
--- test run procedure
-EXEC prc_create_bus_maintenance('B0001', 'S001', t_staffList('ST0002', 'ST0009', 'ST0034'));
