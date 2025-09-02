@@ -1,17 +1,4 @@
-DROP SEQUENCE PaymentID_seq;
-DROP SEQUENCE PointTxnID_seq;
-
-CREATE SEQUENCE PaymentID_seq
-MAXVALUE 999999999
-START WITH 1
-INCREMENT BY 1
-NOCACHE;
-
-CREATE SEQUENCE PointTxnID_seq
-MAXVALUE 999999999
-START WITH 1
-INCREMENT BY 1
-NOCACHE;
+-- need to run WongSongLynn_seq_pcd2 first 
 CREATE OR REPLACE PROCEDURE ProcessTicketRefund(
     p_ticketID   IN Ticket.ticketID%TYPE,
     p_refundType IN VARCHAR2

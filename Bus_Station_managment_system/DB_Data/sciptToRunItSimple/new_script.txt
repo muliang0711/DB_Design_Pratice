@@ -13587,7 +13587,7 @@ END;
 /
 
 
-// HY Part :  
+-- HY Part :  
 
 DROP SEQUENCE seq_ticket_id;
 
@@ -13839,6 +13839,220 @@ COMPOUND TRIGGER
   END AFTER STATEMENT;
 
 END BS_AI_GEN_TICKETS;
+/
+
+CREATE OR REPLACE PROCEDURE Report_Route_Profit (
+    p_route_id IN route.routeId%TYPE
+) IS
+  v_rate_per_km NUMBER := 0.25;
+
+  -- totals
+  v_total_expected NUMBER := 0;
+  v_total_revenue  NUMBER := 0;
+  v_total_tickets  NUMBER := 0;
+
+  -- subtotals
+  v_sub_revenue  NUMBER := 0;
+  v_sub_tickets  NUMBER := 0;
+
+  -- cursor for assignments summary
+  CURSOR c_assign IS
+    SELECT rda.routeDriverAssignmentId,
+           COUNT(DISTINCT bs.busScheduleId) * b.capacity * r.distanceKm * v_rate_per_km AS expectedProfit,
+           NVL(SUM(CASE WHEN t.status='been_bought' THEN t.price END),0) AS revenue,
+           COUNT(CASE WHEN t.status='been_bought' THEN 1 END) AS ticketsSold
+    FROM   routeDriverAssignmentList rda
+           JOIN driverListAssignment dla ON rda.assignmentId = dla.assignmentId
+           JOIN bus b ON dla.busId = b.busId
+           JOIN route r ON rda.routeId = r.routeId
+           LEFT JOIN busSchedule bs ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+           LEFT JOIN ticket t ON bs.busScheduleId = t.busScheduleId
+    WHERE  rda.routeId = p_route_id
+    GROUP BY rda.routeDriverAssignmentId, b.capacity, r.distanceKm
+    ORDER BY rda.routeDriverAssignmentId;
+
+BEGIN
+  DBMS_OUTPUT.PUT_LINE('================= REPORT FOR ROUTE ' || p_route_id || ' =================');
+
+  -- Table 1: Assignments summary
+  DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> ROUTE DRIVER ASSIGNMENTS');
+  DBMS_OUTPUT.PUT_LINE(RPAD('AssignmentID',15) || RPAD('Expected',12) ||
+                       RPAD('Revenue',12) || RPAD('Tickets',10) || RPAD('Result',8));
+
+  FOR a_rec IN c_assign LOOP
+    DBMS_OUTPUT.PUT_LINE(
+      RPAD(a_rec.routeDriverAssignmentId,15) ||
+      RPAD(TO_CHAR(a_rec.expectedProfit,'9999990.00'),12) ||
+      RPAD(a_rec.revenue,12) ||
+      RPAD(a_rec.ticketsSold,10) ||
+      RPAD(CASE WHEN a_rec.revenue >= a_rec.expectedProfit THEN 'PROFIT' ELSE 'LOSS' END,8)
+    );
+
+    -- accumulate totals
+    v_total_expected := v_total_expected + a_rec.expectedProfit;
+    v_total_revenue  := v_total_revenue + a_rec.revenue;
+    v_total_tickets  := v_total_tickets + a_rec.ticketsSold;
+  END LOOP;
+
+  -- Table 2: Schedules grouped by assignment
+  DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> BUS SCHEDULES');
+
+  FOR a_rec IN (SELECT DISTINCT rda.routeDriverAssignmentId
+                FROM routeDriverAssignmentList rda
+                WHERE rda.routeId = p_route_id
+                ORDER BY rda.routeDriverAssignmentId) LOOP
+
+    DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Assignment ' || a_rec.routeDriverAssignmentId);
+    DBMS_OUTPUT.PUT_LINE(RPAD('ScheduleID',12) || RPAD('Tickets',10) ||
+                         RPAD('Revenue',12) || RPAD('Result',8));
+
+    v_sub_tickets := 0;
+    v_sub_revenue := 0;
+
+    FOR s_rec IN (
+      SELECT bs.busScheduleId,
+             COUNT(CASE WHEN t.status = 'been_bought' THEN 1 END) AS ticketsSold,
+             NVL(SUM(CASE WHEN t.status = 'been_bought' THEN t.price END),0) AS revenue,
+             CASE WHEN NVL(SUM(CASE WHEN t.status='been_bought' THEN t.price END),0) >= NVL(bs.expectedProfit,0)
+                  THEN 'PROFIT' ELSE 'LOSS' END AS result
+      FROM   busSchedule bs
+             LEFT JOIN ticket t ON bs.busScheduleId = t.busScheduleId
+      WHERE  bs.routeDriverAssignmentId = a_rec.routeDriverAssignmentId
+      GROUP BY bs.busScheduleId, bs.expectedProfit
+      ORDER BY bs.busScheduleId
+    ) LOOP
+      DBMS_OUTPUT.PUT_LINE(
+        RPAD(s_rec.busScheduleId,12) ||
+        RPAD(s_rec.ticketsSold,10) ||
+        RPAD(s_rec.revenue,12) ||
+        RPAD(s_rec.result,8)
+      );
+
+      v_sub_tickets := v_sub_tickets + s_rec.ticketsSold;
+      v_sub_revenue := v_sub_revenue + s_rec.revenue;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('--------------------------------------------');
+    DBMS_OUTPUT.PUT_LINE('total Ticket : ' || v_sub_tickets || ' tickets, ' || v_sub_revenue || ' revenue');
+  END LOOP;
+
+  -- Summary
+  DBMS_OUTPUT.PUT_LINE(CHR(10) || '---> OVERALL SUMMARY');
+  DBMS_OUTPUT.PUT_LINE(RPAD('TotalExpected',15) || RPAD('TotalRevenue',15) ||
+                       RPAD('TotalTickets',15) || RPAD('Result',8));
+  DBMS_OUTPUT.PUT_LINE(
+    RPAD(TO_CHAR(v_total_expected,'9999990.00'),15) ||
+    RPAD(v_total_revenue,15) ||
+    RPAD(v_total_tickets,15) ||
+    RPAD(CASE WHEN v_total_revenue >= v_total_expected THEN 'PROFIT' ELSE 'LOSS' END,8)
+  );
+
+  DBMS_OUTPUT.PUT_LINE('=====================================================');
+END;
+/
+
+CREATE OR REPLACE PROCEDURE ReportRoutePerformanceNested (
+    p_route_id IN route.routeId%TYPE
+)
+IS
+    v_routeName route.routeName%TYPE;
+    v_total     NUMBER;
+    v_delayed   NUMBER;
+
+    CURSOR c_assign IS
+        SELECT DISTINCT rda.routeDriverAssignmentId
+        FROM routeDriverAssignmentList rda
+        WHERE rda.routeId = p_route_id
+        ORDER BY rda.routeDriverAssignmentId;
+
+    CURSOR c_schedules(p_rda_id routeDriverAssignmentList.routeDriverAssignmentId%TYPE) IS
+        SELECT bs.busScheduleId,
+               TO_CHAR(bs.plannedDepartureTime,'YYYY-MM-DD HH24:MI') dep,
+               TO_CHAR(bs.plannedArrivalTime,'YYYY-MM-DD HH24:MI') arr,
+               bs.status,
+               bs.expectedProfit
+        FROM busSchedule bs
+        WHERE bs.routeDriverAssignmentId = p_rda_id
+        ORDER BY bs.busScheduleId;
+
+    CURSOR c_delay(p_schedule_id VARCHAR2) IS
+        SELECT tsl.tripStopId,
+               tsl.platformId,
+               TO_CHAR(tsl.actualArrivalTime,'YYYY-MM-DD HH24:MI') arr,
+               TO_CHAR(tsl.actualDepartureTime,'YYYY-MM-DD HH24:MI') dep,
+               tsl.remarks
+        FROM tripStopLog tsl
+        WHERE tsl.status = 'delayed'
+          AND tsl.busScheduleId = p_schedule_id;
+BEGIN
+    BEGIN
+        SELECT routeName
+        INTO v_routeName
+        FROM route
+        WHERE routeId = p_route_id;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Route ID ' || p_route_id || ' not found.');
+    END;
+
+    DBMS_OUTPUT.PUT_LINE('========================================');
+    DBMS_OUTPUT.PUT_LINE('     Route Performance Report (Nested)');
+    DBMS_OUTPUT.PUT_LINE('========================================');
+    DBMS_OUTPUT.PUT_LINE('Route ID   : ' || p_route_id);
+    DBMS_OUTPUT.PUT_LINE('Route Name : ' || v_routeName);
+
+    DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Assignments under Route ' || p_route_id);
+    DBMS_OUTPUT.PUT_LINE('----------------------------------------');
+
+    FOR rec_assign IN c_assign LOOP
+        DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Assignment ' || rec_assign.routeDriverAssignmentId);
+
+        FOR rec_schedule IN c_schedules(rec_assign.routeDriverAssignmentId) LOOP
+            DBMS_OUTPUT.PUT_LINE(
+                '   Schedule ' || rec_schedule.busScheduleId || ' | ' ||
+                rec_schedule.dep || ' | ' ||
+                rec_schedule.arr || ' | ' ||
+                rec_schedule.status || ' | ' ||
+                NVL(TO_CHAR(rec_schedule.expectedProfit),'N/A')
+            );
+            FOR rec_delay IN c_delay(rec_schedule.busScheduleId) LOOP
+                DBMS_OUTPUT.PUT_LINE(
+                    '      -> Delay: ' ||
+                    rec_delay.tripStopId || ' | ' ||
+                    rec_delay.platformId || ' | ' ||
+                    rec_delay.arr || ' | ' ||
+                    rec_delay.dep || ' | ' ||
+                    rec_delay.remarks
+                );
+            END LOOP;
+        END LOOP;
+    END LOOP;
+
+    SELECT COUNT(*)
+    INTO v_total
+    FROM busSchedule bs
+    JOIN routeDriverAssignmentList rda
+      ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    WHERE rda.routeId = p_route_id;
+
+    SELECT COUNT(DISTINCT bs.busScheduleId)
+    INTO v_delayed
+    FROM tripStopLog tsl
+    JOIN busSchedule bs ON tsl.busScheduleId = bs.busScheduleId
+    JOIN routeDriverAssignmentList rda
+      ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    WHERE tsl.status = 'delayed'
+      AND rda.routeId = p_route_id;
+
+    DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Summary:');
+    DBMS_OUTPUT.PUT_LINE('Total schedules   : ' || v_total);
+    DBMS_OUTPUT.PUT_LINE('Delayed schedules : ' || v_delayed);
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20099,
+            'Unexpected error in ReportRoutePerformanceNested: ' || SQLERRM);
+END;
 /
 
 
