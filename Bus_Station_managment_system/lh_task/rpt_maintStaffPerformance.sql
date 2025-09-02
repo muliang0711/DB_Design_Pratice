@@ -51,17 +51,20 @@ CREATE OR REPLACE PROCEDURE prc_report_worker_performance IS
     v_jobs     c_jobs%ROWTYPE;  
 
 BEGIN
+    DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+    DBMS_OUTPUT.PUT_LINE(' Worker Performance Report');
+
     -- Loop over all workers
     OPEN c_workers;
     LOOP
         FETCH c_workers INTO v_worker;
         EXIT WHEN c_workers%NOTFOUND;
 
-        DBMS_OUTPUT.PUT_LINE('========================');
-        DBMS_OUTPUT.PUT_LINE('StaffID: ' || v_worker.staffId);
-        DBMS_OUTPUT.PUT_LINE('Name:    ' || v_worker.firstName || ' ' || v_worker.lastName);
-        DBMS_OUTPUT.PUT_LINE('Joined:  ' || TO_CHAR(v_worker.hireDate, 'DD/MM/YYYY'));
-        DBMS_OUTPUT.PUT_LINE('========================');
+        DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+        DBMS_OUTPUT.PUT_LINE(' Staff ID   : ' || v_worker.staffId);
+        DBMS_OUTPUT.PUT_LINE(' Name       : ' || v_worker.firstName || ' ' || v_worker.lastName);
+        DBMS_OUTPUT.PUT_LINE(' Hire Date  : ' || TO_CHAR(v_worker.hireDate, 'DD-MON-YYYY'));
+        DBMS_OUTPUT.PUT_LINE(RPAD('-', 70, '-'));
 
         v_staffID := v_worker.staffID;
 
@@ -69,11 +72,12 @@ BEGIN
         OPEN c_jobs;
         FETCH c_jobs INTO v_jobs;
 
-        DBMS_OUTPUT.PUT_LINE('    Total jobs done:         ' || NVL(v_jobs.total_jobs,0)); -- NVL is null coalescing function (like ?? in php)
-        DBMS_OUTPUT.PUT_LINE('    Total cost of jobs:      ' || NVL(v_jobs.total_cost,0));
-        DBMS_OUTPUT.PUT_LINE('    Jobs done in past month: ' || NVL(v_jobs.jobs_past_year,0));
-        DBMS_OUTPUT.PUT_LINE('========================');
-        DBMS_OUTPUT.PUT_LINE('========================');
+        DBMS_OUTPUT.PUT_LINE('   Total Jobs Completed   : ' || NVL(v_jobs.total_jobs, 0));
+        DBMS_OUTPUT.PUT_LINE('   Total Maintenance Cost : RM ' || TO_CHAR(NVL(v_jobs.total_cost, 0), 'FM999,999.00'));
+        DBMS_OUTPUT.PUT_LINE('   Jobs in Past Year      : ' || NVL(v_jobs.jobs_past_year, 0));
+
+        DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+        DBMS_OUTPUT.PUT_LINE('');
 
         CLOSE c_jobs;
     END LOOP;
