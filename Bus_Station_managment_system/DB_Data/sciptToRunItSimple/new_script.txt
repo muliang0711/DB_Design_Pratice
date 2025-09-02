@@ -359,6 +359,22 @@ CREATE TABLE rentalCollection (
 
 SET SERVEROUTPUT ON;
 
+-- Sequence for shop
+CREATE SEQUENCE shopId_seq
+MINVALUE 200
+MAXVALUE 999
+INCREMENT BY 1
+NOCACHE;
+
+CREATE SEQUENCE MaintenanceID_Seq
+MINVALUE 501
+MAXVALUE 999999999999999999999999999
+START WITH 501
+INCREMENT BY 1
+NOCACHE;
+
+-- ========== PROCEDURES ========== 
+
 CREATE OR REPLACE PROCEDURE prcAddRentalCollection IS
   CURSOR shop_cursor IS
     SELECT shopID
@@ -394,62 +410,6 @@ BEGIN
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
-END;
-/
-
--- Sequence for shop
-
-CREATE SEQUENCE shopId_seq
-MINVALUE 200
-MAXVALUE 999
-INCREMENT BY 1
-NOCACHE;
-
-CREATE OR REPLACE TRIGGER trgCalculateRentAmount
-BEFORE INSERT OR UPDATE ON RentalCollection
-FOR EACH ROW
-DECLARE
-  v_shopSize Shop.shopSize%TYPE;
-  v_count      NUMBER;
-  v_countStaff NUMBER;
-BEGIN
-  IF INSERTING THEN
-    IF :NEW.rentalAmount IS NULL OR :NEW.rentalAmount = 0 THEN
-      SELECT shopSize INTO v_shopSize
-      FROM Shop
-      WHERE shopID = :NEW.shopID;
-      
-      :NEW.rentalAmount := v_shopSize * 2;
-    END IF;
-  ELSIF UPDATING THEN
-    IF :NEW.staffId IS NOT NULL THEN
-    SELECT COUNT(*) INTO v_count
-    FROM staff st
-    JOIN staffRole sr ON st.roleId = sr.roleId
-    WHERE st.staffId = :NEW.staffId
-    AND LOWER(sr.roleName) = 'accountant';
-
-    IF v_count = 0 THEN
-      RAISE_APPLICATION_ERROR(-20011,
-        'Error: StaffId ' || :NEW.staffId || ' is not a valid Accountant in Staff table.');
-    END IF;
-    END IF;
-
-    IF LOWER(:NEW.status) = 'paid'
-       AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
-       
-       :NEW.collectionDate := SYSTIMESTAMP;
-
-       SELECT COUNT(*) INTO v_count
-       FROM Staff
-       WHERE staffId = :NEW.staffId
-    ;
-
-       IF v_count = 0 THEN
-           RAISE_APPLICATION_ERROR(-20002, 'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
-       END IF;
-    END IF;
-  END IF;
 END;
 /
 
@@ -554,6 +514,549 @@ EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
+/
+
+CREATE OR REPLACE PROCEDURE sp_deactivate_platform (
+    p_platform_id IN busPlatform.platformId%TYPE,
+    p_reason      IN VARCHAR2
+) AS
+  v_platform_status     busPlatform.status%TYPE;
+  v_cancelled_schedules NUMBER := 0;
+BEGIN
+  -- Validate platform
+  BEGIN
+    SELECT status INTO v_platform_status
+    FROM busPlatform
+    WHERE platformId = p_platform_id;
+
+    IF UPPER(v_platform_status) = 'INACTIVE' THEN
+      DBMS_OUTPUT.PUT_LINE('INFO: Platform ' || p_platform_id || ' is already INACTIVE.');
+      RETURN;
+    END IF;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20011, 'Platform ID ' || p_platform_id || ' does not exist.');
+  END;
+
+  DBMS_OUTPUT.PUT_LINE('Starting deactivation for Platform ID: ' || p_platform_id || ' ...');
+
+  -- Cancel future PLANNED schedules that include this platform
+  UPDATE busSchedule bs
+     SET status  = 'cancelled',
+         remarks = SUBSTR('Cancelled due to platform closure: ' || p_reason, 1, 200)
+   WHERE LOWER(bs.status) = 'planned'
+     AND bs.plannedDepartureTime > SYSTIMESTAMP
+     AND EXISTS (
+           SELECT 1
+             FROM routeDriverAssignmentList rda
+             JOIN routeStation rs ON rs.routeId = rda.routeId
+            WHERE rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+              AND rs.platformId = p_platform_id
+         );
+
+  v_cancelled_schedules := SQL%ROWCOUNT;
+  DBMS_OUTPUT.PUT_LINE('> Cancelled ' || v_cancelled_schedules || ' future schedule(s).');
+
+  -- Deactivate the platform
+  UPDATE busPlatform
+     SET status = 'inactive'
+   WHERE platformId = p_platform_id;
+
+  COMMIT;
+  DBMS_OUTPUT.PUT_LINE('SUCCESS: Platform ' || p_platform_id || ' deactivated.');
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    DBMS_OUTPUT.PUT_LINE('ERROR: Deactivation failed. Rolled back.');
+    RAISE;
+END sp_deactivate_platform;
+/
+
+CREATE OR REPLACE PROCEDURE sp_delay_schedules_at_station (
+  p_station_id    IN busStation.stationId%TYPE,
+  p_delay_minutes IN NUMBER,                       -- can be negative
+  p_from          IN TIMESTAMP DEFAULT SYSTIMESTAMP,
+  p_to            IN TIMESTAMP DEFAULT (SYSTIMESTAMP + NUMTODSINTERVAL(7,'DAY')),
+  p_reason        IN VARCHAR2  DEFAULT 'operational delay'
+) AS
+  v_exists   NUMBER;
+  v_affected NUMBER := 0;
+BEGIN
+  -- Validate station
+  SELECT COUNT(*) INTO v_exists FROM busStation WHERE stationId = p_station_id;
+  IF v_exists = 0 THEN
+    RAISE_APPLICATION_ERROR(-20101, 'Station '||p_station_id||' does not exist.');
+  END IF;
+
+  IF p_delay_minutes = 0 THEN
+    DBMS_OUTPUT.PUT_LINE('INFO: delay is 0 minute(s) - nothing to do.');
+    RETURN;
+  END IF;
+
+  DBMS_OUTPUT.PUT_LINE(
+    'Delaying schedules touching station '||p_station_id||
+    ' by '||p_delay_minutes||' minute(s). Window: '||
+    TO_CHAR(p_from, 'DD-MON-YYYY HH24:MI:SS')||' -> '||
+    TO_CHAR(p_to,   'DD-MON-YYYY HH24:MI:SS')||'.'
+  );
+
+  -- Update planned departures
+  UPDATE busSchedule bs
+  SET
+    bs.plannedDepartureTime = bs.plannedDepartureTime + NUMTODSINTERVAL(p_delay_minutes,'MINUTE'),
+    bs.plannedArrivalTime   = CASE
+                                WHEN bs.plannedArrivalTime IS NOT NULL
+                                THEN bs.plannedArrivalTime + NUMTODSINTERVAL(p_delay_minutes,'MINUTE')
+                                ELSE bs.plannedArrivalTime
+                              END,
+    bs.remarks = NVL(bs.remarks,'') ||
+                 CASE WHEN bs.remarks IS NULL THEN '' ELSE ' | ' END ||
+                 'Delayed '||p_delay_minutes||'m due to: '||p_reason
+  WHERE
+    LOWER(bs.status) = 'planned'
+    AND bs.plannedDepartureTime BETWEEN p_from AND p_to
+    AND EXISTS (
+          SELECT 1
+          FROM   routeDriverAssignmentList rda
+          JOIN   routeStation rs ON rs.routeId = rda.routeId
+          JOIN   busPlatform bp ON bp.platformId = rs.platformId
+          WHERE  rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+            AND  bp.stationId = p_station_id
+        );
+
+  v_affected := SQL%ROWCOUNT;
+
+  COMMIT;
+  DBMS_OUTPUT.PUT_LINE('SUCCESS: shifted '||v_affected||' schedule(s).');
+
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    DBMS_OUTPUT.PUT_LINE('ERROR: sp_delay_schedules_at_station failed: '||SQLERRM);
+    RAISE;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE sp_report_driver (
+  p_driver_id    IN busDriver.driverId%TYPE,
+  p_as_of        IN TIMESTAMP DEFAULT SYSTIMESTAMP,
+  p_horizon_days IN PLS_INTEGER DEFAULT 14,
+  p_show_limit   IN PLS_INTEGER DEFAULT 12
+) AS
+  v_fname   busDriver.firstName%TYPE;
+  v_lname   busDriver.lastName%TYPE;
+  v_status  busDriver.status%TYPE;
+
+  v_next_duty TIMESTAMP;
+  v_asg_cnt   NUMBER := 0;
+  v_rda_cnt   NUMBER := 0;
+
+  v_plan_main NUMBER; v_plan_sup NUMBER;
+  v_can_main  NUMBER; v_can_sup  NUMBER;
+  v_hrs_main  NUMBER; v_hrs_sup  NUMBER;
+
+  v_printed   PLS_INTEGER := 0;
+  v_done      BOOLEAN := FALSE;
+
+  c_box  CONSTANT PLS_INTEGER := 110;
+  c_l    CONSTANT PLS_INTEGER := 40;
+  c_v    CONSTANT PLS_INTEGER := c_box - 7 - c_l;
+
+  c_w_asg   CONSTANT PLS_INTEGER := 10;
+  c_w_role  CONSTANT PLS_INTEGER := 6;
+  c_w_rte   CONSTANT PLS_INTEGER := 8;
+  c_w_sched CONSTANT PLS_INTEGER := 12;
+  c_w_dep   CONSTANT PLS_INTEGER := 19;
+  c_w_arr   CONSTANT PLS_INTEGER := 19;
+  c_w_stat  CONSTANT PLS_INTEGER := 10;
+  c_grid    CONSTANT PLS_INTEGER := (2 + c_w_asg + 3 + c_w_role + 3 + c_w_rte + 3
+                                     + c_w_sched + 3 + c_w_dep + 3 + c_w_arr + 3 + c_w_stat + 2);
+
+  /* OUTER: one row per RDA linked to this driver (no dupes) */
+  CURSOR c_asg IS
+    SELECT a.assignmentId,
+           rda.routeDriverAssignmentId AS rdaId,
+           CASE WHEN a.mainDriverId = p_driver_id THEN 'MAIN' ELSE 'SUP' END AS role,
+           rda.routeId
+    FROM   driverListAssignment a
+    JOIN   routeDriverAssignmentList rda ON rda.assignmentId = a.assignmentId
+    WHERE  (a.mainDriverId = p_driver_id OR a.supportDriverId = p_driver_id)
+      AND  rda.status = 'active'
+    ORDER  BY rda.routeDriverAssignmentId;
+
+  /* INNER: schedules only for that specific RDA */
+  CURSOR c_sched (p_rda routeDriverAssignmentList.routeDriverAssignmentId%TYPE) IS
+    SELECT bs.busScheduleId AS schedId,
+           bs.plannedDepartureTime AS depTime,
+           NVL(bs.plannedArrivalTime, bs.plannedDepartureTime) AS arrTime,
+           INITCAP(LOWER(bs.status)) AS schedStatus
+    FROM   busSchedule bs
+    WHERE  bs.routeDriverAssignmentId = p_rda
+      AND  bs.plannedDepartureTime BETWEEN p_as_of AND (p_as_of + NUMTODSINTERVAL(p_horizon_days,'DAY'))
+    ORDER  BY bs.plannedDepartureTime;
+
+  PROCEDURE hrule(p_len PLS_INTEGER) IS
+  BEGIN DBMS_OUTPUT.PUT_LINE('+'||RPAD('-',p_len,'-')||'+'); END;
+  PROCEDURE title(p_txt VARCHAR2) IS
+  BEGIN DBMS_OUTPUT.PUT_LINE('| '||RPAD(p_txt, c_box-3)||'|'); END;
+  PROCEDURE kv(p_label VARCHAR2, p_val VARCHAR2) IS
+  BEGIN DBMS_OUTPUT.PUT_LINE('| '||RPAD(p_label,c_l)||' | '||RPAD(NVL(p_val,'-'),c_v)||' |'); END;
+
+  PROCEDURE grid_header IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE(
+      '| '||RPAD('Assign', c_w_asg)||' | '||
+      RPAD('Role', c_w_role)||' | '||
+      RPAD('Route', c_w_rte)||' | '||
+      RPAD('Schedule', c_w_sched)||' | '||
+      RPAD('Depart', c_w_dep)||' | '||
+      RPAD('Arrive', c_w_arr)||' | '||
+      RPAD('Status', c_w_stat)||' |'
+    );
+  END;
+
+  PROCEDURE grid_row(p_asg VARCHAR2, p_role VARCHAR2, p_route VARCHAR2,
+                     p_sched VARCHAR2, p_dep TIMESTAMP, p_arr TIMESTAMP, p_stat VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE(
+      '| '||RPAD(p_asg, c_w_asg)||' | '||
+      RPAD(p_role, c_w_role)||' | '||
+      RPAD(p_route, c_w_rte)||' | '||
+      RPAD(p_sched, c_w_sched)||' | '||
+      RPAD(TO_CHAR(p_dep,'DD-MON-YYYY HH24:MI:SS'), c_w_dep)||' | '||
+      RPAD(TO_CHAR(p_arr,'DD-MON-YYYY HH24:MI:SS'), c_w_arr)||' | '||
+      RPAD(p_stat, c_w_stat)||' |'
+    );
+  END;
+BEGIN
+  /* driver basics */
+  BEGIN
+    SELECT firstName, lastName, status
+      INTO v_fname, v_lname, v_status
+    FROM busDriver
+    WHERE driverId = p_driver_id;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20031, 'Driver '||p_driver_id||' does not exist.');
+  END;
+
+  /* metrics (unchanged) */
+  SELECT COUNT(*) INTO v_plan_main
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+  WHERE  a.mainDriverId = p_driver_id
+    AND  bs.plannedDepartureTime BETWEEN p_as_of AND (p_as_of + NUMTODSINTERVAL(p_horizon_days,'DAY'))
+    AND  LOWER(bs.status) = 'planned';
+
+  SELECT COUNT(*) INTO v_plan_sup
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+  WHERE  a.supportDriverId = p_driver_id
+    AND  bs.plannedDepartureTime BETWEEN p_as_of AND (p_as_of + NUMTODSINTERVAL(p_horizon_days,'DAY'))
+    AND  LOWER(bs.status) = 'planned';
+
+  SELECT COUNT(*) INTO v_can_main
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+  WHERE  a.mainDriverId = p_driver_id
+    AND  bs.plannedDepartureTime >= p_as_of
+    AND  LOWER(bs.status) = 'cancelled';
+
+  SELECT COUNT(*) INTO v_can_sup
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+  WHERE  a.supportDriverId = p_driver_id
+    AND  bs.plannedDepartureTime >= p_as_of
+    AND  LOWER(bs.status) = 'cancelled';
+
+  SELECT NVL(SUM( (CAST(NVL(bs.plannedArrivalTime, bs.plannedDepartureTime) AS DATE)
+                  - CAST(bs.plannedDepartureTime AS DATE)) * 24 ), 0)
+    INTO v_hrs_main
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+  WHERE  a.mainDriverId = p_driver_id
+    AND  bs.plannedDepartureTime BETWEEN p_as_of AND (p_as_of + NUMTODSINTERVAL(p_horizon_days,'DAY'));
+
+  SELECT NVL(SUM( (CAST(NVL(bs.plannedArrivalTime, bs.plannedDepartureTime) AS DATE)
+                  - CAST(bs.plannedDepartureTime AS DATE)) * 24 ), 0)
+    INTO v_hrs_sup
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+  WHERE  a.supportDriverId = p_driver_id
+    AND  bs.plannedDepartureTime BETWEEN p_as_of AND (p_as_of + NUMTODSINTERVAL(p_horizon_days,'DAY'));
+
+  SELECT MIN(bs.plannedDepartureTime)
+    INTO v_next_duty
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+  WHERE  (a.mainDriverId = p_driver_id OR a.supportDriverId = p_driver_id)
+    AND  bs.plannedDepartureTime >= p_as_of;
+
+  SELECT COUNT(DISTINCT a.assignmentId) INTO v_asg_cnt
+  FROM   driverListAssignment a
+  JOIN   routeDriverAssignmentList rda ON rda.assignmentId = a.assignmentId
+  WHERE  (a.mainDriverId = p_driver_id OR a.supportDriverId = p_driver_id);
+
+  SELECT COUNT(*) INTO v_rda_cnt
+  FROM   routeDriverAssignmentList rda
+  JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+  WHERE  (a.mainDriverId = p_driver_id OR a.supportDriverId = p_driver_id)
+    AND  rda.status = 'active';
+
+  /* header */
+  hrule(c_box);  title('Driver Duty Report');  hrule(c_box);
+  kv('Driver',  p_driver_id||'  ('||NVL(v_fname,'?')||' '||NVL(v_lname,'?')||')');
+  kv('Status',  v_status);
+  kv('As of',   TO_CHAR(p_as_of,'DD-MON-YYYY HH24:MI:SS'));
+  kv('Look ahead window (days)', TO_CHAR(p_horizon_days));
+  kv('Assignments linked', TO_CHAR(v_asg_cnt)||' (RDAs: '||TO_CHAR(v_rda_cnt)||')');
+  kv('Next duty', CASE WHEN v_next_duty IS NULL THEN '-' ELSE TO_CHAR(v_next_duty,'DD-MON-YYYY HH24:MI:SS') END);
+  kv('Planned trips (MAIN / SUP)', TO_CHAR(v_plan_main)||' / '||TO_CHAR(v_plan_sup));
+  kv('Cancelled trips (MAIN / SUP)', TO_CHAR(v_can_main)||' / '||TO_CHAR(v_can_sup));
+  kv('Planned hours (MAIN / SUP)', TO_CHAR(ROUND(v_hrs_main,2))||' / '||TO_CHAR(ROUND(v_hrs_sup,2)));
+  hrule(c_box);
+
+  /* detail grid by RDA (no duplicates) */
+  title('Upcoming duties by assignment (max '||NVL(p_show_limit,12)||')');
+  hrule(c_grid);  grid_header;  hrule(c_grid);
+
+  FOR a IN c_asg LOOP
+    EXIT WHEN v_done;
+    DBMS_OUTPUT.PUT_LINE('| '||RPAD(a.assignmentId||' ('||a.role||') on route '||a.routeId, c_grid-3)||'|');
+    FOR s IN c_sched(a.rdaId) LOOP
+      grid_row(a.assignmentId, a.role, a.routeId, s.schedId, s.depTime, s.arrTime, s.schedStatus);
+      v_printed := v_printed + 1;
+      IF v_printed >= NVL(p_show_limit,12) THEN v_done := TRUE; EXIT; END IF;
+    END LOOP;
+    hrule(c_grid);
+  END LOOP;
+
+  IF v_printed = 0 THEN
+    DBMS_OUTPUT.PUT_LINE('| '||RPAD('No upcoming duties in the selected window.', c_grid-3)||'|');
+    hrule(c_grid);
+  END IF;
+
+  hrule(c_box);
+END sp_report_driver;
+/
+
+CREATE OR REPLACE PROCEDURE sp_report_platform (
+  p_platform_id IN busPlatform.platformId%TYPE,
+  p_as_of       IN TIMESTAMP DEFAULT SYSTIMESTAMP,
+  p_show_limit  IN PLS_INTEGER DEFAULT 10
+) AS
+  /* -------- summary metrics -------- */
+  v_station_id    busPlatform.stationId%TYPE;
+  v_status        busPlatform.status%TYPE;
+  v_station_name  busStation.stationName%TYPE;
+  v_routes_cnt    NUMBER;
+  v_cnt_planned   NUMBER;
+  v_cnt_cancelled NUMBER;
+  v_cnt_inprog    NUMBER;
+  v_cnt_completed NUMBER;
+
+  /* -------- printing control -------- */
+  v_printed  PLS_INTEGER := 0;
+  v_done     BOOLEAN := FALSE;
+  v_printed_for_route PLS_INTEGER := 0;   -- NEW: counter per route
+
+  /* -------- layout widths -------- */
+  c_box CONSTANT PLS_INTEGER := 110;      -- summary box width
+  c_l   CONSTANT PLS_INTEGER := 40;       -- label width
+  c_v   CONSTANT PLS_INTEGER := c_box - 7 - c_l;
+
+  c_w_route_id   CONSTANT PLS_INTEGER := 8;
+  c_w_route_name CONSTANT PLS_INTEGER := 22;
+  c_w_sched_id   CONSTANT PLS_INTEGER := 12;
+  c_w_depart     CONSTANT PLS_INTEGER := 19;
+  c_w_arrive     CONSTANT PLS_INTEGER := 19;
+  c_w_status     CONSTANT PLS_INTEGER := 10;
+  c_w_total      CONSTANT PLS_INTEGER := c_w_route_id + c_w_route_name + c_w_sched_id
+                                       + c_w_depart + c_w_arrive + c_w_status;  -- = 90
+  c_grid         CONSTANT PLS_INTEGER := c_w_total + 17;   -- exact grid dash width (=107)
+
+  /* -------- nested cursors -------- */
+  CURSOR c_routes IS
+    SELECT DISTINCT r.routeId, r.routeName
+    FROM   route r
+    WHERE  EXISTS (
+             SELECT 1 FROM routeStation rs
+             WHERE rs.routeId = r.routeId
+               AND rs.platformId = p_platform_id
+           )
+    ORDER BY r.routeId;
+
+  CURSOR c_sched (p_route_id route.routeId%TYPE) IS
+    SELECT bs.busScheduleId AS schedId,
+           bs.plannedDepartureTime AS depTime,
+           NVL(bs.plannedArrivalTime, bs.plannedDepartureTime) AS arrTime,
+           INITCAP(LOWER(bs.status)) AS schedStatus
+    FROM   busSchedule bs
+    JOIN   routeDriverAssignmentList rda
+           ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+    WHERE  rda.routeId = p_route_id
+      AND  bs.plannedDepartureTime >= p_as_of
+      AND  LOWER(bs.status) = 'planned'
+    ORDER  BY bs.plannedDepartureTime;
+
+  /* -------- helpers -------- */
+  PROCEDURE hrule(p_len PLS_INTEGER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('+' || RPAD('-', p_len, '-') || '+');
+  END;
+  PROCEDURE print_title(p_text VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('| '||RPAD(p_text, c_box - 3)||'|');
+  END;
+  PROCEDURE print_kv(p_label VARCHAR2, p_val VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('| ' ||
+      RPAD(p_label, c_l) || ' | ' ||
+      RPAD(NVL(p_val,'-'), c_v) || ' |');
+  END;
+  PROCEDURE print_grid_header IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE(
+      '| '||
+      RPAD('Route',     c_w_route_id)   || ' | '||
+      RPAD('Route Name',c_w_route_name) || ' | '||
+      RPAD('Schedule',  c_w_sched_id)   || ' | '||
+      RPAD('Depart',    c_w_depart)     || ' | '||
+      RPAD('Arrive',    c_w_arrive)     || ' | '||
+      RPAD('Status',    c_w_status)     || ' |'
+    );
+  END;
+  PROCEDURE print_grid_row(
+    p_route_id   VARCHAR2,
+    p_route_name VARCHAR2,
+    p_sched_id   VARCHAR2,
+    p_dep        TIMESTAMP,
+    p_arr        TIMESTAMP,
+    p_status     VARCHAR2
+  ) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE(
+      '| '||
+      RPAD(p_route_id,   c_w_route_id)   || ' | '||
+      RPAD(NVL(p_route_name,'-'), c_w_route_name) || ' | '||
+      RPAD(p_sched_id,   c_w_sched_id)   || ' | '||
+      RPAD(TO_CHAR(p_dep,'DD-MON-YYYY HH24:MI:SS'), c_w_depart) || ' | '||
+      RPAD(TO_CHAR(p_arr,'DD-MON-YYYY HH24:MI:SS'), c_w_arrive) || ' | '||
+      RPAD(NVL(p_status,'-'), c_w_status) || ' |'
+    );
+  END;
+BEGIN
+  /* platform + station info */
+  BEGIN
+    SELECT bp.stationId, bp.status, s.stationName
+      INTO v_station_id, v_status, v_station_name
+    FROM busPlatform bp
+    JOIN busStation  s ON s.stationId = bp.stationId
+    WHERE bp.platformId = p_platform_id;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20011, 'Platform '||p_platform_id||' does not exist.');
+  END;
+
+  /* metrics */
+  SELECT COUNT(DISTINCT routeId) INTO v_routes_cnt
+  FROM routeStation WHERE platformId = p_platform_id;
+
+  SELECT COUNT(*) INTO v_cnt_planned
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs ON rs.routeId = rda.routeId
+  WHERE  rs.platformId = p_platform_id
+    AND  bs.plannedDepartureTime >= p_as_of
+    AND  LOWER(bs.status)='planned';
+
+  SELECT COUNT(*) INTO v_cnt_cancelled
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs ON rs.routeId = rda.routeId
+  WHERE  rs.platformId = p_platform_id
+    AND  bs.plannedDepartureTime >= p_as_of
+    AND  LOWER(bs.status)='cancelled';
+
+  SELECT COUNT(*) INTO v_cnt_inprog
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs ON rs.routeId = rda.routeId
+  WHERE  rs.platformId = p_platform_id
+    AND  bs.plannedDepartureTime >= p_as_of
+    AND  LOWER(bs.status)='in_progress';
+
+  SELECT COUNT(*) INTO v_cnt_completed
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs ON rs.routeId = rda.routeId
+  WHERE  rs.platformId = p_platform_id
+    AND  bs.plannedDepartureTime >= p_as_of
+    AND  LOWER(bs.status)='completed';
+
+  /* header */
+  hrule(c_box);
+  print_title('Platform Report');
+  hrule(c_box);
+  print_kv('Platform', p_platform_id);
+  print_kv('Station',  v_station_id||'  ('||v_station_name||')');
+  print_kv('Status',   v_status);
+  print_kv('As of',    TO_CHAR(p_as_of,'DD-MON-YYYY HH24:MI:SS'));
+  print_kv('Routes using', TO_CHAR(v_routes_cnt));
+  print_kv('Future (plan/cancel/in_prog/complete)',
+           TO_CHAR(v_cnt_planned)||' / '||TO_CHAR(v_cnt_cancelled)||
+           ' / '||TO_CHAR(v_cnt_inprog)||' / '||TO_CHAR(v_cnt_completed));
+  hrule(c_box);
+
+  /* detail grid */
+  print_title('Next planned schedules by route (max '||NVL(p_show_limit,10)||')');
+  hrule(c_grid);
+  print_grid_header;
+  hrule(c_grid);
+
+  FOR r IN c_routes LOOP
+    EXIT WHEN v_done;
+
+    -- section header per route
+    DBMS_OUTPUT.PUT_LINE('| '||RPAD(r.routeId||' - '||NVL(r.routeName,'-'), c_grid - 3)||'|');
+
+    -- reset per-route counter
+    v_printed_for_route := 0;
+
+    -- print planned schedules for this route
+    FOR s IN c_sched(r.routeId) LOOP
+      print_grid_row(r.routeId, r.routeName, s.schedId, s.depTime, s.arrTime, s.schedStatus);
+      v_printed := v_printed + 1;
+      v_printed_for_route := v_printed_for_route + 1;
+
+      IF v_printed >= NVL(p_show_limit,10) THEN
+        v_done := TRUE;
+        EXIT;
+      END IF;
+    END LOOP;
+
+
+    IF v_printed_for_route = 0 THEN
+      DBMS_OUTPUT.PUT_LINE('| '||RPAD('  (no planned schedules in window)', c_grid - 3)||'|');
+    END IF;
+
+    hrule(c_grid);
+  END LOOP;
+
+  IF v_printed = 0 THEN
+    DBMS_OUTPUT.PUT_LINE('| '||RPAD('No upcoming planned schedules found.', c_grid - 3)||'|');
+    hrule(c_grid);
+  END IF;
+
+  hrule(c_box);
+END sp_report_platform;
 /
 
 CREATE OR REPLACE PROCEDURE prcShowRentals IS
@@ -701,26 +1204,453 @@ EXCEPTION
 END;
 /
 
-CREATE OR REPLACE TRIGGER trg_check_shop_capacity
-  BEFORE INSERT ON shop
-  FOR EACH ROW
-DECLARE
-  v_current_shop_count NUMBER;
-  v_max_capacity CONSTANT NUMBER := 20;
-BEGIN
-  SELECT COUNT(*)
-  INTO v_current_shop_count
-  FROM shop
-  WHERE stationId = :NEW.stationId;  
+CREATE OR REPLACE TYPE t_staffList AS VARRAY(10) OF VARCHAR2(12);
+/
 
-  IF v_current_shop_count >= v_max_capacity THEN
-    RAISE_APPLICATION_ERROR(-20001, 
-      'Station ' || :NEW.stationId || 
-      ' has reached maximum capacity of ' || v_max_capacity || ' shops. ' ||
-      'Current count: ' || v_current_shop_count);
-  END IF;
+
+CREATE OR REPLACE PROCEDURE prc_create_bus_maintenance(
+    in_busID IN Bus.busID%TYPE,
+    in_serviceID IN MaintenanceService.serviceID%TYPE,
+    in_staffIDList IN t_staffList
+) IS
+
+    CURSOR c_staff_is_valid(p_staffID Staff.staffID%TYPE) IS
+        SELECT 1
+        FROM Staff s
+        JOIN StaffRole r USING(roleID)
+        WHERE s.staffID = p_staffID
+        AND LOWER(r.roleName) = 'maintenance technician';
+
+    CURSOR c_service_exists IS
+        SELECT 1 FROM MaintenanceService WHERE serviceID = in_serviceID;
+
+    CURSOR c_bus_exists IS
+        SELECT 1 FROM Bus WHERE busID = in_busID;
+
+    v_dummy NUMBER;
+    err_invalid_staff EXCEPTION;
+    err_invalid_service EXCEPTION;
+    err_invalid_bus EXCEPTION;
+
+    v_currStaffID Staff.staffID%TYPE;
+    v_maintenanceID BusMaintenance.maintenanceID%TYPE;
+
+BEGIN
+    -- Validate each staff ID using cursor
+    FOR i IN 1 .. in_staffIDList.COUNT LOOP
+        v_currStaffID := in_staffIDList(i);
+
+        OPEN c_staff_is_valid(v_currStaffID);
+        FETCH c_staff_is_valid INTO v_dummy;
+        IF c_staff_is_valid%NOTFOUND THEN
+            CLOSE c_staff_is_valid;
+            RAISE err_invalid_staff;
+        END IF;
+        CLOSE c_staff_is_valid;
+    END LOOP;
+
+    -- Validate service exists using cursor
+    OPEN c_service_exists;
+    FETCH c_service_exists INTO v_dummy;
+    IF c_service_exists%NOTFOUND THEN
+        CLOSE c_service_exists;
+        RAISE err_invalid_service;
+    END IF;
+    CLOSE c_service_exists;
+
+    -- Validate bus exists using cursor
+    OPEN c_bus_exists;
+    FETCH c_bus_exists INTO v_dummy;
+    IF c_bus_exists%NOTFOUND THEN
+        CLOSE c_bus_exists;
+        RAISE err_invalid_bus;
+    END IF;
+    CLOSE c_bus_exists;
+
+    -- Generate new maintenanceID
+    v_maintenanceID := 'M' || TO_CHAR(MaintenanceID_Seq.nextval, 'FM00000');
+    DBMS_OUTPUT.PUT_LINE('v_maintenanceID: ' || v_maintenanceID);
+
+    -- Insert BusMaintenance
+    INSERT INTO BusMaintenance (maintenanceID, busID, serviceID)
+    VALUES (v_maintenanceID, in_busID, in_serviceID);
+    -- SYSTIMESTAMP is TIMESTAMP WITH TIME ZONE, so
+    -- need to cast it as TIMESTAMP, the data type of maintenanceDoneDate.
+
+    DBMS_OUTPUT.PUT_LINE('Inserted BusMaintenance record with ID ' || v_maintenanceID);
+
+    -- Insert MaintenanceStaffAssignment rows (same logic)
+    FOR i IN 1 .. in_staffIDList.COUNT LOOP
+        v_currStaffID := in_staffIDList(i);
+
+        INSERT INTO MaintenanceStaffAssignment (maintenanceID, staffID)
+        VALUES (v_maintenanceID, v_currStaffID);
+
+        DBMS_OUTPUT.PUT_LINE('Assigned staff ID ' || v_currStaffID || ' to maintenance ID ' || v_maintenanceID);
+    END LOOP;
+
+    -- Update Bus status to 'inactive'
+    UPDATE Bus
+    SET status = 'inactive'
+    WHERE busID = in_busID;
+
+    DBMS_OUTPUT.PUT_LINE('Updated bus ID ' || in_busID || ' to status ''inactive''');
+
+EXCEPTION
+    WHEN err_invalid_staff THEN
+        DBMS_OUTPUT.PUT_LINE('Invalid param given: in_staffID. Staff member with ID ' || v_currStaffID || ' either is not a maintenance worker or does not exist.');
+    WHEN err_invalid_service THEN
+        DBMS_OUTPUT.PUT_LINE('Invalid param given: in_serviceID. Maintenance service with ID ' || in_serviceID || ' does not exist.');
+    WHEN err_invalid_bus THEN
+        DBMS_OUTPUT.PUT_LINE('Invalid param given: in_busID. Bus with ID ' || in_busID || ' does not exist.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('ERROR: ' || SQLERRM);
 END;
 /
+
+CREATE OR REPLACE PROCEDURE prc_list_cancelled_schedules(
+    v_companyID IN BusCompany.companyID%TYPE
+)
+IS
+    -- Cursor to fetch cancelled bus schedules for the specified company
+    CURSOR cancelled_schedules_cur IS
+        SELECT 
+            bs.BusScheduleID,
+            bs.routeDriverAssignmentID,
+            bs.plannedDepartureTime,
+            bs.plannedArrivalTime,
+            r.routeID,
+            start_station.stationName AS start_point,
+            end_station.stationName AS end_point,
+            main_driver.firstName AS main_first_name,
+            main_driver.lastName AS main_last_name,
+            support_driver.firstName AS support_first_name,
+            support_driver.lastName AS support_last_name
+        FROM BusSchedule bs
+        JOIN RouteDriverAssignmentList rdal ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+        JOIN Route r ON rdal.routeID = r.routeID
+        JOIN BusStation start_station ON r.startPoint = start_station.stationID
+        JOIN BusStation end_station ON r.endPoint = end_station.stationID
+        JOIN DriverListAssignment dla ON rdal.assignmentID = dla.assignmentID
+        JOIN Bus b ON dla.busID = b.busID
+        JOIN BusDriver main_driver ON dla.mainDriverID = main_driver.driverID
+        LEFT JOIN BusDriver support_driver ON dla.supportDriverID = support_driver.driverID
+        WHERE bs.status = 'cancelled'
+          AND bs.plannedDepartureTime >= CURRENT_TIMESTAMP
+          AND b.companyID = v_companyID
+        ORDER BY bs.plannedDepartureTime;
+
+    -- Variables to hold cursor data
+    v_bus_schedule_id            busSchedule.busScheduleId%TYPE;
+    v_route_driver_assignment_id busSchedule.routeDriverAssignmentId%TYPE;
+    v_planned_departure          busSchedule.plannedDepartureTime%TYPE;
+    v_planned_arrival            busSchedule.plannedArrivalTime%TYPE;
+    v_route_id                   route.routeId%TYPE;
+    v_start_point                busStation.stationName%TYPE;
+    v_end_point                  busStation.stationName%TYPE;
+    v_main_first_name            busDriver.firstName%TYPE;
+    v_main_last_name             busDriver.lastName%TYPE;
+    v_support_first_name         busDriver.firstName%TYPE;
+    v_support_last_name          busDriver.lastName%TYPE;
+
+    v_companyName                BusCompany.companyName%TYPE;
+    
+    -- Formatted output variables
+    v_route_points VARCHAR2(250);
+    v_time_range VARCHAR2(100);
+    v_main_driver_name VARCHAR2(101);
+    v_support_driver_name VARCHAR2(101);
+    
+    -- Counter for results
+    v_count NUMBER := 0;
+
+    -- Flag variable
+    v_companyExists NUMBER;
+
+BEGIN
+    -- Check if v_companyID exists,
+    -- NO_DATA_FOUND error will be raised by SELECT...INTO if not!!
+    SELECT companyName INTO v_companyName 
+    FROM BusCompany 
+    WHERE companyID = v_companyID;
+
+    -- IF v_companyExists = 0 THEN 
+    --     RAISE_APPLICATION_ERROR(-20001, 'Provided company ID does not exist!');
+    -- END IF;
+
+    -- Print header
+    DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+    DBMS_OUTPUT.PUT_LINE('   CANCELLED BUS SCHEDULES FOR COMPANY: ' || v_companyName || ' (' || v_companyID || ')');
+    DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+    DBMS_OUTPUT.PUT_LINE('');
+
+    -- Open and process cursor
+    OPEN cancelled_schedules_cur;
+    
+    LOOP
+        FETCH cancelled_schedules_cur INTO 
+            v_bus_schedule_id,
+            v_route_driver_assignment_id,
+            v_planned_departure,
+            v_planned_arrival,
+            v_route_id,
+            v_start_point,
+            v_end_point,
+            v_main_first_name,
+            v_main_last_name,
+            v_support_first_name,
+            v_support_last_name;
+            
+        EXIT WHEN cancelled_schedules_cur%NOTFOUND;
+        
+        -- Increment counter
+        v_count := v_count + 1;
+        
+        -- Format the output strings
+        v_route_points := v_start_point || ' -> ' || v_end_point;
+        v_time_range := TO_CHAR(v_planned_departure, 'DD-MON-YYYY HH24:MI') || 
+                       ' -> ' || 
+                       TO_CHAR(v_planned_arrival, 'DD-MON-YYYY HH24:MI');
+        v_main_driver_name := v_main_first_name || ' ' || v_main_last_name;
+        
+        -- Handle support driver (may be null)
+        IF v_support_first_name IS NOT NULL THEN
+            v_support_driver_name := v_support_first_name || ' ' || v_support_last_name;
+        ELSE
+            v_support_driver_name := 'N/A';
+        END IF;
+        
+        -- Print the schedule information
+        DBMS_OUTPUT.PUT_LINE(RPAD('-', 70, '-'));
+        DBMS_OUTPUT.PUT_LINE(' Schedule #' || v_count);
+        DBMS_OUTPUT.PUT_LINE(RPAD('-', 70, '-'));
+        DBMS_OUTPUT.PUT_LINE('  Route ID       : ' || v_route_id);
+        DBMS_OUTPUT.PUT_LINE('  Route          : ' || v_route_points);
+        DBMS_OUTPUT.PUT_LINE('  Departure -> Arrival : ' || v_time_range);
+        DBMS_OUTPUT.PUT_LINE('  Main Driver    : ' || v_main_driver_name);
+        DBMS_OUTPUT.PUT_LINE('  Support Driver : ' || v_support_driver_name);
+        DBMS_OUTPUT.PUT_LINE('');
+        
+    END LOOP;
+    
+    -- Close cursor
+    CLOSE cancelled_schedules_cur;
+
+    -- Print summary
+    DBMS_OUTPUT.PUT_LINE('');
+    DBMS_OUTPUT.PUT_LINE('Total cancelled schedules found: ' || v_count);
+    
+    -- Handle case when no results found
+    IF v_count = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('No cancelled bus schedules found for company ID: ' || v_companyID);
+        DBMS_OUTPUT.PUT_LINE('with departure time >= current timestamp.');
+    END IF;
+    
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN 
+        DBMS_OUTPUT.PUT_LINE('Provided company ID does not exist!');
+
+    WHEN OTHERS THEN
+        -- Ensure cursor is closed in case of error
+        IF cancelled_schedules_cur%ISOPEN THEN
+            CLOSE cancelled_schedules_cur;
+        END IF;
+        
+        DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+        RAISE;
+        
+END prc_list_cancelled_schedules;
+/
+
+CREATE OR REPLACE PROCEDURE prc_maint_service_ranking AS
+   -- Variables for outer cursor (maintenanceService)
+   v_serviceId     maintenanceService.serviceId%TYPE;
+   v_serviceItem   maintenanceService.serviceItem%TYPE;
+
+   -- Variables for inner cursor (job counts)
+   v_jobCount      NUMBER;
+
+   -- Outer cursor: all maintenance services
+   CURSOR service_cursor IS
+      SELECT serviceId, serviceItem
+      FROM maintenanceService;
+
+   -- Inner cursor: count of jobs for one service in the past year
+   CURSOR jobCount_cursor IS
+      SELECT COUNT(*) 
+      FROM busMaintenance
+      WHERE serviceId = v_serviceId
+        AND maintenanceDoneDate >= ADD_MONTHS(SYSDATE, -12);
+
+BEGIN
+   -- Print header once before the loop
+   DBMS_OUTPUT.PUT_LINE(RPAD('-', 67, '-'));
+   DBMS_OUTPUT.PUT_LINE('| ' || RPAD('Service ID', 10) || ' | ' ||
+                               RPAD('Service item',30) || ' | ' ||
+                               LPAD('Jobs in Past Year', 17) || ' |');
+   DBMS_OUTPUT.PUT_LINE(RPAD('-', 67, '-'));
+
+   OPEN service_cursor;
+   FETCH service_cursor INTO v_serviceId, v_serviceItem;
+
+   WHILE service_cursor%FOUND LOOP
+
+      OPEN jobCount_cursor;
+      FETCH jobCount_cursor INTO v_jobCount;
+
+      IF NOT jobCount_cursor%FOUND THEN
+         v_jobCount := 0;
+      END IF;
+
+      CLOSE jobCount_cursor;
+      
+      DBMS_OUTPUT.PUT_LINE('| ' || RPAD(v_serviceId, 10) || ' | ' ||
+                               RPAD(v_serviceItem, 30) || ' | ' ||
+                               LPAD(v_jobCount, 17) || ' |');
+
+      FETCH service_cursor INTO v_serviceId, v_serviceItem;
+   END LOOP;
+
+   CLOSE service_cursor;
+
+   DBMS_OUTPUT.PUT_LINE(RPAD('-', 67, '-'));
+END;
+/
+
+CREATE OR REPLACE PROCEDURE prc_report_worker_performance IS
+
+    -- Outer cursor: all staff who are maintenance workers
+    CURSOR c_workers IS
+        SELECT s.staffId, s.firstName, s.lastName, s.hireDate
+        FROM staff s
+        WHERE EXISTS (
+            SELECT 1
+            FROM StaffRole r
+            WHERE r.roleId = s.roleId 
+            AND UPPER(r.roleName) = 'MAINTENANCE TECHNICIAN'
+        );
+
+    -- Bridge between outer and inner cursors
+    v_staffID  Staff.staffID%TYPE;
+
+    -- Inner cursor: jobs done by a particular staff
+    CURSOR c_jobs IS
+        SELECT COUNT(*) AS total_jobs,
+               SUM(bm.actualCost + bm.additionalCost) AS total_cost,
+               SUM(CASE WHEN bm.maintenanceDoneDate >= ADD_MONTHS(TRUNC(SYSDATE), -12) 
+                        THEN 1 ELSE 0 END) AS jobs_past_year
+        FROM BusMaintenance bm 
+        JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
+        WHERE msa.staffID = v_staffID;  
+
+    -- Variables to hold data
+    v_worker   c_workers%ROWTYPE;
+    v_jobs     c_jobs%ROWTYPE;  
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+    DBMS_OUTPUT.PUT_LINE(' Worker Performance Report');
+
+    -- Loop over all workers
+    OPEN c_workers;
+    LOOP
+        FETCH c_workers INTO v_worker;
+        EXIT WHEN c_workers%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+        DBMS_OUTPUT.PUT_LINE(' Staff ID   : ' || v_worker.staffId);
+        DBMS_OUTPUT.PUT_LINE(' Name       : ' || v_worker.firstName || ' ' || v_worker.lastName);
+        DBMS_OUTPUT.PUT_LINE(' Hire Date  : ' || TO_CHAR(v_worker.hireDate, 'DD-MON-YYYY'));
+        DBMS_OUTPUT.PUT_LINE(RPAD('-', 70, '-'));
+
+        v_staffID := v_worker.staffID;
+
+        -- Nested cursor: jobs for this worker
+        OPEN c_jobs;
+        FETCH c_jobs INTO v_jobs;
+
+        DBMS_OUTPUT.PUT_LINE('   Total Jobs Completed   : ' || NVL(v_jobs.total_jobs, 0));
+        DBMS_OUTPUT.PUT_LINE('   Total Maintenance Cost : RM ' || TO_CHAR(NVL(v_jobs.total_cost, 0), 'FM999,999.00'));
+        DBMS_OUTPUT.PUT_LINE('   Jobs in Past Year      : ' || NVL(v_jobs.jobs_past_year, 0));
+
+        DBMS_OUTPUT.PUT_LINE(RPAD('=', 70, '='));
+        DBMS_OUTPUT.PUT_LINE('');
+
+        CLOSE c_jobs;
+    END LOOP;
+    CLOSE c_workers;
+END;
+/
+
+-- =========== VIEWS =========== 
+SET LINESIZE 200
+SET PAGESIZE 200
+SET WRAP OFF
+SET TAB OFF
+SET TRIMSPOOL ON
+SET COLSEP ' | '
+
+CLEAR COLUMNS
+CLEAR BREAKS
+BREAK ON REPORT
+COMPUTE SUM LABEL 'TOTAL' OF platformsTotal routesCount recentCompleted recentCancelled ON REPORT
+
+COLUMN stationId            FORMAT A8   HEADING 'STATION'
+COLUMN stationName          FORMAT A28  HEADING 'STATION NAME'
+COLUMN stationStatus        FORMAT A8   HEADING 'STATUS'
+COLUMN platformsTotal       FORMAT 9990 HEADING 'PLATFORMS'
+COLUMN routesCount          FORMAT 9990 HEADING 'ROUTES'
+COLUMN recentCompleted      FORMAT 9990 HEADING 'RECENT|DONE'
+COLUMN recentCancelled      FORMAT 9990 HEADING 'RECENT|CANCEL'
+COLUMN recentCancelRatePct  FORMAT 990.00 HEADING 'CANCEL %'
+
+
+CREATE OR REPLACE VIEW vwStationOpsCompact AS
+WITH mx AS (SELECT MAX(plannedDepartureTime) mx_ts FROM busSchedule),
+platform_counts AS (
+  SELECT stationId, COUNT(*) AS platformsTotal
+  FROM   busPlatform
+  GROUP  BY stationId
+),
+routes_by_station AS (
+  SELECT bp.stationId, COUNT(DISTINCT rs.routeId) AS routesCount
+  FROM   routeStation rs
+  JOIN   busPlatform bp ON bp.platformId = rs.platformId
+  GROUP  BY bp.stationId
+),
+recent_sched AS (
+  SELECT DISTINCT bp.stationId, bs.busScheduleId, LOWER(bs.status) AS schedStatus
+  FROM   busSchedule bs
+  JOIN   routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+  JOIN   routeStation rs              ON rs.routeId = rda.routeId
+  JOIN   busPlatform bp               ON bp.platformId = rs.platformId
+  CROSS  JOIN mx
+  WHERE  bs.plannedDepartureTime BETWEEN (mx.mx_ts - NUMTODSINTERVAL(30,'DAY')) AND mx.mx_ts
+),
+recent_rollup AS (
+  SELECT stationId,
+         SUM(CASE WHEN schedStatus='completed' THEN 1 ELSE 0 END) AS recentCompleted,
+         SUM(CASE WHEN schedStatus='cancelled' THEN 1 ELSE 0 END) AS recentCancelled
+  FROM   recent_sched
+  GROUP  BY stationId
+)
+SELECT
+  s.stationId,
+  s.stationName,
+  s.status AS stationStatus,
+  NVL(pc.platformsTotal,0)   AS platformsTotal,
+  NVL(r.routesCount,0)       AS routesCount,
+  NVL(l.recentCompleted,0)   AS recentCompleted,
+  NVL(l.recentCancelled,0)   AS recentCancelled,
+  CASE
+    WHEN NVL(l.recentCompleted,0)+NVL(l.recentCancelled,0)=0 THEN 0
+    ELSE ROUND(100 * NVL(l.recentCancelled,0) /
+               (NVL(l.recentCompleted,0)+NVL(l.recentCancelled,0)), 2)
+  END AS recentCancelRatePct
+FROM busStation s
+LEFT JOIN platform_counts   pc ON pc.stationId = s.stationId
+LEFT JOIN routes_by_station r  ON r.stationId  = s.stationId
+LEFT JOIN recent_rollup     l  ON l.stationId  = s.stationId;
 
 COLUMN Year HEADING 'Year'
 COLUMN rentalMonth     HEADING 'Month'
@@ -752,6 +1682,169 @@ SELECT
     LISTAGG(shopNo, ', ') WITHIN GROUP (ORDER BY shopNo) AS shopNumbers
 FROM shop
 GROUP BY shopType;
+
+-- LH's views
+
+DROP INDEX idx_company_name;
+CREATE INDEX idx_company_name ON BusCompany (companyName);
+
+CREATE OR REPLACE VIEW BusMaintenanceStatsView AS 
+SELECT 
+    -- Makes report prettier by printing the company name
+    -- only for the first row in each group.
+    -- CASE 
+    --     WHEN ROW_NUMBER() OVER (PARTITION BY c.companyName ORDER BY b.busID) = 1 
+    --     THEN c.companyName 
+    --     ELSE NULL 
+    -- END AS companyName,
+    c.companyName       AS companyName,
+    b.busID             AS busID,
+    b.plateNo           AS plateNo,
+    ROUND(AVG(interval_days))  AS avgIntervalDays
+FROM (
+    SELECT bm.busID,
+           CAST(LEAD(bm.maintenanceDoneDate) OVER (PARTITION BY bm.busID ORDER BY bm.maintenanceDoneDate) AS DATE)
+               - CAST(bm.maintenanceDoneDate AS DATE) AS interval_days
+    FROM BusMaintenance bm
+    JOIN MaintenanceService ms 
+      ON bm.serviceID = ms.serviceID
+    WHERE UPPER(ms.category) IN ('MODERATE', 'MAJOR')
+) intervals
+JOIN Bus b ON intervals.busID = b.busID
+JOIN BusCompany c ON b.companyID = c.companyID
+WHERE interval_days IS NOT NULL
+GROUP BY b.busID, c.companyName, b.plateNo
+ORDER BY c.companyName, b.busID;
+
+SET LINESIZE 120
+SET PAGESIZE 200
+
+COLUMN companyName      HEADING "Company Name"          FORMAT A20
+COLUMN busID            HEADING "Bus ID"                FORMAT A10
+COLUMN plateNo          HEADING "Plate No."             FORMAT A10
+COLUMN avgIntervalDays  HEADING "Avg. interval days"    
+
+BREAK ON companyName SKIP 1
+
+CLEAR COLUMN
+CLEAR BREAK
+
+
+
+DROP INDEX idx_maint_done_date;
+CREATE INDEX idx_maint_done_date ON BusMaintenance (maintenanceDoneDate);
+
+CREATE OR REPLACE VIEW MaintenanceStaffRecentJobView AS 
+SELECT 
+    s.staffID AS staffID, 
+    s.firstName || ' ' || s.lastName AS fullName, 
+    s.phoneNumber AS phoneNumber,
+    s.email AS email,
+    bm2.maintenanceId AS maintenanceId,
+    ms.serviceItem AS serviceItem,
+    bm2.busId AS busId,
+    -- ms.serviceItem || ' on ' || bm2.busId AS maintenanceDetails,
+    TO_CHAR(bm2.maintenanceDoneDate, 'DD-MM-YYYY') AS maintenanceDate,
+    bm2.remarks AS remarks
+FROM (
+    -- Join BusMaintenance with MaintenanceStaffAssignment,
+    -- then take only the record with the latest maintenanceDoneDate
+    -- for each unique staffID
+    SELECT * 
+    FROM (
+        SELECT 
+            bm.*, 
+            msa.staffID,
+            ROW_NUMBER() OVER (PARTITION BY msa.staffID ORDER BY bm.maintenanceDoneDate DESC) AS rn
+        FROM BusMaintenance bm
+        JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
+        WHERE maintenanceDoneDate IS NOT NULL
+    ) 
+    WHERE rn = 1
+) bm2 
+JOIN Staff s ON bm2.staffID = s.staffID
+JOIN MaintenanceService ms ON bm2.serviceID = ms.serviceID
+ORDER BY bm2.maintenanceDoneDate;
+
+COLUMN staffID HEADING "Staff ID" FORMAT A10
+COLUMN fullName HEADING "Name" FORMAT A20
+COLUMN phoneNumber HEADING "Contact no." 
+COLUMN email HEADING "Email" FORMAT A30
+COLUMN maintenanceId HEADING "Maint. job ID" FORMAT A14
+COLUMN serviceItem HEADING "Service" FORMAT A30
+COLUMN busId HEADING "Bus ID" 
+COLUMN maintenanceDate HEADING "Done on" FORMAT A15
+COLUMN remarks HEADING "Remarks" FORMAT A30
+
+CLEAR COLUMN 
+
+
+CLEAR COLUMNS
+CLEAR BREAKS
+BREAK ON REPORT
+COMPUTE SUM LABEL 'TOTAL' OF platformsTotal stationsTotal assignmentsActive recentCompleted recentCancelled ON REPORT
+
+COLUMN routeId             FORMAT A6   HEADING 'ROUTE'
+COLUMN routeName           FORMAT A26  HEADING 'ROUTE NAME'
+COLUMN routeStatus         FORMAT A8   HEADING 'STATUS'
+COLUMN platformsTotal      FORMAT 9990 HEADING 'PLATFORMS'
+COLUMN stationsTotal       FORMAT 9990 HEADING 'STATIONS'
+COLUMN assignmentsActive   FORMAT 9990 HEADING 'ASSIGN ACTIVE'
+COLUMN recentCompleted     FORMAT 9990 HEADING 'RECENT|DONE'
+COLUMN recentCancelled     FORMAT 9990 HEADING 'RECENT|CANCEL'
+COLUMN recentCancelRatePct FORMAT 990.00 HEADING 'CANCEL %'
+
+
+CREATE OR REPLACE VIEW viewRouteCompact AS
+WITH mx AS (
+  SELECT MAX(plannedDepartureTime) mx_ts FROM busSchedule
+)
+SELECT
+  r.routeId,
+  r.routeName,
+  r.status AS routeStatus,
+  (SELECT COUNT(*) FROM routeStation rs
+    WHERE rs.routeId = r.routeId) AS platformsTotal,
+  (SELECT COUNT(DISTINCT bp.stationId)
+     FROM routeStation rs
+     JOIN busPlatform bp ON bp.platformId = rs.platformId
+    WHERE rs.routeId = r.routeId) AS stationsTotal,
+  (SELECT COUNT(*) FROM routeDriverAssignmentList rda
+    WHERE rda.routeId = r.routeId AND LOWER(rda.status)='active') AS assignmentsActive,
+  (SELECT COUNT(*) FROM busSchedule bs
+    JOIN routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+   WHERE rda.routeId = r.routeId
+     AND bs.plannedDepartureTime BETWEEN mx.mx_ts - NUMTODSINTERVAL(30,'DAY') AND mx.mx_ts
+     AND LOWER(bs.status)='completed') AS recentCompleted,
+  (SELECT COUNT(*) FROM busSchedule bs
+    JOIN routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+   WHERE rda.routeId = r.routeId
+     AND bs.plannedDepartureTime BETWEEN mx.mx_ts - NUMTODSINTERVAL(30,'DAY') AND mx.mx_ts
+     AND LOWER(bs.status)='cancelled') AS recentCancelled,
+  (SELECT ROUND(
+           100 * NVL(
+             SUM(CASE WHEN LOWER(bs.status)='cancelled' THEN 1 ELSE 0 END)
+             / NULLIF(SUM(CASE WHEN LOWER(bs.status) IN ('completed','cancelled') THEN 1 ELSE 0 END), 0),
+             0
+           ), 2)
+   FROM busSchedule bs
+   JOIN routeDriverAssignmentList rda ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+   WHERE rda.routeId = r.routeId
+     AND bs.plannedDepartureTime BETWEEN mx.mx_ts - NUMTODSINTERVAL(30,'DAY') AND mx.mx_ts
+  ) AS recentCancelRatePct
+FROM route r
+CROSS JOIN mx;
+
+CREATE INDEX ix_busstation_name_upper
+  ON busStation (UPPER(stationName));
+
+CREATE INDEX ix_busplatform_name_upper
+  ON busPlatform (UPPER(platformName));
+
+
+
+
+
 
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R001', 'Station Manager', 'Oversees all bus station operations, manages staff, and ensures compliance with policies.');
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R002', 'Assistant Manager', 'Supports the station manager in daily tasks and supervises staff in their absence.');
@@ -11380,6 +12473,970 @@ VALUES ('TS000458', 'S000420', 'BP002', TO_TIMESTAMP('2025-04-20 10:00','YYYY-MM
 
 INSERT INTO tripStopLog (tripStopId, busScheduleId, platformId, actualArrivalTime, actualDepartureTime, status, remarks)
 VALUES ('TS000459', 'S000420', 'BP001', TO_TIMESTAMP('2025-04-20 12:00','YYYY-MM-DD HH24:MI'), TO_TIMESTAMP('2025-04-20 13:00','YYYY-MM-DD HH24:MI'), 'on_time', 'No issues');
+
+-- ================= TRIGGERS =================
+
+CREATE OR REPLACE TRIGGER trgCalculateRentAmount
+BEFORE INSERT OR UPDATE ON RentalCollection
+FOR EACH ROW
+DECLARE
+  v_shopSize Shop.shopSize%TYPE;
+  v_count      NUMBER;
+  v_countStaff NUMBER;
+BEGIN
+  IF INSERTING THEN
+    IF :NEW.rentalAmount IS NULL OR :NEW.rentalAmount = 0 THEN
+      SELECT shopSize INTO v_shopSize
+      FROM Shop
+      WHERE shopID = :NEW.shopID;
+      
+      :NEW.rentalAmount := v_shopSize * 2;
+    END IF;
+  ELSIF UPDATING THEN
+    IF :NEW.staffId IS NOT NULL THEN
+    SELECT COUNT(*) INTO v_count
+    FROM staff st
+    JOIN staffRole sr ON st.roleId = sr.roleId
+    WHERE st.staffId = :NEW.staffId
+    AND LOWER(sr.roleName) = 'accountant';
+
+    IF v_count = 0 THEN
+      RAISE_APPLICATION_ERROR(-20011,
+        'Error: StaffId ' || :NEW.staffId || ' is not a valid Accountant in Staff table.');
+    END IF;
+    END IF;
+
+    IF LOWER(:NEW.status) = 'paid'
+       AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
+       
+       :NEW.collectionDate := SYSTIMESTAMP;
+
+       SELECT COUNT(*) INTO v_count
+       FROM Staff
+       WHERE staffId = :NEW.staffId
+    ;
+
+       IF v_count = 0 THEN
+           RAISE_APPLICATION_ERROR(-20002, 'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
+       END IF;
+    END IF;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_check_shop_capacity
+  BEFORE INSERT ON shop
+  FOR EACH ROW
+DECLARE
+  v_current_shop_count NUMBER;
+  v_max_capacity CONSTANT NUMBER := 20;
+BEGIN
+  SELECT COUNT(*)
+  INTO v_current_shop_count
+  FROM shop
+  WHERE stationId = :NEW.stationId;  
+
+  IF v_current_shop_count >= v_max_capacity THEN
+    RAISE_APPLICATION_ERROR(-20001, 
+      'Station ' || :NEW.stationId || 
+      ' has reached maximum capacity of ' || v_max_capacity || ' shops. ' ||
+      'Current count: ' || v_current_shop_count);
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_on_bus_start_maintenance
+AFTER INSERT ON BusMaintenance
+FOR EACH ROW    
+BEGIN
+    -- Update bus's status to under_maintenance
+    UPDATE Bus
+    SET status = 'under_maintenance',
+        updatedAt = CURRENT_TIMESTAMP
+    WHERE busID = :NEW.busID;
+    DBMS_OUTPUT.PUT_LINE('Bus ' || :NEW.busID || ' set to under_maintenance.');
+
+    -- Update affected driver list assignments' status to inactive
+    UPDATE DriverListAssignment dla
+    SET status = 'inactive'
+    WHERE dla.busID = :NEW.busID
+    AND dla.assignedTo >= SYSDATE;
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' driver assignments inactivated.');
+
+    -- Update affected route-driver assignments' status to inactive
+    UPDATE RouteDriverAssignmentList rdal
+    SET rdal.status = 'inactive'
+    WHERE EXISTS (
+        SELECT 1 
+        FROM DriverListAssignment dla
+        WHERE dla.assignmentID = rdal.assignmentID
+        AND dla.busID = :NEW.busID
+    );
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' route-driver assignments inactivated.');
+
+    -- Update affected bus schedules
+    UPDATE BusSchedule bs
+    SET bs.status = 'cancelled',
+        bs.updatedAt = CURRENT_TIMESTAMP
+    WHERE EXISTS (
+        SELECT 1
+        FROM RouteDriverAssignmentList rdal
+        JOIN DriverListAssignment dla USING(assignmentID)
+        WHERE bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+        AND dla.busID = :NEW.busID
+    );
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' bus schedules cancelled.');
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_on_bus_end_maintenance 
+AFTER UPDATE OF status ON BusMaintenance
+FOR EACH ROW
+BEGIN
+    IF :OLD.status = 'in_progress' AND :NEW.status = 'completed' THEN
+        -- Update bus's status to active
+        UPDATE Bus
+        SET status = 'active',
+            updatedAt = CURRENT_TIMESTAMP
+        WHERE busID = :NEW.busID;
+        DBMS_OUTPUT.PUT_LINE('Bus ' || :NEW.busID || ' status set to active.');
+
+        -- Update affected driver list assignments' status to active
+        UPDATE DriverListAssignment dla
+        SET status = 'active'
+        WHERE dla.busID = :NEW.busID
+        AND dla.assignedTo >= SYSDATE;
+        DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' driver assignments reactivated.');
+
+        -- Update affected route-driver assignments' status to active
+        UPDATE RouteDriverAssignmentList rdal
+        SET status = 'active'
+        WHERE EXISTS (
+            SELECT 1 
+            FROM DriverListAssignment dla
+            WHERE dla.assignmentID = rdal.assignmentID
+            AND dla.busID = :NEW.busID
+        );
+        DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' route-driver assignments reactivated.');
+    END IF;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER trg_bs_ins_no_inactive_rt
+BEFORE INSERT ON busSchedule
+FOR EACH ROW
+DECLARE
+  v_route_status route.status%TYPE;
+BEGIN
+  SELECT r.status
+    INTO v_route_status
+    FROM routeDriverAssignmentList rda
+    JOIN route r ON r.routeId = rda.routeId
+   WHERE rda.routeDriverAssignmentId = :NEW.routeDriverAssignmentId;
+
+  IF UPPER(v_route_status) = 'INACTIVE' THEN
+    RAISE_APPLICATION_ERROR(-20002,
+      'Cannot create a schedule for an INACTIVE route (RDA: ' || :NEW.routeDriverAssignmentId || ').');
+  END IF;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20004,
+      'Invalid reference: routeDriverAssignmentId ' || :NEW.routeDriverAssignmentId || ' does not exist.');
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_bs_two_drivers
+BEFORE INSERT OR UPDATE OF routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime
+ON busSchedule
+FOR EACH ROW
+DECLARE
+  v_est_dur_min    NUMBER;  -- estimated duration in minutes
+  v_main           driverListAssignment.mainDriverId%TYPE;
+  v_sup            driverListAssignment.supportDriverId%TYPE;
+BEGIN
+  -- 1) Get route estimatedDuration (minutes) via RDA
+  BEGIN
+    SELECT r.estimatedDuration
+      INTO v_est_dur_min
+    FROM   routeDriverAssignmentList rda
+    JOIN   route r ON r.routeId = rda.routeId
+    WHERE  rda.routeDriverAssignmentId = :NEW.routeDriverAssignmentId;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20041,
+        'Invalid routeDriverAssignmentId: '||:NEW.routeDriverAssignmentId);
+  END;
+
+  -- 2) If route has no estimate, derive from schedule times (if both present)
+  IF v_est_dur_min IS NULL THEN
+    IF :NEW.plannedDepartureTime IS NOT NULL
+       AND :NEW.plannedArrivalTime   IS NOT NULL
+    THEN
+      v_est_dur_min :=
+        (CAST(:NEW.plannedArrivalTime   AS DATE)
+       - CAST(:NEW.plannedDepartureTime AS DATE)) * 24 * 60;
+    ELSE
+      v_est_dur_min := 0;
+    END IF;
+  END IF;
+
+  -- 3) If >= 8 hours, both drivers must be set on the assignment
+  IF v_est_dur_min >= 480 THEN
+    SELECT a.mainDriverId, a.supportDriverId
+      INTO v_main, v_sup
+    FROM   routeDriverAssignmentList rda
+    JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+    WHERE  rda.routeDriverAssignmentId = :NEW.routeDriverAssignmentId;
+
+    IF v_main IS NULL OR v_sup IS NULL THEN
+      RAISE_APPLICATION_ERROR(
+        -20042,
+        'Long trips (>=8h) require MAIN and SUPPORT drivers for RDA '||:NEW.routeDriverAssignmentId
+      );
+    END IF;
+  END IF;
+END;
+/
+
+
+// HY Part :  
+
+DROP SEQUENCE seq_ticket_id;
+
+CREATE SEQUENCE seq_ticket_id
+  START WITH 293974
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+
+CREATE OR REPLACE FUNCTION FN_NEXT_TICKET_ID
+RETURN VARCHAR2 IS
+  v_seq NUMBER;
+BEGIN
+
+  SELECT seq_ticket_id.NEXTVAL INTO v_seq FROM dual;
+  
+  RETURN 'T' || LPAD(v_seq, 11, '0');
+END;
+/
+
+DROP SEQUENCE SEQ_PAYMENT_ID；
+CREATE SEQUENCE SEQ_PAYMENT_ID
+  START WITH 1000
+  INCREMENT BY 1
+  MINVALUE 1
+  MAXVALUE 999999999
+  NOCYCLE
+  NOCACHE;
+
+CREATE OR REPLACE VIEW v_bus_schedule_summary AS
+SELECT 
+    bs.busScheduleId,
+    r.routeName,
+    bs.plannedDepartureTime,
+    bs.status,
+    (SELECT MIN(t.price) 
+       FROM ticket t 
+      WHERE t.busScheduleId = bs.busScheduleId) AS price
+FROM busSchedule bs
+JOIN routeDriverAssignmentList rda 
+    ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+JOIN route r 
+    ON rda.routeId = r.routeId;
+
+CREATE OR REPLACE VIEW v_ticket_overview AS
+SELECT 
+    t.ticketId,
+    t.busScheduleId,
+    c.firstName || ' ' || c.lastName AS customerName,
+    t.seatNo,
+    t.price,
+    t.type,
+    t.status,
+    t.createdAt
+FROM ticket t
+LEFT JOIN customer c 
+    ON t.customerId = c.customerId;
+
+CREATE INDEX IDX_TICKET_STATUS
+  ON ticket(status);
+
+CREATE INDEX IDX_TICKET_PRICE        ON ticket(price);
+
+CREATE OR REPLACE PROCEDURE GEN_PAYMENT_FOR_TICKET (
+  p_ticket_id    IN ticket.ticketId%TYPE,
+  p_customer_id  IN ticket.customerId%TYPE,
+  p_ticket_price IN ticket.price%TYPE
+) IS
+  v_payment_id  VARCHAR2(12);
+  v_exists      INTEGER;
+BEGIN
+  IF p_customer_id IS NULL THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Ticket has no customerId; cannot create payment.');
+  END IF;
+
+  IF NVL(p_ticket_price, 0) < 0 THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Invalid ticket price for ticket ' || p_ticket_id);
+  END IF;
+
+  SELECT COUNT(*)
+  INTO v_exists
+  FROM paymentRecord
+  WHERE ticketId = p_ticket_id;
+
+  IF v_exists > 0 THEN
+    RETURN; -- already has a payment
+  END IF;
+
+  v_payment_id := 'PAY' || LPAD(seq_payment_id.NEXTVAL, 9, '0');
+
+  INSERT INTO paymentRecord (
+    paymentId, customerId, ticketId,
+    totalAmount, cashAmount, pointsApplied, pointValue,
+    status, paymentTime, receiptNo, paymentMethod, type, remarks
+  ) VALUES (
+    v_payment_id, p_customer_id, p_ticket_id,
+    p_ticket_price, p_ticket_price, 0, 0,
+    'pending', SYSTIMESTAMP, 'RCPT-' || TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+    NULL, 'auto', 'Auto-created on ticket assignment'
+  );
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20003, 'Ticket not found for ticketId ' || p_ticket_id);
+
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_PAYMENT_FOR_TICKET: ' || SQLERRM);
+    RAISE;
+END;
+/
+
+CREATE OR REPLACE TRIGGER TKT_BU_CUST_TO_PAY
+BEFORE UPDATE OF customerId ON ticket
+FOR EACH ROW
+WHEN (OLD.customerId IS NULL AND NEW.customerId IS NOT NULL)
+BEGIN
+  -- set status directly
+  :NEW.status    := 'been_bought';
+  :NEW.updatedAt := SYSTIMESTAMP;
+
+  
+  GEN_PAYMENT_FOR_TICKET(:NEW.ticketId, :NEW.customerId, :NEW.price);
+END;
+/
+
+CREATE OR REPLACE PROCEDURE GEN_TICKETS_FOR_SCHEDULE (
+  p_bus_schedule_id IN busSchedule.busScheduleId%TYPE,
+  p_rate_per_km     IN NUMBER DEFAULT 0.25
+) IS
+  v_capacity      bus.capacity%TYPE;
+  v_distance_km   route.distanceKm%TYPE;
+  v_rda_id        routeDriverAssignmentList.routeDriverAssignmentId%TYPE;
+  v_route_id      route.routeId%TYPE;
+  v_assignment_id driverListAssignment.assignmentId%TYPE;
+
+  v_type_default    ticket.type%TYPE   := 'booking';
+  v_status_default  ticket.status%TYPE := 'on_selling';
+
+  v_existing_cnt NUMBER;
+  v_price NUMBER(8,2);
+
+BEGIN
+  -- Check if tickets already exist ma
+  SELECT COUNT(*)
+  INTO v_existing_cnt
+  FROM ticket
+  WHERE busScheduleId = p_bus_schedule_id;
+
+  IF v_existing_cnt > 0 THEN
+    RETURN;
+  END IF;
+
+  -- 1. Fetch related info from the grandpa table first :
+  SELECT bs.routeDriverAssignmentId
+    INTO v_rda_id
+  FROM busSchedule bs
+  WHERE bs.busScheduleId = p_bus_schedule_id;
+  
+  -- 2. Get routeId For calculate price , Get assignmentId to Fetch Target Bus  
+  SELECT rda.routeId, rda.assignmentId
+    INTO v_route_id, v_assignment_id
+  FROM routeDriverAssignmentList rda
+  WHERE rda.routeDriverAssignmentId = v_rda_id;
+
+  -- 2.1 
+  SELECT b.capacity
+    INTO v_capacity
+  FROM driverListAssignment dla
+  JOIN bus b ON b.busId = dla.busId
+  WHERE dla.assignmentId = v_assignment_id;
+
+  -- 2.2 
+  SELECT NVL(r.distanceKm, 0)
+    INTO v_distance_km
+  FROM route r
+  WHERE r.routeId = v_route_id;
+
+  -- Controlled error (business rule)
+  IF v_capacity IS NULL OR v_capacity <= 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Invalid bus capacity for schedule ' || p_bus_schedule_id);
+  END IF;
+
+  -- 4. calculate the price 
+  v_price := ROUND(p_rate_per_km * v_distance_km, 2);
+  
+  -- 3. count how many ticket we can generate based on the bus capacity 
+  FOR i IN 1..v_capacity LOOP
+    BEGIN
+      INSERT INTO ticket (
+        ticketId, busScheduleId, customerId, seatNo, price, type, status,
+        cancellationDate, extensionDate, extendedFromId, createdAt, updatedAt
+      ) VALUES (
+        FN_NEXT_TICKET_ID(),
+        p_bus_schedule_id,
+        NULL,
+        'S' || LPAD(i, 3, '0'),
+        v_price,
+        v_type_default,
+        v_status_default,
+        NULL, NULL, NULL,
+        SYSTIMESTAMP, SYSTIMESTAMP
+      );
+    EXCEPTION
+      WHEN DUP_VAL_ON_INDEX THEN
+        -- another session already inserted this seat
+        NULL;
+    END;
+  END LOOP;
+
+EXCEPTION
+  -- Controlled: missing foreign key data
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Required data not found for schedule ' || p_bus_schedule_id);
+
+  -- Default generic error catcher
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_TICKETS_FOR_SCHEDULE: ' || SQLERRM);
+    -- Optional: rethrow to stop silently swallowing
+    RAISE;
+END;
+/
+
+CREATE OR REPLACE TRIGGER BS_AI_GEN_TICKETS
+FOR INSERT ON busSchedule
+COMPOUND TRIGGER
+
+  TYPE t_ids IS TABLE OF busSchedule.busScheduleId%TYPE;
+  g_ids t_ids := t_ids();
+
+  BEFORE STATEMENT IS
+  BEGIN
+    g_ids.DELETE;
+  END BEFORE STATEMENT;
+
+  AFTER EACH ROW IS
+  BEGIN
+    g_ids.EXTEND;
+    g_ids(g_ids.LAST) := :NEW.busScheduleId;
+  END AFTER EACH ROW;
+
+  AFTER STATEMENT IS
+  BEGIN
+    IF g_ids.COUNT > 0 THEN
+      FOR i IN 1 .. g_ids.COUNT LOOP
+        -- Safe now: the INSERT statement has finished; busSchedule is not mutating
+        GEN_TICKETS_FOR_SCHEDULE(g_ids(i));
+      END LOOP;
+    END IF;
+  END AFTER STATEMENT;
+
+END BS_AI_GEN_TICKETS;
+/
+
+
+
+-- ================= TRIGGERS =================
+
+CREATE OR REPLACE TRIGGER trgCalculateRentAmount
+BEFORE INSERT OR UPDATE ON RentalCollection
+FOR EACH ROW
+DECLARE
+  v_shopSize Shop.shopSize%TYPE;
+  v_count      NUMBER;
+  v_countStaff NUMBER;
+BEGIN
+  IF INSERTING THEN
+    IF :NEW.rentalAmount IS NULL OR :NEW.rentalAmount = 0 THEN
+      SELECT shopSize INTO v_shopSize
+      FROM Shop
+      WHERE shopID = :NEW.shopID;
+      
+      :NEW.rentalAmount := v_shopSize * 2;
+    END IF;
+  ELSIF UPDATING THEN
+    IF :NEW.staffId IS NOT NULL THEN
+    SELECT COUNT(*) INTO v_count
+    FROM staff st
+    JOIN staffRole sr ON st.roleId = sr.roleId
+    WHERE st.staffId = :NEW.staffId
+    AND LOWER(sr.roleName) = 'accountant';
+
+    IF v_count = 0 THEN
+      RAISE_APPLICATION_ERROR(-20011,
+        'Error: StaffId ' || :NEW.staffId || ' is not a valid Accountant in Staff table.');
+    END IF;
+    END IF;
+
+    IF LOWER(:NEW.status) = 'paid'
+       AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
+       
+       :NEW.collectionDate := SYSTIMESTAMP;
+
+       SELECT COUNT(*) INTO v_count
+       FROM Staff
+       WHERE staffId = :NEW.staffId
+    ;
+
+       IF v_count = 0 THEN
+           RAISE_APPLICATION_ERROR(-20002, 'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
+       END IF;
+    END IF;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_check_shop_capacity
+  BEFORE INSERT ON shop
+  FOR EACH ROW
+DECLARE
+  v_current_shop_count NUMBER;
+  v_max_capacity CONSTANT NUMBER := 20;
+BEGIN
+  SELECT COUNT(*)
+  INTO v_current_shop_count
+  FROM shop
+  WHERE stationId = :NEW.stationId;  
+
+  IF v_current_shop_count >= v_max_capacity THEN
+    RAISE_APPLICATION_ERROR(-20001, 
+      'Station ' || :NEW.stationId || 
+      ' has reached maximum capacity of ' || v_max_capacity || ' shops. ' ||
+      'Current count: ' || v_current_shop_count);
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_on_bus_start_maintenance
+AFTER INSERT ON BusMaintenance
+FOR EACH ROW    
+BEGIN
+    -- Update bus's status to under_maintenance
+    UPDATE Bus
+    SET status = 'under_maintenance',
+        updatedAt = CURRENT_TIMESTAMP
+    WHERE busID = :NEW.busID;
+    DBMS_OUTPUT.PUT_LINE('Bus ' || :NEW.busID || ' set to under_maintenance.');
+
+    -- Update affected driver list assignments' status to inactive
+    UPDATE DriverListAssignment dla
+    SET status = 'inactive'
+    WHERE dla.busID = :NEW.busID
+    AND dla.assignedTo >= SYSDATE;
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' driver assignments inactivated.');
+
+    -- Update affected route-driver assignments' status to inactive
+    UPDATE RouteDriverAssignmentList rdal
+    SET rdal.status = 'inactive'
+    WHERE EXISTS (
+        SELECT 1 
+        FROM DriverListAssignment dla
+        WHERE dla.assignmentID = rdal.assignmentID
+        AND dla.busID = :NEW.busID
+    );
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' route-driver assignments inactivated.');
+
+    -- Update affected bus schedules
+    UPDATE BusSchedule bs
+    SET bs.status = 'cancelled',
+        bs.updatedAt = CURRENT_TIMESTAMP
+    WHERE EXISTS (
+        SELECT 1
+        FROM RouteDriverAssignmentList rdal
+        JOIN DriverListAssignment dla USING(assignmentID)
+        WHERE bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+        AND dla.busID = :NEW.busID
+    );
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' bus schedules cancelled.');
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_on_bus_end_maintenance 
+AFTER UPDATE OF status ON BusMaintenance
+FOR EACH ROW
+BEGIN
+    IF :OLD.status = 'in_progress' AND :NEW.status = 'completed' THEN
+        -- Update bus's status to active
+        UPDATE Bus
+        SET status = 'active',
+            updatedAt = CURRENT_TIMESTAMP
+        WHERE busID = :NEW.busID;
+        DBMS_OUTPUT.PUT_LINE('Bus ' || :NEW.busID || ' status set to active.');
+
+        -- Update affected driver list assignments' status to active
+        UPDATE DriverListAssignment dla
+        SET status = 'active'
+        WHERE dla.busID = :NEW.busID
+        AND dla.assignedTo >= SYSDATE;
+        DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' driver assignments reactivated.');
+
+        -- Update affected route-driver assignments' status to active
+        UPDATE RouteDriverAssignmentList rdal
+        SET status = 'active'
+        WHERE EXISTS (
+            SELECT 1 
+            FROM DriverListAssignment dla
+            WHERE dla.assignmentID = rdal.assignmentID
+            AND dla.busID = :NEW.busID
+        );
+        DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' route-driver assignments reactivated.');
+    END IF;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER trg_bs_ins_no_inactive_rt
+BEFORE INSERT ON busSchedule
+FOR EACH ROW
+DECLARE
+  v_route_status route.status%TYPE;
+BEGIN
+  SELECT r.status
+    INTO v_route_status
+    FROM routeDriverAssignmentList rda
+    JOIN route r ON r.routeId = rda.routeId
+   WHERE rda.routeDriverAssignmentId = :NEW.routeDriverAssignmentId;
+
+  IF UPPER(v_route_status) = 'INACTIVE' THEN
+    RAISE_APPLICATION_ERROR(-20002,
+      'Cannot create a schedule for an INACTIVE route (RDA: ' || :NEW.routeDriverAssignmentId || ').');
+  END IF;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20004,
+      'Invalid reference: routeDriverAssignmentId ' || :NEW.routeDriverAssignmentId || ' does not exist.');
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_bs_two_drivers
+BEFORE INSERT OR UPDATE OF routeDriverAssignmentId, plannedDepartureTime, plannedArrivalTime
+ON busSchedule
+FOR EACH ROW
+DECLARE
+  v_est_dur_min    NUMBER;  -- estimated duration in minutes
+  v_main           driverListAssignment.mainDriverId%TYPE;
+  v_sup            driverListAssignment.supportDriverId%TYPE;
+BEGIN
+  -- 1) Get route estimatedDuration (minutes) via RDA
+  BEGIN
+    SELECT r.estimatedDuration
+      INTO v_est_dur_min
+    FROM   routeDriverAssignmentList rda
+    JOIN   route r ON r.routeId = rda.routeId
+    WHERE  rda.routeDriverAssignmentId = :NEW.routeDriverAssignmentId;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20041,
+        'Invalid routeDriverAssignmentId: '||:NEW.routeDriverAssignmentId);
+  END;
+
+  -- 2) If route has no estimate, derive from schedule times (if both present)
+  IF v_est_dur_min IS NULL THEN
+    IF :NEW.plannedDepartureTime IS NOT NULL
+       AND :NEW.plannedArrivalTime   IS NOT NULL
+    THEN
+      v_est_dur_min :=
+        (CAST(:NEW.plannedArrivalTime   AS DATE)
+       - CAST(:NEW.plannedDepartureTime AS DATE)) * 24 * 60;
+    ELSE
+      v_est_dur_min := 0;
+    END IF;
+  END IF;
+
+  -- 3) If >= 8 hours, both drivers must be set on the assignment
+  IF v_est_dur_min >= 480 THEN
+    SELECT a.mainDriverId, a.supportDriverId
+      INTO v_main, v_sup
+    FROM   routeDriverAssignmentList rda
+    JOIN   driverListAssignment a ON a.assignmentId = rda.assignmentId
+    WHERE  rda.routeDriverAssignmentId = :NEW.routeDriverAssignmentId;
+
+    IF v_main IS NULL OR v_sup IS NULL THEN
+      RAISE_APPLICATION_ERROR(
+        -20042,
+        'Long trips (>=8h) require MAIN and SUPPORT drivers for RDA '||:NEW.routeDriverAssignmentId
+      );
+    END IF;
+  END IF;
+END;
+/
+
+
+// HY Part :  
+
+DROP SEQUENCE seq_ticket_id;
+
+CREATE SEQUENCE seq_ticket_id
+  START WITH 293974
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+
+CREATE OR REPLACE FUNCTION FN_NEXT_TICKET_ID
+RETURN VARCHAR2 IS
+  v_seq NUMBER;
+BEGIN
+
+  SELECT seq_ticket_id.NEXTVAL INTO v_seq FROM dual;
+  
+  RETURN 'T' || LPAD(v_seq, 11, '0');
+END;
+/
+
+DROP SEQUENCE SEQ_PAYMENT_ID；
+CREATE SEQUENCE SEQ_PAYMENT_ID
+  START WITH 1000
+  INCREMENT BY 1
+  MINVALUE 1
+  MAXVALUE 999999999
+  NOCYCLE
+  NOCACHE;
+
+CREATE OR REPLACE VIEW v_bus_schedule_summary AS
+SELECT 
+    bs.busScheduleId,
+    r.routeName,
+    bs.plannedDepartureTime,
+    bs.status,
+    (SELECT MIN(t.price) 
+       FROM ticket t 
+      WHERE t.busScheduleId = bs.busScheduleId) AS price
+FROM busSchedule bs
+JOIN routeDriverAssignmentList rda 
+    ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+JOIN route r 
+    ON rda.routeId = r.routeId;
+
+CREATE OR REPLACE VIEW v_ticket_overview AS
+SELECT 
+    t.ticketId,
+    t.busScheduleId,
+    c.firstName || ' ' || c.lastName AS customerName,
+    t.seatNo,
+    t.price,
+    t.type,
+    t.status,
+    t.createdAt
+FROM ticket t
+LEFT JOIN customer c 
+    ON t.customerId = c.customerId;
+
+CREATE INDEX IDX_TICKET_STATUS
+  ON ticket(status);
+
+CREATE INDEX IDX_TICKET_PRICE        ON ticket(price);
+
+CREATE OR REPLACE PROCEDURE GEN_PAYMENT_FOR_TICKET (
+  p_ticket_id    IN ticket.ticketId%TYPE,
+  p_customer_id  IN ticket.customerId%TYPE,
+  p_ticket_price IN ticket.price%TYPE
+) IS
+  v_payment_id  VARCHAR2(12);
+  v_exists      INTEGER;
+BEGIN
+  IF p_customer_id IS NULL THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Ticket has no customerId; cannot create payment.');
+  END IF;
+
+  IF NVL(p_ticket_price, 0) < 0 THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Invalid ticket price for ticket ' || p_ticket_id);
+  END IF;
+
+  SELECT COUNT(*)
+  INTO v_exists
+  FROM paymentRecord
+  WHERE ticketId = p_ticket_id;
+
+  IF v_exists > 0 THEN
+    RETURN; -- already has a payment
+  END IF;
+
+  v_payment_id := 'PAY' || LPAD(seq_payment_id.NEXTVAL, 9, '0');
+
+  INSERT INTO paymentRecord (
+    paymentId, customerId, ticketId,
+    totalAmount, cashAmount, pointsApplied, pointValue,
+    status, paymentTime, receiptNo, paymentMethod, type, remarks
+  ) VALUES (
+    v_payment_id, p_customer_id, p_ticket_id,
+    p_ticket_price, p_ticket_price, 0, 0,
+    'pending', SYSTIMESTAMP, 'RCPT-' || TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+    NULL, 'auto', 'Auto-created on ticket assignment'
+  );
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20003, 'Ticket not found for ticketId ' || p_ticket_id);
+
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_PAYMENT_FOR_TICKET: ' || SQLERRM);
+    RAISE;
+END;
+/
+
+CREATE OR REPLACE TRIGGER TKT_BU_CUST_TO_PAY
+BEFORE UPDATE OF customerId ON ticket
+FOR EACH ROW
+WHEN (OLD.customerId IS NULL AND NEW.customerId IS NOT NULL)
+BEGIN
+  -- set status directly
+  :NEW.status    := 'been_bought';
+  :NEW.updatedAt := SYSTIMESTAMP;
+
+  
+  GEN_PAYMENT_FOR_TICKET(:NEW.ticketId, :NEW.customerId, :NEW.price);
+END;
+/
+
+CREATE OR REPLACE PROCEDURE GEN_TICKETS_FOR_SCHEDULE (
+  p_bus_schedule_id IN busSchedule.busScheduleId%TYPE,
+  p_rate_per_km     IN NUMBER DEFAULT 0.25
+) IS
+  v_capacity      bus.capacity%TYPE;
+  v_distance_km   route.distanceKm%TYPE;
+  v_rda_id        routeDriverAssignmentList.routeDriverAssignmentId%TYPE;
+  v_route_id      route.routeId%TYPE;
+  v_assignment_id driverListAssignment.assignmentId%TYPE;
+
+  v_type_default    ticket.type%TYPE   := 'booking';
+  v_status_default  ticket.status%TYPE := 'on_selling';
+
+  v_existing_cnt NUMBER;
+  v_price NUMBER(8,2);
+
+BEGIN
+  -- Check if tickets already exist ma
+  SELECT COUNT(*)
+  INTO v_existing_cnt
+  FROM ticket
+  WHERE busScheduleId = p_bus_schedule_id;
+
+  IF v_existing_cnt > 0 THEN
+    RETURN;
+  END IF;
+
+  -- 1. Fetch related info from the grandpa table first :
+  SELECT bs.routeDriverAssignmentId
+    INTO v_rda_id
+  FROM busSchedule bs
+  WHERE bs.busScheduleId = p_bus_schedule_id;
+  
+  -- 2. Get routeId For calculate price , Get assignmentId to Fetch Target Bus  
+  SELECT rda.routeId, rda.assignmentId
+    INTO v_route_id, v_assignment_id
+  FROM routeDriverAssignmentList rda
+  WHERE rda.routeDriverAssignmentId = v_rda_id;
+
+  -- 2.1 
+  SELECT b.capacity
+    INTO v_capacity
+  FROM driverListAssignment dla
+  JOIN bus b ON b.busId = dla.busId
+  WHERE dla.assignmentId = v_assignment_id;
+
+  -- 2.2 
+  SELECT NVL(r.distanceKm, 0)
+    INTO v_distance_km
+  FROM route r
+  WHERE r.routeId = v_route_id;
+
+  -- Controlled error (business rule)
+  IF v_capacity IS NULL OR v_capacity <= 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Invalid bus capacity for schedule ' || p_bus_schedule_id);
+  END IF;
+
+  -- 4. calculate the price 
+  v_price := ROUND(p_rate_per_km * v_distance_km, 2);
+  
+  -- 3. count how many ticket we can generate based on the bus capacity 
+  FOR i IN 1..v_capacity LOOP
+    BEGIN
+      INSERT INTO ticket (
+        ticketId, busScheduleId, customerId, seatNo, price, type, status,
+        cancellationDate, extensionDate, extendedFromId, createdAt, updatedAt
+      ) VALUES (
+        FN_NEXT_TICKET_ID(),
+        p_bus_schedule_id,
+        NULL,
+        'S' || LPAD(i, 3, '0'),
+        v_price,
+        v_type_default,
+        v_status_default,
+        NULL, NULL, NULL,
+        SYSTIMESTAMP, SYSTIMESTAMP
+      );
+    EXCEPTION
+      WHEN DUP_VAL_ON_INDEX THEN
+        -- another session already inserted this seat
+        NULL;
+    END;
+  END LOOP;
+
+EXCEPTION
+  -- Controlled: missing foreign key data
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Required data not found for schedule ' || p_bus_schedule_id);
+
+  -- Default generic error catcher
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_TICKETS_FOR_SCHEDULE: ' || SQLERRM);
+    -- Optional: rethrow to stop silently swallowing
+    RAISE;
+END;
+/
+
+CREATE OR REPLACE TRIGGER BS_AI_GEN_TICKETS
+FOR INSERT ON busSchedule
+COMPOUND TRIGGER
+
+  TYPE t_ids IS TABLE OF busSchedule.busScheduleId%TYPE;
+  g_ids t_ids := t_ids();
+
+  BEFORE STATEMENT IS
+  BEGIN
+    g_ids.DELETE;
+  END BEFORE STATEMENT;
+
+  AFTER EACH ROW IS
+  BEGIN
+    g_ids.EXTEND;
+    g_ids(g_ids.LAST) := :NEW.busScheduleId;
+  END AFTER EACH ROW;
+
+  AFTER STATEMENT IS
+  BEGIN
+    IF g_ids.COUNT > 0 THEN
+      FOR i IN 1 .. g_ids.COUNT LOOP
+        -- Safe now: the INSERT statement has finished; busSchedule is not mutating
+        GEN_TICKETS_FOR_SCHEDULE(g_ids(i));
+      END LOOP;
+    END IF;
+  END AFTER STATEMENT;
+
+END BS_AI_GEN_TICKETS;
+/
+
+
 
 
 
