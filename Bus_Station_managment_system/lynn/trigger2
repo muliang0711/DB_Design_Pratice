@@ -50,7 +50,7 @@ END;
 
 -- use
 INSERT INTO PaymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, paymentMethod, type)
-VALUES ('P001', 'CU0003', 'T000000200', 200, 170, 30, 30, 'Completed', SYSTIMESTAMP, 'R001', 'Cash', 'Ticket');
+VALUES ('P001', 'CU0003', 'T00000000200', 200, 170, 30, 30, 'Completed', SYSTIMESTAMP, 'R001', 'Cash', 'Ticket');
 
 INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
 VALUES ('PT001', 'CU0003', 'P001', 30, 'Payment Redeem', 'Used points for ticket payment');
