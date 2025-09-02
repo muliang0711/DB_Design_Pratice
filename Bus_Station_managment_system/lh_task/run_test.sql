@@ -21,9 +21,9 @@ SET SERVEROUTPUT ON
 
 -- test: trg_on_bus_end_maintenance
 -- maintenanceID may need changing, look at output of prc_bus_start_maintenance
--- UPDATE BusMaintenance 
--- SET status = 'completed'
--- WHERE maintenanceID = 'M00502';
+UPDATE BusMaintenance 
+SET status = 'completed'
+WHERE maintenanceID = 'M00502';
 
 -- test: view_busMaintenanceStats
 -- SET SERVEROUTPUT ON
@@ -44,23 +44,23 @@ SET SERVEROUTPUT ON
 
 
 -- test: view_maintStaffRecentJob
-SET SERVEROUTPUT ON
-SET LINESIZE 200
-SET PAGESIZE 200
-ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY';
+-- SET SERVEROUTPUT ON
+-- SET LINESIZE 200
+-- SET PAGESIZE 200
+-- ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY';
 
-COLUMN staffID HEADING "Staff ID" FORMAT A10
-COLUMN fullName HEADING "Name" FORMAT A20
-COLUMN phoneNumber HEADING "Contact no." 
-COLUMN email HEADING "Email" FORMAT A30
-COLUMN maintenanceId HEADING "Maint. job ID" FORMAT A14
--- COLUMN maintenanceDetails HEADING "Service on bus" FORMAT A50
-COLUMN serviceItem HEADING "Service" FORMAT A30
-COLUMN busId HEADING "Bus ID" 
-COLUMN maintenanceDate HEADING "Done on" FORMAT A15
-COLUMN remarks HEADING "Remarks" FORMAT A30
+-- COLUMN staffID HEADING "Staff ID" FORMAT A10
+-- COLUMN fullName HEADING "Name" FORMAT A20
+-- COLUMN phoneNumber HEADING "Contact no." 
+-- COLUMN email HEADING "Email" FORMAT A30
+-- COLUMN maintenanceId HEADING "Maint. job ID" FORMAT A14
+-- -- COLUMN maintenanceDetails HEADING "Service on bus" FORMAT A50
+-- COLUMN serviceItem HEADING "Service" FORMAT A30
+-- COLUMN busId HEADING "Bus ID" 
+-- COLUMN maintenanceDate HEADING "Done on" FORMAT A15
+-- COLUMN remarks HEADING "Remarks" FORMAT A30
 
-SELECT * FROM MaintenanceStaffRecentJobView;
+-- SELECT * FROM MaintenanceStaffRecentJobView;
 
-CLEAR COLUMN 
+-- CLEAR COLUMN 
 
