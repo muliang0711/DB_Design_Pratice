@@ -1585,6 +1585,444 @@ BEGIN
 END;
 /
 
+
+
+-- PROCEDURE 1
+SET serveroutput on
+SET linesize 120
+SET pagesize 100
+CREATE OR REPLACE PROCEDURE ExtendTicket(
+    p_originalTicketID IN Ticket.ticketID%TYPE,
+    p_newTicketID      IN Ticket.ticketID%TYPE
+)
+AS
+    v_customerId   Ticket.customerId%TYPE;
+    v_type         Ticket.type%TYPE;
+    v_status       Ticket.status%TYPE;
+    v_newStatus    Ticket.status%TYPE;
+    v_originalScheduleId Ticket.busScheduleId%TYPE;
+    v_newScheduleId      Ticket.busScheduleId%TYPE;
+    v_originalRouteId    Route.routeId%TYPE;
+    v_newRouteId         Route.routeId%TYPE;
+    v_result       VARCHAR2(200);
+BEGIN
+    SELECT t.customerId, t.type, t.status, t.busScheduleId, r.routeId
+    INTO v_customerId, v_type, v_status, v_originalScheduleId, v_originalRouteId
+    FROM ticket t
+    JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
+    JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    JOIN route r ON rda.routeId = r.routeId
+    WHERE t.ticketId = p_originalTicketID;
+
+    SELECT t.status, t.busScheduleId, r.routeId
+    INTO v_newStatus, v_newScheduleId, v_newRouteId
+    FROM ticket t
+    JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
+    JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    JOIN route r ON rda.routeId = r.routeId
+    WHERE t.ticketId = p_newTicketID;
+
+    IF v_status != 'been_bought' THEN
+        v_result := 'Error: Only been_bought tickets can be extended';
+        DBMS_OUTPUT.PUT_LINE(v_result);
+        RETURN;
+    END IF;
+
+    IF LOWER(v_newStatus) != 'on_selling' THEN
+        v_result := 'Error: New ticket is not available for sale';
+        DBMS_OUTPUT.PUT_LINE(v_result);
+        RETURN;
+    END IF;
+
+    IF v_originalRouteId != v_newRouteId THEN
+        v_result := 'Error: Ticket exchange must be within the same route';
+        DBMS_OUTPUT.PUT_LINE(v_result);
+        RETURN;
+    END IF;
+
+    UPDATE ticket
+    SET customerId = NULL,
+        status     = 'on_selling',
+        updatedAt  = SYSTIMESTAMP
+    WHERE ticketId = p_originalTicketID;
+
+    UPDATE ticket
+    SET customerId     = v_customerId,
+        type           = v_type,
+        status         = 'booked_extended',
+        extendedFromId = v_originalScheduleId,
+        updatedAt      = SYSTIMESTAMP,
+        extensionDate  = SYSTIMESTAMP
+    WHERE ticketId = p_newTicketID;
+
+    UPDATE paymentRecord
+    SET ticketId = p_newTicketID
+    WHERE ticketId = p_originalTicketID;
+
+    COMMIT;
+    v_result := 'Success: Ticket ' || p_originalTicketID || ' extended to ticket ' || p_newTicketID;
+    DBMS_OUTPUT.PUT_LINE(v_result);
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        v_result := 'Error: Ticket not found';
+        DBMS_OUTPUT.PUT_LINE(v_result);
+        ROLLBACK;
+    WHEN OTHERS THEN
+        v_result := 'Error: ' || SQLERRM;
+        DBMS_OUTPUT.PUT_LINE(v_result);
+        ROLLBACK;
+END ExtendTicket;
+/
+
+    -- valid sample
+    EXEC ExtendTicket('T00000000473', 'T00000000480');
+
+
+-- SEQUENCE
+CREATE SEQUENCE PaymentID_seq
+MAXVALUE 999999999
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+CREATE SEQUENCE PointTxnID_seq
+MAXVALUE 999999999
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- PROCEDURE 2
+CREATE OR REPLACE PROCEDURE ProcessTicketRefund(
+    p_ticketID   IN Ticket.ticketID%TYPE,
+    p_refundType IN VARCHAR2
+)
+AS
+    v_ticketStatus   Ticket.status%TYPE;
+    v_paymentID      PaymentRecord.paymentID%TYPE;
+    v_totalAmount    PaymentRecord.totalAmount%TYPE;
+    v_pointsApplied  PaymentRecord.pointsApplied%TYPE;
+    v_pointValue     PaymentRecord.pointValue%TYPE;
+    v_customerID     Ticket.customerID%TYPE;
+    v_refundAmount   NUMBER(8,2);
+    v_daysBeforeDeparture NUMBER;
+    v_departureTime  BusSchedule.plannedDepartureTime%TYPE;
+
+    v_newPaymentID   VARCHAR2(12);
+    v_newPointTxnID  VARCHAR2(12);
+    v_result         VARCHAR2(100);
+BEGIN
+    -- Get ticket and payment details
+    SELECT t.status,
+        pr.paymentID,
+        pr.totalAmount,
+        pr.pointsApplied,
+        pr.pointValue,
+        pr.customerID,
+        bs.plannedDepartureTime
+    INTO v_ticketStatus,
+        v_paymentID,
+        v_totalAmount,
+        v_pointsApplied,
+        v_pointValue,
+        v_customerID,
+        v_departureTime
+    FROM Ticket t
+    JOIN PaymentRecord pr 
+        ON t.ticketID = pr.ticketID
+    JOIN BusSchedule bs 
+        ON t.busScheduleID = bs.busScheduleID
+    WHERE t.ticketID = p_ticketID;
+
+    -- Check if ticket can be refunded
+    IF LOWER(v_ticketStatus) NOT IN ('cancelled_by_user', 'cancelled_by_company') THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Error: Ticket is not cancelled');
+    END IF;
+
+    -- Calculate days before departure
+    v_daysBeforeDeparture := TRUNC(v_departureTime) - TRUNC(SYSDATE);
+
+    -- Refund amount based on policy
+    IF LOWER(p_refundType) = 'full' THEN
+        v_refundAmount := v_totalAmount;
+    ELSE
+        IF v_daysBeforeDeparture > 7 THEN
+            v_refundAmount := v_totalAmount * 0.8;
+        ELSIF v_daysBeforeDeparture > 1 THEN
+            v_refundAmount := v_totalAmount * 0.5;
+        ELSE
+            v_refundAmount := 0;
+        END IF;
+    END IF;
+
+    -- Generate new IDs (use SEQUENCE in real system)
+    SELECT 'RPY' || PaymentID_seq.NEXTVAL
+    INTO v_newPaymentID
+    FROM dual;
+    
+    SELECT 'RPT' || PointTxnID_seq.NEXTVAL
+    INTO v_newPointTxnID
+    FROM dual;
+
+    -- Insert refund payment record
+    INSERT INTO PaymentRecord (
+        paymentID, customerID, ticketID, totalAmount, cashAmount,
+        pointsApplied, pointValue, status, paymentTime,
+        receiptNo, remarks, paymentMethod, type
+    ) VALUES (
+        v_newPaymentID, v_customerID, p_ticketID, v_refundAmount, 0,
+         v_pointsApplied, v_pointValue, 'completed', SYSDATE,
+        'REF-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || p_ticketID,
+        'Refund for ticket ' || p_ticketID ,
+        'Bank Transfer', 'Refund'
+    );
+
+    -- Return points if any were used
+    IF v_pointsApplied > 0 THEN
+        INSERT INTO PointTransaction (
+            pointTxnID, customerID, paymentID, pointChange, source, remarks, createdAt
+        ) VALUES (
+            v_newPointTxnID, v_customerID, v_newPaymentID, v_pointsApplied,
+            'Ticket Refund', 'Points returned for ticket ' || p_ticketID,
+            SYSDATE
+        );
+
+        UPDATE Customer
+        SET pointBalance = pointBalance + v_pointsApplied,
+            updatedAt = SYSDATE
+        WHERE customerID = v_customerID;
+    END IF;
+
+    v_result := 'Success: Refund processed for amount ' || v_refundAmount;
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE(v_result);
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20002, 'Refund failed: ' || SQLERRM);
+END ProcessTicketRefund;
+/
+
+-- REPORT1 : Bus Schedule Occupancy Report 
+SET serveroutput on
+SET linesize 120
+SET pagesize 100
+
+CREATE OR REPLACE PROCEDURE bus_schedule_occupancy(
+    p_startDate IN DATE,
+    p_endDate   IN DATE
+)
+IS
+    CURSOR scheduleCur IS
+        SELECT BS.busScheduleId, R.routeName, BS.plannedDepartureTime, BS.plannedArrivalTime, 
+               B.plateNo, B.model
+        FROM busSchedule BS
+        JOIN routeDriverAssignmentList RDA ON BS.routeDriverAssignmentId = RDA.routeDriverAssignmentId
+        JOIN route R ON RDA.routeId = R.routeId
+        JOIN driverListAssignment DLA ON RDA.assignmentId = DLA.assignmentId
+        JOIN bus B ON DLA.busId = B.busId
+        WHERE BS.plannedDepartureTime BETWEEN p_startDate AND p_endDate
+          AND EXISTS (SELECT 1 FROM ticket T WHERE T.busScheduleId = BS.busScheduleId)  
+        ORDER BY BS.plannedDepartureTime;
+
+    schedRec scheduleCur%ROWTYPE;
+
+    CURSOR ticketCur (v_scheduleId VARCHAR2) IS
+        SELECT ticketId, seatNo, price, status
+        FROM ticket
+        WHERE busScheduleId = v_scheduleId;
+
+    ticketRec ticketCur%ROWTYPE;
+
+    v_totalSeats    NUMBER := 0;
+    v_totalRevenue  NUMBER := 0;
+    v_schedSeats    NUMBER := 0;
+    v_schedRevenue  NUMBER := 0;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
+    DBMS_OUTPUT.PUT_LINE('BUS SCHEDULE OCCUPANCY REPORT FROM ' 
+        || TO_CHAR(p_startDate,'DD-MON-YYYY HH24:MI') 
+        || ' TO ' 
+        || TO_CHAR(p_endDate,'DD-MON-YYYY HH24:MI'));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
+
+    OPEN scheduleCur;
+    LOOP
+        FETCH scheduleCur INTO schedRec;
+        EXIT WHEN scheduleCur%NOTFOUND;
+
+        -- reset per-schedule counters
+        v_schedSeats := 0;
+        v_schedRevenue := 0;
+
+        DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Bus Schedule: ' || schedRec.busScheduleId 
+            || ', Route: ' || schedRec.routeName 
+            || ', Bus: ' || schedRec.plateNo || ' (' || schedRec.model || ')');
+        DBMS_OUTPUT.PUT_LINE('Departure: ' || TO_CHAR(schedRec.plannedDepartureTime,'DD-MON HH24:MI') 
+            || ', Arrival: ' || TO_CHAR(schedRec.plannedArrivalTime,'DD-MON HH24:MI'));
+        DBMS_OUTPUT.PUT_LINE(RPAD('TicketID',12) || RPAD('Seat',6) || RPAD('Price',12) || 'Status');
+        DBMS_OUTPUT.PUT_LINE(RPAD('-',120,'-'));
+
+        OPEN ticketCur(schedRec.busScheduleId);
+        LOOP
+            FETCH ticketCur INTO ticketRec;
+            EXIT WHEN ticketCur%NOTFOUND;
+
+            DBMS_OUTPUT.PUT_LINE(
+                RPAD(ticketRec.ticketId,12) || 
+                RPAD(ticketRec.seatNo,6) || 
+                RPAD(TO_CHAR(ticketRec.price,'999,999.99'),12) || 
+                ticketRec.status
+            );
+
+            v_schedSeats := v_schedSeats + 1;
+            v_totalSeats := v_totalSeats + 1;
+
+            IF LOWER(ticketRec.status) IN ('been_bought','booked_extended') THEN
+                v_schedRevenue := v_schedRevenue + ticketRec.price;
+                v_totalRevenue := v_totalRevenue + ticketRec.price;
+            END IF;
+        END LOOP;
+        CLOSE ticketCur;
+
+        -- print per-schedule summary
+        DBMS_OUTPUT.PUT_LINE('Schedule Total Tickets: ' || v_schedSeats || 
+                             ', Revenue : ' || TO_CHAR(v_schedRevenue,'999,990.99'));
+        DBMS_OUTPUT.PUT_LINE(LPAD('-',120,'-'));                    
+    END LOOP;
+    CLOSE scheduleCur;
+
+    DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
+    DBMS_OUTPUT.PUT_LINE('TOTAL TICKETS SOLD: ' || v_totalSeats 
+        || ', TOTAL REVENUE: ' || TO_CHAR(v_totalRevenue,'999,999,999.99'));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
+END;
+/
+
+
+-- Report2 : Customer Point Transaction Summary with Payment Details
+
+SET serveroutput on
+SET linesize 120
+SET pagesize 100
+
+CREATE OR REPLACE PROCEDURE customer_point_summary(
+    p_startDate IN TIMESTAMP,
+    p_endDate   IN TIMESTAMP
+) IS
+    v_totalPointsRedeemed NUMBER := 0;
+    v_totalCustomers NUMBER := 0;
+    v_grandTotalAmount NUMBER := 0;
+
+    CURSOR customer_cursor IS
+    SELECT c.customerId, c.firstName || ' ' || c.lastName AS customerName,
+           c.membershipStatus, c.pointBalance
+    FROM customer c
+    WHERE EXISTS (
+        SELECT 1 FROM pointTransaction pt 
+        WHERE pt.customerId = c.customerId 
+        AND pt.createdAt BETWEEN p_startDate AND p_endDate
+    )
+    ORDER BY c.pointBalance DESC;
+
+    customer_rec customer_cursor%ROWTYPE;
+
+    CURSOR point_txn_cursor(v_custId VARCHAR2) IS
+    SELECT pt.pointTxnId, pt.pointChange, pt.source, pt.createdAt,
+           pr.paymentId, pr.totalAmount, pr.paymentMethod,
+           t.ticketId, bs.busScheduleId, r.routeName
+    FROM pointTransaction pt
+    LEFT JOIN paymentRecord pr ON pt.paymentId = pr.paymentId
+    LEFT JOIN ticket t ON pr.ticketId = t.ticketId
+    LEFT JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
+    LEFT JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    LEFT JOIN route r ON rda.routeId = r.routeId
+    WHERE pt.customerId = v_custId
+    AND pt.createdAt BETWEEN p_startDate AND p_endDate
+    AND t.status IN ('booked_extended','been_bought','on_selling')
+    ORDER BY pt.createdAt DESC;
+
+    point_txn_rec point_txn_cursor%ROWTYPE;
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE('CUSTOMER POINT TRANSACTION SUMMARY REPORT');
+    DBMS_OUTPUT.PUT_LINE('Period: ' || TO_CHAR(p_startDate, 'DD-MON-YYYY') || ' to ' || TO_CHAR(p_endDate, 'DD-MON-YYYY'));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE(CHR(10));
+
+    OPEN customer_cursor;
+    LOOP
+        FETCH customer_cursor INTO customer_rec;
+        EXIT WHEN customer_cursor%NOTFOUND;
+
+        v_totalCustomers := v_totalCustomers + 1;
+         DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+        DBMS_OUTPUT.PUT_LINE('Customer ID: ' || customer_rec.customerId);
+        DBMS_OUTPUT.PUT_LINE('Name: ' || customer_rec.customerName);
+        DBMS_OUTPUT.PUT_LINE('Membership: ' || customer_rec.membershipStatus);
+        DBMS_OUTPUT.PUT_LINE('Current Points: ' || customer_rec.pointBalance);
+        DBMS_OUTPUT.PUT_LINE(LPAD('-', 120, '-'));
+
+        -- Point transaction details
+        DBMS_OUTPUT.PUT_LINE(
+            RPAD('Txn Date', 12) || 
+            RPAD('Points', 10) || 
+            RPAD('Type', 15) || 
+            RPAD('Payment ID', 15) || 
+            RPAD('Amount', 12) || 
+            RPAD('Method', 15) || 
+            RPAD('Route', 25) || 
+            RPAD('Ticket ID', 15)
+        );
+        DBMS_OUTPUT.PUT_LINE(LPAD('-', 120, '-'));
+
+        OPEN point_txn_cursor(customer_rec.customerId);
+        LOOP
+            FETCH point_txn_cursor INTO point_txn_rec;
+            EXIT WHEN point_txn_cursor%NOTFOUND;
+
+            IF point_txn_rec.pointChange > 0 THEN
+                v_totalPointsRedeemed := v_totalPointsRedeemed + ABS(point_txn_rec.pointChange);
+            END IF;
+
+            v_grandTotalAmount := v_grandTotalAmount + NVL(point_txn_rec.totalAmount, 0);
+
+            DBMS_OUTPUT.PUT_LINE(
+                RPAD(TO_CHAR(point_txn_rec.createdAt, 'DD-MON-YY'), 12) ||
+                RPAD(point_txn_rec.pointChange, 10) ||
+                RPAD(point_txn_rec.source, 15) ||
+                RPAD(NVL(point_txn_rec.paymentId, 'N/A'), 15) ||
+                RPAD(NVL(TO_CHAR(point_txn_rec.totalAmount, '999,999.99'), 'N/A'), 12) ||
+                RPAD(NVL(point_txn_rec.paymentMethod, 'N/A'), 15) ||
+                RPAD(NVL(point_txn_rec.routeName, 'N/A'), 25) ||
+                RPAD(NVL(point_txn_rec.ticketId, 'N/A'), 15)
+            );
+        END LOOP;
+        CLOSE point_txn_cursor;
+        
+        DBMS_OUTPUT.PUT_LINE(CHR(10));
+    END LOOP;
+    CLOSE customer_cursor;
+
+    -- Summary
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+    DBMS_OUTPUT.PUT_LINE('SUMMARY REPORT');
+    DBMS_OUTPUT.PUT_LINE('Total Customers: ' || v_totalCustomers);
+    DBMS_OUTPUT.PUT_LINE('Total Points Redeemed: ' || v_totalPointsRedeemed);
+    DBMS_OUTPUT.PUT_LINE('Total Transaction Amount: RM' || TO_CHAR(v_grandTotalAmount, '999,999,999.99'));
+    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/
+
+
+
+
 -- =========== VIEWS =========== 
 SET LINESIZE 200
 SET PAGESIZE 200
@@ -1837,6 +2275,195 @@ SELECT
   ) AS recentCancelRatePct
 FROM route r
 CROSS JOIN mx;
+
+
+-- song lynn
+-- view 1
+SET linesize 200
+SET pagesize 100
+COLUMN customerID     FORMAT A15     HEADING 'Customer ID'
+COLUMN ticketID       FORMAT A15     HEADING 'Ticket ID'
+COLUMN paymentID      FORMAT A15     HEADING 'Payment ID'
+COLUMN paymentTime    FORMAT A35     HEADING 'Payment Time'
+
+CREATE OR REPLACE VIEW vw_cancelled_ticket_points AS
+SELECT 
+    p.customerID,
+    p.ticketID, 
+    p.paymentID, 
+    p.paymentTime
+FROM PaymentRecord p
+JOIN PointTransaction pt ON pt.paymentID = p.paymentID
+JOIN Customer c ON c.customerID = p.customerID
+JOIN Ticket t ON t.ticketID = p.ticketID
+WHERE t.status = 'cancelled_by_company'
+ORDER BY p.paymentTime DESC;
+
+CLEAR COLUMN
+
+
+-- view 2
+
+-- find the ticket that is available to extend
+SET linesize 200
+SET pagesize 100
+ALTER SESSION SET nls_date_format = 'dd-mm-yyyy';
+
+COLUMN busScheduleId        FORMAT A12      HEADING 'BusSchedule ID'
+COLUMN plannedDepartureTime FORMAT A20      HEADING 'Planned Departure'
+COLUMN plannedArrivalTime   FORMAT A20      HEADING 'Planned Arrival'
+COLUMN ticketId             FORMAT A12      HEADING 'Ticket ID'
+COLUMN seatNo               FORMAT A8       HEADING 'Seat No'
+COLUMN price                FORMAT 99990.00 HEADING 'Price'
+COLUMN type                 FORMAT A12      HEADING 'Type'
+COLUMN ticketCreatedAt      FORMAT A20      HEADING 'Created At'
+COLUMN ticketUpdatedAt      FORMAT A20      HEADING 'Updated At'
+
+CREATE OR REPLACE VIEW view_OnSellingTickets AS
+SELECT 
+    bs.busScheduleId,
+    bs.plannedDepartureTime,
+    bs.plannedArrivalTime,
+    t.ticketId,
+    t.seatNo,
+    t.price,
+    t.type,
+    t.createdAt  AS ticketCreatedAt,
+    t.updatedAt  AS ticketUpdatedAt
+FROM route r
+JOIN routeDriverAssignmentList rda 
+    ON r.routeId = rda.routeId
+JOIN busSchedule bs 
+    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+JOIN ticket t 
+    ON bs.busScheduleId = t.busScheduleId
+WHERE LOWER(t.status) = 'on_selling';
+
+CLEAR COLUMN
+
+-- query 1
+-- use to view the income of different route and analysis the ticket sold, avarage ticket money, the uses of the point
+-- use for straegy: which route earn the most, the average ticket price is reasonable or not, and the point system bring how much discount
+
+SET linesize 200
+SET pagesize 100
+ALTER SESSION SET nls_date_format='dd-mm-yyyy';
+
+-- Set the title and column
+COLUMN routeName           HEADING "Route Name"             FORMAT A25
+COLUMN departureCity       HEADING "Departure"              FORMAT A15
+COLUMN arrivalCity         HEADING "Arrival"                FORMAT A15
+COLUMN month               HEADING "Month"                  FORMAT A10
+COLUMN totalRevenue        HEADING "Total Revenue"          FORMAT 999,999,990.00
+COLUMN ticketsSold         HEADING "Tickets Sold"           FORMAT 999,990
+COLUMN averageTicketPrice  HEADING "Avg Ticket Price"       FORMAT 999,990.00
+COLUMN pointsRedeemedValue HEADING "Points Discount Value"  FORMAT 999,999,990.00
+
+
+CREATE OR REPLACE VIEW RevenueAnalysis AS
+SELECT 
+    r.routeID,
+    r.routeName,
+    r.startPoint AS departureCity,
+    r.endPoint AS arrivalCity,
+    TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM') AS month,
+    SUM(pr.totalAmount) AS totalRevenue,
+    COUNT(DISTINCT t.ticketID) AS ticketsSold,
+    ROUND(AVG(pr.totalAmount), 2) AS averageTicketPrice,
+    SUM(pr.pointValue) AS pointsRedeemedValue
+FROM 
+    PaymentRecord pr
+JOIN Ticket t 
+    ON pr.ticketID = t.ticketID
+JOIN BusSchedule bs 
+    ON t.busScheduleID = bs.busScheduleID
+JOIN RouteDriverAssignmentList rdal 
+    ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
+JOIN Route r 
+    ON rdal.routeID = r.routeID
+JOIN Customer c 
+    ON pr.customerID = c.customerID
+WHERE 
+    pr.status = 'completed'
+    AND t.status IN ('booked_extended','been_bought')
+GROUP BY 
+    r.routeID, r.routeName, r.startPoint, r.endPoint, TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM')
+ORDER BY 
+     TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM'),
+    r.routeID,
+    totalRevenue DESC;
+
+CLEAR COLUMN
+
+-- query 2
+-- categories the customer spending to find the loyalty customer
+SET linesize 220
+SET pagesize 100
+
+COLUMN customerName       HEADING "Customer Name"        FORMAT A25
+COLUMN membershipStatus   HEADING "Member Status"        FORMAT A15
+COLUMN companyName        HEADING "Company Name"         FORMAT A20
+COLUMN routeName          HEADING "Route Name"           FORMAT A25   
+COLUMN totalSpending      HEADING "Total Spending"       FORMAT 999,999,990.00
+COLUMN totalPointsEarned  HEADING "Points Earned"        FORMAT 999,999,990
+COLUMN totalTickets       HEADING "Tickets Bought"       FORMAT 999,990
+COLUMN schedulesUsed      HEADING "Schedules Used"       FORMAT 999,990
+COLUMN avgSpendPerTrip    HEADING "Avg Spend/Trip"       FORMAT 999,990.00
+COLUMN customerCategory   HEADING "Customer Category"    FORMAT A18
+
+-- grouping
+BREAK ON customerId SKIP 1 ON customerName ON membershipStatus ON companyName 
+
+CREATE OR REPLACE VIEW StrategicCustomerValue AS
+SELECT
+    c.customerId,
+    c.firstName || ' ' || c.lastName AS customerName,
+    c.membershipStatus,
+    bc.companyName,
+    r.routeName,
+    SUM(pr.totalAmount) AS totalSpending,
+    NVL(SUM(pt.pointChange),0) AS totalPointsEarned,
+    COUNT(DISTINCT t.ticketId) AS totalTickets,
+    COUNT(DISTINCT bs.busScheduleId) AS schedulesUsed,
+    ROUND(AVG(pr.totalAmount),2) AS avgSpendPerTrip,
+    CASE 
+      WHEN SUM(pr.totalAmount) > 1000 THEN 'High Value'
+      WHEN SUM(pr.totalAmount) BETWEEN 500 AND 1000 THEN 'Medium Value'
+      ELSE 'Low Value'
+    END AS customerCategory
+FROM customer c
+JOIN ticket t 
+    ON c.customerId = t.customerId
+JOIN busSchedule bs 
+    ON t.busScheduleId = bs.busScheduleId
+JOIN routeDriverAssignmentList rda 
+    ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+JOIN route r 
+    ON rda.routeId = r.routeId
+JOIN bus b 
+    ON rda.assignmentId IN (
+        SELECT assignmentId 
+        FROM driverListAssignment 
+        WHERE busId = b.busId
+    )
+JOIN busCompany bc 
+    ON b.companyId = bc.companyId
+LEFT JOIN paymentRecord pr 
+    ON t.ticketId = pr.ticketId
+LEFT JOIN pointTransaction pt 
+    ON pr.paymentId = pt.paymentId
+WHERE 
+    pr.status = 'completed'
+    AND t.status IN ('booked_extended','been_bought')
+GROUP BY 
+    c.customerId, c.firstName, c.lastName, c.membershipStatus, 
+    bc.companyName, r.routeName;
+
+CLEAR COLUMN
+CLEAR BREAKS
+-- NVL use for process the null value
+
+
 
 CREATE INDEX ix_busstation_name_upper
   ON busStation (UPPER(stationName));
@@ -2997,7 +3624,7 @@ INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName,
 INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status) VALUES ('D0457', 'C004', 'DRV368912N', DATE '2030-04-18', 'Sarah', 'Ellis', '+60-14-9601809', 'suspended');
 INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status) VALUES ('D0458', 'C012', 'DRV837474Z', DATE '2033-08-14', 'John', 'Jackson', '+60-17-5272992', 'suspended');
 INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status) VALUES ('D0459', 'C019', 'DRV598982Z', DATE '2031-03-28', 'Robert', 'Porter', '+60-13-4791161', 'inactive');
-INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status) VALUES ('D0460', 'C004', 'DRV570037J', DATE '2032-05-22', 'Justin', 'Moran', '+60-14-2102747', 'inactive');
+INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status) VALUES ('D0460', 'C004', 'DRV570037J', DATE '2032-05-22', 'Justin', 'Moran', '+60-14-2102747', 'active');
 INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status) VALUES ('D0461', 'C007', 'DRV146204Y', DATE '2029-12-30', 'Timothy', 'Jacobson', '+60-14-1945361', 'inactive');
 INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status) VALUES ('D0462', 'C011', 'DRV277235W', DATE '2032-11-09', 'Heather', 'Watson', '+60-13-3336986', 'inactive');
 INSERT INTO busDriver (driverId, companyId, licenseNo, licenseExpiry, firstName, lastName, phoneNumber, status) VALUES ('D0463', 'C016', 'DRV873004W', DATE '2032-10-31', 'Molly', 'Maddox', '+60-14-8326563', 'suspended');
@@ -14061,225 +14688,7 @@ END;
 
 -- Wong Song Lynn
 
--- PROCEDURE 1
-SET serveroutput on
-SET linesize 120
-SET pagesize 100
-CREATE OR REPLACE PROCEDURE ExtendTicket(
-    p_originalTicketID IN Ticket.ticketID%TYPE,
-    p_newTicketID      IN Ticket.ticketID%TYPE
-)
-AS
-    v_customerId   Ticket.customerId%TYPE;
-    v_type         Ticket.type%TYPE;
-    v_status       Ticket.status%TYPE;
-    v_newStatus    Ticket.status%TYPE;
-    v_originalScheduleId Ticket.busScheduleId%TYPE;
-    v_newScheduleId      Ticket.busScheduleId%TYPE;
-    v_originalRouteId    Route.routeId%TYPE;
-    v_newRouteId         Route.routeId%TYPE;
-    v_result       VARCHAR2(200);
-BEGIN
-    SELECT t.customerId, t.type, t.status, t.busScheduleId, r.routeId
-    INTO v_customerId, v_type, v_status, v_originalScheduleId, v_originalRouteId
-    FROM ticket t
-    JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
-    JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
-    JOIN route r ON rda.routeId = r.routeId
-    WHERE t.ticketId = p_originalTicketID;
 
-    SELECT t.status, t.busScheduleId, r.routeId
-    INTO v_newStatus, v_newScheduleId, v_newRouteId
-    FROM ticket t
-    JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
-    JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
-    JOIN route r ON rda.routeId = r.routeId
-    WHERE t.ticketId = p_newTicketID;
-
-    IF v_status != 'been_bought' THEN
-        v_result := 'Error: Only been_bought tickets can be extended';
-        DBMS_OUTPUT.PUT_LINE(v_result);
-        RETURN;
-    END IF;
-
-    IF LOWER(v_newStatus) != 'on_selling' THEN
-        v_result := 'Error: New ticket is not available for sale';
-        DBMS_OUTPUT.PUT_LINE(v_result);
-        RETURN;
-    END IF;
-
-    IF v_originalRouteId != v_newRouteId THEN
-        v_result := 'Error: Ticket exchange must be within the same route';
-        DBMS_OUTPUT.PUT_LINE(v_result);
-        RETURN;
-    END IF;
-
-    UPDATE ticket
-    SET customerId = NULL,
-        status     = 'on_selling',
-        updatedAt  = SYSTIMESTAMP
-    WHERE ticketId = p_originalTicketID;
-
-    UPDATE ticket
-    SET customerId     = v_customerId,
-        type           = v_type,
-        status         = 'booked_extended',
-        extendedFromId = v_originalScheduleId,
-        updatedAt      = SYSTIMESTAMP,
-        extensionDate  = SYSTIMESTAMP
-    WHERE ticketId = p_newTicketID;
-
-    UPDATE paymentRecord
-    SET ticketId = p_newTicketID
-    WHERE ticketId = p_originalTicketID;
-
-    COMMIT;
-    v_result := 'Success: Ticket ' || p_originalTicketID || ' extended to ticket ' || p_newTicketID;
-    DBMS_OUTPUT.PUT_LINE(v_result);
-
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        v_result := 'Error: Ticket not found';
-        DBMS_OUTPUT.PUT_LINE(v_result);
-        ROLLBACK;
-    WHEN OTHERS THEN
-        v_result := 'Error: ' || SQLERRM;
-        DBMS_OUTPUT.PUT_LINE(v_result);
-        ROLLBACK;
-END ExtendTicket;
-/
-
-    -- valid sample
-    EXEC ExtendTicket('T00000000473', 'T00000000480');
-
-
--- SEQUENCE
-CREATE SEQUENCE PaymentID_seq
-MAXVALUE 999999999
-START WITH 1
-INCREMENT BY 1
-NOCACHE;
-
-CREATE SEQUENCE PointTxnID_seq
-MAXVALUE 999999999
-START WITH 1
-INCREMENT BY 1
-NOCACHE;
-
--- PROCEDURE 2
-CREATE OR REPLACE PROCEDURE ProcessTicketRefund(
-    p_ticketID   IN Ticket.ticketID%TYPE,
-    p_refundType IN VARCHAR2
-)
-AS
-    v_ticketStatus   Ticket.status%TYPE;
-    v_paymentID      PaymentRecord.paymentID%TYPE;
-    v_totalAmount    PaymentRecord.totalAmount%TYPE;
-    v_pointsApplied  PaymentRecord.pointsApplied%TYPE;
-    v_pointValue     PaymentRecord.pointValue%TYPE;
-    v_customerID     Ticket.customerID%TYPE;
-    v_refundAmount   NUMBER(8,2);
-    v_daysBeforeDeparture NUMBER;
-    v_departureTime  BusSchedule.plannedDepartureTime%TYPE;
-
-    v_newPaymentID   VARCHAR2(12);
-    v_newPointTxnID  VARCHAR2(12);
-    v_result         VARCHAR2(100);
-BEGIN
-    -- Get ticket and payment details
-    SELECT t.status,
-        pr.paymentID,
-        pr.totalAmount,
-        pr.pointsApplied,
-        pr.pointValue,
-        pr.customerID,
-        bs.plannedDepartureTime
-    INTO v_ticketStatus,
-        v_paymentID,
-        v_totalAmount,
-        v_pointsApplied,
-        v_pointValue,
-        v_customerID,
-        v_departureTime
-    FROM Ticket t
-    JOIN PaymentRecord pr 
-        ON t.ticketID = pr.ticketID
-    JOIN BusSchedule bs 
-        ON t.busScheduleID = bs.busScheduleID
-    WHERE t.ticketID = p_ticketID;
-
-    -- Check if ticket can be refunded
-    IF LOWER(v_ticketStatus) NOT IN ('cancelled_by_user', 'cancelled_by_company') THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Error: Ticket is not cancelled');
-    END IF;
-
-    -- Calculate days before departure
-    v_daysBeforeDeparture := TRUNC(v_departureTime) - TRUNC(SYSDATE);
-
-    -- Refund amount based on policy
-    IF LOWER(p_refundType) = 'full' THEN
-        v_refundAmount := v_totalAmount;
-    ELSE
-        IF v_daysBeforeDeparture > 7 THEN
-            v_refundAmount := v_totalAmount * 0.8;
-        ELSIF v_daysBeforeDeparture > 1 THEN
-            v_refundAmount := v_totalAmount * 0.5;
-        ELSE
-            v_refundAmount := 0;
-        END IF;
-    END IF;
-
-    -- Generate new IDs (use SEQUENCE in real system)
-    SELECT 'RPY' || PaymentID_seq.NEXTVAL
-    INTO v_newPaymentID
-    FROM dual;
-    
-    SELECT 'RPT' || PointTxnID_seq.NEXTVAL
-    INTO v_newPointTxnID
-    FROM dual;
-
-    -- Insert refund payment record
-    INSERT INTO PaymentRecord (
-        paymentID, customerID, ticketID, totalAmount, cashAmount,
-        pointsApplied, pointValue, status, paymentTime,
-        receiptNo, remarks, paymentMethod, type
-    ) VALUES (
-        v_newPaymentID, v_customerID, p_ticketID, v_refundAmount, 0,
-         v_pointsApplied, v_pointValue, 'completed', SYSDATE,
-        'REF-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || p_ticketID,
-        'Refund for ticket ' || p_ticketID ,
-        'Bank Transfer', 'Refund'
-    );
-
-    -- Return points if any were used
-    IF v_pointsApplied > 0 THEN
-        INSERT INTO PointTransaction (
-            pointTxnID, customerID, paymentID, pointChange, source, remarks, createdAt
-        ) VALUES (
-            v_newPointTxnID, v_customerID, v_newPaymentID, v_pointsApplied,
-            'Ticket Refund', 'Points returned for ticket ' || p_ticketID,
-            SYSDATE
-        );
-
-        UPDATE Customer
-        SET pointBalance = pointBalance + v_pointsApplied,
-            updatedAt = SYSDATE
-        WHERE customerID = v_customerID;
-    END IF;
-
-    v_result := 'Success: Refund processed for amount ' || v_refundAmount;
-    COMMIT;
-    DBMS_OUTPUT.PUT_LINE(v_result);
-
-EXCEPTION
-    WHEN OTHERS THEN
-        ROLLBACK;
-        RAISE_APPLICATION_ERROR(-20002, 'Refund failed: ' || SQLERRM);
-END ProcessTicketRefund;
-/
-
--- valid execution
-EXEC ProcessTicketRefund('T00000000020', 'full');
 
 -- TRIGGER 1
 CREATE OR REPLACE TRIGGER EnforceTicketCreationRules
@@ -14336,10 +14745,6 @@ BEGIN
 END;
 /
 
--- valid
-INSERT INTO ticket (ticketId, busScheduleId, customerId, seatNo, price, type, status, cancellationDate, extensionDate, extendedFromId) 
-VALUES ('T000000200', 'S000005', 'CU0001', 'D15', 135.50, 'booking', 'been_bought', NULL, NULL, NULL);
-
 
 -- TRIGGER 2
 CREATE OR REPLACE TRIGGER ManagePointTransaction
@@ -14388,440 +14793,6 @@ BEGIN
     WHERE customerID = :NEW.customerID;
 END;
 /
--- redeemtion cannot > customer own
--- redeemtion only after the payment is done
-
-
--- use
-INSERT INTO PaymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmount, pointsApplied, pointValue, status, paymentTime, receiptNo, paymentMethod, type)
-VALUES ('P001', 'CU0003', 'T00000000200', 200, 170, 30, 30, 'Completed', SYSTIMESTAMP, 'R001', 'Cash', 'Ticket');
-
-INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
-VALUES ('PT001', 'CU0003', 'P001', 30, 'Payment Redeem', 'Used points for ticket payment');
-
-
-
-
--- query 1
--- use to view the income of different route and analysis the ticket sold, avarage ticket money, the uses of the point
--- use for straegy: which route earn the most, the average ticket price is reasonable or not, and the point system bring how much discount
-
-SET linesize 200
-SET pagesize 100
-ALTER SESSION SET nls_date_format='dd-mm-yyyy';
-
--- Set the title and column
-COLUMN routeName           HEADING "Route Name"             FORMAT A25
-COLUMN departureCity       HEADING "Departure"              FORMAT A15
-COLUMN arrivalCity         HEADING "Arrival"                FORMAT A15
-COLUMN month               HEADING "Month"                  FORMAT A10
-COLUMN totalRevenue        HEADING "Total Revenue"          FORMAT 999,999,990.00
-COLUMN ticketsSold         HEADING "Tickets Sold"           FORMAT 999,990
-COLUMN averageTicketPrice  HEADING "Avg Ticket Price"       FORMAT 999,990.00
-COLUMN pointsRedeemedValue HEADING "Points Discount Value"  FORMAT 999,999,990.00
-
-
-CREATE OR REPLACE VIEW RevenueAnalysis AS
-SELECT 
-    r.routeID,
-    r.routeName,
-    r.startPoint AS departureCity,
-    r.endPoint AS arrivalCity,
-    TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM') AS month,
-    SUM(pr.totalAmount) AS totalRevenue,
-    COUNT(DISTINCT t.ticketID) AS ticketsSold,
-    ROUND(AVG(pr.totalAmount), 2) AS averageTicketPrice,
-    SUM(pr.pointValue) AS pointsRedeemedValue
-FROM 
-    PaymentRecord pr
-JOIN Ticket t 
-    ON pr.ticketID = t.ticketID
-JOIN BusSchedule bs 
-    ON t.busScheduleID = bs.busScheduleID
-JOIN RouteDriverAssignmentList rdal 
-    ON bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
-JOIN Route r 
-    ON rdal.routeID = r.routeID
-JOIN Customer c 
-    ON pr.customerID = c.customerID
-WHERE 
-    pr.status = 'completed'
-    AND t.status IN ('booked_extended','been_bought')
-GROUP BY 
-    r.routeID, r.routeName, r.startPoint, r.endPoint, TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM')
-ORDER BY 
-     TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM'),
-    r.routeID,
-    totalRevenue DESC;
-
-SELECT * FROM RevenueAnalysis;
-CLEAR COLUMN
-
--- query 2
--- categories the customer spending to find the loyalty customer
-SET linesize 220
-SET pagesize 100
-
-COLUMN customerName       HEADING "Customer Name"        FORMAT A25
-COLUMN membershipStatus   HEADING "Member Status"        FORMAT A15
-COLUMN companyName        HEADING "Company Name"         FORMAT A20
-COLUMN routeName          HEADING "Route Name"           FORMAT A25   
-COLUMN totalSpending      HEADING "Total Spending"       FORMAT 999,999,990.00
-COLUMN totalPointsEarned  HEADING "Points Earned"        FORMAT 999,999,990
-COLUMN totalTickets       HEADING "Tickets Bought"       FORMAT 999,990
-COLUMN schedulesUsed      HEADING "Schedules Used"       FORMAT 999,990
-COLUMN avgSpendPerTrip    HEADING "Avg Spend/Trip"       FORMAT 999,990.00
-COLUMN customerCategory   HEADING "Customer Category"    FORMAT A18
-
--- grouping
-BREAK ON customerId SKIP 1 ON customerName ON membershipStatus ON companyName 
-
-CREATE OR REPLACE VIEW StrategicCustomerValue AS
-SELECT
-    c.customerId,
-    c.firstName || ' ' || c.lastName AS customerName,
-    c.membershipStatus,
-    bc.companyName,
-    r.routeName,
-    SUM(pr.totalAmount) AS totalSpending,
-    NVL(SUM(pt.pointChange),0) AS totalPointsEarned,
-    COUNT(DISTINCT t.ticketId) AS totalTickets,
-    COUNT(DISTINCT bs.busScheduleId) AS schedulesUsed,
-    ROUND(AVG(pr.totalAmount),2) AS avgSpendPerTrip,
-    CASE 
-      WHEN SUM(pr.totalAmount) > 1000 THEN 'High Value'
-      WHEN SUM(pr.totalAmount) BETWEEN 500 AND 1000 THEN 'Medium Value'
-      ELSE 'Low Value'
-    END AS customerCategory
-FROM customer c
-JOIN ticket t 
-    ON c.customerId = t.customerId
-JOIN busSchedule bs 
-    ON t.busScheduleId = bs.busScheduleId
-JOIN routeDriverAssignmentList rda 
-    ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
-JOIN route r 
-    ON rda.routeId = r.routeId
-JOIN bus b 
-    ON rda.assignmentId IN (
-        SELECT assignmentId 
-        FROM driverListAssignment 
-        WHERE busId = b.busId
-    )
-JOIN busCompany bc 
-    ON b.companyId = bc.companyId
-LEFT JOIN paymentRecord pr 
-    ON t.ticketId = pr.ticketId
-LEFT JOIN pointTransaction pt 
-    ON pr.paymentId = pt.paymentId
-WHERE 
-    pr.status = 'completed'
-    AND t.status IN ('booked_extended','been_bought')
-GROUP BY 
-    c.customerId, c.firstName, c.lastName, c.membershipStatus, 
-    bc.companyName, r.routeName;
-
-SELECT * FROM StrategicCustomerValue;
-CLEAR COLUMN
-CLEAR BREAKS
--- NVL use for process the null value
-
-
-
-
-
--- REPORT1 : Bus Schedule Occupancy Report 
-SET serveroutput on
-SET linesize 120
-SET pagesize 100
-
-CREATE OR REPLACE PROCEDURE bus_schedule_occupancy(
-    p_startDate IN DATE,
-    p_endDate   IN DATE
-)
-IS
-    CURSOR scheduleCur IS
-        SELECT BS.busScheduleId, R.routeName, BS.plannedDepartureTime, BS.plannedArrivalTime, 
-               B.plateNo, B.model
-        FROM busSchedule BS
-        JOIN routeDriverAssignmentList RDA ON BS.routeDriverAssignmentId = RDA.routeDriverAssignmentId
-        JOIN route R ON RDA.routeId = R.routeId
-        JOIN driverListAssignment DLA ON RDA.assignmentId = DLA.assignmentId
-        JOIN bus B ON DLA.busId = B.busId
-        WHERE BS.plannedDepartureTime BETWEEN p_startDate AND p_endDate
-          AND EXISTS (SELECT 1 FROM ticket T WHERE T.busScheduleId = BS.busScheduleId)  
-        ORDER BY BS.plannedDepartureTime;
-
-    schedRec scheduleCur%ROWTYPE;
-
-    CURSOR ticketCur (v_scheduleId VARCHAR2) IS
-        SELECT ticketId, seatNo, price, status
-        FROM ticket
-        WHERE busScheduleId = v_scheduleId;
-
-    ticketRec ticketCur%ROWTYPE;
-
-    v_totalSeats    NUMBER := 0;
-    v_totalRevenue  NUMBER := 0;
-    v_schedSeats    NUMBER := 0;
-    v_schedRevenue  NUMBER := 0;
-BEGIN
-    DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
-    DBMS_OUTPUT.PUT_LINE('BUS SCHEDULE OCCUPANCY REPORT FROM ' 
-        || TO_CHAR(p_startDate,'DD-MON-YYYY HH24:MI') 
-        || ' TO ' 
-        || TO_CHAR(p_endDate,'DD-MON-YYYY HH24:MI'));
-    DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
-
-    OPEN scheduleCur;
-    LOOP
-        FETCH scheduleCur INTO schedRec;
-        EXIT WHEN scheduleCur%NOTFOUND;
-
-        -- reset per-schedule counters
-        v_schedSeats := 0;
-        v_schedRevenue := 0;
-
-        DBMS_OUTPUT.PUT_LINE(CHR(10) || 'Bus Schedule: ' || schedRec.busScheduleId 
-            || ', Route: ' || schedRec.routeName 
-            || ', Bus: ' || schedRec.plateNo || ' (' || schedRec.model || ')');
-        DBMS_OUTPUT.PUT_LINE('Departure: ' || TO_CHAR(schedRec.plannedDepartureTime,'DD-MON HH24:MI') 
-            || ', Arrival: ' || TO_CHAR(schedRec.plannedArrivalTime,'DD-MON HH24:MI'));
-        DBMS_OUTPUT.PUT_LINE(RPAD('TicketID',12) || RPAD('Seat',6) || RPAD('Price',12) || 'Status');
-        DBMS_OUTPUT.PUT_LINE(RPAD('-',120,'-'));
-
-        OPEN ticketCur(schedRec.busScheduleId);
-        LOOP
-            FETCH ticketCur INTO ticketRec;
-            EXIT WHEN ticketCur%NOTFOUND;
-
-            DBMS_OUTPUT.PUT_LINE(
-                RPAD(ticketRec.ticketId,12) || 
-                RPAD(ticketRec.seatNo,6) || 
-                RPAD(TO_CHAR(ticketRec.price,'999,999.99'),12) || 
-                ticketRec.status
-            );
-
-            v_schedSeats := v_schedSeats + 1;
-            v_totalSeats := v_totalSeats + 1;
-
-            IF LOWER(ticketRec.status) IN ('been_bought','booked_extended') THEN
-                v_schedRevenue := v_schedRevenue + ticketRec.price;
-                v_totalRevenue := v_totalRevenue + ticketRec.price;
-            END IF;
-        END LOOP;
-        CLOSE ticketCur;
-
-        -- print per-schedule summary
-        DBMS_OUTPUT.PUT_LINE('Schedule Total Tickets: ' || v_schedSeats || 
-                             ', Revenue : ' || TO_CHAR(v_schedRevenue,'999,990.99'));
-        DBMS_OUTPUT.PUT_LINE(LPAD('-',120,'-'));                    
-    END LOOP;
-    CLOSE scheduleCur;
-
-    DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
-    DBMS_OUTPUT.PUT_LINE('TOTAL TICKETS SOLD: ' || v_totalSeats 
-        || ', TOTAL REVENUE: ' || TO_CHAR(v_totalRevenue,'999,999,999.99'));
-    DBMS_OUTPUT.PUT_LINE(LPAD('=',120,'='));
-END;
-/
-
-EXEC bus_schedule_occupancy(TO_TIMESTAMP('01-08-2000 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-08-2025 23:59','DD-MM-YYYY HH24:MI'));
-
-
-
-
--- Report2 : Customer Point Transaction Summary with Payment Details
-
-SET serveroutput on
-SET linesize 120
-SET pagesize 100
-
-CREATE OR REPLACE PROCEDURE customer_point_summary(
-    p_startDate IN TIMESTAMP,
-    p_endDate   IN TIMESTAMP
-) IS
-    v_totalPointsRedeemed NUMBER := 0;
-    v_totalCustomers NUMBER := 0;
-    v_grandTotalAmount NUMBER := 0;
-
-    CURSOR customer_cursor IS
-    SELECT c.customerId, c.firstName || ' ' || c.lastName AS customerName,
-           c.membershipStatus, c.pointBalance
-    FROM customer c
-    WHERE EXISTS (
-        SELECT 1 FROM pointTransaction pt 
-        WHERE pt.customerId = c.customerId 
-        AND pt.createdAt BETWEEN p_startDate AND p_endDate
-    )
-    ORDER BY c.pointBalance DESC;
-
-    customer_rec customer_cursor%ROWTYPE;
-
-    CURSOR point_txn_cursor(v_custId VARCHAR2) IS
-    SELECT pt.pointTxnId, pt.pointChange, pt.source, pt.createdAt,
-           pr.paymentId, pr.totalAmount, pr.paymentMethod,
-           t.ticketId, bs.busScheduleId, r.routeName
-    FROM pointTransaction pt
-    LEFT JOIN paymentRecord pr ON pt.paymentId = pr.paymentId
-    LEFT JOIN ticket t ON pr.ticketId = t.ticketId
-    LEFT JOIN busSchedule bs ON t.busScheduleId = bs.busScheduleId
-    LEFT JOIN routeDriverAssignmentList rda ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
-    LEFT JOIN route r ON rda.routeId = r.routeId
-    WHERE pt.customerId = v_custId
-    AND pt.createdAt BETWEEN p_startDate AND p_endDate
-    AND t.status IN ('booked_extended','been_bought','on_selling')
-    ORDER BY pt.createdAt DESC;
-
-    point_txn_rec point_txn_cursor%ROWTYPE;
-
-BEGIN
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
-    DBMS_OUTPUT.PUT_LINE('CUSTOMER POINT TRANSACTION SUMMARY REPORT');
-    DBMS_OUTPUT.PUT_LINE('Period: ' || TO_CHAR(p_startDate, 'DD-MON-YYYY') || ' to ' || TO_CHAR(p_endDate, 'DD-MON-YYYY'));
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
-    DBMS_OUTPUT.PUT_LINE(CHR(10));
-
-    OPEN customer_cursor;
-    LOOP
-        FETCH customer_cursor INTO customer_rec;
-        EXIT WHEN customer_cursor%NOTFOUND;
-
-        v_totalCustomers := v_totalCustomers + 1;
-         DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
-        DBMS_OUTPUT.PUT_LINE('Customer ID: ' || customer_rec.customerId);
-        DBMS_OUTPUT.PUT_LINE('Name: ' || customer_rec.customerName);
-        DBMS_OUTPUT.PUT_LINE('Membership: ' || customer_rec.membershipStatus);
-        DBMS_OUTPUT.PUT_LINE('Current Points: ' || customer_rec.pointBalance);
-        DBMS_OUTPUT.PUT_LINE(LPAD('-', 120, '-'));
-
-        -- Point transaction details
-        DBMS_OUTPUT.PUT_LINE(
-            RPAD('Txn Date', 12) || 
-            RPAD('Points', 10) || 
-            RPAD('Type', 15) || 
-            RPAD('Payment ID', 15) || 
-            RPAD('Amount', 12) || 
-            RPAD('Method', 15) || 
-            RPAD('Route', 25) || 
-            RPAD('Ticket ID', 15)
-        );
-        DBMS_OUTPUT.PUT_LINE(LPAD('-', 120, '-'));
-
-        OPEN point_txn_cursor(customer_rec.customerId);
-        LOOP
-            FETCH point_txn_cursor INTO point_txn_rec;
-            EXIT WHEN point_txn_cursor%NOTFOUND;
-
-            IF point_txn_rec.pointChange > 0 THEN
-                v_totalPointsRedeemed := v_totalPointsRedeemed + ABS(point_txn_rec.pointChange);
-            END IF;
-
-            v_grandTotalAmount := v_grandTotalAmount + NVL(point_txn_rec.totalAmount, 0);
-
-            DBMS_OUTPUT.PUT_LINE(
-                RPAD(TO_CHAR(point_txn_rec.createdAt, 'DD-MON-YY'), 12) ||
-                RPAD(point_txn_rec.pointChange, 10) ||
-                RPAD(point_txn_rec.source, 15) ||
-                RPAD(NVL(point_txn_rec.paymentId, 'N/A'), 15) ||
-                RPAD(NVL(TO_CHAR(point_txn_rec.totalAmount, '999,999.99'), 'N/A'), 12) ||
-                RPAD(NVL(point_txn_rec.paymentMethod, 'N/A'), 15) ||
-                RPAD(NVL(point_txn_rec.routeName, 'N/A'), 25) ||
-                RPAD(NVL(point_txn_rec.ticketId, 'N/A'), 15)
-            );
-        END LOOP;
-        CLOSE point_txn_cursor;
-        
-        DBMS_OUTPUT.PUT_LINE(CHR(10));
-    END LOOP;
-    CLOSE customer_cursor;
-
-    -- Summary
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
-    DBMS_OUTPUT.PUT_LINE('SUMMARY REPORT');
-    DBMS_OUTPUT.PUT_LINE('Total Customers: ' || v_totalCustomers);
-    DBMS_OUTPUT.PUT_LINE('Total Points Redeemed: ' || v_totalPointsRedeemed);
-    DBMS_OUTPUT.PUT_LINE('Total Transaction Amount: RM' || TO_CHAR(v_grandTotalAmount, '999,999,999.99'));
-    DBMS_OUTPUT.PUT_LINE(LPAD('=', 120, '='));
-
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
-END;
-/
-
-EXEC customer_point_summary(TO_TIMESTAMP('01-07-2020 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-12-2025 23:59','DD-MM-YYYY HH24:MI'));
-
-
--- view 1
-SET linesize 200
-SET pagesize 100
-COLUMN customerID     FORMAT A15     HEADING 'Customer ID'
-COLUMN ticketID       FORMAT A15     HEADING 'Ticket ID'
-COLUMN paymentID      FORMAT A15     HEADING 'Payment ID'
-COLUMN paymentTime    FORMAT A35     HEADING 'Payment Time'
-
-CREATE OR REPLACE VIEW vw_cancelled_ticket_points AS
-SELECT 
-    p.customerID,
-    p.ticketID, 
-    p.paymentID, 
-    p.paymentTime
-FROM PaymentRecord p
-JOIN PointTransaction pt ON pt.paymentID = p.paymentID
-JOIN Customer c ON c.customerID = p.customerID
-JOIN Ticket t ON t.ticketID = p.ticketID
-WHERE t.status = 'cancelled_by_company'
-ORDER BY p.paymentTime DESC;
-
-SELECT * 
-FROM vw_cancelled_ticket_points;
-CLEAR COLUMN
-
-
--- view 2
-
--- find the ticket that is available to extend
-SET linesize 200
-SET pagesize 100
-ALTER SESSION SET nls_date_format = 'dd-mm-yyyy';
-
-COLUMN busScheduleId        FORMAT A12      HEADING 'BusSchedule ID'
-COLUMN plannedDepartureTime FORMAT A20      HEADING 'Planned Departure'
-COLUMN plannedArrivalTime   FORMAT A20      HEADING 'Planned Arrival'
-COLUMN ticketId             FORMAT A12      HEADING 'Ticket ID'
-COLUMN seatNo               FORMAT A8       HEADING 'Seat No'
-COLUMN price                FORMAT 99990.00 HEADING 'Price'
-COLUMN type                 FORMAT A12      HEADING 'Type'
-COLUMN ticketCreatedAt      FORMAT A20      HEADING 'Created At'
-COLUMN ticketUpdatedAt      FORMAT A20      HEADING 'Updated At'
-
-CREATE OR REPLACE VIEW view_OnSellingTickets AS
-SELECT 
-    bs.busScheduleId,
-    bs.plannedDepartureTime,
-    bs.plannedArrivalTime,
-    t.ticketId,
-    t.seatNo,
-    t.price,
-    t.type,
-    t.createdAt  AS ticketCreatedAt,
-    t.updatedAt  AS ticketUpdatedAt
-FROM route r
-JOIN routeDriverAssignmentList rda 
-    ON r.routeId = rda.routeId
-JOIN busSchedule bs 
-    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-JOIN ticket t 
-    ON bs.busScheduleId = t.busScheduleId
-WHERE LOWER(t.status) = 'on_selling';
-
-SELECT * FROM view_OnSellingTickets;
-CLEAR COLUMN
-
-
-
-
 
 
 SELECT COUNT(*) AS staffRole FROM staffRole;

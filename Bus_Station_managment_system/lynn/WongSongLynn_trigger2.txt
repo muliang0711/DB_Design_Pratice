@@ -26,7 +26,7 @@ BEGIN
             FROM PaymentRecord
             WHERE paymentID = :NEW.paymentID;
             
-            IF v_paymentStatus != 'Completed' THEN
+            IF UPPER(v_paymentStatus) != 'COMPLETED' THEN
                 RAISE_APPLICATION_ERROR(-20004, 'Points can only be applied to completed payments');
             END IF;
             
