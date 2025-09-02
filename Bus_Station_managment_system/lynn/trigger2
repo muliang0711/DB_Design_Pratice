@@ -7,8 +7,8 @@ DECLARE
     v_paymentAmount NUMBER(8,2);
     v_pointsUsed NUMBER(5);
 BEGIN
-    -- For point redemption (negative pointChange: redeem,consumption deduction)
-    IF :NEW.pointChange < 0 THEN
+    -- For point redemption (positive pointChange: redeem,consumption deduction)
+    IF :NEW.pointChange > 0 THEN
         -- Get current balance
         SELECT pointBalance 
         INTO v_currentBalance
@@ -16,7 +16,7 @@ BEGIN
         WHERE customerID = :NEW.customerID;
         
         -- Check if enough points
-        IF (v_currentBalance + :NEW.pointChange) < 0 THEN
+        IF (v_currentBalance - :NEW.pointChange) < 0 THEN
             RAISE_APPLICATION_ERROR(-20003, 'Insufficient points for this transaction');
         END IF;
         
@@ -31,7 +31,7 @@ BEGIN
             END IF;
             
             -- Verify points used match payment record
-            IF :NEW.pointChange != -v_pointsUsed THEN
+            IF :NEW.pointChange != v_pointsUsed THEN
                 RAISE_APPLICATION_ERROR(-20005, 'Point transaction does not match payment record');
             END IF;
         END IF;
@@ -53,14 +53,14 @@ INSERT INTO PaymentRecord (paymentId, customerId, ticketId, totalAmount, cashAmo
 VALUES ('P001', 'CU0003', 'T000000200', 200, 170, 30, 30, 'Completed', SYSTIMESTAMP, 'R001', 'Cash', 'Ticket');
 
 INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
-VALUES ('PT001', 'CU0003', 'P001', -30, 'Payment Redeem', 'Used points for ticket payment');
+VALUES ('PT001', 'CU0003', 'P001', 30, 'Payment Redeem', 'Used points for ticket payment');
 
 --invalid  example
 INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
-VALUES ('PT001', 'CU0003', 'P001', -1140, 'Payment Redeem', 'Used points for ticket payment');
+VALUES ('PT001', 'CU0003', 'P001', 1140, 'Payment Redeem', 'Used points for ticket payment');
 
 INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
-VALUES ('PT001', 'CU0003', 'P001', -40, 'Payment Redeem', 'Used points for ticket payment');
+VALUES ('PT001', 'CU0003', 'P001', 40, 'Payment Redeem', 'Used points for ticket payment');
 
 INSERT INTO PointTransaction (pointTxnId, customerId, paymentId, pointChange, source, remarks)
-VALUES ('PT002', 'CU0002', 'P001', -50, 'Payment Redeem', 'Trying to use more points');
+VALUES ('PT002', 'CU0002', 'P001', 50, 'Payment Redeem', 'Trying to use more points');

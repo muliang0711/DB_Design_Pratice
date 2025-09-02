@@ -86,10 +86,10 @@ EXCEPTION
 END ExtendTicket;
 /
 
-    -- valid 
+    -- valid sample
     EXEC ExtendTicket('T00000000473', 'T00000000480');
 
-    -- check the ticket 
+    -- Verify the ticket 
     SET linesize 300
     SET pagesize 300
 
@@ -111,61 +111,61 @@ END ExtendTicket;
     EXEC ExtendTicket('T00000000399', 'T00000000437');
 
 
+-- Select Statement to find the vaid ticket
+    -- each route valid 
+    SELECT 
+        r.routeId,
+        SUM(CASE WHEN LOWER(t.status) = 'been_bought' THEN 1 ELSE 0 END) AS boughtCount,
+        SUM(CASE WHEN LOWER(t.status) = 'on_selling' THEN 1 ELSE 0 END) AS sellingCount
+    FROM route r
+    JOIN routeDriverAssignmentList rda 
+        ON r.routeId = rda.routeId
+    JOIN busSchedule bs 
+        ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+    JOIN ticket t 
+        ON bs.busScheduleId = t.busScheduleId
+    GROUP BY r.routeId;
 
--- each route valid 
-SELECT 
-    r.routeId,
-    SUM(CASE WHEN LOWER(t.status) = 'been_bought' THEN 1 ELSE 0 END) AS boughtCount,
-    SUM(CASE WHEN LOWER(t.status) = 'on_selling' THEN 1 ELSE 0 END) AS sellingCount
-FROM route r
-JOIN routeDriverAssignmentList rda 
-    ON r.routeId = rda.routeId
-JOIN busSchedule bs 
-    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-JOIN ticket t 
-    ON bs.busScheduleId = t.busScheduleId
-GROUP BY r.routeId;
-
--- Find the ticket which is been bought
-SELECT * FROM   ticket WHERE status = 'been_bought';
--- Find the route of the ticket that need to extends
-SELECT 
-    t.ticketId,
-    r.routeId,
-    r.routeName,
-    r.startPoint,
-    r.endPoint
-FROM ticket t
-JOIN busSchedule bs 
-    ON t.busScheduleId = bs.busScheduleId
-JOIN routeDriverAssignmentList rda 
-    ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
-JOIN route r 
-    ON rda.routeId = r.routeId
-WHERE t.ticketId = 'T00000000473';
+    -- Find the ticket which is been bought
+    SELECT * FROM  ticket WHERE status = 'been_bought';
+    -- Find the route of the ticket that need to extends
+    SELECT 
+        t.ticketId,
+        r.routeId,
+        r.routeName,
+        r.startPoint,
+        r.endPoint
+    FROM ticket t
+    JOIN busSchedule bs 
+        ON t.busScheduleId = bs.busScheduleId
+    JOIN routeDriverAssignmentList rda 
+        ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+    JOIN route r 
+        ON rda.routeId = r.routeId
+    WHERE t.ticketId = 'T00000000473';
 
 
--- find the ticket that is available to extend
-SELECT 
-    bs.busScheduleId,
-    bs.plannedDepartureTime,
-    bs.plannedArrivalTime,
-    bs.status    AS scheduleStatus,
-    bs.remarks   AS scheduleRemarks,
-    t.ticketId,
-    t.customerId,
-    t.seatNo,
-    t.price,
-    t.type,
-    t.status     AS ticketStatus,
-    t.createdAt  AS ticketCreatedAt,
-    t.updatedAt  AS ticketUpdatedAt
-FROM route r
-JOIN routeDriverAssignmentList rda 
-    ON r.routeId = rda.routeId
-JOIN busSchedule bs 
-    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-JOIN ticket t 
-    ON bs.busScheduleId = t.busScheduleId
-WHERE r.routeId = 'R103'
-  AND LOWER(t.status) = 'on_selling';
+    -- find the ticket that is available to extend
+    SELECT 
+        bs.busScheduleId,
+        bs.plannedDepartureTime,
+        bs.plannedArrivalTime,
+        bs.status    AS scheduleStatus,
+        bs.remarks   AS scheduleRemarks,
+        t.ticketId,
+        t.customerId,
+        t.seatNo,
+        t.price,
+        t.type,
+        t.status     AS ticketStatus,
+        t.createdAt  AS ticketCreatedAt,
+        t.updatedAt  AS ticketUpdatedAt
+    FROM route r
+    JOIN routeDriverAssignmentList rda 
+        ON r.routeId = rda.routeId
+    JOIN busSchedule bs 
+        ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+    JOIN ticket t 
+        ON bs.busScheduleId = t.busScheduleId
+    WHERE r.routeId = 'R103'
+    AND LOWER(t.status) = 'on_selling';
