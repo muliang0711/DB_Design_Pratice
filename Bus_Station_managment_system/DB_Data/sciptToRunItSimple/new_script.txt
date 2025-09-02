@@ -683,6 +683,236 @@ SELECT
 FROM shop
 GROUP BY shopType;
 
+// HY Part :  
+
+DROP SEQUENCE seq_ticket_id;
+
+CREATE SEQUENCE seq_ticket_id
+  START WITH 293974
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+
+CREATE OR REPLACE FUNCTION FN_NEXT_TICKET_ID
+RETURN VARCHAR2 IS
+  v_seq NUMBER;
+BEGIN
+
+  SELECT seq_ticket_id.NEXTVAL INTO v_seq FROM dual;
+  
+  RETURN 'T' || LPAD(v_seq, 11, '0');
+END;
+/
+SHOW ERRORS FUNCTION FN_NEXT_TICKET_ID;
+
+CREATE OR REPLACE TRIGGER BS_AI_GEN_TICKETS
+FOR INSERT ON busSchedule
+COMPOUND TRIGGER
+
+  TYPE t_ids IS TABLE OF busSchedule.busScheduleId%TYPE;
+  g_ids t_ids := t_ids();
+
+  BEFORE STATEMENT IS
+  BEGIN
+    g_ids.DELETE;
+  END BEFORE STATEMENT;
+
+  AFTER EACH ROW IS
+  BEGIN
+    g_ids.EXTEND;
+    g_ids(g_ids.LAST) := :NEW.busScheduleId;
+  END AFTER EACH ROW;
+
+  AFTER STATEMENT IS
+  BEGIN
+    IF g_ids.COUNT > 0 THEN
+      FOR i IN 1 .. g_ids.COUNT LOOP
+        -- Safe now: the INSERT statement has finished; busSchedule is not mutating
+        GEN_TICKETS_FOR_SCHEDULE(g_ids(i));
+      END LOOP;
+    END IF;
+  END AFTER STATEMENT;
+
+END BS_AI_GEN_TICKETS;
+/
+SHOW ERRORS TRIGGER BS_AI_GEN_TICKETS;
+
+CREATE OR REPLACE PROCEDURE GEN_TICKETS_FOR_SCHEDULE (
+  p_bus_schedule_id IN busSchedule.busScheduleId%TYPE,
+  p_rate_per_km     IN NUMBER DEFAULT 0.25
+) IS
+  v_capacity      bus.capacity%TYPE;
+  v_distance_km   route.distanceKm%TYPE;
+  v_rda_id        routeDriverAssignmentList.routeDriverAssignmentId%TYPE;
+  v_route_id      route.routeId%TYPE;
+  v_assignment_id driverListAssignment.assignmentId%TYPE;
+
+  v_type_default    ticket.type%TYPE   := 'booking';
+  v_status_default  ticket.status%TYPE := 'on_selling';
+
+  v_existing_cnt NUMBER;
+  v_price NUMBER(8,2);
+
+BEGIN
+  -- Check if tickets already exist ma
+  SELECT COUNT(*)
+  INTO v_existing_cnt
+  FROM ticket
+  WHERE busScheduleId = p_bus_schedule_id;
+
+  IF v_existing_cnt > 0 THEN
+    RETURN;
+  END IF;
+
+  -- 1. Fetch related info from the grandpa table first :
+  SELECT bs.routeDriverAssignmentId
+    INTO v_rda_id
+  FROM busSchedule bs
+  WHERE bs.busScheduleId = p_bus_schedule_id;
+  
+  -- 2. Get routeId For calculate price , Get assignmentId to Fetch Target Bus  
+  SELECT rda.routeId, rda.assignmentId
+    INTO v_route_id, v_assignment_id
+  FROM routeDriverAssignmentList rda
+  WHERE rda.routeDriverAssignmentId = v_rda_id;
+
+  -- 2.1 
+  SELECT b.capacity
+    INTO v_capacity
+  FROM driverListAssignment dla
+  JOIN bus b ON b.busId = dla.busId
+  WHERE dla.assignmentId = v_assignment_id;
+
+  -- 2.2 
+  SELECT NVL(r.distanceKm, 0)
+    INTO v_distance_km
+  FROM route r
+  WHERE r.routeId = v_route_id;
+
+  -- Controlled error (business rule)
+  IF v_capacity IS NULL OR v_capacity <= 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Invalid bus capacity for schedule ' || p_bus_schedule_id);
+  END IF;
+
+  -- 4. calculate the price 
+  v_price := ROUND(p_rate_per_km * v_distance_km, 2);
+  
+  -- 3. count how many ticket we can generate based on the bus capacity 
+  FOR i IN 1..v_capacity LOOP
+    BEGIN
+      INSERT INTO ticket (
+        ticketId, busScheduleId, customerId, seatNo, price, type, status,
+        cancellationDate, extensionDate, extendedFromId, createdAt, updatedAt
+      ) VALUES (
+        FN_NEXT_TICKET_ID(),
+        p_bus_schedule_id,
+        NULL,
+        'S' || LPAD(i, 3, '0'),
+        v_price,
+        v_type_default,
+        v_status_default,
+        NULL, NULL, NULL,
+        SYSTIMESTAMP, SYSTIMESTAMP
+      );
+    EXCEPTION
+      WHEN DUP_VAL_ON_INDEX THEN
+        -- another session already inserted this seat
+        NULL;
+    END;
+  END LOOP;
+
+EXCEPTION
+  -- Controlled: missing foreign key data
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Required data not found for schedule ' || p_bus_schedule_id);
+
+  -- Default generic error catcher
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_TICKETS_FOR_SCHEDULE: ' || SQLERRM);
+    -- Optional: rethrow to stop silently swallowing
+    RAISE;
+END;
+/
+SHOW ERRORS PROCEDURE GEN_TICKETS_FOR_SCHEDULE;
+
+DROP SEQUENCE SEQ_PAYMENT_ID；
+CREATE SEQUENCE SEQ_PAYMENT_ID
+  START WITH 1000
+  INCREMENT BY 1
+  MINVALUE 1
+  MAXVALUE 999999999
+  NOCYCLE
+  NOCACHE;
+
+CREATE OR REPLACE TRIGGER TKT_BU_CUST_TO_PAY
+BEFORE UPDATE OF customerId ON ticket
+FOR EACH ROW
+WHEN (OLD.customerId IS NULL AND NEW.customerId IS NOT NULL)
+BEGIN
+  -- set status directly
+  :NEW.status    := 'been_bought';
+  :NEW.updatedAt := SYSTIMESTAMP;
+
+  
+  GEN_PAYMENT_FOR_TICKET(:NEW.ticketId, :NEW.customerId, :NEW.price);
+END;
+/
+SHOW ERRORS TRIGGER TKT_BU_CUST_TO_PAY;
+
+
+CREATE OR REPLACE PROCEDURE GEN_PAYMENT_FOR_TICKET (
+  p_ticket_id    IN ticket.ticketId%TYPE,
+  p_customer_id  IN ticket.customerId%TYPE,
+  p_ticket_price IN ticket.price%TYPE
+) IS
+  v_payment_id  VARCHAR2(12);
+  v_exists      INTEGER;
+BEGIN
+  IF p_customer_id IS NULL THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Ticket has no customerId; cannot create payment.');
+  END IF;
+
+  IF NVL(p_ticket_price, 0) < 0 THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Invalid ticket price for ticket ' || p_ticket_id);
+  END IF;
+
+  SELECT COUNT(*)
+  INTO v_exists
+  FROM paymentRecord
+  WHERE ticketId = p_ticket_id;
+
+  IF v_exists > 0 THEN
+    RETURN; -- already has a payment
+  END IF;
+
+  v_payment_id := 'PAY' || LPAD(seq_payment_id.NEXTVAL, 9, '0');
+
+  INSERT INTO paymentRecord (
+    paymentId, customerId, ticketId,
+    totalAmount, cashAmount, pointsApplied, pointValue,
+    status, paymentTime, receiptNo, paymentMethod, type, remarks
+  ) VALUES (
+    v_payment_id, p_customer_id, p_ticket_id,
+    p_ticket_price, p_ticket_price, 0, 0,
+    'pending', SYSTIMESTAMP, 'RCPT-' || TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+    NULL, 'auto', 'Auto-created on ticket assignment'
+  );
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20003, 'Ticket not found for ticketId ' || p_ticket_id);
+
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_PAYMENT_FOR_TICKET: ' || SQLERRM);
+    RAISE;
+END;
+/
+SHOW ERRORS PROCEDURE GEN_PAYMENT_FOR_TICKET;
+
+
+
+
+
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R001', 'Station Manager', 'Oversees all bus station operations, manages staff, and ensures compliance with policies.');
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R002', 'Assistant Manager', 'Supports the station manager in daily tasks and supervises staff in their absence.');
 INSERT INTO staffRole (roleId, roleName, description) VALUES ('R003', 'Ticketing Officer', 'Handles ticket sales, reservations, cancellations, and customer service.');
