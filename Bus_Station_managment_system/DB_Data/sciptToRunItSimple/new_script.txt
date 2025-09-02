@@ -1803,6 +1803,7 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Refund failed: ' || SQLERRM);
 END ProcessTicketRefund;
 /
+EXEC ProcessTicketRefund('T00000000020', 'full');
 
 -- REPORT1 : Bus Schedule Occupancy Report 
 SET serveroutput on
@@ -1900,6 +1901,8 @@ BEGIN
 END;
 /
 
+
+EXEC bus_schedule_occupancy(TO_TIMESTAMP('01-08-2000 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-08-2025 23:59','DD-MM-YYYY HH24:MI'));
 
 -- Report2 : Customer Point Transaction Summary with Payment Details
 
@@ -2020,6 +2023,8 @@ EXCEPTION
 END;
 /
 
+
+EXEC customer_point_summary(TO_TIMESTAMP('01-07-2020 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-12-2025 23:59','DD-MM-YYYY HH24:MI'));
 
 
 
@@ -2278,68 +2283,6 @@ CROSS JOIN mx;
 
 
 -- song lynn
--- view 1
-SET linesize 200
-SET pagesize 100
-COLUMN customerID     FORMAT A15     HEADING 'Customer ID'
-COLUMN ticketID       FORMAT A15     HEADING 'Ticket ID'
-COLUMN paymentID      FORMAT A15     HEADING 'Payment ID'
-COLUMN paymentTime    FORMAT A35     HEADING 'Payment Time'
-
-CREATE OR REPLACE VIEW vw_cancelled_ticket_points AS
-SELECT 
-    p.customerID,
-    p.ticketID, 
-    p.paymentID, 
-    p.paymentTime
-FROM PaymentRecord p
-JOIN PointTransaction pt ON pt.paymentID = p.paymentID
-JOIN Customer c ON c.customerID = p.customerID
-JOIN Ticket t ON t.ticketID = p.ticketID
-WHERE t.status = 'cancelled_by_company'
-ORDER BY p.paymentTime DESC;
-
-CLEAR COLUMN
-
-
--- view 2
-
--- find the ticket that is available to extend
-SET linesize 200
-SET pagesize 100
-ALTER SESSION SET nls_date_format = 'dd-mm-yyyy';
-
-COLUMN busScheduleId        FORMAT A12      HEADING 'BusSchedule ID'
-COLUMN plannedDepartureTime FORMAT A20      HEADING 'Planned Departure'
-COLUMN plannedArrivalTime   FORMAT A20      HEADING 'Planned Arrival'
-COLUMN ticketId             FORMAT A12      HEADING 'Ticket ID'
-COLUMN seatNo               FORMAT A8       HEADING 'Seat No'
-COLUMN price                FORMAT 99990.00 HEADING 'Price'
-COLUMN type                 FORMAT A12      HEADING 'Type'
-COLUMN ticketCreatedAt      FORMAT A20      HEADING 'Created At'
-COLUMN ticketUpdatedAt      FORMAT A20      HEADING 'Updated At'
-
-CREATE OR REPLACE VIEW view_OnSellingTickets AS
-SELECT 
-    bs.busScheduleId,
-    bs.plannedDepartureTime,
-    bs.plannedArrivalTime,
-    t.ticketId,
-    t.seatNo,
-    t.price,
-    t.type,
-    t.createdAt  AS ticketCreatedAt,
-    t.updatedAt  AS ticketUpdatedAt
-FROM route r
-JOIN routeDriverAssignmentList rda 
-    ON r.routeId = rda.routeId
-JOIN busSchedule bs 
-    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
-JOIN ticket t 
-    ON bs.busScheduleId = t.busScheduleId
-WHERE LOWER(t.status) = 'on_selling';
-
-CLEAR COLUMN
 
 -- query 1
 -- use to view the income of different route and analysis the ticket sold, avarage ticket money, the uses of the point
@@ -2392,7 +2335,7 @@ ORDER BY
      TO_CHAR(bs.plannedDepartureTime, 'YYYY-MM'),
     r.routeID,
     totalRevenue DESC;
-
+SELECT * FROM RevenueAnalysis;
 CLEAR COLUMN
 
 -- query 2
@@ -2459,9 +2402,77 @@ GROUP BY
     c.customerId, c.firstName, c.lastName, c.membershipStatus, 
     bc.companyName, r.routeName;
 
+SELECT * FROM StrategicCustomerValue;
 CLEAR COLUMN
 CLEAR BREAKS
 -- NVL use for process the null value
+
+
+-- view 1
+SET linesize 200
+SET pagesize 100
+COLUMN customerID     FORMAT A15     HEADING 'Customer ID'
+COLUMN ticketID       FORMAT A15     HEADING 'Ticket ID'
+COLUMN paymentID      FORMAT A15     HEADING 'Payment ID'
+COLUMN paymentTime    FORMAT A35     HEADING 'Payment Time'
+
+CREATE OR REPLACE VIEW vw_cancelled_ticket_points AS
+SELECT 
+    p.customerID,
+    p.ticketID, 
+    p.paymentID, 
+    p.paymentTime
+FROM PaymentRecord p
+JOIN PointTransaction pt ON pt.paymentID = p.paymentID
+JOIN Customer c ON c.customerID = p.customerID
+JOIN Ticket t ON t.ticketID = p.ticketID
+WHERE t.status = 'cancelled_by_company'
+ORDER BY p.paymentTime DESC;
+
+SELECT * 
+FROM vw_cancelled_ticket_points;
+CLEAR COLUMN
+
+
+-- view 2
+
+-- find the ticket that is available to extend
+SET linesize 200
+SET pagesize 100
+ALTER SESSION SET nls_date_format = 'dd-mm-yyyy';
+
+COLUMN busScheduleId        FORMAT A12      HEADING 'BusSchedule ID'
+COLUMN plannedDepartureTime FORMAT A20      HEADING 'Planned Departure'
+COLUMN plannedArrivalTime   FORMAT A20      HEADING 'Planned Arrival'
+COLUMN ticketId             FORMAT A12      HEADING 'Ticket ID'
+COLUMN seatNo               FORMAT A8       HEADING 'Seat No'
+COLUMN price                FORMAT 99990.00 HEADING 'Price'
+COLUMN type                 FORMAT A12      HEADING 'Type'
+COLUMN ticketCreatedAt      FORMAT A20      HEADING 'Created At'
+COLUMN ticketUpdatedAt      FORMAT A20      HEADING 'Updated At'
+
+CREATE OR REPLACE VIEW view_OnSellingTickets AS
+SELECT 
+    bs.busScheduleId,
+    bs.plannedDepartureTime,
+    bs.plannedArrivalTime,
+    t.ticketId,
+    t.seatNo,
+    t.price,
+    t.type,
+    t.createdAt  AS ticketCreatedAt,
+    t.updatedAt  AS ticketUpdatedAt
+FROM route r
+JOIN routeDriverAssignmentList rda 
+    ON r.routeId = rda.routeId
+JOIN busSchedule bs 
+    ON rda.routeDriverAssignmentId = bs.routeDriverAssignmentId
+JOIN ticket t 
+    ON bs.busScheduleId = t.busScheduleId
+WHERE LOWER(t.status) = 'on_selling';
+
+SELECT * FROM view_OnSellingTickets;
+CLEAR COLUMN
 
 
 
