@@ -405,54 +405,6 @@ MAXVALUE 999
 INCREMENT BY 1
 NOCACHE;
 
-CREATE OR REPLACE TRIGGER trgCalculateRentAmount
-BEFORE INSERT OR UPDATE ON RentalCollection
-FOR EACH ROW
-DECLARE
-  v_shopSize Shop.shopSize%TYPE;
-  v_count      NUMBER;
-  v_countStaff NUMBER;
-BEGIN
-  IF INSERTING THEN
-    IF :NEW.rentalAmount IS NULL OR :NEW.rentalAmount = 0 THEN
-      SELECT shopSize INTO v_shopSize
-      FROM Shop
-      WHERE shopID = :NEW.shopID;
-      
-      :NEW.rentalAmount := v_shopSize * 2;
-    END IF;
-  ELSIF UPDATING THEN
-    IF :NEW.staffId IS NOT NULL THEN
-    SELECT COUNT(*) INTO v_count
-    FROM staff st
-    JOIN staffRole sr ON st.roleId = sr.roleId
-    WHERE st.staffId = :NEW.staffId
-    AND LOWER(sr.roleName) = 'accountant';
-
-    IF v_count = 0 THEN
-      RAISE_APPLICATION_ERROR(-20011,
-        'Error: StaffId ' || :NEW.staffId || ' is not a valid Accountant in Staff table.');
-    END IF;
-    END IF;
-
-    IF LOWER(:NEW.status) = 'paid'
-       AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
-       
-       :NEW.collectionDate := SYSTIMESTAMP;
-
-       SELECT COUNT(*) INTO v_count
-       FROM Staff
-       WHERE staffId = :NEW.staffId
-    ;
-
-       IF v_count = 0 THEN
-           RAISE_APPLICATION_ERROR(-20002, 'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
-       END IF;
-    END IF;
-  END IF;
-END;
-/
-
 CREATE OR REPLACE PROCEDURE prcAddShop(
   v_stationId     IN shop.stationId%TYPE,
   v_shopNo        IN shop.shopNo%TYPE,
@@ -698,27 +650,6 @@ BEGIN
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
-END;
-/
-
-CREATE OR REPLACE TRIGGER trg_check_shop_capacity
-  BEFORE INSERT ON shop
-  FOR EACH ROW
-DECLARE
-  v_current_shop_count NUMBER;
-  v_max_capacity CONSTANT NUMBER := 20;
-BEGIN
-  SELECT COUNT(*)
-  INTO v_current_shop_count
-  FROM shop
-  WHERE stationId = :NEW.stationId;  
-
-  IF v_current_shop_count >= v_max_capacity THEN
-    RAISE_APPLICATION_ERROR(-20001, 
-      'Station ' || :NEW.stationId || 
-      ' has reached maximum capacity of ' || v_max_capacity || ' shops. ' ||
-      'Current count: ' || v_current_shop_count);
-  END IF;
 END;
 /
 
@@ -11380,6 +11311,76 @@ VALUES ('TS000458', 'S000420', 'BP002', TO_TIMESTAMP('2025-04-20 10:00','YYYY-MM
 
 INSERT INTO tripStopLog (tripStopId, busScheduleId, platformId, actualArrivalTime, actualDepartureTime, status, remarks)
 VALUES ('TS000459', 'S000420', 'BP001', TO_TIMESTAMP('2025-04-20 12:00','YYYY-MM-DD HH24:MI'), TO_TIMESTAMP('2025-04-20 13:00','YYYY-MM-DD HH24:MI'), 'on_time', 'No issues');
+
+CREATE OR REPLACE TRIGGER trgCalculateRentAmount
+BEFORE INSERT OR UPDATE ON RentalCollection
+FOR EACH ROW
+DECLARE
+  v_shopSize Shop.shopSize%TYPE;
+  v_count      NUMBER;
+  v_countStaff NUMBER;
+BEGIN
+  IF INSERTING THEN
+    IF :NEW.rentalAmount IS NULL OR :NEW.rentalAmount = 0 THEN
+      SELECT shopSize INTO v_shopSize
+      FROM Shop
+      WHERE shopID = :NEW.shopID;
+      
+      :NEW.rentalAmount := v_shopSize * 2;
+    END IF;
+  ELSIF UPDATING THEN
+    IF :NEW.staffId IS NOT NULL THEN
+    SELECT COUNT(*) INTO v_count
+    FROM staff st
+    JOIN staffRole sr ON st.roleId = sr.roleId
+    WHERE st.staffId = :NEW.staffId
+    AND LOWER(sr.roleName) = 'accountant';
+
+    IF v_count = 0 THEN
+      RAISE_APPLICATION_ERROR(-20011,
+        'Error: StaffId ' || :NEW.staffId || ' is not a valid Accountant in Staff table.');
+    END IF;
+    END IF;
+
+    IF LOWER(:NEW.status) = 'paid'
+       AND LOWER(NVL(:OLD.status, '')) != 'paid' THEN
+       
+       :NEW.collectionDate := SYSTIMESTAMP;
+
+       SELECT COUNT(*) INTO v_count
+       FROM Staff
+       WHERE staffId = :NEW.staffId
+    ;
+
+       IF v_count = 0 THEN
+           RAISE_APPLICATION_ERROR(-20002, 'Error: StaffId ' || :NEW.staffId || ' does not exist in Staff table.');
+       END IF;
+    END IF;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_check_shop_capacity
+  BEFORE INSERT ON shop
+  FOR EACH ROW
+DECLARE
+  v_current_shop_count NUMBER;
+  v_max_capacity CONSTANT NUMBER := 20;
+BEGIN
+  SELECT COUNT(*)
+  INTO v_current_shop_count
+  FROM shop
+  WHERE stationId = :NEW.stationId;  
+
+  IF v_current_shop_count >= v_max_capacity THEN
+    RAISE_APPLICATION_ERROR(-20001, 
+      'Station ' || :NEW.stationId || 
+      ' has reached maximum capacity of ' || v_max_capacity || ' shops. ' ||
+      'Current count: ' || v_current_shop_count);
+  END IF;
+END;
+/
+
 
 commit;
 
