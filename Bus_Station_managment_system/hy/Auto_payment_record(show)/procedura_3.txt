@@ -6,17 +6,14 @@ CREATE OR REPLACE PROCEDURE GEN_PAYMENT_FOR_TICKET (
   v_payment_id  VARCHAR2(12);
   v_exists      INTEGER;
 BEGIN
-  -- Controlled check: customerId is mandatory
   IF p_customer_id IS NULL THEN
     RAISE_APPLICATION_ERROR(-20001, 'Ticket has no customerId; cannot create payment.');
   END IF;
 
-  -- Controlled check: ticket price cannot be negative
   IF NVL(p_ticket_price, 0) < 0 THEN
     RAISE_APPLICATION_ERROR(-20002, 'Invalid ticket price for ticket ' || p_ticket_id);
   END IF;
 
-  -- Idempotency: check if payment already exists
   SELECT COUNT(*)
   INTO v_exists
   FROM paymentRecord
@@ -26,10 +23,8 @@ BEGIN
     RETURN; -- already has a payment
   END IF;
 
-  -- Generate new paymentId
   v_payment_id := 'PAY' || LPAD(seq_payment_id.NEXTVAL, 9, '0');
 
-  -- Insert into paymentRecord
   INSERT INTO paymentRecord (
     paymentId, customerId, ticketId,
     totalAmount, cashAmount, pointsApplied, pointValue,
@@ -42,14 +37,16 @@ BEGIN
   );
 
 EXCEPTION
-  -- Controlled error: no ticket found (if SELECT fails upstream trigger)
   WHEN NO_DATA_FOUND THEN
     RAISE_APPLICATION_ERROR(-20003, 'Ticket not found for ticketId ' || p_ticket_id);
 
-  -- Generic default catcher
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_PAYMENT_FOR_TICKET: ' || SQLERRM);
     RAISE;
 END;
 /
 SHOW ERRORS PROCEDURE GEN_PAYMENT_FOR_TICKET;
+
+select status from paymentRecord where ticketId = 'T00000000631';
+EXEC GEN_PAYMENT_FOR_TICKET('T00000000631','CU0001','25');
+select status from paymentRecord where ticketId = 'T00000000631';

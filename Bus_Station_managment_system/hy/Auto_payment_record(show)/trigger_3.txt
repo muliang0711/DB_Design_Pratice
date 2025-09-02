@@ -12,3 +12,23 @@ BEGIN
 END;
 /
 SHOW ERRORS TRIGGER TKT_BU_CUST_TO_PAY;
+
+UPDATE ticket 
+SET customerId = 'CU0092', 
+updatedAt = SYSTIMESTAMP 
+WHERE ticketId = 'T00000293810';
+
+
+select status , customerId 
+from paymentRecord 
+where status = 'pending' ;
+
+UPDATE ticket 
+SET customerId = 'CU0092', 
+updatedAt = SYSTIMESTAMP 
+WHERE ticketId = 'T00000293934';
+
+select status , customerId 
+from paymentRecord 
+where status = 'pending' ;
+

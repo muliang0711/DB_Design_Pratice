@@ -29,3 +29,20 @@ COMPOUND TRIGGER
 END BS_AI_GEN_TICKETS;
 /
 SHOW ERRORS TRIGGER BS_AI_GEN_TICKETS;
+
+select ticketId from ticket where busScheduleId = 'S000500';
+
+INSERT INTO busSchedule 
+(busScheduleId, 
+routeDriverAssignmentId,
+ plannedDepartureTime, 
+ plannedArrivalTime, 
+ status, 
+ remarks, 
+ expectedProfit, 
+ createdAt, 
+ updatedAt) VALUES 
+ ('S000500', 'RD400', TO_TIMESTAMP('2025-05-13 20:45', 'YYYY-MM-DD HH24:MI'), TO_TIMESTAMP('2025-05-14 00:55', 'YYYY-MM-DD HH24:MI'), 'Planned', 'Generated schedule for RD400', 1262.05, SYSTIMESTAMP, SYSTIMESTAMP);
+
+ DELETE FROM busSchedule
+  WHERE busScheduleId = 'S000500';
