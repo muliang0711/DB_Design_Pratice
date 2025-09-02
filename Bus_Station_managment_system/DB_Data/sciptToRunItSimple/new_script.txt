@@ -1862,39 +1862,111 @@ BEGIN
   RETURN 'T' || LPAD(v_seq, 11, '0');
 END;
 /
-SHOW ERRORS FUNCTION FN_NEXT_TICKET_ID;
 
-CREATE OR REPLACE TRIGGER BS_AI_GEN_TICKETS
-FOR INSERT ON busSchedule
-COMPOUND TRIGGER
+DROP SEQUENCE SEQ_PAYMENT_ID；
+CREATE SEQUENCE SEQ_PAYMENT_ID
+  START WITH 1000
+  INCREMENT BY 1
+  MINVALUE 1
+  MAXVALUE 999999999
+  NOCYCLE
+  NOCACHE;
 
-  TYPE t_ids IS TABLE OF busSchedule.busScheduleId%TYPE;
-  g_ids t_ids := t_ids();
+CREATE OR REPLACE VIEW v_bus_schedule_summary AS
+SELECT 
+    bs.busScheduleId,
+    r.routeName,
+    bs.plannedDepartureTime,
+    bs.status,
+    (SELECT MIN(t.price) 
+       FROM ticket t 
+      WHERE t.busScheduleId = bs.busScheduleId) AS price
+FROM busSchedule bs
+JOIN routeDriverAssignmentList rda 
+    ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+JOIN route r 
+    ON rda.routeId = r.routeId;
 
-  BEFORE STATEMENT IS
-  BEGIN
-    g_ids.DELETE;
-  END BEFORE STATEMENT;
+CREATE OR REPLACE VIEW v_ticket_overview AS
+SELECT 
+    t.ticketId,
+    t.busScheduleId,
+    c.firstName || ' ' || c.lastName AS customerName,
+    t.seatNo,
+    t.price,
+    t.type,
+    t.status,
+    t.createdAt
+FROM ticket t
+LEFT JOIN customer c 
+    ON t.customerId = c.customerId;
 
-  AFTER EACH ROW IS
-  BEGIN
-    g_ids.EXTEND;
-    g_ids(g_ids.LAST) := :NEW.busScheduleId;
-  END AFTER EACH ROW;
+CREATE INDEX IDX_TICKET_STATUS
+  ON ticket(status);
 
-  AFTER STATEMENT IS
-  BEGIN
-    IF g_ids.COUNT > 0 THEN
-      FOR i IN 1 .. g_ids.COUNT LOOP
-        -- Safe now: the INSERT statement has finished; busSchedule is not mutating
-        GEN_TICKETS_FOR_SCHEDULE(g_ids(i));
-      END LOOP;
-    END IF;
-  END AFTER STATEMENT;
+CREATE INDEX IDX_TICKET_PRICE        ON ticket(price);
 
-END BS_AI_GEN_TICKETS;
+CREATE OR REPLACE PROCEDURE GEN_PAYMENT_FOR_TICKET (
+  p_ticket_id    IN ticket.ticketId%TYPE,
+  p_customer_id  IN ticket.customerId%TYPE,
+  p_ticket_price IN ticket.price%TYPE
+) IS
+  v_payment_id  VARCHAR2(12);
+  v_exists      INTEGER;
+BEGIN
+  IF p_customer_id IS NULL THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Ticket has no customerId; cannot create payment.');
+  END IF;
+
+  IF NVL(p_ticket_price, 0) < 0 THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Invalid ticket price for ticket ' || p_ticket_id);
+  END IF;
+
+  SELECT COUNT(*)
+  INTO v_exists
+  FROM paymentRecord
+  WHERE ticketId = p_ticket_id;
+
+  IF v_exists > 0 THEN
+    RETURN; -- already has a payment
+  END IF;
+
+  v_payment_id := 'PAY' || LPAD(seq_payment_id.NEXTVAL, 9, '0');
+
+  INSERT INTO paymentRecord (
+    paymentId, customerId, ticketId,
+    totalAmount, cashAmount, pointsApplied, pointValue,
+    status, paymentTime, receiptNo, paymentMethod, type, remarks
+  ) VALUES (
+    v_payment_id, p_customer_id, p_ticket_id,
+    p_ticket_price, p_ticket_price, 0, 0,
+    'pending', SYSTIMESTAMP, 'RCPT-' || TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+    NULL, 'auto', 'Auto-created on ticket assignment'
+  );
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20003, 'Ticket not found for ticketId ' || p_ticket_id);
+
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_PAYMENT_FOR_TICKET: ' || SQLERRM);
+    RAISE;
+END;
 /
-SHOW ERRORS TRIGGER BS_AI_GEN_TICKETS;
+
+CREATE OR REPLACE TRIGGER TKT_BU_CUST_TO_PAY
+BEFORE UPDATE OF customerId ON ticket
+FOR EACH ROW
+WHEN (OLD.customerId IS NULL AND NEW.customerId IS NOT NULL)
+BEGIN
+  -- set status directly
+  :NEW.status    := 'been_bought';
+  :NEW.updatedAt := SYSTIMESTAMP;
+
+  
+  GEN_PAYMENT_FOR_TICKET(:NEW.ticketId, :NEW.customerId, :NEW.price);
+END;
+/
 
 CREATE OR REPLACE PROCEDURE GEN_TICKETS_FOR_SCHEDULE (
   p_bus_schedule_id IN busSchedule.busScheduleId%TYPE,
@@ -1992,81 +2064,37 @@ EXCEPTION
     RAISE;
 END;
 /
-SHOW ERRORS PROCEDURE GEN_TICKETS_FOR_SCHEDULE;
 
-DROP SEQUENCE SEQ_PAYMENT_ID；
-CREATE SEQUENCE SEQ_PAYMENT_ID
-  START WITH 1000
-  INCREMENT BY 1
-  MINVALUE 1
-  MAXVALUE 999999999
-  NOCYCLE
-  NOCACHE;
+CREATE OR REPLACE TRIGGER BS_AI_GEN_TICKETS
+FOR INSERT ON busSchedule
+COMPOUND TRIGGER
 
-CREATE OR REPLACE TRIGGER TKT_BU_CUST_TO_PAY
-BEFORE UPDATE OF customerId ON ticket
-FOR EACH ROW
-WHEN (OLD.customerId IS NULL AND NEW.customerId IS NOT NULL)
-BEGIN
-  -- set status directly
-  :NEW.status    := 'been_bought';
-  :NEW.updatedAt := SYSTIMESTAMP;
+  TYPE t_ids IS TABLE OF busSchedule.busScheduleId%TYPE;
+  g_ids t_ids := t_ids();
 
-  
-  GEN_PAYMENT_FOR_TICKET(:NEW.ticketId, :NEW.customerId, :NEW.price);
-END;
+  BEFORE STATEMENT IS
+  BEGIN
+    g_ids.DELETE;
+  END BEFORE STATEMENT;
+
+  AFTER EACH ROW IS
+  BEGIN
+    g_ids.EXTEND;
+    g_ids(g_ids.LAST) := :NEW.busScheduleId;
+  END AFTER EACH ROW;
+
+  AFTER STATEMENT IS
+  BEGIN
+    IF g_ids.COUNT > 0 THEN
+      FOR i IN 1 .. g_ids.COUNT LOOP
+        -- Safe now: the INSERT statement has finished; busSchedule is not mutating
+        GEN_TICKETS_FOR_SCHEDULE(g_ids(i));
+      END LOOP;
+    END IF;
+  END AFTER STATEMENT;
+
+END BS_AI_GEN_TICKETS;
 /
-SHOW ERRORS TRIGGER TKT_BU_CUST_TO_PAY;
-
-
-CREATE OR REPLACE PROCEDURE GEN_PAYMENT_FOR_TICKET (
-  p_ticket_id    IN ticket.ticketId%TYPE,
-  p_customer_id  IN ticket.customerId%TYPE,
-  p_ticket_price IN ticket.price%TYPE
-) IS
-  v_payment_id  VARCHAR2(12);
-  v_exists      INTEGER;
-BEGIN
-  IF p_customer_id IS NULL THEN
-    RAISE_APPLICATION_ERROR(-20001, 'Ticket has no customerId; cannot create payment.');
-  END IF;
-
-  IF NVL(p_ticket_price, 0) < 0 THEN
-    RAISE_APPLICATION_ERROR(-20002, 'Invalid ticket price for ticket ' || p_ticket_id);
-  END IF;
-
-  SELECT COUNT(*)
-  INTO v_exists
-  FROM paymentRecord
-  WHERE ticketId = p_ticket_id;
-
-  IF v_exists > 0 THEN
-    RETURN; -- already has a payment
-  END IF;
-
-  v_payment_id := 'PAY' || LPAD(seq_payment_id.NEXTVAL, 9, '0');
-
-  INSERT INTO paymentRecord (
-    paymentId, customerId, ticketId,
-    totalAmount, cashAmount, pointsApplied, pointValue,
-    status, paymentTime, receiptNo, paymentMethod, type, remarks
-  ) VALUES (
-    v_payment_id, p_customer_id, p_ticket_id,
-    p_ticket_price, p_ticket_price, 0, 0,
-    'pending', SYSTIMESTAMP, 'RCPT-' || TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
-    NULL, 'auto', 'Auto-created on ticket assignment'
-  );
-
-EXCEPTION
-  WHEN NO_DATA_FOUND THEN
-    RAISE_APPLICATION_ERROR(-20003, 'Ticket not found for ticketId ' || p_ticket_id);
-
-  WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE('Unexpected error in GEN_PAYMENT_FOR_TICKET: ' || SQLERRM);
-    RAISE;
-END;
-/
-SHOW ERRORS PROCEDURE GEN_PAYMENT_FOR_TICKET;
 
 
 

@@ -32,7 +32,7 @@ IS
         WHERE tsl.status = 'delayed'
           AND tsl.busScheduleId = p_schedule_id;
 BEGIN
-    -- 驗證 route 是否存在
+
     BEGIN
         SELECT routeName
         INTO v_routeName
