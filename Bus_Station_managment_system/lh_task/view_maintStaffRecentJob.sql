@@ -22,7 +22,7 @@ SELECT
     ms.serviceItem AS serviceItem,
     bm2.busId AS busId,
     -- ms.serviceItem || ' on ' || bm2.busId AS maintenanceDetails,
-    bm2.maintenanceDoneDate AS maintenanceDate,
+    TO_CHAR(bm2.maintenanceDoneDate, 'DD-MM-YYYY') AS maintenanceDate,
     bm2.remarks AS remarks
 FROM (
     -- Join BusMaintenance with MaintenanceStaffAssignment,
@@ -36,6 +36,7 @@ FROM (
             ROW_NUMBER() OVER (PARTITION BY msa.staffID ORDER BY bm.maintenanceDoneDate DESC) AS rn
         FROM BusMaintenance bm
         JOIN MaintenanceStaffAssignment msa ON bm.maintenanceID = msa.maintenanceID
+        WHERE maintenanceDoneDate IS NOT NULL
     ) 
     WHERE rn = 1
 ) bm2 
@@ -43,16 +44,16 @@ JOIN Staff s ON bm2.staffID = s.staffID
 JOIN MaintenanceService ms ON bm2.serviceID = ms.serviceID
 ORDER BY bm2.maintenanceDoneDate;
 
-COLUMN staffID HEADING "Staff ID" 
-COLUMN fullName HEADING "Name" 
+COLUMN staffID HEADING "Staff ID" FORMAT A10
+COLUMN fullName HEADING "Name" FORMAT A20
 COLUMN phoneNumber HEADING "Contact no." 
-COLUMN email HEADING "Email" 
-COLUMN maintenanceId HEADING "Maint. job ID" 
+COLUMN email HEADING "Email" FORMAT A30
+COLUMN maintenanceId HEADING "Maint. job ID" FORMAT A14
 -- COLUMN maintenanceDetails HEADING "Service on bus" FORMAT A50
-COLUMN serviceItem HEADING "Service"
+COLUMN serviceItem HEADING "Service" FORMAT A30
 COLUMN busId HEADING "Bus ID" 
-COLUMN maintenanceDate HEADING "Done on" 
-COLUMN remarks HEADING "Remarks" 
+COLUMN maintenanceDate HEADING "Done on" FORMAT A15
+COLUMN remarks HEADING "Remarks" FORMAT A30
 
 -- SELECT * FROM MaintenanceStaffRecentJobView;
 

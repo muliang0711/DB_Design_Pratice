@@ -7,12 +7,13 @@ DECLARE
   v_countStaff NUMBER;
 BEGIN
   IF INSERTING THEN
-    SELECT shopSize INTO v_shopSize
-    FROM Shop
-    WHERE shopID = :NEW.shopID;
-
-    :NEW.rentalAmount := v_shopSize * 2;
-
+    IF :NEW.rentalAmount IS NULL OR :NEW.rentalAmount = 0 THEN
+      SELECT shopSize INTO v_shopSize
+      FROM Shop
+      WHERE shopID = :NEW.shopID;
+      
+      :NEW.rentalAmount := v_shopSize * 2;
+    END IF;
   ELSIF UPDATING THEN
     IF :NEW.staffId IS NOT NULL THEN
     SELECT COUNT(*) INTO v_count
@@ -44,6 +45,7 @@ BEGIN
   END IF;
 END;
 /
+
 
 
 

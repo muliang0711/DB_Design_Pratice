@@ -6,19 +6,21 @@ CREATE OR REPLACE TRIGGER trg_on_bus_start_maintenance
 AFTER INSERT ON BusMaintenance
 FOR EACH ROW    
 BEGIN
--- Update bus's status to under_maintenance
+    -- Update bus's status to under_maintenance
     UPDATE Bus
     SET status = 'under_maintenance',
         updatedAt = CURRENT_TIMESTAMP
     WHERE busID = :NEW.busID;
+    DBMS_OUTPUT.PUT_LINE('Bus ' || :NEW.busID || ' set to under_maintenance.');
 
--- Update affected driver list assignments' status to inactive
+    -- Update affected driver list assignments' status to inactive
     UPDATE DriverListAssignment dla
     SET status = 'inactive'
     WHERE dla.busID = :NEW.busID
     AND dla.assignedTo >= SYSDATE;
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' driver assignments inactivated.');
 
--- Update affected route-driver assignments' status to inactive
+    -- Update affected route-driver assignments' status to inactive
     UPDATE RouteDriverAssignmentList rdal
     SET rdal.status = 'inactive'
     WHERE EXISTS (
@@ -27,9 +29,9 @@ BEGIN
         WHERE dla.assignmentID = rdal.assignmentID
         AND dla.busID = :NEW.busID
     );
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' route-driver assignments inactivated.');
 
--- Update affected bus schedule
--- status = 'cancelled'
+    -- Update affected bus schedules
     UPDATE BusSchedule bs
     SET bs.status = 'cancelled',
         bs.updatedAt = CURRENT_TIMESTAMP
@@ -40,9 +42,10 @@ BEGIN
         WHERE bs.routeDriverAssignmentID = rdal.routeDriverAssignmentID
         AND dla.busID = :NEW.busID
     );
-
+    DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT || ' bus schedules cancelled.');
 END;
 /
+
 
 -- -- Fires after a new row is inserted into BusMaintenance
 -- --

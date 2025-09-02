@@ -3,11 +3,11 @@ SET SERVEROUTPUT ON;
 CREATE OR REPLACE PROCEDURE prcAddRentalCollection IS
   CURSOR shop_cursor IS
     SELECT shopID
-    FROM Shop
-    WHERE LOWER(status) = 'active';
+    FROM Shop;
 
   v_shopID   Shop.shopID%TYPE;
   v_exists   NUMBER;
+
 BEGIN
   FOR shop_rec IN shop_cursor LOOP
     v_shopID := shop_rec.shopID;
@@ -24,7 +24,7 @@ BEGIN
       INSERT INTO RentalCollection (
         rentalMonth, shopId, staffId, rentalAmount, status, collectionDate
       ) VALUES (
-        SYSDATE, v_shopID, NULL, NULL, 'unpaid', NULL
+        SYSDATE, v_shopID, NULL, NULL, 'pending', NULL
       );
     ELSE
       RAISE_APPLICATION_ERROR(-20001,
@@ -32,13 +32,12 @@ BEGIN
     END IF;
   END LOOP;
 
-  COMMIT;
-
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
+
 
 /*
 UPDATE rentalCollection
@@ -64,12 +63,13 @@ DECLARE
   v_countStaff NUMBER;
 BEGIN
   IF INSERTING THEN
-    SELECT shopSize INTO v_shopSize
-    FROM Shop
-    WHERE shopID = :NEW.shopID;
-
-    :NEW.rentalAmount := v_shopSize * 2;
-
+    IF :NEW.rentalAmount IS NULL OR :NEW.rentalAmount = 0 THEN
+      SELECT shopSize INTO v_shopSize
+      FROM Shop
+      WHERE shopID = :NEW.shopID;
+      
+      :NEW.rentalAmount := v_shopSize * 2;
+    END IF;
   ELSIF UPDATING THEN
     IF :NEW.staffId IS NOT NULL THEN
     SELECT COUNT(*) INTO v_count
@@ -261,7 +261,7 @@ BEGIN
         v_count := v_count + 1;
 
         DBMS_OUTPUT.PUT_LINE(
-          (NVL(v_staffID, 'unknown')) || '   ' ||
+          (NVL(v_staffID, '------')) || '   ' ||
           RPAD(NVL(TO_CHAR(v_amount, '$9,999.00'), '$0.00'), 15) ||
           RPAD(TO_CHAR(v_rentalMonth, 'YYYY-MM'), 13) || 
           RPAD(v_status, 12) || 
@@ -292,7 +292,7 @@ CREATE OR REPLACE PROCEDURE prcShowUnpaidRentals IS
     SELECT s.shopID, r.rentalMonth, r.rentalAmount, s.shopTenantName, s.phoneNumber
     FROM Shop s
     JOIN RentalCollection r ON s.shopID = r.shopID
-    WHERE LOWER(r.status) = 'unpaid'
+    WHERE LOWER(r.status) = 'pending'
     ORDER BY r.rentalMonth, s.shopID;
 
   v_lastMonth DATE := NULL;
@@ -396,7 +396,7 @@ COLUMN shopNumbers FORMAT A50 HEADING 'Shop Numbers'
 
 CREATE OR REPLACE VIEW vw_ShopCategories AS
 SELECT 
-    RPAD(NVL(shopType, 'Unknown'), 15) AS shopType,
+    RPAD(NVL(shopType, '-----'), 15) AS shopType,
     RPAD(COUNT(*), 3) AS totalShops,
     LISTAGG(shopNo, ', ') WITHIN GROUP (ORDER BY shopNo) AS shopNumbers
 FROM shop

@@ -3,7 +3,7 @@ CREATE OR REPLACE PROCEDURE prcShowUnpaidRentals IS
     SELECT s.shopID, r.rentalMonth, r.rentalAmount, s.shopTenantName, s.phoneNumber
     FROM Shop s
     JOIN RentalCollection r ON s.shopID = r.shopID
-    WHERE LOWER(r.status) = 'unpaid'
+    WHERE LOWER(r.status) = 'pending'
     ORDER BY r.rentalMonth, s.shopID;
 
   v_lastMonth DATE := NULL;
@@ -43,7 +43,6 @@ BEGIN
     );
   END LOOP;
 
-  -- final subtotal after loop
   IF v_lastMonth IS NOT NULL THEN
     DBMS_OUTPUT.PUT_LINE(RPAD('-', 80, '-'));
     DBMS_OUTPUT.PUT_LINE('Monthly Subtotal: ' || TO_CHAR(v_monthTotal, '$999,999.00'));
