@@ -359,6 +359,13 @@ CREATE TABLE rentalCollection (
 
 SET SERVEROUTPUT ON;
 
+-- Sequence for shop
+CREATE SEQUENCE shopId_seq
+MINVALUE 200
+MAXVALUE 999
+INCREMENT BY 1
+NOCACHE;
+
 CREATE OR REPLACE PROCEDURE prcAddRentalCollection IS
   CURSOR shop_cursor IS
     SELECT shopID
@@ -396,14 +403,6 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
 END;
 /
-
--- Sequence for shop
-
-CREATE SEQUENCE shopId_seq
-MINVALUE 200
-MAXVALUE 999
-INCREMENT BY 1
-NOCACHE;
 
 CREATE OR REPLACE PROCEDURE prcAddShop(
   v_stationId     IN shop.stationId%TYPE,
