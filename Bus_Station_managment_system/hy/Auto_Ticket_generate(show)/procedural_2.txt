@@ -96,6 +96,6 @@ END;
 /
 SHOW ERRORS PROCEDURE GEN_TICKETS_FOR_SCHEDULE;
 
-select * from ticket where busScheduleId = 'S000400';
-EXEC GEN_TICKETS_FOR_SCHEDULE('S000400');
-select ticketId from ticket where busScheduleId = 'S000400';
+1. select ticketId from ticket where busScheduleId = 'S000425';
+EXEC GEN_TICKETS_FOR_SCHEDULE('S000425');
+select ticketId from ticket where busScheduleId = 'S000425';
