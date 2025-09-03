@@ -14805,6 +14805,62 @@ BEGIN
 END;
 /
 
+-- Oo Kai Heng
+exec prcAddShop('S001','KA10', 'KAI', '60123456789', 'Food', 223.1);
+exec prcAddRentalCollection
+exec prcShowRentals
+exec prcShowUnpaidRentals
+
+-- exception error test
+exec prcAddShop('S100','KA10', 'KAI', '60123456789', 'Food', 223.1);
+exec prcAddShop('S001','KA10', '', '60123456789', 'Food', 223.1);
+exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 223.1);
+exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 100.1);
+
+-- view
+COLUMN Year HEADING 'Year'
+COLUMN rentalMonth     HEADING 'Month'
+COLUMN totalCollections FORMAT 999 HEADING 'Total|Collections'
+COLUMN totalAmount    FORMAT 999,999.99 HEADING 'Total|Amount'
+COLUMN totalPaid      FORMAT 999,999.99 HEADING 'Total|Paid'
+COLUMN totalUnpaid    FORMAT 999,999.99 HEADING 'Total|Unpaid'
+SELECT * FROM vw_RentalSummary;
+
+COLUMN shopType FORMAT A15 HEADING 'Shop Type'
+COLUMN totalShops FORMAT 999 HEADING 'Total'
+COLUMN shopNumbers FORMAT A50 HEADING 'Shop Numbers'
+SELECT * FROM vw_ShopCategories;
+
+-- query
+COLUMN shopId        FORMAT A10  HEADING 'Shop ID'
+COLUMN shopNo        FORMAT A8   HEADING 'Shop No'
+COLUMN shopTenantName FORMAT A25 HEADING 'Tenant Name'
+COLUMN stationId     FORMAT A10  HEADING 'Station'
+COLUMN shopType      FORMAT A12  HEADING 'Shop Type'
+COLUMN status        FORMAT A20  HEADING 'Shop Status'
+
+SELECT 
+s.shopId,s.shopNo,s.shopTenantName,s.stationId,s.shopType,s.status
+FROM shop s
+LEFT JOIN rentalCollection rc 
+ON s.shopId = rc.shopId
+WHERE rc.shopId IS NULL
+ORDER BY s.stationId, s.shopNo;
+
+COLUMN staffId FORMAT A10 HEADING 'Staff ID'
+COLUMN firstName FORMAT A20 HEADING 'First Name'
+COLUMN lastName FORMAT A25 HEADING 'Last Name'
+COLUMN totalCollections FORMAT 9999 HEADING 'Collections'
+COLUMN totalAmountCollected FORMAT 999,999.99 HEADING 'Total Collected (RM)'
+
+SELECT rc.staffId, st.firstName, st.lastName, 
+COUNT(*) AS totalCollections, 
+SUM(rc.rentalAmount) AS totalAmountCollected
+FROM rentalCollection rc
+JOIN staff st ON rc.staffId = st.staffId
+GROUP BY rc.staffId, st.staffId, st.firstName, st.lastName
+ORDER BY totalCollections DESC;
+
 
 SELECT COUNT(*) AS staffRole FROM staffRole;
 SELECT COUNT(*) AS busCompany FROM busCompany;
