@@ -10,7 +10,9 @@ SELECT
     t.createdAt
 FROM ticket t
 LEFT JOIN customer c 
-    ON t.customerId = c.customerId;
+    ON t.customerId = c.customerId
+FETCH FIRST 100 ROWS ONLY;
+
 
 CREATE INDEX IDX_TICKET_STATUS
   ON ticket(status);
