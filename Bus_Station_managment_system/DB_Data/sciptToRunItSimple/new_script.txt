@@ -13748,6 +13748,27 @@ END;
 
 // HY Part :  
 
+SET LINESIZE 200
+SET Pagesize 120
+COLUMN ticketId      FORMAT A12  HEADING "TicketID"
+COLUMN busScheduleId FORMAT A12  HEADING "BusScheduleID"
+COLUMN customerName  FORMAT A25  HEADING "Customer"
+COLUMN seatNo        FORMAT A8   HEADING "Seat"
+COLUMN price         FORMAT 9990.99  HEADING "Price"
+COLUMN type          FORMAT A10  HEADING "Type"
+COLUMN status        FORMAT A12  HEADING "Status"
+COLUMN createdAt     FORMAT A25  HEADING "CreatedAt"
+
+SET LINESIZE 200
+SET Pagesize 120
+COLUMN busScheduleId        FORMAT A12  HEADING "BusScheduleID"
+COLUMN routeName            FORMAT A30  HEADING "Route"
+COLUMN plannedDepartureTime FORMAT A20  HEADING "DepartureTime"
+COLUMN status               FORMAT A10  HEADING "Status"
+COLUMN price                FORMAT 9990.99  HEADING "MinPrice"
+
+
+
 DROP SEQUENCE seq_ticket_id;
 
 CREATE SEQUENCE seq_ticket_id
