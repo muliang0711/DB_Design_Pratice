@@ -13,10 +13,12 @@ END;
 /
 SHOW ERRORS TRIGGER TKT_BU_CUST_TO_PAY;
 
+select ticketId from ticket ;
+
 UPDATE ticket 
 SET customerId = 'CU0092', 
 updatedAt = SYSTIMESTAMP 
-WHERE ticketId = 'T00000293810';
+WHERE ticketId = 'T00000001299';
 
 
 select status , customerId 
@@ -26,9 +28,11 @@ where status = 'pending' ;
 UPDATE ticket 
 SET customerId = 'CU0092', 
 updatedAt = SYSTIMESTAMP 
-WHERE ticketId = 'T00000293934';
+WHERE ticketId = 'T00000294013';
 
 select status , customerId 
 from paymentRecord 
 where status = 'pending' ;
+
+select * from ticket where ticketId = 'T00000294013';
 

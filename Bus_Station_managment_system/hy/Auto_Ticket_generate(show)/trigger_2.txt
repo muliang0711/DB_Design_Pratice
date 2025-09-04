@@ -30,7 +30,8 @@ END BS_AI_GEN_TICKETS;
 /
 SHOW ERRORS TRIGGER BS_AI_GEN_TICKETS;
 
-select ticketId from ticket where busScheduleId = 'S000500';
+select busScheduleId from busSchedule ;
+select * from ticket where busScheduleId = 'S000500';
 
 INSERT INTO busSchedule 
 (busScheduleId, 
