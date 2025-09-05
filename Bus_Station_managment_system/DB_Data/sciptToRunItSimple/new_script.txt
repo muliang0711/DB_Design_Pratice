@@ -14486,16 +14486,16 @@ END;
 /
 
 -- Oo Kai Heng
-exec prcAddShop('S001','KA10', 'KAI', '60123456789', 'Food', 223.1);
-exec prcAddRentalCollection
-exec prcShowRentals
-exec prcShowUnpaidRentals
+-- exec prcAddShop('S001','KA10', 'KAI', '60123456789', 'Food', 223.1);
+-- exec prcAddRentalCollection
+-- exec prcShowRentals
+-- exec prcShowUnpaidRentals
 
 -- exception error test
-exec prcAddShop('S100','KA10', 'KAI', '60123456789', 'Food', 223.1);
-exec prcAddShop('S001','KA10', '', '60123456789', 'Food', 223.1);
-exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 223.1);
-exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 100.1);
+-- exec prcAddShop('S100','KA10', 'KAI', '60123456789', 'Food', 223.1);
+-- exec prcAddShop('S001','KA10', '', '60123456789', 'Food', 223.1);
+-- exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 223.1);
+-- exec prcAddShop('S001','KA10', 'KAI', '60189', 'Food', 100.1);
 
 -- view
 COLUMN Year HEADING 'Year'
