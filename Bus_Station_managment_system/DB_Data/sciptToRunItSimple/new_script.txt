@@ -1679,7 +1679,7 @@ END ExtendTicket;
 /
 
     -- valid sample
-    EXEC ExtendTicket('T00000000473', 'T00000000480');
+    -- EXEC ExtendTicket('T00000000473', 'T00000000480');
 
 
 -- SEQUENCE
@@ -1806,7 +1806,7 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Refund failed: ' || SQLERRM);
 END ProcessTicketRefund;
 /
-EXEC ProcessTicketRefund('T00000000020', 'full');
+-- EXEC ProcessTicketRefund('T00000000020', 'full');
 
 -- REPORT1 : Bus Schedule Occupancy Report 
 SET serveroutput on
@@ -1905,7 +1905,7 @@ END;
 /
 
 
-EXEC bus_schedule_occupancy(TO_TIMESTAMP('01-08-2000 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-08-2025 23:59','DD-MM-YYYY HH24:MI'));
+-- EXEC bus_schedule_occupancy(TO_TIMESTAMP('01-08-2000 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-08-2025 23:59','DD-MM-YYYY HH24:MI'));
 
 -- Report2 : Customer Point Transaction Summary with Payment Details
 
@@ -2027,7 +2027,7 @@ END;
 /
 
 
-EXEC customer_point_summary(TO_TIMESTAMP('01-07-2020 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-12-2025 23:59','DD-MM-YYYY HH24:MI'));
+-- EXEC customer_point_summary(TO_TIMESTAMP('01-07-2020 00:00','DD-MM-YYYY HH24:MI'),TO_TIMESTAMP('31-12-2025 23:59','DD-MM-YYYY HH24:MI'));
 
 
 
