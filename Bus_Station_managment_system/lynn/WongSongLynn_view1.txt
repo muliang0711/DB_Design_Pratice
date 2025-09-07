@@ -5,7 +5,7 @@ COLUMN ticketID       FORMAT A15     HEADING 'Ticket ID'
 COLUMN paymentID      FORMAT A15     HEADING 'Payment ID'
 COLUMN paymentTime    FORMAT A35     HEADING 'Payment Time'
 
-CREATE OR REPLACE VIEW vw_cancelled_ticket_points AS
+CREATE OR REPLACE VIEW vw_cancelled_ticket AS
 SELECT 
     p.customerID,
     p.ticketID, 
@@ -16,8 +16,9 @@ JOIN PointTransaction pt ON pt.paymentID = p.paymentID
 JOIN Customer c ON c.customerID = p.customerID
 JOIN Ticket t ON t.ticketID = p.ticketID
 WHERE t.status = 'cancelled_by_company'
+AND p.paymentID like 'P%'
 ORDER BY p.paymentTime DESC;
 
 SELECT * 
-FROM vw_cancelled_ticket_points;
+FROM vw_cancelled_ticket;
 CLEAR COLUMN
