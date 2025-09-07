@@ -30,9 +30,38 @@ END BS_AI_GEN_TICKETS;
 /
 SHOW ERRORS TRIGGER BS_AI_GEN_TICKETS;
 
-select busScheduleId from busSchedule ;
-select * from ticket where busScheduleId = 'S000500';
 
+// procedure example ;
+
+SELECT bs.busScheduleId,
+       bs.plannedDepartureTime,
+       bs.plannedArrivalTime,
+       b.busId,
+       b.plateNo,
+       d.driverId,
+       d.firstName || ' ' || d.lastName AS driverName
+FROM busSchedule bs
+JOIN routeDriverAssignmentList rda
+  ON bs.routeDriverAssignmentId = rda.routeDriverAssignmentId
+JOIN driverListAssignment dla
+  ON rda.assignmentId = dla.assignmentId
+JOIN bus b
+  ON dla.busId = b.busId
+JOIN busDriver d
+  ON dla.mainDriverId = d.driverId
+WHERE LOWER(bs.status) IN ('planned', 'in_progress')
+  AND LOWER(rda.status) = 'active'
+  AND LOWER(b.status) = 'active'
+  AND LOWER(d.status) = 'active';
+
+select busScheduleId from busSchedule ;
+
+// here we will use busScheduleID 'S000420' to example our procedure ;
+
+select * from ticket where busScheduleId = 'S000420';
+// return null ; 
+
+// trigger example ;
 INSERT INTO busSchedule 
 (busScheduleId, 
 routeDriverAssignmentId,
@@ -43,7 +72,8 @@ routeDriverAssignmentId,
  expectedProfit, 
  createdAt, 
  updatedAt) VALUES 
- ('S000500', 'RD400', TO_TIMESTAMP('2025-05-13 20:45', 'YYYY-MM-DD HH24:MI'), TO_TIMESTAMP('2025-05-14 00:55', 'YYYY-MM-DD HH24:MI'), 'Planned', 'Generated schedule for RD400', 1262.05, SYSTIMESTAMP, SYSTIMESTAMP);
+ ('S000500', 'RD254', TO_TIMESTAMP('2025-05-13 20:45', 'YYYY-MM-DD HH24:MI'), TO_TIMESTAMP('2025-05-14 00:55', 'YYYY-MM-DD HH24:MI'), 'Planned', 'Generated schedule for RD400', 1262.05, SYSTIMESTAMP, SYSTIMESTAMP);
 
  DELETE FROM busSchedule
   WHERE busScheduleId = 'S000500';
+select * from ticket where busScheduleId = 'S000500';

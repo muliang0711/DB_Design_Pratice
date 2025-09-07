@@ -20,6 +20,10 @@ SET customerId = 'CU0092',
 updatedAt = SYSTIMESTAMP 
 WHERE ticketId = 'T00000001299';
 
+SELECT ticketId 
+FROM Ticket
+ORDER BY id DESC
+LIMIT 10;
 
 select status , customerId 
 from paymentRecord 

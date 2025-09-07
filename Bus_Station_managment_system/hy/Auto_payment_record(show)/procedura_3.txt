@@ -13,7 +13,7 @@ BEGIN
   IF NVL(p_ticket_price, 0) < 0 THEN
     RAISE_APPLICATION_ERROR(-20002, 'Invalid ticket price for ticket ' || p_ticket_id);
   END IF;
-
+  
   SELECT COUNT(*)
   INTO v_exists
   FROM paymentRecord
